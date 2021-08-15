@@ -1,6 +1,9 @@
 from django.http.response import JsonResponse
 
 # Create your views here.
-def proyecto(request):
+def proyecto(request, id=None):
     if request.method == "GET":
-        return JsonResponse({"hola": "mundo"})
+        if id == None:
+            return JsonResponse({"hola": "mundo"})
+        else:
+            return JsonResponse({"hola": id})
