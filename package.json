@@ -1,0 +1,8 @@
+{
+  "name": "proyectoIS2",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/chrisbentele/proyectoIS2.git",
+  "author": "christian bentele <christianbentelem@gmail.com>",
+  "license": "MIT"
+}
