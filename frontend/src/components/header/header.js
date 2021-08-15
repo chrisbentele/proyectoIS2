@@ -6,6 +6,7 @@ import "./header.css";
 
 const Header = () => {
   const { isAuthenticated } = useAuth0();
+  console.log(isAuthenticated);
   return (
     <div className="header">
       {isAuthenticated ? <LogoutButton /> : <LoginButton />}

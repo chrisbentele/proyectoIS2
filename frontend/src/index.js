@@ -7,7 +7,9 @@ ReactDOM.render(
   <Auth0Provider
     domain="dev-bg7tosd2.us.auth0.com"
     clientId="NDaiadS9ELFv44LNSoGHpSX94CxurV2J"
-    redirectUri={"http://localhost:3000/"}
+    redirectUri={"http://localhost:3000/profile"}
+    useRefreshTokens="true"
+    cacheLocation="localstorage"
   >
     <div>
       <style jsx global>{`
