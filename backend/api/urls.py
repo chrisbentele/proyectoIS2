@@ -16,6 +16,6 @@ Including another URLconf
 from django.urls import path, include
 from .views import proyecto
 
-proyectoPaths = [path("proyecto/", proyecto), path("proyecto/<int:id>", proyecto)]
+apiPaths = [path("proyecto/", proyecto), path("proyecto/<int:id>", proyecto)]
 
-urlpatterns = [path("api/", include(proyectoPaths))]
+urlpatterns = [path("api/", include(apiPaths))]
