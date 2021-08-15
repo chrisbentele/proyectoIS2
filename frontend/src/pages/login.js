@@ -1,5 +1,5 @@
 import React from "react";
-import LoginButton from "../components/auth/loginButton";
+import LoginButton from "../components/auth/loginButton/loginButton";
 
 export default function Login() {
   return (
