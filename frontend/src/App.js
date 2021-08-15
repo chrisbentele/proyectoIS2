@@ -1,13 +1,25 @@
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import Login from "./pages/login";
+import Home from "./pages/home";
+import Header from "./components/header/header";
+import Profile from "./pages/profile";
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>App para IS2</h1>
-      </header>
-    </div>
+    <Router>
+      <Header />
+      <Switch>
+        <Route path="/" exact>
+          <Home />
+        </Route>
+        <Route path="/login" exact>
+          <Login />
+        </Route>
+        <Route path="/profile">
+          <Profile />
+        </Route>
+      </Switch>
+    </Router>
   );
 }
-
-export default App;
