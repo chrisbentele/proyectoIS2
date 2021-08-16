@@ -1,0 +1,19 @@
+var searchData=
+[
+  ['admin_1',['admin',['../namespaceapi_1_1admin.html',1,'api']]],
+  ['admin_2epy_2',['admin.py',['../admin_8py.html',1,'']]],
+  ['allowed_5fhosts_3',['ALLOWED_HOSTS',['../namespacecontroller_1_1settings.html#a5bc1ac506b126a19ffb7ad119d49ab3f',1,'controller::settings']]],
+  ['api_4',['api',['../namespaceapi.html',1,'']]],
+  ['apiconfig_5',['ApiConfig',['../classapi_1_1apps_1_1ApiConfig.html',1,'api::apps']]],
+  ['apipaths_6',['apiPaths',['../namespaceapi_1_1urls.html#acf0791c020d762f380a28d47325b3943',1,'api::urls']]],
+  ['application_7',['application',['../namespacecontroller_1_1asgi.html#a491a308710ed7e702788d7471e95a92f',1,'controller.asgi.application()'],['../namespacecontroller_1_1wsgi.html#a845c0e7adb483331c32c53ca5dab762f',1,'controller.wsgi.application()']]],
+  ['apps_8',['apps',['../namespaceapi_1_1apps.html',1,'api']]],
+  ['apps_2epy_9',['apps.py',['../apps_8py.html',1,'']]],
+  ['asgi_2epy_10',['asgi.py',['../asgi_8py.html',1,'']]],
+  ['auth_5fpassword_5fvalidators_11',['AUTH_PASSWORD_VALIDATORS',['../namespacecontroller_1_1settings.html#a5a1124173d0fea525e6a5443d14e0079',1,'controller::settings']]],
+  ['migrations_12',['migrations',['../namespaceapi_1_1migrations.html',1,'api']]],
+  ['models_13',['models',['../namespaceapi_1_1models.html',1,'api']]],
+  ['tests_14',['tests',['../namespaceapi_1_1tests.html',1,'api']]],
+  ['urls_15',['urls',['../namespaceapi_1_1urls.html',1,'api']]],
+  ['views_16',['views',['../namespaceapi_1_1views.html',1,'api']]]
+];
