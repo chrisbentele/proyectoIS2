@@ -16,7 +16,7 @@ export default function App() {
         <Route path="/login" exact>
           <Login />
         </Route>
-        <Route path="/profile">
+        <Route path="/profile" exact>
           <Profile />
         </Route>
       </Switch>
