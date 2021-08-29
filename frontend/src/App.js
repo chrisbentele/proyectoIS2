@@ -4,6 +4,7 @@ import Login from "./pages/login";
 import Home from "./pages/home/home";
 import Header from "./components/header/header";
 import Profile from "./pages/profile";
+import Proyecto from "./pages/proyecto";
 
 export default function App() {
   return (
@@ -18,6 +19,9 @@ export default function App() {
         </Route>
         <Route path="/profile" exact>
           <Profile />
+        </Route>
+        <Route path="/proyecto" exact>
+          <Proyecto />
         </Route>
       </Switch>
     </Router>
