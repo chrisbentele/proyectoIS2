@@ -4,21 +4,19 @@ import Login from "./pages/login";
 import Home from "./pages/home/home";
 import Header from "./components/header/header";
 import Profile from "./pages/profile";
+import Projects from "./pages/projects/projects";
+import ProjectMembers from "./pages/projectMembers";
 
 export default function App() {
   return (
     <Router>
       <Header />
       <Switch>
-        <Route path="/" exact>
-          <Home />
-        </Route>
-        <Route path="/login" exact>
-          <Login />
-        </Route>
-        <Route path="/profile" exact>
-          <Profile />
-        </Route>
+        <Route path="/" component={Home} exact />
+        <Route path="/login" component={Login} exact />
+        <Route path="/profile" component={Profile} exact />
+        <Route path="/projects/:id" component={Projects} exact />
+        <Route path="/projects/:id/members" component={ProjectMembers} exact />
       </Switch>
     </Router>
   );
