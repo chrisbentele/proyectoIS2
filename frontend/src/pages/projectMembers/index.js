@@ -8,7 +8,7 @@ export default function ProjectMembers() {
   useEffect(() => {
     const populateUsers = async () => {
       try {
-        const res = await getUsers();
+        const res = await getMembers();
         let users = res.data.filter((user) => user.family_name != null);
         setMembers(users);
       } catch (err) {
