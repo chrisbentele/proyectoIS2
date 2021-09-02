@@ -6,7 +6,7 @@ import {
   getProjectById,
   editProject,
 } from "./projects";
-import { getUsers, deleteUser } from "./users";
+import { getUsers, deleteUser, searchUsersByName } from "./users";
 import { addRole, editRole, deleteRole } from "./roles";
 import {
   addMemberToProject,
@@ -28,6 +28,7 @@ export const api = {
   //Users
   getUsers,
   deleteUser,
+  searchUsersByName,
   //Roles
   addRole,
   editRole,
