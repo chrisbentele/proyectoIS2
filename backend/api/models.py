@@ -11,17 +11,36 @@ from django.db.models.fields import (
 from django.db.models.fields.related import ForeignKey, ManyToManyField, OneToOneField
 
 # Create your models here.
-
-
-class Permiso(Model):
-    id = AutoField(primary_key=True)
-    nombre = CharField(max_length=100)
+permisos = (
+    (0, "Crear proyecto"),
+    (1, "Ver proyecto"),
+    (2, "Editar configuración del proyecto"),
+    (3, "Editar miembros a proyecto"),
+    (4, "Eliminar proyecto"),
+    (5, "Crear US"),
+    (6, "Modificar US"),
+    (7, "Eliminar US"),
+    (8, "Estimar US"),
+    (9, "Asignar miembros a US"),
+    (10, "Cambiar estado US"),
+    (11, "Crear rol"),
+    (12, "Editar parámetros del rol"),
+    (13, "Eliminar rol"),
+    (14, "Asignar rol"),
+    (15, "Agregar usuario"),
+    (16, "Editar rol del usuario"),
+    (17, "Eliminar usuario"),
+)
 
 
 class Rol(Model):
     id = AutoField(primary_key=True)
     nombre = CharField(max_length=100)
-    permisos = ManyToManyField(Permiso)
+
+
+class PermisoAsignado(Model):
+    permiso = IntegerField(choices=permisos)
+    rol = ForeignKey(Rol)
 
 
 class Usuario(Model):
