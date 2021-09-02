@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import { Auth0Provider } from "@auth0/auth0-react";
+import { ChakraProvider } from "@chakra-ui/react";
 
 ReactDOM.render(
   <Auth0Provider
@@ -18,7 +19,9 @@ ReactDOM.render(
           padding: 0px;
         }
       `}</style>
-      <App />
+      <ChakraProvider>
+        <App />
+      </ChakraProvider>
     </div>
   </Auth0Provider>,
   document.getElementById("root")
