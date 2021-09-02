@@ -7,7 +7,7 @@ export const addRole = async (roleName, permissions) => {
     const res = await axiosInstance.post("/roles", { roleName, permissions });
     return res.status;
   } catch (error) {
-    return error.message;
+    return error;
   }
 };
 
@@ -16,7 +16,7 @@ export const deleteRole = async (roleId) => {
     const res = await axiosInstance.delete(`/roles/${roleId}`);
     return res.status;
   } catch (error) {
-    return error.message;
+    return error;
   }
 };
 
@@ -25,6 +25,6 @@ export const editRole = async (roleId, permissions) => {
     const res = await axiosInstance.put(`/roles/${roleId}`, { permissions });
     return res.data;
   } catch (error) {
-    return error.message;
+    return error;
   }
 };
