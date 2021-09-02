@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import ReactTable from "react-table-v6";
 import DeleteIcon from "../../components/deleteIcon/deleteIcon";
 import "react-table-v6/react-table.css";
-import { getMembers } from "../../api";
+import { api } from "../../api";
 
 export default function ProjectMembers() {
   useEffect(() => {
     const populateUsers = async () => {
       try {
-        const res = await getMembers();
+        const res = await api.getMembers();
         let users = res.data.filter((user) => user.family_name != null);
         setMembers(users);
       } catch (err) {
