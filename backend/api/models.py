@@ -6,12 +6,13 @@ from django.db.models.fields import (
     CharField,
     AutoField,
     DateField,
+    EmailField,
     IntegerField,
 )
 from django.db.models.fields.related import ForeignKey, ManyToManyField, OneToOneField
 
 # Create your models here.
-permisos = (
+PERMISOS = (
     (0, "Crear proyecto"),
     (1, "Ver proyecto"),
     (2, "Editar configuración del proyecto"),
@@ -39,13 +40,14 @@ class Rol(Model):
 
 
 class PermisoAsignado(Model):
-    permiso = IntegerField(choices=permisos)
-    rol = ForeignKey(Rol)
+    permiso = IntegerField(choices=PERMISOS)
+    rol = ForeignKey(Rol, CASCADE)
 
 
 class Usuario(Model):
     idUsuario = AutoField(primary_key=True)
     nombre = CharField(max_length=100)
+    email = EmailField(unique=True)
     # roles = ManyToManyField(Rol)
 
 
@@ -112,11 +114,13 @@ class Comentario(Model):
     retro = ForeignKey(Retrospectiva, on_delete=CASCADE)
 
 
+estadoProyecto = ((0, "Pendiente"), (1, "Activo"), (2, "Terminado"))
+
+
 class Proyecto(Model):
-    estadoProyecto = ((0, "Pendiente"), (1, "Activo"), (2, "Terminado"))
     idProyecto = AutoField(primary_key=True)
     duracionEstimada = IntegerField()
-    fechaInicio = DateField()
+    fechaInicio = DateField(auto_now_add=True)
     fechaFinalizacion = DateField()
     estado = IntegerField(choices=estadoProyecto, default=0)
     miembros = ManyToManyField(Usuario)
