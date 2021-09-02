@@ -27,7 +27,7 @@ class Rol(Model):
 class Usuario(Model):
     idUsuario = AutoField(primary_key=True)
     nombre = CharField(max_length=100)
-    roles = ManyToManyField(Rol)
+    # roles = ManyToManyField(Rol)
 
 
 class KanbanTable(Model):
@@ -81,8 +81,8 @@ class US(Model):
 
 
 class USAsignada(Model):
-    US = ForeignKey(US, on_delete=CASCADE)
-    Usuario = ForeignKey(Usuario, on_delete=CASCADE)
+    us = ForeignKey(US, on_delete=CASCADE)
+    usuario = ForeignKey(Usuario, on_delete=CASCADE)
 
 
 class Comentario(Model):
@@ -94,16 +94,22 @@ class Comentario(Model):
 
 
 class Proyecto(Model):
-    EstadoProyecto = ((0, "Pendiente"), (1, "Activo"), (2, "Terminado"))
+    estadoProyecto = ((0, "Pendiente"), (1, "Activo"), (2, "Terminado"))
     idProyecto = AutoField(primary_key=True)
     duracionEstimada = IntegerField()
     fechaInicio = DateField()
     fechaFinalizacion = DateField()
-    estado = IntegerField(choices=EstadoProyecto, default=0)
+    estado = IntegerField(choices=estadoProyecto, default=0)
     miembros = ManyToManyField(Usuario)
     # admins = ManyToManyField(Usuario)
     nombre = CharField(max_length=100)
     kanbanTable = ForeignKey(KanbanTable, on_delete=CASCADE)
+
+
+class RolAsignado(Model):
+    rol = ForeignKey(Rol, on_delete=CASCADE)
+    usuario = ForeignKey(Usuario, on_delete=CASCADE)
+    proyecto = ForeignKey(Proyecto, on_delete=CASCADE)
 
 
 # Usuario.add_to_class("proyectos", ManyToManyField(Proyecto))
