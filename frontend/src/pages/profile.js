@@ -3,7 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { Link } from "react-router-dom";
 import { Box, Flex, Heading, HStack, VStack } from "@chakra-ui/layout";
 import { Image } from "@chakra-ui/image";
-import { Grid, GridItem } from "@chakra-ui/react";
+import { Grid, GridItem, SimpleGrid } from "@chakra-ui/react";
 
 const Profile = () => {
   const { user, isAuthenticated, isLoading } = useAuth0();
@@ -34,7 +34,7 @@ const Profile = () => {
             <Heading>Proyectos</Heading>
           </Box>
           <Flex mt="10">
-            <Grid templateColumns="repeat(2, 1fr)" gap={6}>
+            <Grid templateColumns="repeat(2, 1fr)" gap={4} autoFlow>
               <Flex
                 w="xs"
                 height="200px"
@@ -43,8 +43,10 @@ const Profile = () => {
                 overflow="hidden"
                 fontSize="3xl"
                 fontWeight="bold"
-                bg="white"
-                justifyContent="center"
+                bg="#FFE66D"
+                justifyContent="left"
+                pl="5"
+                pt="2"
               >
                 <Link path={`proyecto/${1}`}>Proyecto 1</Link>
               </Flex>
@@ -56,8 +58,10 @@ const Profile = () => {
                 overflow="hidden"
                 fontSize="3xl"
                 fontWeight="bold"
-                bg="white"
-                justifyContent="center"
+                bg="#4ECDC4"
+                justifyContent="left"
+                pl="5"
+                pt="2"
               >
                 <Link path={`proyecto/${2}`}>Proyecto 2</Link>
               </Flex>
@@ -69,8 +73,10 @@ const Profile = () => {
                 overflow="hidden"
                 fontSize="3xl"
                 fontWeight="bold"
-                bg="white"
-                justifyContent="center"
+                bg="#FBB5B1"
+                justifyContent="left"
+                pl="5"
+                pt="2"
               >
                 <Link path={`proyecto/${3}`}>Proyecto 3</Link>
               </Flex>
@@ -84,8 +90,9 @@ const Profile = () => {
                 fontWeight="bold"
                 bg="white"
                 justifyContent="center"
+                alignItems="center"
               >
-                <Link to="/createProject/index">Crear Proyecto</Link>
+                <Link to="/createProject/">Crear Proyecto</Link>
               </Flex>
             </Grid>
           </Flex>
