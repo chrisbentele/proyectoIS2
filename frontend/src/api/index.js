@@ -16,7 +16,7 @@ import {
 } from "./members";
 
 export const axiosInstance = axios.create({
-  baseURL: "http://localhost:8000/api/",
+  baseURL: "http://localhost:8000/api",
 });
 
 export const api = {
