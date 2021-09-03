@@ -30,6 +30,8 @@ const Header = () => {
             {/* <Link to="/projects">Projects</Link> */}
             <Heading>Trellon't</Heading>
           </Box>
+          <Link to="/projects">Projects</Link>
+          <Link to="/roles">Roles</Link>
         </Flex>
       ) : (
         <Box mr="auto">

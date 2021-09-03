@@ -5,6 +5,7 @@ import { Auth0Provider } from "@auth0/auth0-react";
 import { ChakraProvider, CSSReset, Box } from "@chakra-ui/react";
 import Theme from "./styles/theme.js";
 import HookForm from "./pages/createProject/index";
+import { ProvideDbAuth } from "./providers/DbAuth";
 
 ReactDOM.render(
   <Auth0Provider
@@ -15,7 +16,9 @@ ReactDOM.render(
     cacheLocation="localstorage"
   >
     <ChakraProvider theme={Theme}>
-      <App />
+      <ProvideDbAuth>
+        <App />
+      </ProvideDbAuth>
     </ChakraProvider>
   </Auth0Provider>,
   document.getElementById("root")

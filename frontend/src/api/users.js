@@ -11,6 +11,36 @@ export const getUsers = async () => {
   }
 };
 
+export const getUser = async (email, nombre) => {
+  try {
+    console.log(email);
+    let res = await axiosInstance
+      .get("http://localhost:8000/api/usuario", {
+        params: {
+          email,
+        },
+      })
+      .catch((e) => {
+        console.log(e.response.status);
+        if (e.response.status == 404) return false;
+        else throw e;
+      });
+    console.log(res);
+
+    if (!res) {
+      // Si no existe el usuario crear
+      res = await axiosInstance.post("http://localhost:8000/api/usuario", {
+        email,
+        nombre,
+      });
+    }
+    console.log(res);
+    return res.data;
+  } catch (error) {
+    return error;
+  }
+};
+
 export const deleteUser = async (userId) => {
   try {
     const res = await axiosInstance.delete(`/users/${userId}`);
