@@ -9,6 +9,8 @@ def auth_middlewares(get_request):
     _client_id = "NDaiadS9ELFv44LNSoGHpSX94CxurV2J"
 
     def auth_verify(request):
+        return get_request(request)
+
         id_token = request.headers["auth-token"]
 
         jwks_url = "https://{}/.well-known/jwks.json".format(_domain)
@@ -18,8 +20,6 @@ def auth_middlewares(get_request):
         tv = TokenVerifier(signature_verifier=sv, issuer=issuer, audience=_client_id)
         tv.verify(id_token)
         print("ok")
-        res = get_request(request)
-        return res
 
     return auth_verify
 

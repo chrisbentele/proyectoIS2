@@ -13,6 +13,7 @@ import EditRole from "./pages/editRole";
 import Users from "./pages/users";
 import User from "./pages/user";
 import { Box } from "@chakra-ui/react";
+import NotFound from "./pages/notFound";
 
 export default function App() {
   return (
@@ -35,6 +36,7 @@ export default function App() {
             exact
           />
           <Route path="/projects/:id/config" component={ProjectConfig} exact />
+          <Route path="/" component={NotFound} />
         </Switch>
       </Box>
     </Router>

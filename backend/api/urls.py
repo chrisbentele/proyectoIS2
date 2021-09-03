@@ -14,18 +14,27 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 import json
-import os 
+import os
 import requests
 from django.urls import path, include
-from .views import proyecto
+from .views import proyecto, usuario
 
-apiPaths = [path("proyecto/", proyecto), path("proyecto/<str:id>", proyecto)]
+apiPaths = [
+    path("proyecto/", proyecto),
+    path("proyecto/<str:id>", proyecto),
+    path("usuario/", usuario),
+]
 
 urlpatterns = [path("api/", include(apiPaths))]
 
+
 def syncUsers():
-    headers = {'authorization':"Bearer {}".format(os.environ['TOKEN'])}
-    res = requests.get('https://dev-bg7tosd2.us.auth0.com/api/v2/users?include_totals=true&include_fields=false', headers=headers)
+    headers = {"authorization": "Bearer {}".format(os.environ["TOKEN"])}
+    res = requests.get(
+        "https://dev-bg7tosd2.us.auth0.com/api/v2/users?include_totals=true&include_fields=false",
+        headers=headers,
+    )
     print(json.loads(res.text))
+
 
 syncUsers()
