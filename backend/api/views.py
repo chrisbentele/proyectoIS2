@@ -24,6 +24,7 @@ def proyecto(request, id=None):
         data = JSONParser().parse(request)
         serializer = ProyectoSerializer(data=data)
         if serializer.is_valid():
+            serializer.save()
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400, safe=False)
 
@@ -45,7 +46,7 @@ def usuario(request):
         data = JSONParser().parse(request)
         serializer = UsuarioSerializer(data=data)
         if serializer.is_valid():
-
+            serializer.save()
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400, safe=False)
 
@@ -73,6 +74,7 @@ def roles(request):
         if serializer.is_valid():
             # Obtiene el id del Rol para vincular
             rol_id = serializer.save().id
+            print(rol_id)
             for permiso in data["permisos"]:
                 permisos_serializer = PermisoAsignadoSerializer(
                     data={"permiso": permiso, "rol": rol_id}

@@ -45,7 +45,7 @@ class Usuario(Model):
 class Proyecto(Model):
     duracionEstimada = IntegerField()
     fechaInicio = DateField(auto_now_add=True)
-    fechaFinalizacion = DateField(blank=True)
+    fechaFinalizacion = DateField(blank=True, null=True)
     estado = IntegerField(choices=estadoProyecto, default=0)
     miembros = ManyToManyField(Usuario)
     # admins = ManyToManyField(Usuario)

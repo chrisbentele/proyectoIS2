@@ -121,7 +121,7 @@ class ProyectoSerializer(serializers.ModelSerializer):
             "estado",
             "miembros",
             "nombre",
-            "kanbanTable",
+            # "kanbanTable",
         ]
 
 
