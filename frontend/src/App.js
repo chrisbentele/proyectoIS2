@@ -4,7 +4,7 @@ import Login from "./pages/login";
 import Home from "./pages/home/home";
 import Header from "./components/header/header";
 import Profile from "./pages/profile";
-import Project from "./pages/projects/projects";
+import Project from "./pages/projects/index";
 import ProjectMembers from "./pages/projectMembers";
 import MyProjects from "./pages/myProjects";
 import ProjectConfig from "./pages/projectConfig";

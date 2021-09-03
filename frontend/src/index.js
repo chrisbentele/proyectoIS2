@@ -2,8 +2,10 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import { Auth0Provider } from "@auth0/auth0-react";
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, CSSReset, Box } from "@chakra-ui/react";
 import Theme from "./styles/theme.js";
+import HookForm from "./pages/createProject/index";
+import { ProvideDbAuth } from "./providers/DbAuth";
 
 ReactDOM.render(
   <Auth0Provider
@@ -13,17 +15,11 @@ ReactDOM.render(
     useRefreshTokens="true"
     cacheLocation="localstorage"
   >
-    <div>
-      <style jsx global>{`
-        body {
-          margin: 0px;
-          padding: 0px;
-        }
-      `}</style>
-      <ChakraProvider theme={Theme}>
+    <ChakraProvider theme={Theme}>
+      <ProvideDbAuth>
         <App />
-      </ChakraProvider>
-    </div>
+      </ProvideDbAuth>
+    </ChakraProvider>
   </Auth0Provider>,
   document.getElementById("root")
 );

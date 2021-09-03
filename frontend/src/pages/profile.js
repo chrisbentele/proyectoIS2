@@ -1,6 +1,9 @@
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Link } from "react-router-dom";
+import { Box, Flex, Heading, HStack, VStack } from "@chakra-ui/layout";
+import { Image } from "@chakra-ui/image";
+import { Grid, GridItem } from "@chakra-ui/react";
 
 const Profile = () => {
   const { user, isAuthenticated, isLoading } = useAuth0();
@@ -10,12 +13,84 @@ const Profile = () => {
   }
   return (
     isAuthenticated && (
-      <div>
-        <img src={user.picture} alt={user.name} />
-        <h2>{user.name}</h2>
-        <p>{user.email}</p>
-        <Link path={`proyecto/${1}`}>Proyecto 1</Link>
-      </div>
+      <Box
+        minHeight="100vh"
+        width="full"
+        // bgImage="url('https://www.kindpng.com/picc/m/236-2362818_anime-sempai-animegirl-heart-kawaii-cute-anime-girl.png')"
+        // bgRepeat="no-repeat"
+        bg="#e5e5e5"
+        color="#2b2d42"
+        d="flex"
+        justifyContent="left"
+        // mt="0 !important"
+      >
+        <Box minWidth="260px" width="30%" p="10">
+          <Image borderRadius="100" src={user.picture} alt={user.name} />
+          <Heading>{user.name}</Heading>
+          <p>{user.email}</p>
+        </Box>
+        <Box width="70%" p="10" pl="16">
+          <Box>
+            <Heading>Proyectos</Heading>
+          </Box>
+          <Flex mt="10">
+            <Grid templateColumns="repeat(2, 1fr)" gap={6}>
+              <Flex
+                w="xs"
+                height="200px"
+                borderWidth="1px"
+                borderRadius="lg"
+                overflow="hidden"
+                fontSize="3xl"
+                fontWeight="bold"
+                bg="white"
+                justifyContent="center"
+              >
+                <Link path={`proyecto/${1}`}>Proyecto 1</Link>
+              </Flex>
+              <Flex
+                w="xs"
+                height="200px"
+                borderWidth="1px"
+                borderRadius="lg"
+                overflow="hidden"
+                fontSize="3xl"
+                fontWeight="bold"
+                bg="white"
+                justifyContent="center"
+              >
+                <Link path={`proyecto/${2}`}>Proyecto 2</Link>
+              </Flex>
+              <Flex
+                w="xs"
+                height="200px"
+                borderWidth="1px"
+                borderRadius="lg"
+                overflow="hidden"
+                fontSize="3xl"
+                fontWeight="bold"
+                bg="white"
+                justifyContent="center"
+              >
+                <Link path={`proyecto/${3}`}>Proyecto 3</Link>
+              </Flex>
+              <Flex
+                w="xs"
+                height="200px"
+                borderWidth="1px"
+                borderRadius="lg"
+                overflow="hidden"
+                fontSize="3xl"
+                fontWeight="bold"
+                bg="white"
+                justifyContent="center"
+              >
+                <Link to="/createProject/index">Crear Proyecto</Link>
+              </Flex>
+            </Grid>
+          </Flex>
+        </Box>
+      </Box>
     )
   );
 };

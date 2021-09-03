@@ -11,11 +11,11 @@ const LogoutButton = () => {
       className="logoutButton"
       onClick={() => logout({ returnTo: "http://localhost:3000" })}
       borderRadius="4px"
-      bg="#FF6B6B"
-      color="#f7fff7"
+      bg="buttonScale.800"
+      color="richBlack"
       _hover={{
-        background: "#f7fff7",
-        color: "#0A100D",
+        background: "buttonScale.900",
+        color: "#f7fff7",
       }}
     >
       Log Out
