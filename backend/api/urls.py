@@ -17,12 +17,13 @@ import json
 import os
 import requests
 from django.urls import path, include
-from .views import proyecto, usuario
+from .views import proyecto, roles, usuario
 
 apiPaths = [
     path("proyecto/", proyecto),
     path("proyecto/<str:id>", proyecto),
     path("usuario/", usuario),
+    path("roles/", roles),
 ]
 
 urlpatterns = [path("api/", include(apiPaths))]
