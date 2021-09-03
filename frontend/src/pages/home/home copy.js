@@ -17,6 +17,7 @@ export default function Home() {
       <Box
         minHeight="80vh"
         width="full"
+        bgImage="url('https://www.kindpng.com/picc/m/236-2362818_anime-sempai-animegirl-heart-kawaii-cute-anime-girl.png')"
         backgroundColor="backWhite"
         color="backWhite"
       >

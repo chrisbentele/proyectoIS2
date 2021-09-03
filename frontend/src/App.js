@@ -12,24 +12,31 @@ import Roles from "./pages/roles";
 import EditRole from "./pages/editRole";
 import Users from "./pages/users";
 import User from "./pages/user";
+import { Box } from "@chakra-ui/react";
 
 export default function App() {
   return (
     <Router>
       <Header />
-      <Switch>
-        <Route path="/" component={Home} exact />
-        <Route path="/login" component={Login} exact />
-        <Route path="/users" component={Users} exact />
-        <Route path="/users/:id" component={User} exact />
-        <Route path="/profile" component={Profile} exact />
-        <Route path="/roles" component={Roles} exact />
-        <Route path="/roles/:id" component={EditRole} exact />
-        <Route path="/myprojects" component={MyProjects} exact />
-        <Route path="/projects/:id" component={Project} exact />
-        <Route path="/projects/:id/members" component={ProjectMembers} exact />
-        <Route path="/projects/:id/config" component={ProjectConfig} exact />
-      </Switch>
+      <Box mt="3rem">
+        <Switch>
+          <Route path="/" component={Home} exact />
+          <Route path="/login" component={Login} exact />
+          <Route path="/users" component={Users} exact />
+          <Route path="/users/:id" component={User} exact />
+          <Route path="/profile" component={Profile} exact />
+          <Route path="/roles" component={Roles} exact />
+          <Route path="/roles/:id" component={EditRole} exact />
+          <Route path="/myprojects" component={MyProjects} exact />
+          <Route path="/projects/:id" component={Project} exact />
+          <Route
+            path="/projects/:id/members"
+            component={ProjectMembers}
+            exact
+          />
+          <Route path="/projects/:id/config" component={ProjectConfig} exact />
+        </Switch>
+      </Box>
     </Router>
   );
 }
