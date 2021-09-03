@@ -18,7 +18,7 @@ from .models import (
 class RolSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rol
-        fields = ["id", "nombre"]
+        fields = ["nombre", "proyecto"]
 
 
 class PermisoAsignadoSerializer(serializers.ModelSerializer):
@@ -30,7 +30,7 @@ class PermisoAsignadoSerializer(serializers.ModelSerializer):
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
-        fields = ["id", "nombre", "email"]
+        fields = ["nombre", "email"]
 
     # roles = ManyToManyField(Rol)
 
@@ -45,7 +45,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
 #     class Meta:
 #         model = SeccionTabla
 #         fields = [
-#             "id",
+#
 #             "nombre",
 #             "orden",
 #             "kanbanTable",
@@ -58,7 +58,6 @@ class RetrospectivaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Retrospectiva
         fields = [
-            "id",
             "creadoPor",
             "fechaCreacion",
         ]
@@ -71,7 +70,6 @@ class SprintSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sprint
         fields = [
-            "id",
             "fechaInicio",
             "fechaFinalizacion",
             "creadoPor",
@@ -84,17 +82,16 @@ class USSerializer(serializers.ModelSerializer):
     class Meta:
         model = US
         fields = [
-            "id",
             "nombre",
             "contenido",
             "creadoPor",
             "fechaCreacion",
-            "seccion",
             "estado",
             "estimacionSM",
             "estimacionesDev",
             "duracionEstimada",
             "sprint",
+            "proyecto",
         ]
 
 
@@ -114,7 +111,6 @@ class ProyectoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Proyecto
         fields = [
-            "id",
             "duracionEstimada",
             "fechaInicio",
             "fechaFinalizacion",
