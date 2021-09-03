@@ -14,6 +14,7 @@ import Users from "./pages/users";
 import User from "./pages/user";
 import { Box } from "@chakra-ui/react";
 import NotFound from "./pages/notFound";
+import createProject from "./pages/createProject/index";
 
 export default function App() {
   return (
@@ -29,6 +30,7 @@ export default function App() {
           <Route path="/roles" component={Roles} exact />
           <Route path="/roles/:id" component={EditRole} exact />
           <Route path="/myprojects" component={MyProjects} exact />
+          <Route path="/createProject" component={createProject} exact />
           <Route path="/projects/:id" component={Project} exact />
           <Route
             path="/projects/:id/members"
