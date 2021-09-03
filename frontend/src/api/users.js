@@ -7,7 +7,7 @@ export const getUsers = async () => {
     const res = await axiosInstance.get("/users");
     return res.data;
   } catch (error) {
-    return error.message;
+    return error;
   }
 };
 
@@ -16,6 +16,15 @@ export const deleteUser = async (userId) => {
     const res = await axiosInstance.delete(`/users/${userId}`);
     return res.status(204);
   } catch (error) {
-    return error.message;
+    return error;
+  }
+};
+
+export const searchUsersByName = async (string) => {
+  try {
+    const res = await axiosInstance.get(`/users?searchTerm=string`);
+    return res.data;
+  } catch (error) {
+    return error;
   }
 };
