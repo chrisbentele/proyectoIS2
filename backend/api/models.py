@@ -71,9 +71,9 @@ class US(Model):
     creadoPor = ForeignKey(Usuario, on_delete=CASCADE)
     fechaCreacion = DateField()
     estado = IntegerField(choices=ESTADO_US, default=0)
-    estimacionSM = IntegerField
-    estimacionesDev = IntegerField
-    duracionEstimada = IntegerField
+    estimacionSM = IntegerField()
+    estimacionesDev = IntegerField()
+    duracionEstimada = IntegerField()
     sprint = ForeignKey(Sprint, on_delete=CASCADE)
     proyecto = ForeignKey(Proyecto, on_delete=CASCADE)
 
