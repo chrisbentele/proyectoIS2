@@ -15,7 +15,7 @@ export const getUser = async (email, nombre) => {
   try {
     console.log(email);
     let res = await axiosInstance
-      .get("http://localhost:8000/api/usuario", {
+      .get("usuario", {
         params: {
           email,
         },
@@ -29,7 +29,7 @@ export const getUser = async (email, nombre) => {
 
     if (!res) {
       // Si no existe el usuario crear
-      res = await axiosInstance.post("http://localhost:8000/api/usuario", {
+      res = await axiosInstance.post("usuario", {
         email,
         nombre,
       });
