@@ -12,6 +12,7 @@ import Roles from "./pages/roles";
 import EditRole from "./pages/editRole";
 import Users from "./pages/users";
 import User from "./pages/user";
+import NotFound from "./pages/notFound";
 
 export default function App() {
   return (
@@ -29,6 +30,7 @@ export default function App() {
         <Route path="/projects/:id" component={Project} exact />
         <Route path="/projects/:id/members" component={ProjectMembers} exact />
         <Route path="/projects/:id/config" component={ProjectConfig} exact />
+        <Route path="/" component={NotFound} />
       </Switch>
     </Router>
   );
