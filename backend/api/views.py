@@ -98,7 +98,7 @@ def roles(request, proyect_id):
 
         if rol_id:
             try:
-                r = Rol.objects.get(proyecto=proyect_id, rol=rol_id)
+                r = Rol.objects.get(proyecto=proyect_id, id=rol_id)
                 r.delete()
 
                 return JsonResponse(True, safe=False, status=204)
