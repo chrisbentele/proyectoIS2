@@ -2,6 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import { Auth0Provider } from "@auth0/auth0-react";
+import { ChakraProvider } from "@chakra-ui/react";
+import Theme from "./styles/theme.js";
 
 ReactDOM.render(
   <Auth0Provider
@@ -18,7 +20,9 @@ ReactDOM.render(
           padding: 0px;
         }
       `}</style>
-      <App />
+      <ChakraProvider theme={Theme}>
+        <App />
+      </ChakraProvider>
     </div>
   </Auth0Provider>,
   document.getElementById("root")
