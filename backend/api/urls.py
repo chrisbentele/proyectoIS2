@@ -15,12 +15,13 @@ Including another URLconf
 """
 
 from django.urls import path, include
-from .views import proyecto, roles, roles_asign, usuario
+from .views import proyecto, roles, roles_asign, usuario, usuario_proyecto
 
 apiPaths = [
     path("proyecto", proyecto),
     path("proyecto/<str:id>", proyecto),
     path("usuario", usuario),
+    path("usuario_proyecto", usuario_proyecto),
     path("roles/<str:proyect_id>", roles),
     path("roles_asign", roles_asign),
 ]

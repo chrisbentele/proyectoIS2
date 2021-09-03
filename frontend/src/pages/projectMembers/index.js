@@ -10,8 +10,7 @@ export default function ProjectMembers(params) {
     const populateUsers = async () => {
       try {
         const data = await api.getUsers();
-        // setUsers(data);
-        setUsers([...users]);
+        if (!data instanceof Error) setUsers(data);
       } catch (error) {
         console.log("Error cargando usuarios");
       }
@@ -20,8 +19,7 @@ export default function ProjectMembers(params) {
       try {
         const data = await api.getMembers();
         setState({ ...state, loading: false });
-        // setMembers(data);
-        setMembers([...members]);
+        if (!data instanceof Error) setMembers(data);
 
         let filteredUsers = [...users];
         const membersIds = members.map((member) => member.id);
@@ -40,14 +38,17 @@ export default function ProjectMembers(params) {
     }
     populateData();
   }, []);
+
   const addMemberById = (userId) => {
     window.confirm(`desea agregar al usuario al proyecto?`);
     api.addMemberToProject(params.match.params.id, userId);
   };
+
   const removeMember = (memberId) => {
     window.confirm(`desea eliminar al usuario del proyecto?`);
     api.removeMemberFromProject(params.match.params.id, memberId);
   };
+
   const [state, setState] = useState({
     loading: true,
     getMembersError: false,
@@ -122,7 +123,10 @@ export default function ProjectMembers(params) {
         style={{ width: 700 }}
       />
       <h2>Agregar nuevo miembro</h2>
-      <input onChange={handleSearchChange} />
+      <input
+        onChange={handleSearchChange}
+        style={{ border: "2px black solid" }}
+      />
       <p>{state.searchUsersError}</p>
       {users.length > 0 && state.searchTerm.length > 0 ? (
         <ReactTable
