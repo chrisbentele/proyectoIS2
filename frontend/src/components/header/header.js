@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import LoginButton from "../auth/loginButton/loginButton";
 import LogoutButton from "../auth/logoutButton/logoutButton";
-import { Box } from "@chakra-ui/layout";
+import { Box, Flex, Heading } from "@chakra-ui/layout";
 
 const Header = () => {
   const { isAuthenticated } = useAuth0();
@@ -19,15 +19,20 @@ const Header = () => {
       right="0"
       boxShadow="md"
       width="full"
-      height="3rem"
+      p="5px"
     >
       {isAuthenticated ? (
-        <Box>
-          <Link to="/projects">Projects</Link>
-          <LogoutButton />
-        </Box>
+        <Flex justifyContent="center">
+          <Box mr="auto">
+            <LogoutButton />
+          </Box>
+          <Box mr="auto">
+            {/* <Link to="/projects">Projects</Link> */}
+            <Heading>Trellon't</Heading>
+          </Box>
+        </Flex>
       ) : (
-        <Box>
+        <Box mr="auto">
           <LoginButton />
         </Box>
       )}

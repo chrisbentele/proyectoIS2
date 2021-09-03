@@ -8,7 +8,7 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import React from "react";
-import LoginButton from "/home/fabri/proyectoIS2/frontend/src/components/auth/loginButton/loginButton";
+import LoginButton from "../../components/auth/loginButton/loginButton";
 import { Link } from "react-router-dom";
 
 // export default function Home() {
@@ -35,19 +35,20 @@ export default function Home() {
         color="#2b2d42"
         d="flex"
         justifyContent="center"
+        // mt="0 !important"
       >
         <Flex height="30%" minWidth="40%" maxWidth="70%" pl="2rem">
           <Center>
-            <Stack>
+            <Stack mt="5rem">
               <Heading fontSize={["3xl", "6xl"]} textAlign="center">
-                Ohayou~
+                Trellon't
               </Heading>
               <Text fontSize={["xl", "3xl"]} pt="3rem" textAlign="left">
                 Software diseñado para la organización y realización de
                 proyectos, ayudando a más de xxx empresas mundialmente.
               </Text>
               <Box pt="2">
-                <LoginButton />
+                <LoginButton title="Empezar a crear proyectos" />
               </Box>
             </Stack>
           </Center>
