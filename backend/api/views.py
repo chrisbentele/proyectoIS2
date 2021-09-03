@@ -45,6 +45,7 @@ def proyecto(request, id=None):
 
 def usuario(request):
     if request.method == "POST":
+
         data = JSONParser().parse(request)
         serializer = UsuarioSerializer(data=data)
         if serializer.is_valid():
@@ -54,12 +55,15 @@ def usuario(request):
 
     elif request.method == "GET":
 
-        data = JSONParser().parse(request)
-        if data.get("email") == None:
+        if not request.GET.get("email") and not request.GET.get("user_id"):
             return HttpResponseBadRequest("Falta el mail en el body")
         try:
-            u = Usuario.objects.get(email=data["email"])
-            serializer = UsuarioSerializer(u)
+            if request.GET.get("email"):
+                u = Usuario.objects.get(email=request.GET.get("email"))
+                serializer = UsuarioSerializer(u)
+            else:
+                u = Usuario.objects.get(id=request.GET.get("user_id"))
+                serializer = UsuarioSerializer(u)
             return JsonResponse(serializer.data, safe=False)
         except Usuario.DoesNotExist:
             return HttpResponseNotFound()
