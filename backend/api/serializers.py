@@ -1,10 +1,7 @@
 from rest_framework import serializers
 from .models import (
     Rol,
-    PermisoAsignado,
     Usuario,
-    # KanbanTable,
-    # SeccionTabla,
     Retrospectiva,
     Sprint,
     US,
@@ -18,40 +15,13 @@ from .models import (
 class RolSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rol
-        fields = ["id", "nombre", "proyecto"]
-
-
-class PermisoAsignadoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = PermisoAsignado
-        fields = ["id", "permiso", "rol"]
+        fields = ["id", "nombre", "proyecto", "permisos"]
 
 
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
         fields = ["id", "nombre", "email"]
-
-    # roles = ManyToManyField(Rol)
-
-
-# class KanbanTableSerializer(serializers.ModelSerializer):
-
-#     # secciones=ManyToManyField(SeccionTabla)
-#     pass
-
-
-# class SeccionTablaSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = SeccionTabla
-#         fields = ["id",
-#
-#             "nombre",
-#             "orden",
-#             "kanbanTable",
-#         ]
-
-# userStories=ManyToManyField()
 
 
 class RetrospectivaSerializer(serializers.ModelSerializer):
@@ -62,9 +32,6 @@ class RetrospectivaSerializer(serializers.ModelSerializer):
             "creadoPor",
             "fechaCreacion",
         ]
-
-    # idParticipantes=CharField [ ]
-    # Comentarios=Comentario [ ]
 
 
 class SprintSerializer(serializers.ModelSerializer):
@@ -121,7 +88,6 @@ class ProyectoSerializer(serializers.ModelSerializer):
             "estado",
             "miembros",
             "nombre",
-            # "kanbanTable",
         ]
 
 
@@ -129,6 +95,3 @@ class RolAsignadoSerializer(serializers.ModelSerializer):
     class Meta:
         model = RolAsignado
         fields = ["id", "rol", "usuario", "proyecto"]
-
-
-# Usuario.add_to_class("Serializerproyectos", ManyToManyField(Proyecto))

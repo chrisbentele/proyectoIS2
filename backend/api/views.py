@@ -1,20 +1,14 @@
-from django.core.exceptions import BadRequest
-from rest_framework import serializers, exceptions
-import rest_framework
 from .serializers import (
-    PermisoAsignadoSerializer,
     ProyectoSerializer,
     RolAsignadoSerializer,
     RolSerializer,
     UsuarioSerializer,
 )
-import json
-from api.models import PermisoAsignado, Proyecto, Rol, RolAsignado, Usuario
+from api.models import Rol, RolAsignado, Usuario
 from django.http.response import (
     HttpResponseBadRequest,
     HttpResponseNotFound,
     HttpResponseNotModified,
-    HttpResponseServerError,
     JsonResponse,
 )
 from rest_framework.parsers import JSONParser
@@ -45,6 +39,7 @@ def proyecto(request, id=None):
 
 def usuario(request):
     if request.method == "POST":
+
         data = JSONParser().parse(request)
         serializer = UsuarioSerializer(data=data)
         if serializer.is_valid():
@@ -54,12 +49,15 @@ def usuario(request):
 
     elif request.method == "GET":
 
-        data = JSONParser().parse(request)
-        if data.get("email") == None:
+        if not request.GET.get("email") and not request.GET.get("user_id"):
             return HttpResponseBadRequest("Falta el mail en el body")
         try:
-            u = Usuario.objects.get(email=data["email"])
-            serializer = UsuarioSerializer(u)
+            if request.GET.get("email"):
+                u = Usuario.objects.get(email=request.GET.get("email"))
+                serializer = UsuarioSerializer(u)
+            else:
+                u = Usuario.objects.get(id=request.GET.get("user_id"))
+                serializer = UsuarioSerializer(u)
             return JsonResponse(serializer.data, safe=False)
         except Usuario.DoesNotExist:
             return HttpResponseNotFound()
@@ -73,17 +71,15 @@ def roles(request, proyect_id):
         # Crea un nuevo rol en el proyecto
 
         serializer = RolSerializer(
-            data={"nombre": data["nombre"], "proyecto": proyect_id}
+            data={
+                "nombre": data["nombre"],
+                "proyecto": proyect_id,
+                "permisos": data["permisos"],
+            }
         )
         if serializer.is_valid():
             # Obtiene el id del Rol para vincular
-            _rol_id = serializer.save().id
-            for permiso in data["permisos"]:
-                permisos_serializer = PermisoAsignadoSerializer(
-                    data={"permiso": permiso, "rol": _rol_id}
-                )
-                if permisos_serializer.is_valid():
-                    permisos_serializer.save()
+            serializer.save()
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400, safe=False)
 

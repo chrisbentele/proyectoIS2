@@ -1,15 +1,14 @@
-from django.db import models
 from django.db.models.base import Model
 from django.db.models.deletion import CASCADE
 from django.db.models.fields import (
     BooleanField,
     CharField,
-    AutoField,
     DateField,
     EmailField,
     IntegerField,
 )
 from django.db.models.fields.related import ForeignKey, ManyToManyField, OneToOneField
+from django.contrib.postgres.fields import ArrayField
 
 # Create your models here.
 PERMISOS = (
@@ -48,7 +47,6 @@ class Proyecto(Model):
     fechaFinalizacion = DateField(blank=True, null=True)
     estado = IntegerField(choices=estadoProyecto, default=0)
     miembros = ManyToManyField(Usuario)
-    # admins = ManyToManyField(Usuario)
     nombre = CharField(max_length=100)
 
 
@@ -92,20 +90,12 @@ class Comentario(Model):
 
 
 class Rol(Model):
-    # id = AutoField(primary_key=True)
     nombre = CharField(max_length=100)
     proyecto = ForeignKey(Proyecto, on_delete=CASCADE)
-
-
-class PermisoAsignado(Model):
-    permiso = IntegerField(choices=PERMISOS)
-    rol = ForeignKey(Rol, CASCADE)
+    permisos = ArrayField(IntegerField)
 
 
 class RolAsignado(Model):
     rol = ForeignKey(Rol, on_delete=CASCADE)
     usuario = ForeignKey(Usuario, on_delete=CASCADE)
     proyecto = ForeignKey(Proyecto, on_delete=CASCADE)
-
-
-# Usuario.add_to_class("proyectos", ManyToManyField(Proyecto))
