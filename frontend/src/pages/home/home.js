@@ -1,6 +1,5 @@
 import { VStack, Flex } from "@chakra-ui/react";
 import React from "react";
-import "./home.css";
 
 export default function Home() {
   return (

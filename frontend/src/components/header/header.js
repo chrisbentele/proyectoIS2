@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import LoginButton from "../auth/loginButton/loginButton";
 import LogoutButton from "../auth/logoutButton/logoutButton";
-import "./header.css";
 
 const Header = () => {
   const { isAuthenticated } = useAuth0();
