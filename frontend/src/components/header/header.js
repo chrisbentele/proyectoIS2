@@ -24,6 +24,7 @@ const Header = () => {
       {isAuthenticated ? (
         <Box>
           <Link to="/projects">Projects</Link>
+          <Link to="/roles">Roles</Link>
           <LogoutButton />
         </Box>
       ) : (
