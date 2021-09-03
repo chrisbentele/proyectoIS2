@@ -92,7 +92,7 @@ class Comentario(Model):
 class Rol(Model):
     nombre = CharField(max_length=100)
     proyecto = ForeignKey(Proyecto, on_delete=CASCADE)
-    permisos = ArrayField(IntegerField)
+    permisos = ArrayField(IntegerField())
 
 
 class RolAsignado(Model):
