@@ -28,10 +28,20 @@ def proyecto(request, id=None):
     elif request.method == "GET":
         # trae los proyectos del usuario
         if not request.GET.get("user_id"):
-            return HttpResponseBadRequest("Falta el mail en el body")
-
+            if id != None:
+                try:
+                    p = Proyecto.objects.get(id=id)
+                    serializer = ProyectoSerializer(p)
+                    return JsonResponse(serializer.data, safe=False)
+                except Usuario.DoesNotExist:
+                    return HttpResponseNotFound()
+            else:
+                p = Proyecto.objects.all()
+                serializer = ProyectoSerializer(p, many=True)
+                return JsonResponse(serializer.data, safe=False)
+        print(request.GET.get("user_id"))
         try:
-            p = Proyecto.objects.filter(miembros=request.GET.get("user_id"))
+            p = Proyecto.objects.filter(miembros__id=request.GET.get("user_id"))
             serializer = ProyectoSerializer(p, many=True)
             return JsonResponse(serializer.data, safe=False)
         except Usuario.DoesNotExist:
@@ -87,10 +97,22 @@ def usuario_proyecto(request):
     elif request.method == "GET":
         # trae los proyectos del usuario
         if not request.GET.get("user_id"):
-            return HttpResponseBadRequest("Falta el mail en el body")
+            return HttpResponseBadRequest("Falta el user_id en el body")
 
         try:
             p = Proyecto.objects.filter(miembros=request.GET.get("user_id"))
+            serializer = ProyectoSerializer(p, many=True)
+            return JsonResponse(serializer.data, safe=False)
+        except Usuario.DoesNotExist:
+            return HttpResponseNotFound()
+    elif request.method == "DELETE":
+        # trae los proyectos del usuario
+        if not request.GET.get("user_id"):
+            return HttpResponseBadRequest("Falta el user_id en el body")
+
+        try:
+            p = Proyecto.objects.filter(miembros__id=request.GET.get("user_id"))
+
             serializer = ProyectoSerializer(p, many=True)
             return JsonResponse(serializer.data, safe=False)
         except Usuario.DoesNotExist:
