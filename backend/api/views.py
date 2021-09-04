@@ -14,8 +14,7 @@ from django.http.response import (
 from rest_framework.parsers import JSONParser
 
 # Create your views here.
-def proyecto(request, id=None):
-    print(request.body)
+def proyectos(request, id=None):
     if request.method == "POST":
         # Crea el proyecto
         data = JSONParser().parse(request)
@@ -26,7 +25,6 @@ def proyecto(request, id=None):
         return JsonResponse(serializer.errors, status=400, safe=False)
 
     elif request.method == "GET":
-        # trae los proyectos del usuario
         if not request.GET.get("user_id"):
             if id != None:
                 try:
@@ -39,6 +37,8 @@ def proyecto(request, id=None):
                 p = Proyecto.objects.all()
                 serializer = ProyectoSerializer(p, many=True)
                 return JsonResponse(serializer.data, safe=False)
+
+        # trae los proyectos del usuario
         print(request.GET.get("user_id"))
         try:
             p = Proyecto.objects.filter(miembros__id=request.GET.get("user_id"))
@@ -48,7 +48,7 @@ def proyecto(request, id=None):
             return HttpResponseNotFound()
 
 
-def usuario(request):
+def usuarios(request):
     if request.method == "POST":
 
         data = JSONParser().parse(request)
@@ -78,7 +78,7 @@ def usuario(request):
             return HttpResponseNotFound()
 
 
-def usuario_proyecto(request):
+def usuarios_proyecto(request):
     # agregar y eliminar
     proy_id = request.GET.get("proy_id")
     user_id = request.GET.get("user_id")
