@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 import {
   Box,
   FormControl,
@@ -12,65 +12,93 @@ import {
   Checkbox,
   CheckboxGroup,
   Select,
-  Grid, GridItem,
-  Button, ButtonGroup
+  Grid,
+  GridItem,
+  Button,
+  ButtonGroup,
+  Flex,
 } from "@chakra-ui/react";
-import { PERMISOS } from "./permisos";
+import { PERMISOS, ROLES } from "./permisos";
 import React from "react";
-import { useForm } from 'react-hook-form';
+import { set, useForm } from "react-hook-form";
 
 export const Role = () => {
-  const [rol, setRol] = useState();
   const [add, setAdd] = useState();
-  let roles = [{ title: 'Admin', permisos: PERMISOS.map((x) => x.value) }, { title: 'Scrum Master', permisos: [1, 2] }];
-  const { register, handleSubmit, watch, formState: { errors }, setValue } = useForm();
-  const onSubmit = data => console.log(data);
-  console.log(watch("example")); // watch input value by passing the name of it
 
-  console.log(rol);
-  console.log(rol?.permisos.includes(0));
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+    setValue,
+  } = useForm();
+  const onSubmit = (data) => console.log(data);
+  const permisos_rol = watch("permisos", []); // Cambia los permisos de acuerdo al rol y permisos seleccionados
+  const nombre_rol = watch("nombre_rol", []);
+
   return (
-    <Box>
-      <Select onChange={(e) => setRol(roles[e.target.value])}>
-        <option hidden>Seleccione un rol</option>
-        {roles.map((x, i) => (<option key={i} value={i} onClick={() => setAdd(false)}>{x.title}</option>))}
-        <option onClick={() => setAdd(true)}>Agregar</option>
-      </Select>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {add ? <Input placeholder="Nombre del Rol" {...register("example")} /> : null}
-        <FormControl>
-          <CheckboxGroup defaultValue="Itachi" onChange={(val) => setValue("ete", val)}>
-            <Grid templateColumns="repeat(5, 1fr)" gap={6} padding="10">
-              {PERMISOS.map(x => (<Checkbox value={x.value.toString()} isDisabled={'Admin' === rol?.title || (!rol && !add)} isChecked={rol?.permisos.includes(x.value)}>{x.title}</Checkbox>))}
-            </Grid>
-          </CheckboxGroup>
-        </FormControl>
-        {add ? <Button type="submit">Agregar</Button> : null}
-      </form>
-    </Box>
+    <Flex p="8" justifyContent="center">
+      <Box w="90ch">
+        <Select
+          pb="4"
+          onChange={(e) => {
+            const rol = ROLES[e.target.value];
+            setAdd(true);
+            setValue("nombre_rol", rol?.title || "");
+            setValue(
+              "permisos",
+              ROLES[e.target.value]?.permisos.map((x) => x.toString()) || [] // Mapea los permisos si es un rol predefinido
+            );
+          }}
+        >
+          <option hidden>Seleccione un rol</option>
+          {ROLES.map((x, i) => (
+            <option key={i} value={i}>
+              {x.title}
+            </option>
+          ))}
+          <option onClick={() => setAdd(true)}>Agregar</option>
+        </Select>
+        <Box hidden={!add}>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Input
+              isDisabled={
+                ROLES.filter((x) => x.title == nombre_rol).length != 0 // si el rol es uno pre definido
+              }
+              placeholder="Nombre del Rol"
+              {...register("nombre_rol")}
+            />
+            <FormControl>
+              <CheckboxGroup
+                value={permisos_rol}
+                onChange={(val) => setValue("permisos", val)}
+              >
+                <Grid templateColumns="repeat(5, 1fr)" gap={6} padding="10">
+                  {PERMISOS.map((x) => (
+                    <Checkbox
+                      key={x.value.toString()}
+                      value={x.value.toString()}
+                      isDisabled={
+                        ROLES.filter((x) => x.title == nombre_rol).length != 0 // si el rol es uno pre definido
+                      }
+                    >
+                      {x.title}
+                    </Checkbox>
+                  ))}
+                </Grid>
+              </CheckboxGroup>
+            </FormControl>
+            <Button
+              hidden={ROLES.filter((x) => x.title == nombre_rol).length != 0} // si el rol es uno pre definido
+              type="submit"
+            >
+              Agregar
+            </Button>
+          </form>
+        </Box>
+      </Box>
+    </Flex>
   );
-}
+};
 
 export default Role;
-
-/* export const Role = () => {
-  const [rol, setRol] = useState([]);
-
-  console.log(rol);
-  return (
-    <FormControl as="fieldset">
-      <FormLabel as="legend">Roles</FormLabel>
-      <Select placeholder="Seleccione rol" onChange={(e)=>setRol(permisos[Object.keys(permisos)[parseInt(e.target.value)]])}>
-        {Object.keys(permisos).map((x,i)=>(<option key={i} value={i.toString()}>{x}</option>))}
-        <option>Agregar</option>
-      </Select>
-      <RadioGroup defaultValue="Itachi">
-        <HStack spacing="24px">
-
-          {rol.map(x=>(<Checkbox>{x.title}</Checkbox>))}
-        </HStack>
-      </RadioGroup>
-      <FormHelperText>Select only if you're a fan.</FormHelperText>
-    </FormControl>
-  );
-} */
