@@ -47,7 +47,21 @@ export default function Home() {
                 Software diseñado para la organización y realización de
                 proyectos, ayudando a más de xxx empresas mundialmente.
               </Text>
-              <Box pt="2">
+              <Text fontSize={["xl", "3xl"]} pt="3rem" textAlign="left">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam ex
+                tellus, eleifend quis eros nec, fringilla pharetra elit. Nunc
+                vehicula arcu eu lacus aliquet, faucibus egestas metus interdum.
+                Donec vehicula suscipit lectus, ac varius lectus malesuada eu.
+                Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
+                posuere cubilia curae; Donec malesuada a lorem at iaculis. In id
+                nisl nec quam porttitor vehicula a eu magna. Cras at volutpat
+                lorem. Maecenas consequat pulvinar nisi ac lobortis. Duis a ex
+                eu nisi vestibulum pretium. Nunc elementum velit eu pulvinar
+                laoreet. Mauris laoreet nibh eu viverra laoreet. Sed nec massa
+                sodales, accumsan enim quis, auctor tortor. Duis vel accumsan
+                orci. Morbi mollis mi vitae tortor viverra varius.
+              </Text>
+              <Box pt="8">
                 <LoginButton title="Empezar a crear proyectos" />
               </Box>
             </Stack>

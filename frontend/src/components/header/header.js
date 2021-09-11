@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Route, useLocation, Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import LoginButton from "../auth/loginButton/loginButton";
 import LogoutButton from "../auth/logoutButton/logoutButton";
@@ -7,6 +7,7 @@ import { Box, Flex, Heading } from "@chakra-ui/layout";
 
 const Header = () => {
   const { isAuthenticated } = useAuth0();
+  const location = useLocation();
 
   return (
     <Box
@@ -26,11 +27,15 @@ const Header = () => {
           <Box mr="auto">
             <LogoutButton />
           </Box>
-          <Box mr="auto">
-            {/* <Link to="/projects">Projects</Link> */}
-            <Heading>Trellon't</Heading>
-          </Box>
-          <Link to="/projects">Projects</Link>
+          {location.pathname === "/" ? (
+            <Box></Box>
+          ) : (
+            <Box mr="auto">
+              {/* <Link to="/projects">Projects</Link> */}
+              <Heading>Trellon't</Heading>
+            </Box>
+          )}
+
           <Link to="/roles">Roles</Link>
         </Flex>
       ) : (

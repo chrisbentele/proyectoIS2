@@ -10,6 +10,7 @@ const theme = extendTheme({
   },
   colors: {
     richBlack: "#0A100D",
+    naplesYellow: "#FFE66D",
     buttonScale: {
       900: "#ff4747",
       800: "#ff6b6b",
