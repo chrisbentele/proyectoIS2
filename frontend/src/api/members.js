@@ -22,9 +22,9 @@ export const editMembersRole = async (memberId, roleId) => {
 
 export const addMemberToProject = async (projectId, userId) => {
   try {
-    const res = await axiosInstance.put(`/projects/${projectId}`, {
-      newUser: userId,
-    });
+    const res = await axiosInstance.post(
+      `/usuario_proyecto?proy_id=${projectId}&user_id=${userId}`
+    );
     return res.data;
   } catch (error) {
     return error;
@@ -33,9 +33,9 @@ export const addMemberToProject = async (projectId, userId) => {
 
 export const removeMemberFromProject = async (projectId, userId) => {
   try {
-    const res = await axiosInstance.delete(`/projects/${projectId}`, {
-      userId,
-    });
+    const res = await axiosInstance.delete(
+      `/usuario_proyecto?proy_id=${projectId}&user_id=${userId}`
+    );
     return res.data;
   } catch (error) {
     return error;
