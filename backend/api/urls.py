@@ -15,15 +15,33 @@ Including another URLconf
 """
 
 from django.urls import path, include
-from .views import proyecto, roles, roles_asign, usuario, usuario_proyecto
+from .views import (
+    proyectos,
+    roles,
+    usuarios_proyectos_roles,
+    usuarios,
+    proyectos_miembros,
+    usuarios_proyectos,
+)
 
 apiPaths = [
-    path("proyecto", proyecto),
-    path("proyecto/<str:id>", proyecto),
-    path("usuario", usuario),
-    path("usuario_proyecto", usuario_proyecto),
-    path("roles/<str:proyect_id>", roles),
-    path("roles_asign", roles_asign),
+    path("proyectos", proyectos),
+    path("proyectos/<str:proyect_id>", proyectos),
+    path("proyectos/<str:proyect_id>/miembros", proyectos_miembros),
+    path("proyectos/<str:proyect_id>/miembros/<str:user_id>", proyectos_miembros),
+    path("usuarios", usuarios),
+    path("usuarios/<str:user_id>", usuarios),
+    path("usuarios/<str:user_id>/proyectos", usuarios_proyectos),
+    path("proyectos/<str:proyect_id>/roles", roles),
+    path("proyectos/<str:proyect_id>/roles/<str:rol_id>", roles),
+    path(
+        "proyectos/<str:proyect_id>/miembros/<str:user_id>/roles",
+        usuarios_proyectos_roles,
+    ),
+    path(
+        "proyectos/<str:proyect_id>/miembros/<str:user_id>/roles/<str:rol_id>",
+        usuarios_proyectos_roles,
+    ),
 ]
 
 urlpatterns = [path("api/", include(apiPaths))]
