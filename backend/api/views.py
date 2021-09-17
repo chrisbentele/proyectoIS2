@@ -1,3 +1,4 @@
+from functools import partial
 from .serializers import (
     ProyectoSerializer,
     RolAsignadoSerializer,
@@ -14,8 +15,7 @@ from django.http.response import (
 from rest_framework.parsers import JSONParser
 
 # Create your views here.
-def proyecto(request, id=None):
-    print(request.body)
+def proyectos(request, proyect_id=None):
     if request.method == "POST":
         # Crea el proyecto
         data = JSONParser().parse(request)
@@ -26,29 +26,40 @@ def proyecto(request, id=None):
         return JsonResponse(serializer.errors, status=400, safe=False)
 
     elif request.method == "GET":
-        # trae los proyectos del usuario
-        if not request.GET.get("user_id"):
-            if id != None:
-                try:
-                    p = Proyecto.objects.get(id=id)
-                    serializer = ProyectoSerializer(p)
-                    return JsonResponse(serializer.data, safe=False)
-                except Usuario.DoesNotExist:
-                    return HttpResponseNotFound()
-            else:
-                p = Proyecto.objects.all()
-                serializer = ProyectoSerializer(p, many=True)
+        if proyect_id != None:
+            try:
+                p = Proyecto.objects.get(id=proyect_id)
+                serializer = ProyectoSerializer(p)
                 return JsonResponse(serializer.data, safe=False)
-        print(request.GET.get("user_id"))
-        try:
-            p = Proyecto.objects.filter(miembros__id=request.GET.get("user_id"))
+            except Usuario.DoesNotExist:
+                return HttpResponseNotFound()
+        else:
+            p = Proyecto.objects.all()
             serializer = ProyectoSerializer(p, many=True)
             return JsonResponse(serializer.data, safe=False)
-        except Usuario.DoesNotExist:
-            return HttpResponseNotFound()
+
+    elif request.method == "DELETE":
+        p = Proyecto.objects.get(id=proyect_id)
+        p.delete()
+        return JsonResponse(True, status=200)
+
+    elif request.method == "PUT":
+        if proyect_id:
+            data = JSONParser().parse(request)
+
+            rol = Proyecto.objects.get(id=proyect_id)
+
+            serializer = ProyectoSerializer(rol, data=data, partial=True)
+
+            if serializer.is_valid():
+                # Obtiene el id del Rol para vincular
+                serializer.save()
+                return JsonResponse(serializer.data, status=200)
+            return JsonResponse(serializer.errors, status=400, safe=False)
+        return HttpResponseBadRequest("Falta proyect_id")
 
 
-def usuario(request):
+def usuarios(request, user_id=None):
     if request.method == "POST":
 
         data = JSONParser().parse(request)
@@ -59,60 +70,101 @@ def usuario(request):
         return JsonResponse(serializer.errors, status=400, safe=False)
 
     elif request.method == "GET":
-        if request.GET.get("get_all"):
+        if not user_id:
             u = Usuario.objects.all()
             serializer = UsuarioSerializer(u, many=True)
             return JsonResponse(serializer.data, safe=False)
 
-        if not request.GET.get("email") and not request.GET.get("user_id"):
+        if not request.GET.get("email") and not user_id:
             return HttpResponseBadRequest("Falta el mail o el user en el body")
         try:
             if request.GET.get("email"):
                 u = Usuario.objects.get(email=request.GET.get("email"))
                 serializer = UsuarioSerializer(u)
             else:
-                u = Usuario.objects.get(id=request.GET.get("user_id"))
+                u = Usuario.objects.get(id=user_id)
                 serializer = UsuarioSerializer(u)
             return JsonResponse(serializer.data, safe=False)
         except Usuario.DoesNotExist:
             return HttpResponseNotFound()
+    elif request.method == "PUT":
+        if user_id:
+            data = JSONParser().parse(request)
+
+            rol = Usuario.objects.get(id=user_id)
+
+            serializer = UsuarioSerializer(rol, data=data, partial=True)
+
+            if serializer.is_valid():
+                # Obtiene el id del Rol para vincular
+                serializer.save()
+                return JsonResponse(serializer.data, status=200)
+            return JsonResponse(serializer.errors, status=400, safe=False)
+        return HttpResponseBadRequest("Falta user_id")
 
 
-def usuario_proyecto(request):
-    # agregar y eliminar
-    proy_id = request.GET.get("proy_id")
-    user_id = request.GET.get("user_id")
-    if request.method == "POST":
-        try:
-            p = Proyecto.objects.get(id=proy_id)
-            u = Usuario.objects.get(id=user_id)
-            p.miembros.add(u)
-            p.save()
+def usuarios_proyectos(request, user_id):
+    # agregar y eliminar\
+    # proyect_id = request.GET.get("proyect_id")
 
-            return JsonResponse(True, status=201)
-        except Exception as e:
-
-            return JsonResponse(False, status=400, safe=False)
-
-    elif request.method == "GET":
+    if request.method == "GET":
         # trae los proyectos del usuario
-        if not request.GET.get("user_id"):
-            return HttpResponseBadRequest("Falta el user_id en el body")
 
         try:
-            p = Proyecto.objects.filter(miembros=request.GET.get("user_id"))
+            p = Proyecto.objects.filter(miembros__id__contains=user_id)
             serializer = ProyectoSerializer(p, many=True)
             return JsonResponse(serializer.data, safe=False)
         except Usuario.DoesNotExist:
             return HttpResponseNotFound()
-    elif request.method == "DELETE":
+
+
+def proyectos_miembros(request, proyect_id, user_id=None):
+    # agregar y eliminar\
+    # proyect_id = request.GET.get("proyect_id")
+    if request.method == "POST":
+        if not user_id:
+            return JsonResponse(False, status=400, safe=False)
+        print(user_id)
+        try:
+            p = Proyecto.objects.get(id=proyect_id)
+            u = Usuario.objects.get(id=user_id)
+            if p.miembros.filter(id=user_id):
+                return JsonResponse(
+                    "Ya existe el usuario en el proyecto", status=400, safe=False
+                )
+            p.miembros.add(u)
+            p.save()
+
+            return JsonResponse(True, status=201, safe=False)
+        except Exception as e:
+            return JsonResponse(str(e), status=400, safe=False)
+
+    elif request.method == "GET":
         # trae los proyectos del usuario
-        if not request.GET.get("user_id"):
+        if not user_id:
+            p = Proyecto.objects.get(id=proyect_id)
+            serializer = ProyectoSerializer(p)
+            u_list = []
+            for id in serializer.data["miembros"]:
+                u = Usuario.objects.get(id=id)
+                u_list.append(UsuarioSerializer(u).data)
+            return JsonResponse(u_list, safe=False)
+
+        try:
+            u = Usuario.objects.get(id=user_id)
+            UsuarioSerializer(u).data
+            return JsonResponse(UsuarioSerializer(u).data, safe=False)
+        except Usuario.DoesNotExist:
+            return HttpResponseNotFound()
+
+    elif request.method == "DELETE":
+        # Remueve usuario del proyecto
+        if not user_id:
             return HttpResponseBadRequest("Falta el user_id en el body")
 
         try:
-            p = Proyecto.objects.filter(miembros__id=request.GET.get("user_id"))
-
+            p = Proyecto.objects.filter(miembros__id__contains=user_id)
+            p.miembros.remove(user_id)
             serializer = ProyectoSerializer(p, many=True)
             return JsonResponse(serializer.data, safe=False)
         except Usuario.DoesNotExist:
@@ -120,10 +172,9 @@ def usuario_proyecto(request):
 
 
 # api para manejar los roles
-def roles(request, proyect_id):
-    data = JSONParser().parse(request)
-    rol_id = data.get("rol_id")
+def roles(request, proyect_id, rol_id=None):
     if request.method == "POST":
+        data = JSONParser().parse(request)
         # Crea un nuevo rol en el proyecto
         serializer = RolSerializer(
             data={
@@ -137,6 +188,19 @@ def roles(request, proyect_id):
             serializer.save()
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400, safe=False)
+    elif request.method == "PUT":
+        if rol_id:
+            data = JSONParser().parse(request)
+
+            rol = Rol.objects.get(id=rol_id)
+
+            serializer = RolSerializer(rol, data=data, partial=True)
+
+            if serializer.is_valid():
+                serializer.save()
+                return JsonResponse(serializer.data, status=200)
+            return JsonResponse(serializer.errors, status=400, safe=False)
+        return HttpResponseBadRequest("Falta rol_id")
 
     elif request.method == "GET":
         # Trae todos los Roles del proyecto
@@ -159,12 +223,7 @@ def roles(request, proyect_id):
 
 
 # Api para asignar los roles a los usuarios
-def roles_asign(request, proyect_id):
-    data = JSONParser().parse(request)
-    user_id = data.get("user_id")
-    rol_id = data.get("rol_id")
-    if not user_id:
-        return HttpResponseBadRequest("Falta user_id")
+def usuarios_proyectos_roles(request, proyect_id, user_id, rol_id=None):
 
     if request.method == "POST":
         # En caso de POST asigna un rol a un usuario
