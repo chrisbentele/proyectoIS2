@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Box,
   FormControl,
@@ -9,9 +9,9 @@ import {
   Grid,
   Button,
 } from "@chakra-ui/react";
-import { PERMISOS } from "./permisos";
+import { PERMISOS, ROLES } from "./permisos";
 import React from "react";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 
 export const Role = () => {
   const [rol, setRol] = useState();
