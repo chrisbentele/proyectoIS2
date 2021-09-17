@@ -1,3 +1,4 @@
+import Select from "react-select";
 import {
   FormControl,
   FormLabel,
@@ -15,12 +16,26 @@ import {
   NumberDecrementStepper,
 } from "@chakra-ui/react";
 import { Controller, useForm } from "react-hook-form";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { createProject } from "../../api/projects";
 import { useAuth } from "../../providers/DbAuth";
 import { useHistory } from "react-router";
+import { api } from "../../api";
 
-export default function HookForm() {
+export default function CreateProject() {
+  const [users, setUsers] = useState([]);
+  const [formValues, setFormValues] = useState({
+    projectName: "",
+    scrumMasterId: null,
+    estimation: null,
+  });
+  useEffect(() => {
+    api
+      .getUsers()
+      .then((users) => setUsers(users))
+      .catch((err) => console.log(err));
+  }, []);
+  console.log(users);
   const {
     handleSubmit,
     register,
@@ -30,14 +45,16 @@ export default function HookForm() {
   const history = useHistory();
   const { dbUser } = useAuth();
   async function onSubmit(values) {
-    const proy_id = await createProject(
-      values.nombre,
-      dbUser.id,
-      values.estimado
-    );
-    return history.push("/profile");
+    await api
+      .createProject(formValues)
+      .then((res) => {
+        console.log(res);
+        history.push(`/projects/${res.id}`);
+      })
+      .catch((err) => console.log(err));
   }
 
+  console.log(formValues);
   return (
     <Center p="4">
       <Flex justifyContent="center" width="70ch">
@@ -52,11 +69,23 @@ export default function HookForm() {
                 required: "Valor Requerido",
                 minLength: { value: 4, message: "Minimum length should be 4" },
               })}
+              onChange={(e) =>
+                setFormValues({ ...formValues, projectName: e.target.value })
+              }
             />
             <FormErrorMessage>
               {errors.nombre && errors.nombre.message}
             </FormErrorMessage>
           </FormControl>
+          Scrum Master
+          <Select
+            onChange={(e) =>
+              setFormValues({ ...formValues, scrumMasterId: e.value })
+            }
+            options={users.map((user) => {
+              return { value: user.id, label: user.nombre };
+            })}
+          />
           <FormControl isInvalid={errors["estimado"]}>
             <FormLabel fontSize="20px">Duracion estimada(semanas)</FormLabel>
             <Controller
@@ -69,7 +98,16 @@ export default function HookForm() {
                   value={props.field.value}
                   onChange={props.field.onChange}
                 >
-                  <NumberInputField borderColor="grey.300" />
+                  <NumberInputField
+                    //TODO: Only allow numbers, also accepts 'e' char
+                    borderColor="grey.300"
+                    onChange={(e) =>
+                      setFormValues({
+                        ...formValues,
+                        estimation: e.target.value,
+                      })
+                    }
+                  />
                   <NumberInputStepper>
                     <NumberIncrementStepper />
                     <NumberDecrementStepper />
