@@ -14,13 +14,16 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
+  Spacer,
 } from "@chakra-ui/react";
 import { Controller, useForm } from "react-hook-form";
 import React, { useEffect, useState } from "react";
 import { createProject } from "../../api/projects";
 import { useAuth } from "../../providers/DbAuth";
 import { useHistory } from "react-router";
+import { Link } from "react-router-dom";
 import { api } from "../../api";
+
 
 export default function CreateProject() {
   const [users, setUsers] = useState([]);
@@ -117,14 +120,35 @@ export default function CreateProject() {
             />
             <FormErrorMessage>{errors["estimado"]?.message}</FormErrorMessage>
           </FormControl>
-          <Button
-            mt={4}
-            colorScheme="teal"
-            isLoading={isSubmitting}
-            type="submit"
-          >
-            Submit
-          </Button>
+          <Flex>
+            <Button
+              mt={4}
+              colorScheme="teal"
+              isLoading={isSubmitting}
+              type="submit"
+            >
+              Submit
+            </Button>
+            <Spacer />
+            <Box
+              color="richBlack"
+              width="max-content"
+              mt="6"
+              mr="3"
+              fontWeight="600"
+              textDecorationLine="underline"
+            >
+              <Link
+                to="/profile"
+                mt={4}
+                colorScheme="teal"
+                borderColor="black"
+                bg="black"
+              >
+                Cancelar
+              </Link>
+            </Box>
+          </Flex>
         </form>
       </Flex>
     </Center>
