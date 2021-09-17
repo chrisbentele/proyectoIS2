@@ -28,6 +28,17 @@ const Profile = () => {
           <Image borderRadius="100" src={user.picture} alt={user.name} />
           <Heading>{user.name}</Heading>
           <p>{user.email}</p>
+          <Box
+            borderRadius="4px"
+            bg="buttonScale.800"
+            color="richBlack"
+            width="max-content"
+            p={("2", "2", "2", "2")}
+            mt="2rem"
+            fontWeight="600"
+          >
+            <Link to="/roles">Configurar Roles</Link>
+          </Box>
         </Box>
         <Box width="70%" p="10" pl="16">
           <Box>

@@ -32,11 +32,11 @@ const Header = () => {
           ) : (
             <Box mr="auto">
               {/* <Link to="/projects">Projects</Link> */}
-              <Heading>Trellon't</Heading>
+              <Heading>
+                <Link to="/">Trellon't</Link>
+              </Heading>
             </Box>
           )}
-
-          <Link to="/roles">Roles</Link>
         </Flex>
       ) : (
         <Box mr="auto">
