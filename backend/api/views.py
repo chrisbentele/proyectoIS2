@@ -1,11 +1,11 @@
-from functools import partial
 from .serializers import (
     ProyectoSerializer,
     RolAsignadoSerializer,
     RolSerializer,
+    USSerializer,
     UsuarioSerializer,
 )
-from api.models import Proyecto, Rol, RolAsignado, Usuario
+from api.models import US, Proyecto, Rol, RolAsignado, Usuario
 from django.http.response import (
     HttpResponseBadRequest,
     HttpResponseNotFound,
@@ -260,3 +260,53 @@ def usuarios_proyectos_roles(request, proyect_id, user_id, rol_id=None):
             except RolAsignado.DoesNotExist:
                 return HttpResponseNotModified()
         return HttpResponseBadRequest("Falta rol_id")
+
+
+def user_stories(request, proyect_id, us_id=None):
+    try:
+        proyecto = Proyecto.objects.get(id=proyect_id)
+    except Proyecto.DoesNotExist:
+        return HttpResponseNotFound()
+
+    if request.method == "POST":
+        # Crea el user storie
+        data = JSONParser().parse(request)
+        data["proyecto"] = proyecto
+        serializer = USSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=201)
+        return JsonResponse(serializer.errors, status=400, safe=False)
+
+    elif request.method == "GET":
+        if us_id != None:
+            try:
+                us = US.objects.get(id=us_id)
+                serializer = USSerializer(us)
+                return JsonResponse(serializer.data, safe=False)
+            except US.DoesNotExist:
+                return HttpResponseNotFound()
+        else:
+            us = US.objects.filter(proyecto=proyecto)
+            serializer = USSerializer(us, many=True)
+            return JsonResponse(serializer.data, safe=False)
+
+    elif request.method == "DELETE":
+        us = US.objects.get(id=us_id)
+        us.delete()
+        return JsonResponse(True, status=200)
+
+    elif request.method == "PUT":
+        if us_id:
+            data = JSONParser().parse(request)
+
+            us = US.objects.get(id=us_id)
+
+            serializer = USSerializer(us, data=data, partial=True)
+
+            if serializer.is_valid():
+                # Obtiene el id del Rol para vincular
+                serializer.save()
+                return JsonResponse(serializer.data, status=200)
+            return JsonResponse(serializer.errors, status=400, safe=False)
+        return HttpResponseBadRequest("Falta us_id")
