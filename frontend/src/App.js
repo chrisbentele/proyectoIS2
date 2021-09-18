@@ -20,7 +20,7 @@ export default function App() {
   return (
     <Router>
       <Header />
-      <Box mt="3rem">
+      <Box m="0" height="100%" width="100%">
         <Switch>
           <Route path="/" component={Home} exact />
           <Route path="/login" component={Login} exact />

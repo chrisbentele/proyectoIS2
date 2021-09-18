@@ -17,14 +17,14 @@ const Profile = () => {
         minHeight="100vh"
         width="full"
         // bgImage="url('https://www.kindpng.com/picc/m/236-2362818_anime-sempai-animegirl-heart-kawaii-cute-anime-girl.png')"
-        // bgRepeat="no-repeat"
-        bg="#e5e5e5"
+        bg={"#F5F4F5"}
         color="#2b2d42"
         d="flex"
         justifyContent="left"
+
         // mt="0 !important"
       >
-        <Box minWidth="260px" width="30%" p="10">
+        <Box minWidth="260px" width="30%" p="10" mt="3rem">
           <Image borderRadius="100" src={user.picture} alt={user.name} />
           <Heading>{user.name}</Heading>
           <p>{user.email}</p>
@@ -40,7 +40,7 @@ const Profile = () => {
             <Link to="/roles">Configurar Roles</Link>
           </Box>
         </Box>
-        <Box width="70%" p="10" pl="16">
+        <Box width="70%" p="10" pl="16" mt="3rem">
           <Box>
             <Heading>Proyectos</Heading>
           </Box>

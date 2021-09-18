@@ -11,6 +11,7 @@ const Header = () => {
 
   return (
     <Box
+      className="header"
       pos="fixed"
       as="header"
       top="0"
@@ -21,6 +22,7 @@ const Header = () => {
       boxShadow="md"
       width="full"
       p="5px"
+      mb="3rem"
     >
       {isAuthenticated ? (
         <Flex justifyContent="center">

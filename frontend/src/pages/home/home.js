@@ -39,7 +39,7 @@ export default function Home() {
       >
         <Flex height="30%" minWidth="40%" maxWidth="70%" pl="2rem">
           <Center>
-            <Stack mt="5rem">
+            <Stack mt="5rem" mb="3rem">
               <Heading fontSize={["3xl", "6xl"]} textAlign="center">
                 Trellon't
               </Heading>
@@ -61,7 +61,7 @@ export default function Home() {
                 sodales, accumsan enim quis, auctor tortor. Duis vel accumsan
                 orci. Morbi mollis mi vitae tortor viverra varius.
               </Text>
-              <Box pt="8">
+              <Box fontSize="xl" pt="8">
                 <LoginButton title="Empezar a crear proyectos" />
               </Box>
             </Stack>

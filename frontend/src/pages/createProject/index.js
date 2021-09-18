@@ -9,7 +9,7 @@ import {
   Box,
   Flex,
   Center,
-  Square,
+  Heading,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
@@ -62,20 +62,24 @@ export default function CreateProject() {
 
   console.log(formValues);
   return (
-    <Center p="4" height="90vh">
+    <Center p="4" minHeight="100vh" flexDirection="column" bg={"#2A262C"}>
+      <Heading fontSize="4xl" mb="4" color={"#F5F4F5"}>
+        Crear Proyecto
+      </Heading>
       <Flex
         justifyContent="center"
-        width="70ch"
+        width="80ch"
         borderWidth="2px"
         borderRadius="4"
-        p="4"
-        bg={"#F7FFF7"}
+        p="150px"
+        bg="white"
+        fontSize="lg"
       >
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl isInvalid={errors.nombre}>
-            <FormLabel fontSize="30px">Crear Proyecto</FormLabel>
-            <FormLabel fontSize="30px">Nombre del proyecto</FormLabel>
+            <FormLabel fontSize="25px">Nombre del proyecto</FormLabel>
             <Input
+              fontSize="lg"
               id="nombre"
               placeholder="Proyecto 1"
               borderColor="grey.300"
@@ -94,7 +98,7 @@ export default function CreateProject() {
               {errors.nombre && errors.nombre.message}
             </FormErrorMessage>
           </FormControl>
-          <FormLabel fontSize="30px">Scrum Master</FormLabel>
+          <FormLabel fontSize="25px">Scrum Master</FormLabel>
           <Select
             onChange={(e) =>
               setFormValues({ ...formValues, scrumMasterId: e.value })
@@ -104,7 +108,7 @@ export default function CreateProject() {
             })}
           />
           <FormControl isInvalid={errors["estimado"]}>
-            <FormLabel fontSize="30px">Duracion estimada(semanas)</FormLabel>
+            <FormLabel fontSize="25px">Duracion estimada(semanas)</FormLabel>
             <Controller
               name="estimado"
               control={control}
@@ -112,11 +116,13 @@ export default function CreateProject() {
               defaultValue={1}
               render={(props) => (
                 <NumberInput
+                  fontSize="lg"
                   value={props.field.value}
                   onChange={props.field.onChange}
                 >
                   <NumberInputField
                     //TODO: Only allow numbers, also accepts 'e' char
+                    fontSize="lg"
                     borderColor="grey.300"
                     onChange={(e) =>
                       setFormValues({
@@ -137,9 +143,11 @@ export default function CreateProject() {
           <Flex>
             <Button
               mt={4}
-              colorScheme="teal"
+              bg={"buttonScale.900"}
+              colorScheme={"buttonScale"}
               isLoading={isSubmitting}
               type="submit"
+              fontSize="lg"
             >
               Submit
             </Button>
@@ -151,6 +159,7 @@ export default function CreateProject() {
               mr="3"
               fontWeight="600"
               textDecorationLine="underline"
+              fontSize="lg"
             >
               <Link
                 to="/profile"
