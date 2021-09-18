@@ -9,6 +9,7 @@ import {
   Box,
   Flex,
   Center,
+  Square,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
@@ -24,7 +25,6 @@ import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 import { api } from "../../api";
 
-
 export default function CreateProject() {
   const [users, setUsers] = useState([]);
   const [formValues, setFormValues] = useState({
@@ -35,7 +35,10 @@ export default function CreateProject() {
   useEffect(() => {
     api
       .getUsers()
-      .then((users) => setUsers(users))
+      .then((fetchedUsers) => {
+        if (!Array.isArray(fetchedUsers)) return;
+        setUsers(fetchedUsers);
+      })
       .catch((err) => console.log(err));
   }, []);
   console.log(users);
@@ -59,18 +62,29 @@ export default function CreateProject() {
 
   console.log(formValues);
   return (
-    <Center p="4">
-      <Flex justifyContent="center" width="70ch">
+    <Center p="4" height="90vh">
+      <Flex
+        justifyContent="center"
+        width="70ch"
+        borderWidth="2px"
+        borderRadius="4"
+        p="4"
+        bg={"#F7FFF7"}
+      >
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl isInvalid={errors.nombre}>
-            <FormLabel fontSize="20px">Nombre del proyecto</FormLabel>
+            <FormLabel fontSize="30px">Crear Proyecto</FormLabel>
+            <FormLabel fontSize="30px">Nombre del proyecto</FormLabel>
             <Input
               id="nombre"
-              placeholder="nombre"
+              placeholder="Proyecto 1"
               borderColor="grey.300"
               {...register("nombre", {
                 required: "Valor Requerido",
-                minLength: { value: 4, message: "Minimum length should be 4" },
+                minLength: {
+                  value: 4,
+                  message: "Minimum length should be 4",
+                },
               })}
               onChange={(e) =>
                 setFormValues({ ...formValues, projectName: e.target.value })
@@ -80,7 +94,7 @@ export default function CreateProject() {
               {errors.nombre && errors.nombre.message}
             </FormErrorMessage>
           </FormControl>
-          Scrum Master
+          <FormLabel fontSize="30px">Scrum Master</FormLabel>
           <Select
             onChange={(e) =>
               setFormValues({ ...formValues, scrumMasterId: e.value })
@@ -90,7 +104,7 @@ export default function CreateProject() {
             })}
           />
           <FormControl isInvalid={errors["estimado"]}>
-            <FormLabel fontSize="20px">Duracion estimada(semanas)</FormLabel>
+            <FormLabel fontSize="30px">Duracion estimada(semanas)</FormLabel>
             <Controller
               name="estimado"
               control={control}
