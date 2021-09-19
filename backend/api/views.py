@@ -41,7 +41,7 @@ def proyectos(request, proyect_id=None):
     elif request.method == "DELETE":
         p = Proyecto.objects.get(id=proyect_id)
         p.delete()
-        return JsonResponse(True, status=200)
+        return JsonResponse(True, status=200, safe=False)
 
     elif request.method == "PUT":
         if proyect_id:
@@ -164,9 +164,10 @@ def proyectos_miembros(request, proyect_id, user_id=None):
             return HttpResponseBadRequest("Falta el user_id en el body")
 
         try:
-            p = Proyecto.objects.filter(miembros__id__contains=user_id)
+            p = Proyecto.objects.get(id=proyect_id)
             p.miembros.remove(user_id)
-            serializer = ProyectoSerializer(p, many=True)
+            p.save()
+            serializer = ProyectoSerializer(p)
             return JsonResponse(serializer.data, safe=False)
         except Usuario.DoesNotExist:
             return HttpResponseNotFound()
