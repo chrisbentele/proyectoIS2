@@ -1,16 +1,18 @@
+//Import la instancia de axios
 import { axiosInstance } from ".";
 
-//Members endpoints
-
-export const getMembers = async (skip, take) => {
+//Endpoints para los miembros
+//Listar todos los miembros
+export const getMembers = async (projectId) => {
   try {
-    const res = await axiosInstance.get("/members");
-    return res;
+    const res = await axiosInstance.get(`proyectos/${projectId}/miembros`);
+    return res.data;
   } catch (error) {
     return error;
   }
 };
 
+//Editar los roles de un miembro
 export const editMembersRole = async (memberId, roleId) => {
   try {
     const res = await axiosInstance.put(`/members/${memberId}`, { roleId });
@@ -23,7 +25,7 @@ export const editMembersRole = async (memberId, roleId) => {
 export const addMemberToProject = async (projectId, userId) => {
   try {
     const res = await axiosInstance.post(
-      `/usuario_proyecto?proy_id=${projectId}&user_id=${userId}`
+      `/proyectos/${projectId}/miembros/${userId}`
     );
     return res.data;
   } catch (error) {
@@ -34,7 +36,7 @@ export const addMemberToProject = async (projectId, userId) => {
 export const removeMemberFromProject = async (projectId, userId) => {
   try {
     const res = await axiosInstance.delete(
-      `/usuario_proyecto?proy_id=${projectId}&user_id=${userId}`
+      `/proyectos/${projectId}/miembros/${userId}`
     );
     return res.data;
   } catch (error) {

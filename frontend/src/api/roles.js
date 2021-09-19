@@ -1,7 +1,9 @@
+//importar la instancia de axios
 import { axiosInstance } from ".";
 
-//Roles Endpoints
+//Endpoints de roles
 
+//Agregar role
 export const addRole = async (roleName, permissions) => {
   try {
     const res = await axiosInstance.post("/roles", { roleName, permissions });
@@ -11,6 +13,7 @@ export const addRole = async (roleName, permissions) => {
   }
 };
 
+//Eliminar rol
 export const deleteRole = async (roleId) => {
   try {
     const res = await axiosInstance.delete(`/roles/${roleId}`);
@@ -20,6 +23,7 @@ export const deleteRole = async (roleId) => {
   }
 };
 
+//Editar rol
 export const editRole = async (roleId, permissions) => {
   try {
     const res = await axiosInstance.put(`/roles/${roleId}`, { permissions });

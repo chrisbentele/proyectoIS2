@@ -21,7 +21,6 @@ const Profile = (props) => {
       console.log("done");
     }
   }, [user, isLoading]);
-  console.log(userProjects);
   if (isLoading) {
     return <div>Loading ...</div>;
   }
@@ -72,45 +71,47 @@ const Profile = (props) => {
         </Box>
         <Flex mt="10">
           <Grid templateColumns="repeat(2, 1fr)" gap={4} autoFlow>
-            {userProjects.map((project) => {
-              return (
-                <Flex
-                  flexDirection="column"
-                  w="xs"
-                  height="200px"
-                  borderWidth="1px"
-                  borderRadius="lg"
-                  overflow="hidden"
-                  fontSize="3xl"
-                  bg={mapStateColor(project.estado)}
-                  justifyContent="left"
-                  pl="5"
-                  pt="2"
-                >
-                  <Link
-                    to={`projects/${project.id}`}
-                    style={{
-                      fontWeight: "bold",
-                      width: "100%",
-                      height: "100%",
-                    }}
-                  >
-                    {project.nombre}
-                  </Link>
-                  <br />
+            {userProjects
+              ? userProjects.map((project) => {
+                  return (
+                    <Flex
+                      flexDirection="column"
+                      w="xs"
+                      height="200px"
+                      borderWidth="1px"
+                      borderRadius="lg"
+                      overflow="hidden"
+                      fontSize="3xl"
+                      bg={mapStateColor(project.estado)}
+                      justifyContent="left"
+                      pl="5"
+                      pt="2"
+                    >
+                      <Link
+                        to={`projects/${project.id}`}
+                        style={{
+                          fontWeight: "bold",
+                          width: "100%",
+                          height: "100%",
+                        }}
+                      >
+                        {project.nombre}
+                      </Link>
+                      <br />
 
-                  <p style={{ fontSize: "20px" }}>
-                    {projectStateToString(project.estado)}
-                  </p>
-                  <p style={{ fontSize: "20px" }}>
-                    Duracion estimada: {project.duracionEstimada} semanas
-                  </p>
-                  <p style={{ fontSize: "20px" }}>
-                    Iniciado: {project.fechaInicio}
-                  </p>
-                </Flex>
-              );
-            })}
+                      <p style={{ fontSize: "20px" }}>
+                        {projectStateToString(project.estado)}
+                      </p>
+                      <p style={{ fontSize: "20px" }}>
+                        Duracion estimada: {project.duracionEstimada} semanas
+                      </p>
+                      <p style={{ fontSize: "20px" }}>
+                        Iniciado: {project.fechaInicio}
+                      </p>
+                    </Flex>
+                  );
+                })
+              : null}
             <Flex
               w="xs"
               height="200px"

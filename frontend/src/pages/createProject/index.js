@@ -1,3 +1,5 @@
+//Pagina de creacion de proyectos
+
 import Select from "react-select";
 import {
   FormControl,
@@ -19,19 +21,21 @@ import {
 } from "@chakra-ui/react";
 import { Controller, useForm } from "react-hook-form";
 import React, { useEffect, useState } from "react";
-import { createProject } from "../../api/projects";
 import { useAuth } from "../../providers/DbAuth";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 import { api } from "../../api";
 
 export default function CreateProject() {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState([]); //Los usuarios del sistema
   const [formValues, setFormValues] = useState({
-    projectName: "",
-    scrumMasterId: null,
-    estimation: null,
+    //Los valores del form
+    projectName: "", //nombre del proyecto
+    scrumMasterId: null, //id del scrum master
+    estimation: null, //duracion estimada del proyecto
   });
+
+  //Al cargarse la pagina se buscan todos los usuarios
   useEffect(() => {
     api
       .getUsers()
@@ -41,26 +45,25 @@ export default function CreateProject() {
       })
       .catch((err) => console.log(err));
   }, []);
-  console.log(users);
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
     control,
   } = useForm();
-  const history = useHistory();
+  const history = useHistory(); //para poder redirigir al usuario luego de la crecion exitosa del proyecto
   const { dbUser } = useAuth();
   async function onSubmit(values) {
+    //funcion que define el comportamiento al confirmar el form
     await api
       .createProject(formValues)
       .then((res) => {
         console.log(res);
-        history.push(`/projects/${res.id}`);
+        history.push(`/projects/${res.id}`); //luego de crear exitosamente el proyecto, se redirige a la pagina del proyecto
       })
       .catch((err) => console.log(err));
   }
 
-  console.log(formValues);
   return (
     <Center p="4" minHeight="100vh" flexDirection="column" bg={"#2A262C"}>
       <Heading fontSize="4xl" mb="4" color={"#F5F4F5"}>
