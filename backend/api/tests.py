@@ -1,6 +1,11 @@
 import json
 from api.models import Proyecto, Usuario
-from api.serializers import ProyectoSerializer, RolSerializer, UsuarioSerializer
+from api.serializers import (
+    ProyectoSerializer,
+    RolSerializer,
+    USSerializer,
+    UsuarioSerializer,
+)
 from django.test import TestCase
 
 
@@ -27,6 +32,21 @@ def crear_user():
 def crear_rol(proyect_id):
     user_serializer = RolSerializer(
         data={"nombre": "ete", "proyecto": proyect_id, "permisos": [1, 2]}
+    )
+    if user_serializer.is_valid():
+        user = user_serializer.save()
+
+    return user
+
+
+def crear_US(proyect_id, user_id):
+    user_serializer = USSerializer(
+        data={
+            "proyecto": proyect_id,
+            "nombre": "ete",
+            "contenido": "si",
+            "creadoPor": user_id,
+        }
     )
     if user_serializer.is_valid():
         user = user_serializer.save()
@@ -180,6 +200,87 @@ class Roles_Tests(TestCase):
         r = crear_rol(p.id)
         res = self.client.put(
             f"/api/proyectos/{p.id}/roles/{r.id}",
+            json.dumps({"nombre": "testeado"}),
+            content_type="application/json",
+        )
+        self.assertEqual(res.json()["nombre"], "testeado")
+
+
+class Proyectos_Usuarios_Roles_Tests(TestCase):
+    def test_proyectos_miembros_roles_add(self):
+        u = crear_user()
+        p = crear_proyecto([u.id])
+        r = crear_rol(p.id)
+
+        res = self.client.post(
+            f"/api/proyectos/{p.id}/miembros/{u.id}/roles/{r.id}",
+        )
+        self.assertEqual(res.status_code, 201)
+
+    def test_proyectos_miembros_roles_get(self):
+
+        u = crear_user()
+        p = crear_proyecto([u.id])
+
+        res = self.client.get(f"/api/proyectos/{p.id}/miembros/{u.id}")
+
+        self.assertEqual(res.status_code, 200)
+
+    def test_proyectos_miembros_roles_delete(self):
+
+        u = crear_user()
+        p = crear_proyecto([u.id])
+        r = crear_rol(p.id)
+
+        self.client.post(
+            f"/api/proyectos/{p.id}/miembros/{u.id}/roles/{r.id}",
+        )
+
+        res = self.client.delete(f"/api/proyectos/{p.id}/miembros/{u.id}/roles/{r.id}")
+
+        self.assertEqual(res.status_code, 204)
+
+
+class user_stories(TestCase):
+    def test_user_stories_crear(self):
+        u = crear_user()
+        p = crear_proyecto([u.id])
+
+        res = self.client.post(
+            f"/api/proyectos/{p.id}/user_stories",
+            json.dumps({"nombre": "ete", "contenido": "si", "creadoPor": u.id}),
+            content_type="application/json",
+        )
+        self.assertEqual(res.status_code, 201)
+
+    def test_user_stories_get(self):
+
+        u = crear_user()
+        p = crear_proyecto([u.id])
+        us = crear_US(p.id, u.id)
+
+        res = self.client.get(f"/api/proyectos/{p.id}/user_stories/{us.id}")
+
+        self.assertEqual(res.status_code, 200)
+
+    def test_user_stories_delete(self):
+
+        u = crear_user()
+        p = crear_proyecto([u.id])
+        us = crear_US(p.id, u.id)
+
+        res = self.client.delete(f"/api/proyectos/{p.id}/user_stories/{us.id}")
+
+        self.assertEqual(res.status_code, 204)
+
+    def test_user_stories_update(self):
+
+        u = crear_user()
+        p = crear_proyecto([u.id])
+        us = crear_US(p.id, u.id)
+
+        res = self.client.put(
+            f"/api/proyectos/{p.id}/user_stories/{us.id}",
             json.dumps({"nombre": "testeado"}),
             content_type="application/json",
         )

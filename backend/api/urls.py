@@ -19,7 +19,7 @@ from .views import (
     proyectos,
     roles,
     user_stories,
-    usuarios_proyectos_roles,
+    proyectos_miembros_roles,
     usuarios,
     proyectos_miembros,
     usuarios_proyectos,
@@ -39,11 +39,11 @@ apiPaths = [
     path("proyectos/<str:proyect_id>/roles/<str:rol_id>", roles),
     path(
         "proyectos/<str:proyect_id>/miembros/<str:user_id>/roles",
-        usuarios_proyectos_roles,
+        proyectos_miembros_roles,
     ),
     path(
         "proyectos/<str:proyect_id>/miembros/<str:user_id>/roles/<str:rol_id>",
-        usuarios_proyectos_roles,
+        proyectos_miembros_roles,
     ),
 ]
 
