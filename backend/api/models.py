@@ -42,7 +42,7 @@ class Usuario(Model):
 
 
 class Proyecto(Model):
-    duracionEstimada = IntegerField()
+    duracionEstimada = IntegerField(blank=True)
     fechaInicio = DateField(auto_now_add=True)
     fechaFinalizacion = DateField(blank=True, null=True)
     estado = IntegerField(choices=estadoProyecto, default=0)
@@ -67,11 +67,11 @@ class US(Model):
     nombre = CharField(max_length=100)
     contenido = CharField(max_length=100)
     creadoPor = ForeignKey(Usuario, on_delete=CASCADE)
-    fechaCreacion = DateField()
+    fechaCreacion = DateField(auto_now_add=True)
     estado = IntegerField(choices=ESTADO_US, default=0)
-    estimacionSM = IntegerField()
-    estimacionesDev = IntegerField()
-    duracionEstimada = IntegerField()
+    estimacionSM = IntegerField(blank=True)
+    estimacionesDev = IntegerField(blank=True)
+    duracionEstimada = IntegerField(blank=True)
     sprint = ForeignKey(Sprint, null=True, blank=True, on_delete=CASCADE)
     proyecto = ForeignKey(Proyecto, on_delete=CASCADE)
 
@@ -84,7 +84,7 @@ class USAsignada(Model):
 class Comentario(Model):
     us = ForeignKey(US, on_delete=CASCADE)
     creadoPor = ForeignKey(Usuario, on_delete=CASCADE)
-    fechaCreacion = DateField()
+    fechaCreacion = DateField(auto_now_add=True)
     contenido = CharField(max_length=480)
     retro = ForeignKey(Retrospectiva, on_delete=CASCADE)
 
@@ -92,7 +92,7 @@ class Comentario(Model):
 class Rol(Model):
     nombre = CharField(max_length=100)
     proyecto = ForeignKey(Proyecto, on_delete=CASCADE)
-    permisos = ArrayField(IntegerField())
+    permisos = ArrayField(IntegerField(), blank=True)
 
 
 class RolAsignado(Model):

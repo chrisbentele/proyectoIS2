@@ -42,7 +42,7 @@ def proyectos(request, proyect_id=None):
     elif request.method == "DELETE":
         p = Proyecto.objects.get(id=proyect_id)
         p.delete()
-        return JsonResponse(True, status=200)
+        return JsonResponse(True, safe=False, status=200)
 
     elif request.method == "PUT":
         if proyect_id:
@@ -102,11 +102,14 @@ def usuarios(request, user_id=None):
                 return JsonResponse(serializer.data, status=200)
             return JsonResponse(serializer.errors, status=400, safe=False)
         return HttpResponseBadRequest("Falta user_id")
+    elif request.method == "DELETE":
+        u = Usuario.objects.get(id=user_id)
+        u.delete()
+        return JsonResponse(True, safe=False, status=200)
 
 
 def usuarios_proyectos(request, user_id):
     # agregar y eliminar\
-    # proyect_id = request.GET.get("proyect_id")
 
     if request.method == "GET":
         # trae los proyectos del usuario
@@ -125,7 +128,7 @@ def proyectos_miembros(request, proyect_id, user_id=None):
     if request.method == "POST":
         if not user_id:
             return JsonResponse(False, status=400, safe=False)
-        print(user_id)
+
         try:
             p = Proyecto.objects.get(id=proyect_id)
             u = Usuario.objects.get(id=user_id)
@@ -153,7 +156,7 @@ def proyectos_miembros(request, proyect_id, user_id=None):
 
         try:
             u = Usuario.objects.get(id=user_id)
-            UsuarioSerializer(u).data
+
             return JsonResponse(UsuarioSerializer(u).data, safe=False)
         except Usuario.DoesNotExist:
             return HttpResponseNotFound()
@@ -168,7 +171,7 @@ def proyectos_miembros(request, proyect_id, user_id=None):
             p.miembros.remove(user_id)
             p.save()
             serializer = ProyectoSerializer(p)
-            return JsonResponse(serializer.data, safe=False)
+            return JsonResponse(serializer.data, safe=False, status=204)
         except Usuario.DoesNotExist:
             return HttpResponseNotFound()
 
@@ -205,11 +208,18 @@ def roles(request, proyect_id, rol_id=None):
         return HttpResponseBadRequest("Falta rol_id")
 
     elif request.method == "GET":
-        # Trae todos los Roles del proyecto
+        if not rol_id:
+            # Trae todos los Roles del proyecto
+            r = Rol.objects.filter(proyecto=proyect_id)
+            seri = RolSerializer(r, many=True)
+            return JsonResponse(seri.data, safe=False)
 
-        r = Rol.objects.filter(proyecto=proyect_id)
-        seri = RolSerializer(r, many=True)
-        return JsonResponse(seri.data, safe=False)
+        try:
+            u = Rol.objects.get(id=rol_id)
+            return JsonResponse(RolSerializer(u).data, safe=False)
+        except Usuario.DoesNotExist:
+            return HttpResponseNotFound()
+
     elif request.method == "DELETE":
         # En caso de DELETE elimina el rol  del proyecto
 
@@ -273,7 +283,7 @@ def user_stories(request, proyect_id, us_id=None):
     if request.method == "POST":
         # Crea el user storie
         data = JSONParser().parse(request)
-        data["proyecto"] = proyecto
+        data["proyecto"] = proyect_id
         serializer = USSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
@@ -296,7 +306,7 @@ def user_stories(request, proyect_id, us_id=None):
     elif request.method == "DELETE":
         us = US.objects.get(id=us_id)
         us.delete()
-        return JsonResponse(True, status=200)
+        return JsonResponse(True, status=204)
 
     elif request.method == "PUT":
         if us_id:
