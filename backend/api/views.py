@@ -2,10 +2,11 @@ from .serializers import (
     ProyectoSerializer,
     RolAsignadoSerializer,
     RolSerializer,
+    SprintSerializer,
     USSerializer,
     UsuarioSerializer,
 )
-from api.models import US, Proyecto, Rol, RolAsignado, Usuario
+from api.models import US, Proyecto, Rol, RolAsignado, Sprint, Usuario
 from django.http.response import (
     HttpResponseBadRequest,
     HttpResponseNotFound,
@@ -307,7 +308,6 @@ def user_stories(request, proyect_id, us_id=None):
             serializer = USSerializer(us, data=data, partial=True)
 
             if serializer.is_valid():
-                # Obtiene el id del Rol para vincular
                 serializer.save()
                 return JsonResponse(serializer.data, status=200)
             return JsonResponse(serializer.errors, status=400, safe=False)

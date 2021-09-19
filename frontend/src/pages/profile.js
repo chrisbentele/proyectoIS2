@@ -71,7 +71,7 @@ const Profile = (props) => {
         </Box>
         <Flex mt="10">
           <Grid templateColumns="repeat(2, 1fr)" gap={4} autoFlow>
-            {userProjects
+            {Array.isArray(userProjects)
               ? userProjects.map((project) => {
                   return (
                     <Flex
