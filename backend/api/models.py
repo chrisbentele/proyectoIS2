@@ -42,7 +42,7 @@ class Usuario(Model):
 
 
 class Proyecto(Model):
-    duracionEstimada = IntegerField(blank=True)
+    duracionEstimada = IntegerField(null=True)
     fechaInicio = DateField(auto_now_add=True)
     fechaFinalizacion = DateField(blank=True, null=True)
     estado = IntegerField(choices=estadoProyecto, default=0)
@@ -69,9 +69,9 @@ class US(Model):
     creadoPor = ForeignKey(Usuario, on_delete=CASCADE)
     fechaCreacion = DateField(auto_now_add=True)
     estado = IntegerField(choices=ESTADO_US, default=0)
-    estimacionSM = IntegerField(blank=True)
-    estimacionesDev = IntegerField(blank=True)
-    duracionEstimada = IntegerField(blank=True)
+    estimacionSM = IntegerField(null=True)
+    estimacionesDev = IntegerField(null=True)
+    duracionEstimada = IntegerField(null=True)
     sprint = ForeignKey(Sprint, null=True, blank=True, on_delete=CASCADE)
     proyecto = ForeignKey(Proyecto, on_delete=CASCADE)
 
