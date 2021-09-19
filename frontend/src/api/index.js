@@ -16,10 +16,12 @@ import {
   getMembers,
 } from "./members";
 
+//Instancia de axios, para no tener que escribir en cada request el URL
 export const axiosInstance = axios.create({
   baseURL: "http://localhost:8000/api",
 });
 
+//Exportar todas las apis, para solo tener que importar un objeto
 export const api = {
   //Projects
   createProject,

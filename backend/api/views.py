@@ -42,7 +42,7 @@ def proyectos(request, proyect_id=None):
     elif request.method == "DELETE":
         p = Proyecto.objects.get(id=proyect_id)
         p.delete()
-        return JsonResponse(True, status=200)
+        return JsonResponse(True, status=200, safe=False)
 
     elif request.method == "PUT":
         if proyect_id:
