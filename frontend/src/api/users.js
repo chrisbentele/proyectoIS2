@@ -15,7 +15,7 @@ export const getUser = async (email, nombre) => {
   try {
     console.log(email);
     let res = await axiosInstance
-      .get("usuario", {
+      .get("usuarios", {
         params: {
           email,
         },
@@ -29,7 +29,7 @@ export const getUser = async (email, nombre) => {
 
     if (!res) {
       // Si no existe el usuario crear
-      res = await axiosInstance.post("usuario", {
+      res = await axiosInstance.post("usuarios", {
         email,
         nombre,
       });
@@ -43,7 +43,7 @@ export const getUser = async (email, nombre) => {
 
 export const deleteUser = async (userId) => {
   try {
-    const res = await axiosInstance.delete(`/users/${userId}`);
+    const res = await axiosInstance.delete(`/usuarios/${userId}`);
     return res.status(204);
   } catch (error) {
     return error;
@@ -52,7 +52,7 @@ export const deleteUser = async (userId) => {
 
 export const searchUsersByName = async (string) => {
   try {
-    const res = await axiosInstance.get(`/users?searchTerm=string`);
+    const res = await axiosInstance.get(`/usuarios?searchTerm=string`);
     return res.data;
   } catch (error) {
     return error;
