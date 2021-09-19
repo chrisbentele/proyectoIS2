@@ -21,7 +21,6 @@ const Profile = (props) => {
       console.log("done");
     }
   }, [user, isLoading]);
-  console.log(userProjects);
   if (isLoading) {
     return <div>Loading ...</div>;
   }
