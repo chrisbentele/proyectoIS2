@@ -6,11 +6,14 @@ import DeleteIcon from "../../components/deleteIcon/deleteIcon";
 import "react-table-v6/react-table.css";
 import { api } from "../../api";
 import AddIcon from "../../components/addIcon";
+import { Button } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
 export default function ProjectMembers({ props }) {
   const [members, setMembers] = useState([]);
   const [users, setUsers] = useState([]);
   const projectId = props.computedMatch.params.id;
+  const url = props.computedMatch.url;
 
   useEffect(() => {
     //Al cargar la pagina se buscan los usuarios
@@ -29,42 +32,45 @@ export default function ProjectMembers({ props }) {
 
   //funcion que se encarga de agregar un usuario al proyecto mediante la tabla
   const addMemberById = (userId) => {
-    window.confirm(`desea agregar al usuario al proyecto?`); //solicita la confirmacion al usuario
-    api.addMemberToProject(projectId, userId).then((res) => {
-      if (res) {
-        let addedUser;
-        const updatedUsers = users.filter((user) => {
-          if (user.id != userId) {
-            return true;
-          } else {
-            addedUser = { ...user };
-            return false;
-          }
-        });
-        setMembers([...members, addedUser]);
-        setUsers(updatedUsers);
-      }
-    });
+    if (window.confirm(`desea agregar al usuario al proyecto?`)) {
+      api.addMemberToProject(projectId, userId).then((res) => {
+        if (res) {
+          let addedUser;
+          const updatedUsers = users.filter((user) => {
+            if (user.id != userId) {
+              return true;
+            } else {
+              addedUser = { ...user };
+              return false;
+            }
+          });
+          setMembers([...members, addedUser]);
+          setUsers(updatedUsers);
+        }
+      });
+    } //solicita la confirmacion al usuario
   };
 
   //funcion que se encarga de eliminar un usuario del proyecto mediante la tabla
   const removeMember = (memberId) => {
-    window.confirm(`desea eliminar al usuario del proyecto?`); //solicita la confirmacion al usuario
-    api.removeMemberFromProject(projectId, memberId).then((res) => {
-      if (res) {
-        let removedUser;
-        const updatedMembers = members.filter((member) => {
-          if (member.id != memberId) {
-            return true;
-          } else {
-            removedUser = { ...member };
-            return false;
-          }
-        });
-        setUsers([...users, removedUser]);
-        setMembers(updatedMembers);
-      }
-    });
+    if (window.confirm(`desea eliminar al usuario del proyecto?`)) {
+      //solicita la confirmacion al usuario
+      api.removeMemberFromProject(projectId, memberId).then((res) => {
+        if (res) {
+          let removedUser;
+          const updatedMembers = members.filter((member) => {
+            if (member.id != memberId) {
+              return true;
+            } else {
+              removedUser = { ...member };
+              return false;
+            }
+          });
+          setUsers([...users, removedUser]);
+          setMembers(updatedMembers);
+        }
+      });
+    }
   };
 
   const [state, setState] = useState({
@@ -112,6 +118,9 @@ export default function ProjectMembers({ props }) {
         marginTop: "70px",
       }}
     >
+      <Button style={{ marginLeft: "5px", alignSelf: "flex-start" }}>
+        <Link to={url.replace("/members", "")}>Volver al Proyecto</Link>
+      </Button>
       <h2>Miembros del proyecto</h2>
       <ReactTable
         data={members.map((member) => {
