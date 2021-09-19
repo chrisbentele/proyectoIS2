@@ -3,4 +3,4 @@
 /backend/controller/.env
 .vscode/
 doc/html/
-.venv
+backend/.venv/*
