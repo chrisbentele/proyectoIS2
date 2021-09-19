@@ -1,4 +1,4 @@
-import { axiosInstance } from ".";
+import { api, axiosInstance } from ".";
 
 //Projects
 export const createProject = async (projectData) => {
@@ -23,14 +23,29 @@ export const createProject = async (projectData) => {
     return error;
   }
 };
+export const getProjects = async (userId) => {
+  try {
+    if (userId) {
+      const res = await axiosInstance.get(`usuarios/${userId}/proyectos`);
+      return res.data;
+    } else {
+      const res = await axiosInstance.get("proyectos");
+      return res.data;
+    }
+  } catch (error) {
+    return error;
+  }
+};
 export const editProject = async (projectId, projectConfig) => {
   try {
   } catch (error) {
     return error;
   }
 };
-export const getProjectById = async () => {
+export const getProjectById = async (projectId) => {
   try {
+    const res = await axiosInstance.get(`proyectos/${projectId}`);
+    return res.data;
   } catch (error) {
     return error;
   }
