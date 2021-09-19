@@ -2,8 +2,9 @@ import React from "react";
 import { AiOutlineUserAdd as Add } from "react-icons/ai";
 import "./addIcon.css";
 
-export default function DeleteIcon({ addById, id }) {
+export default function AddIcon({ addById, id }) {
   const onClick = () => {
+    console.log(`id is ${id}`);
     addById(id);
   };
   return (
