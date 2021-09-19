@@ -70,7 +70,7 @@ def usuarios(request, user_id=None):
         return JsonResponse(serializer.errors, status=400, safe=False)
 
     elif request.method == "GET":
-        if not user_id:
+        if not user_id and not request.GET.get("email"):
             u = Usuario.objects.all()
             serializer = UsuarioSerializer(u, many=True)
             return JsonResponse(serializer.data, safe=False)
@@ -84,6 +84,7 @@ def usuarios(request, user_id=None):
             else:
                 u = Usuario.objects.get(id=user_id)
                 serializer = UsuarioSerializer(u)
+                print(serializer.data)
             return JsonResponse(serializer.data, safe=False)
         except Usuario.DoesNotExist:
             return HttpResponseNotFound()
