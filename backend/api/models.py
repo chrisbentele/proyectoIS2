@@ -46,7 +46,7 @@ class Proyecto(Model):
     fechaInicio = DateField(auto_now_add=True)
     fechaFinalizacion = DateField(blank=True, null=True)
     estado = IntegerField(choices=estadoProyecto, default=0)
-    miembros = ManyToManyField(Usuario)
+    miembros = ManyToManyField(Usuario, blank=True)
     nombre = CharField(max_length=100)
 
 
