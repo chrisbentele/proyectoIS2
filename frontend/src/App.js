@@ -4,9 +4,8 @@ import Login from "./pages/login";
 import Home from "./pages/home/home";
 import Header from "./components/header/header";
 import Profile from "./pages/profile";
-import Project from "./pages/projects/index";
+import Project from "./pages/project";
 import ProjectMembers from "./pages/projectMembers";
-import MyProjects from "./pages/myProjects";
 import ProjectConfig from "./pages/projectConfig";
 import Roles from "./pages/roles";
 import EditRole from "./pages/editRole";
@@ -15,6 +14,7 @@ import User from "./pages/user";
 import { Box } from "@chakra-ui/react";
 import NotFound from "./pages/notFound";
 import createProject from "./pages/createProject/index";
+import PrivateRoute from "./components/privateRoute";
 
 export default function App() {
   return (
@@ -24,20 +24,23 @@ export default function App() {
         <Switch>
           <Route path="/" component={Home} exact />
           <Route path="/login" component={Login} exact />
-          <Route path="/users" component={Users} exact />
-          <Route path="/users/:id" component={User} exact />
-          <Route path="/profile" component={Profile} exact />
-          <Route path="/roles" component={Roles} exact />
-          <Route path="/roles/:id" component={EditRole} exact />
-          <Route path="/myprojects" component={MyProjects} exact />
-          <Route path="/createProject" component={createProject} exact />
-          <Route path="/projects/:id" component={Project} exact />
-          <Route
+          <PrivateRoute path="/users" component={Users} exact />
+          <PrivateRoute path="/users/:id" component={User} exact />
+          <PrivateRoute path="/profile" component={Profile} exact />
+          <PrivateRoute path="/roles" component={Roles} exact />
+          <PrivateRoute path="/roles/:id" component={EditRole} exact />
+          <PrivateRoute path="/createProject" component={createProject} exact />
+          <PrivateRoute path="/projects/:id" component={Project} exact />
+          <PrivateRoute
             path="/projects/:id/members"
             component={ProjectMembers}
             exact
           />
-          <Route path="/projects/:id/config" component={ProjectConfig} exact />
+          <PrivateRoute
+            path="/projects/:id/config"
+            component={ProjectConfig}
+            exact
+          />
           <Route path="/" component={NotFound} />
         </Switch>
       </Box>
