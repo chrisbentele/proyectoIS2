@@ -2,10 +2,11 @@ from .serializers import (
     ProyectoSerializer,
     RolAsignadoSerializer,
     RolSerializer,
+    SprintSerializer,
     USSerializer,
     UsuarioSerializer,
 )
-from api.models import US, Proyecto, Rol, RolAsignado, Usuario
+from api.models import US, Proyecto, Rol, RolAsignado, Sprint, Usuario
 from django.http.response import (
     HttpResponseBadRequest,
     HttpResponseNotFound,
@@ -164,9 +165,10 @@ def proyectos_miembros(request, proyect_id, user_id=None):
             return HttpResponseBadRequest("Falta el user_id en el body")
 
         try:
-            p = Proyecto.objects.filter(miembros__id__contains=user_id)
+            p = Proyecto.objects.get(id=proyect_id)
             p.miembros.remove(user_id)
-            serializer = ProyectoSerializer(p, many=True)
+            p.save()
+            serializer = ProyectoSerializer(p)
             return JsonResponse(serializer.data, safe=False)
         except Usuario.DoesNotExist:
             return HttpResponseNotFound()
@@ -306,7 +308,6 @@ def user_stories(request, proyect_id, us_id=None):
             serializer = USSerializer(us, data=data, partial=True)
 
             if serializer.is_valid():
-                # Obtiene el id del Rol para vincular
                 serializer.save()
                 return JsonResponse(serializer.data, status=200)
             return JsonResponse(serializer.errors, status=400, safe=False)
