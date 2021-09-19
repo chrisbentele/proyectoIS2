@@ -22,38 +22,34 @@ export default function Index({ props }) {
       bg={"#F5F4F5"}
       color="#2b2d42"
       d="flex"
-      justifyContent="center"
-      alignItems="center"
+      justifyContent="left"
     >
-      <Box
-        pos="fixed"
-        top="50px"
-        zIndex="100"
-        bg={"#F7FFF7"}
-        left="0"
-        right="0"
-        // boxShadow="md"
-        width="full"
-        p="5px"
-        mb="3rem"
-      >
-        <Flex justifyContent="left">
-          <Box>hola</Box>
-
-          <Box></Box>
-
-          <Box>
-            {/* <Link to="/projects">Projects</Link> */}
-            <Heading>ID proyecto</Heading>
-          </Box>
-        </Flex>
-      </Box>
       {project ? ( //si ya se cargo el proyecto se muestra el mismo, si no se muestra la pantalla de carga
-        <Box width="180px" borderWidth="5px" bg="#E2E8F0" height="50%">
-          <Heading>{project.nombre}</Heading>
-          <Heading>
-            <Link to={`${projectId}/members`}>Miembros</Link>
-          </Heading>
+        <Box
+          pos="fixed"
+          top="50px"
+          zIndex="100"
+          bg={"#F7FFF7"}
+          left="0"
+          right="0"
+          // boxShadow="md"
+          width="full"
+          p="5px"
+          mb="3rem"
+        >
+          <Flex justifyContent="left">
+            <Box>hola</Box>
+
+            <Box></Box>
+
+            <Box>
+              {/* <Link to="/projects">Projects</Link> */}
+              <Heading>ID proyecto{project.nombre}</Heading>
+            </Box>
+            <Heading>
+              <Link to={`${projectId}/members`}>Miembros</Link>
+            </Heading>
+          </Flex>
         </Box>
       ) : (
         <Spinner size="xl" />
@@ -70,7 +66,7 @@ export default function Index({ props }) {
         justifyContent="center"
         alignItems="center"
       >
-        <Link to="/createProject/">Crear Proyecto</Link>
+        <Link to="/createProject/">Card</Link>
       </Flex>
     </Box>
   );
