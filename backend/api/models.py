@@ -60,7 +60,7 @@ class Sprint(Model):
     fechaFinalizacion = DateField()
     creadoPor = ForeignKey(Usuario, on_delete=CASCADE)
     terminado = BooleanField(default=False)
-    retro = OneToOneField(Retrospectiva, on_delete=CASCADE)
+    retro = OneToOneField(Retrospectiva, blank=True, null=True, on_delete=CASCADE)
 
 
 class US(Model):
@@ -72,7 +72,7 @@ class US(Model):
     estimacionSM = IntegerField()
     estimacionesDev = IntegerField()
     duracionEstimada = IntegerField()
-    sprint = ForeignKey(Sprint, on_delete=CASCADE)
+    sprint = ForeignKey(Sprint, null=True, blank=True, on_delete=CASCADE)
     proyecto = ForeignKey(Proyecto, on_delete=CASCADE)
 
 
