@@ -46,7 +46,7 @@ class Proyecto(Model):
     fechaInicio = DateField(auto_now_add=True)
     fechaFinalizacion = DateField(blank=True, null=True)
     estado = IntegerField(choices=estadoProyecto, default=0)
-    miembros = ManyToManyField(Usuario)
+    miembros = ManyToManyField(Usuario, blank=True)
     nombre = CharField(max_length=100)
 
 
@@ -60,7 +60,7 @@ class Sprint(Model):
     fechaFinalizacion = DateField()
     creadoPor = ForeignKey(Usuario, on_delete=CASCADE)
     terminado = BooleanField(default=False)
-    retro = OneToOneField(Retrospectiva, on_delete=CASCADE)
+    retro = OneToOneField(Retrospectiva, blank=True, null=True, on_delete=CASCADE)
 
 
 class US(Model):
@@ -72,7 +72,7 @@ class US(Model):
     estimacionSM = IntegerField()
     estimacionesDev = IntegerField()
     duracionEstimada = IntegerField()
-    sprint = ForeignKey(Sprint, on_delete=CASCADE)
+    sprint = ForeignKey(Sprint, null=True, blank=True, on_delete=CASCADE)
     proyecto = ForeignKey(Proyecto, on_delete=CASCADE)
 
 

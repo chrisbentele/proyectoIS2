@@ -9,14 +9,15 @@ const theme = extendTheme({
     heading: "'zilla slab',  sans-serif, ",
   },
   colors: {
-    richBlack: "#0A100D",
+    richBlack: "#151316",
     naplesYellow: "#FFE66D",
     buttonScale: {
       900: "#ff4747",
       800: "#ff6b6b",
-      700: "#ff9999",
+      700: "#ff8585",
+      600: "#ff9999",
     },
-    buttonScale: {
+    aScale: {
       900: "#ff4747",
       800: "#ff6b6b",
       700: "#ff9999",
@@ -26,6 +27,9 @@ const theme = extendTheme({
       800: "#153e75",
       700: "#2a69ac",
     },
+  },
+  ':focus:not(:focus-visible):not([role="dialog"]):not([role="menu"])': {
+    boxShadow: "none !important",
   },
 });
 
