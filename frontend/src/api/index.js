@@ -11,6 +11,7 @@ import { getUsers, deleteUser, searchUsersByName } from "./users";
 import {
   addRole,
   editRole,
+  getRole,
   deleteRole,
   asignarUserRole,
   removeUserRole,
@@ -43,6 +44,7 @@ export const api = {
   //Roles
   addRole,
   editRole,
+  getRole,
   deleteRole,
   asignarUserRole,
   removeUserRole,

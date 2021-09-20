@@ -7,8 +7,8 @@ import { axiosInstance } from ".";
 export const addRole = async (proyectoId, roleName, permissions) => {
   try {
     const res = await axiosInstance.post(`/proyectos/${proyectoId}/roles`, {
-      roleName,
-      permissions,
+      nombre: roleName,
+      permisos: permissions,
     });
     return res.status;
   } catch (error) {
@@ -42,6 +42,7 @@ export const getRole = async (proyectoId, roleId) => {
 
 //Editar rol
 export const editRole = async (
+  proyectoId,
   roleId,
   role_name = null,
   permissions = null
