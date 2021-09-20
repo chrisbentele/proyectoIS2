@@ -18,6 +18,7 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
   Spacer,
+  useToast,
 } from "@chakra-ui/react";
 import { Controller, useForm } from "react-hook-form";
 import React, { useEffect, useState } from "react";
@@ -25,16 +26,12 @@ import { useAuth } from "../../providers/DbAuth";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 import { api } from "../../api";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function CreateProject() {
   const [users, setUsers] = useState([]); //Los usuarios del sistema
-  const [formValues, setFormValues] = useState({
-    //Los valores del form
-    projectName: "", //nombre del proyecto
-    scrumMasterId: null, //id del scrum master
-    estimation: null, //duracion estimada del proyecto
-  });
-
+  const { user } = useAuth0();
+  const toast = useToast();
   //Al cargarse la pagina se buscan todos los usuarios
   useEffect(() => {
     api
@@ -50,15 +47,30 @@ export default function CreateProject() {
     register,
     formState: { errors, isSubmitting },
     control,
+    setValue,
   } = useForm();
   const history = useHistory(); //para poder redirigir al usuario luego de la crecion exitosa del proyecto
-  const { dbUser } = useAuth();
   async function onSubmit(values) {
     //funcion que define el comportamiento al confirmar el form
     await api
-      .createProject(formValues)
+      .createProject({ ...values, id: user.sub })
       .then((res) => {
-        console.log(res);
+        if (res.id) {
+          toast({
+            description: "Proyecto Creado.",
+            status: "success",
+            duration: 5000,
+            isClosable: true,
+          });
+        } else {
+          toast({
+            description: "Proyecto no pudo crearse.",
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+        }
+
         history.push(`/projects/${res.id}`); //luego de crear exitosamente el proyecto, se redirige a la pagina del proyecto
       })
       .catch((err) => console.log(err));
@@ -83,19 +95,16 @@ export default function CreateProject() {
             <FormLabel fontSize="25px">Nombre del proyecto</FormLabel>
             <Input
               fontSize="lg"
-              id="nombre"
+              id="projectName"
               placeholder="Proyecto 1"
               borderColor="grey.300"
-              {...register("nombre", {
+              {...register("projectName", {
                 required: "Valor Requerido",
                 minLength: {
                   value: 4,
                   message: "Minimum length should be 4",
                 },
               })}
-              onChange={(e) =>
-                setFormValues({ ...formValues, projectName: e.target.value })
-              }
             />
             <FormErrorMessage>
               {errors.nombre && errors.nombre.message}
@@ -103,17 +112,15 @@ export default function CreateProject() {
           </FormControl>
           <FormLabel fontSize="25px">Scrum Master</FormLabel>
           <Select
-            onChange={(e) =>
-              setFormValues({ ...formValues, scrumMasterId: e.value })
-            }
+            onChange={(e) => setValue("scrumMasterId", e.value)}
             options={users.map((user) => {
-              return { value: user.sub, label: user.nombre };
+              return { value: user.id, label: user.nombre };
             })}
           />
           <FormControl isInvalid={errors["estimado"]}>
             <FormLabel fontSize="25px">Duracion estimada(semanas)</FormLabel>
             <Controller
-              name="estimado"
+              name="estimation"
               control={control}
               rules={{ required: "Valor Requerido" }}
               defaultValue={1}
@@ -127,12 +134,6 @@ export default function CreateProject() {
                     //TODO: Only allow numbers, also accepts 'e' char
                     fontSize="lg"
                     borderColor="grey.300"
-                    onChange={(e) =>
-                      setFormValues({
-                        ...formValues,
-                        estimation: e.target.value,
-                      })
-                    }
                   />
                   <NumberInputStepper>
                     <NumberIncrementStepper />
