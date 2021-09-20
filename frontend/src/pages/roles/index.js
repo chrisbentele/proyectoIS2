@@ -1,15 +1,9 @@
-// import React from "react";
-// import Role from "./role";
-
-// export const Roles = () => {
-//   return < Role />
-// }
-
-// export default Roles;
-
-//api.addRole(projectId, "nombre", permisos[])
-
-import { useEffect, useState } from "react";
+/**
+ * @file index.js
+ * @brief Componente de la página para configurar roles.
+ */
+//! Librerías de React.js.
+import React, { useEffect, useState } from "react";
 import {
   Box,
   FormControl,
@@ -22,7 +16,6 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { PERMISOS, ROLES } from "./permisos";
-import React from "react";
 import { set, useForm } from "react-hook-form";
 import { api } from "../../api/"
 

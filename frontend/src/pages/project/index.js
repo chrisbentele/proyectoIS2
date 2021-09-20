@@ -1,10 +1,20 @@
-  
+/**
+ * @file index.js
+ * @brief Vista principal de un proyecto
+ */
+//! Librerías de React.js.
 import React, { useEffect, useState } from "react";
+//! API del frontend.
 import { api } from "../../api";
 import { Spinner } from "@chakra-ui/spinner";
 import { Box, Heading, Flex, HStack, Text } from "@chakra-ui/layout";
 import { Link } from "react-router-dom";
 
+/**
+ * Función que contiene el código de la vista
+ * @param { props } param0 
+ * @returns React Component
+ */
 export default function Index({ props }) {
   const projectId = props.computedMatch.params.id; //id del proyecto, se extrae del URL
   const [project, setProject] = useState({ userStories: [] }); //estado del proyecto

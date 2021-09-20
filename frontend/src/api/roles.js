@@ -1,9 +1,17 @@
-//importar la instancia de axios
+//! Importar la instancia de axios
 import { axiosInstance } from ".";
 
-//Endpoints de roles
+/**
+ * @file roles.js
+ * @brief Endpoints de roles
+ */
 
-//Agregar role
+/**
+ * Agregar role
+ * @param proyectoId
+ * @param roleName
+ * @param permissions
+ */
 export const addRole = async (proyectoId, roleName, permissions) => {
   try {
     const res = await axiosInstance.post(`/proyectos/${proyectoId}/roles`, {
@@ -16,7 +24,11 @@ export const addRole = async (proyectoId, roleName, permissions) => {
   }
 };
 
-//Eliminar rol
+/**
+ * Eliminar role
+ * @param proyectoId
+ * @param roleId
+ */
 export const deleteRole = async (proyectoId, roleId) => {
   try {
     const res = await axiosInstance.delete(
@@ -28,7 +40,11 @@ export const deleteRole = async (proyectoId, roleId) => {
   }
 };
 
-//trae el rol
+/**
+ * Conseguir un rol
+ * @param proyectoId
+ * @param roleId
+ */
 export const getRole = async (proyectoId, roleId) => {
   try {
     const res = await axiosInstance.get(
@@ -40,7 +56,10 @@ export const getRole = async (proyectoId, roleId) => {
   }
 };
 
-//trae los roles
+/**
+ * Conseguir un roles
+ * @param proyectoId
+ */
 export const getRoles = async (proyectoId) => {
   try {
     const res = await axiosInstance.get(
@@ -52,7 +71,13 @@ export const getRoles = async (proyectoId) => {
   }
 };
 
-//Editar rol
+/**
+ * Editar un rol
+ * @param proyectoId
+ * @param roleId
+ * @param role_name
+ * @param permissions
+ */
 export const editRole = async (
   proyectoId,
   roleId,
@@ -73,6 +98,12 @@ export const editRole = async (
   }
 };
 
+/**
+ * Asignar un rol
+ * @param roleId
+ * @param proyectoId
+ * @param userId
+ */
 export const asignarUserRole = async (roleId, projectId, userId) => {
   try {
     const res = await axiosInstance.post(
@@ -84,6 +115,12 @@ export const asignarUserRole = async (roleId, projectId, userId) => {
   }
 };
 
+/**
+ * Quitar un rol a un usuario
+ * @param roleId
+ * @param proyectoId
+ * @param userId
+ */
 export const removeUserRole = async (roleId, projectId, userId) => {
   try {
     const res = await axiosInstance.delete(
