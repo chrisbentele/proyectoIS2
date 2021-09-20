@@ -31,7 +31,7 @@ PERMISOS = (
     (16, "Editar rol del usuario"),
     (17, "Eliminar usuario"),
 )
-ESTADO_US = ((0, "To do"), (1, "Doing"), (2, "Done"))
+ESTADO_US = ((0, "To do"), (1, "Doing"), (2, "Done"), (4, "Backlog"))
 
 estadoProyecto = ((0, "Pendiente"), (1, "Activo"), (2, "Terminado"))
 
@@ -69,7 +69,7 @@ class US(Model):
     contenido = CharField(max_length=100)
     creadoPor = ForeignKey(Usuario, on_delete=CASCADE)
     fechaCreacion = DateField(auto_now_add=True)
-    estado = IntegerField(choices=ESTADO_US, default=0)
+    estado = IntegerField(choices=ESTADO_US, default=4)
     estimacionSM = IntegerField(null=True)
     estimacionesDev = IntegerField(null=True)
     duracionEstimada = IntegerField(null=True)
