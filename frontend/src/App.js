@@ -37,6 +37,7 @@ import NotFound from "./pages/notFound";
 import createProject from "./pages/createProject/index";
 //! Componente de la página de routing.
 import PrivateRoute from "./components/privateRoute";
+import CreateUserStory from "./pages/createUS";
 
 /**
  * Función principal de la aplicación, funciona como router a las distintas páginas
@@ -71,6 +72,11 @@ export default function App() {
           <PrivateRoute
             path="/projects/:id/config"
             component={ProjectConfig}
+            exact
+          />
+          <PrivateRoute
+            path="/projects/:id/createUS"
+            component={CreateUserStory}
             exact
           />
           <Route path="/" component={NotFound} />

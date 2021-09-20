@@ -53,7 +53,6 @@ const Header = () => {
                 <Image borderRadius="100" src={user.picture} />
               </Link>
             </Box>
-          
 
           ) : (
             null

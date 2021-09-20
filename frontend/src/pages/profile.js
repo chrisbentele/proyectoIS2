@@ -8,7 +8,7 @@ import React, { useEffect, useState } from "react";
 //! Componente de Auth0
 import { useAuth0 } from "@auth0/auth0-react";
 import { Link } from "react-router-dom";
-import { Box, Flex, Heading, HStack, VStack, Text } from "@chakra-ui/layout";
+import { Box, Flex, Heading, HStack, VStack, Text, LinkBox, LinkOverlay } from "@chakra-ui/layout";
 import { Image } from "@chakra-ui/image";
 import { Grid, GridItem, SimpleGrid } from "@chakra-ui/react";
 import { api } from "../api";
@@ -61,7 +61,7 @@ const Profile = (props) => {
         <Image borderRadius="100" src={user.picture} alt={user.name} />
         <Heading>{user.name}</Heading>
         <p>{user.email}</p>
-        <Box
+        {/* <Box
           borderRadius="4px"
           bg="buttonScale.800"
           color="richBlack"
@@ -71,7 +71,7 @@ const Profile = (props) => {
           fontWeight="600"
         >
           <Link to="/roles">Configurar Roles</Link>
-        </Box>
+        </Box> */}
       </Box>
       <Box width="70%" p="10" pl="16" mt="3rem">
         <Box>
@@ -122,7 +122,8 @@ const Profile = (props) => {
                   );
                 })
               : null}
-            <Flex
+            <LinkBox
+              display="flex"
               w="xs"
               height="200px"
               borderWidth="1px"
@@ -134,8 +135,8 @@ const Profile = (props) => {
               justifyContent="center"
               alignItems="center"
             >
-              <Link to="/createProject/">Crear Proyecto</Link>
-            </Flex>
+              <LinkOverlay href="/createProject/">Crear Proyecto</LinkOverlay>
+            </LinkBox>
           </Grid>
         </Flex>
       </Box>
