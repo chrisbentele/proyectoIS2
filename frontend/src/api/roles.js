@@ -42,6 +42,7 @@ export const getRole = async (proyectoId, roleId) => {
 
 //Editar rol
 export const editRole = async (
+  proyectoId,
   roleId,
   role_name = null,
   permissions = null
