@@ -1,8 +1,16 @@
-  
 import React, { useEffect, useState } from "react";
 import { api } from "../../api";
 import { Spinner } from "@chakra-ui/spinner";
-import { Box, Heading, Flex, HStack, Text } from "@chakra-ui/layout";
+import {
+  Box,
+  Heading,
+  Flex,
+  HStack,
+  Text,
+  VStack,
+  LinkBox,
+  LinkOverlay,
+} from "@chakra-ui/layout";
 import { Link } from "react-router-dom";
 
 export default function Index({ props }) {
@@ -34,28 +42,28 @@ export default function Index({ props }) {
       {project ? ( //si ya se cargo el proyecto se muestra el mismo, si no se muestra la pantalla de carga
         <Box>
           <Box
-          pos="fixed"
-          top="50px"
-          zIndex="100"
-          bg={"#F7FFF7"}
-          left="0"
-          right="0"
-          // boxShadow="md"
-          width="full"
-          pl="3"
-          mb="3rem"
+            pos="fixed"
+            top="50px"
+            zIndex="100"
+            bg={"#F7FFF7"}
+            left="0"
+            right="0"
+            // boxShadow="md"
+            width="full"
+            pl="3"
+            mb="3rem"
           >
-            <HStack spacing="24px">
+            <HStack spacing="24px" fontSize="2xl">
               <Box>
                 {/* <Link to="/projects">Projects</Link> */}
-                <Heading fontWeight="medium">{project.nombre}</Heading>
+                <Text fontWeight="medium">{project.nombre}</Text>
               </Box>
-              <Heading fontWeight="medium">
+              <Text fontWeight="medium">
                 <Link to={`${projectId}/members`}>Miembros</Link>
-              </Heading>
-              <Heading fontWeight="medium">
+              </Text>
+              <Text fontWeight="medium">
                 <Link to={`${projectId}/roles`}>Configurar roles</Link>
-              </Heading>
+              </Text>
             </HStack>
           </Box>
           <HStack pl="5" pr="5" mt="8rem">
@@ -72,10 +80,24 @@ export default function Index({ props }) {
               <Flex justify="center">
                 <Heading fontSize="3xl">To Do</Heading>
               </Flex>
-              <Box p="5">
-                <Link to={`${projectId}/createUS`}>+ agregar nueva tarjeta</Link>
-              </Box>
-              
+              <VStack>
+                <LinkBox
+                  to={`${projectId}/createUS`}
+                  pt="2px"
+                  pl="2"
+                  pr="2"
+                  borderRadius="5"
+                  m="10px"
+                  _hover={{
+                    background: "#F5F4F5",
+                    color: "teal.500",
+                  }}
+                >
+                  <LinkOverlay href={`${projectId}/createUS`}>
+                    + agregar nueva tarjeta
+                  </LinkOverlay>
+                </LinkBox>
+              </VStack>
             </Box>
             <Box
               w="xs"
@@ -90,10 +112,24 @@ export default function Index({ props }) {
               <Flex justify="center">
                 <Heading fontSize="3xl">Doing</Heading>
               </Flex>
-              <Box p="5">
-                <Link to={`${projectId}/createUS`}>+ agregar nueva tarjeta</Link>
-              </Box>
-              
+              <VStack>
+                <LinkBox
+                  to={`${projectId}/createUS`}
+                  pt="2px"
+                  pl="2"
+                  pr="2"
+                  borderRadius="5"
+                  m="10px"
+                  _hover={{
+                    background: "#F5F4F5",
+                    color: "teal.500",
+                  }}
+                >
+                  <LinkOverlay href={`${projectId}/createUS`}>
+                    + agregar nueva tarjeta
+                  </LinkOverlay>
+                </LinkBox>
+              </VStack>
             </Box>
             <Box
               w="xs"
@@ -108,10 +144,24 @@ export default function Index({ props }) {
               <Flex justify="center">
                 <Heading fontSize="3xl">Done</Heading>
               </Flex>
-              <Box p="5">
-                <Link to={`${projectId}/createUS`}>+ agregar nueva tarjeta</Link>
-              </Box>
-              
+              <VStack>
+                <LinkBox
+                  to={`${projectId}/createUS`}
+                  pt="2px"
+                  pl="2"
+                  pr="2"
+                  borderRadius="5"
+                  m="10px"
+                  _hover={{
+                    background: "#F5F4F5",
+                    color: "teal.500",
+                  }}
+                >
+                  <LinkOverlay href={`${projectId}/createUS`}>
+                    + agregar nueva tarjeta
+                  </LinkOverlay>
+                </LinkBox>
+              </VStack>
             </Box>
             <Box
               w="xs"
@@ -127,11 +177,10 @@ export default function Index({ props }) {
                 <Heading fontSize="3xl">Todas las US</Heading>
               </Flex>
               {project.userStories
-              ? project.userStories.map((us) => <p>{us.nombre}</p>)
-              : null}
-              
+                ? project.userStories.map((us) => <p>{us.nombre}</p>)
+                : null}
             </Box>
-          </HStack>  
+          </HStack>
         </Box>
       ) : (
         <Spinner size="xl" />
