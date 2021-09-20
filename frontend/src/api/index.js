@@ -8,7 +8,13 @@ import {
   getProjects,
 } from "./projects";
 import { getUsers, deleteUser, searchUsersByName } from "./users";
-import { addRole, editRole, deleteRole } from "./roles";
+import {
+  addRole,
+  editRole,
+  deleteRole,
+  asignarUserRole,
+  removeUserRole,
+} from "./roles";
 import {
   addMemberToProject,
   removeMemberFromProject,
@@ -37,6 +43,8 @@ export const api = {
   addRole,
   editRole,
   deleteRole,
+  asignarUserRole,
+  removeUserRole,
   //Members
   addMemberToProject,
   removeMemberFromProject,
