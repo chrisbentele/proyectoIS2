@@ -94,7 +94,10 @@ export default function Index({ props }) {
             alignItems="center"
             mt="8rem"
           >
-            <Heading to="/createProject/">Card</Heading>
+            <Heading to="/createProject/">todas las us</Heading>
+            {project.userStories
+            ? project.userStories.map((us) => <p>{us.nombre}</p>)
+            : null}
           </Flex>
         </Flex>
           
