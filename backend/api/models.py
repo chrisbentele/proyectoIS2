@@ -56,7 +56,7 @@ class Retrospectiva(Model):
 
 
 class Sprint(Model):
-    fechaInicio = DateField()
+    fechaInicio = DateField(auto_now_add=True)
     fechaFinalizacion = DateField()
     creadoPor = ForeignKey(Usuario, on_delete=CASCADE)
     terminado = BooleanField(default=False)
