@@ -9,24 +9,16 @@
 
 //api.addRole(projectId, "nombre", permisos[])
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   FormControl,
-  FormLabel,
-  FormErrorMessage,
-  FormHelperText,
   Input,
-  Radio,
-  Stack,
-  RadioGroup,
   Checkbox,
   CheckboxGroup,
   Select,
   Grid,
-  GridItem,
   Button,
-  ButtonGroup,
   Flex,
 } from "@chakra-ui/react";
 import { PERMISOS, ROLES } from "./permisos";
@@ -44,12 +36,18 @@ export default function Roles({ props }) {
     formState: { errors },
     setValue,
   } = useForm();
-  const onSubmit = (data) => {
-    api.addRole(projectId, data.nombre_rol, data.permisos);
-    console.log(data);
+  const onSubmit = async (data) => {
+    const rolesFetch = await api.getRoles(projectId);
+    if (rolesFetch.filter((x) => x.nombre === data.nombre_rol).length === 0) {
+      api.addRole(projectId, data.nombre_rol, data.permisos);
+      window.location.reload(false);
+    }
   };
   const permisos_rol = watch("permisos", []); // Cambia los permisos de acuerdo al rol y permisos seleccionados
   const nombre_rol = watch("nombre_rol", []);
+  const [listaRoles, setListaRoles] = useState([]);
+  useEffect(() => { api.getRoles(projectId).then((listaR) => setListaRoles(listaR)) }, []);
+  console.log(listaRoles)
 
   return (
     <Flex p="16" justifyContent="center">
@@ -72,6 +70,11 @@ export default function Roles({ props }) {
               {x.title}
             </option>
           ))}
+          {listaRoles.map((x, i) =>
+            <option key={i} value={i}>
+              {x.nombre}
+            </option>
+          )}
           <option onClick={() => setAdd(true)}>Agregar</option>
         </Select>
         <Box hidden={!add}>
