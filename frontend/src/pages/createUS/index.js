@@ -28,10 +28,13 @@ import { Link } from "react-router-dom";
 import { api } from "../../api";
 import { useAuth0 } from "@auth0/auth0-react";
 
-export default function CreateUserStory() {
+export default function CreateUserStory({ props }) {
   const [users, setUsers] = useState([]); //Los usuarios del sistema
   const { user } = useAuth0();
   const toast = useToast();
+  console.log(props);
+  const projectId = props.computedMatch.params.id;
+
   //Al cargarse la pagina se buscan todos los usuarios
   useEffect(() => {
     api
@@ -42,6 +45,7 @@ export default function CreateUserStory() {
       })
       .catch((err) => console.log(err));
   }, []);
+
   const {
     handleSubmit,
     register,
@@ -52,9 +56,8 @@ export default function CreateUserStory() {
   const history = useHistory(); //para poder redirigir al usuario luego de la crecion exitosa del proyecto
   async function onSubmit(values) {
     //funcion que define el comportamiento al confirmar el form
-    console.log(values)
     await api
-      .createUserStory({ ...values, id: user.sub })
+      .createUserStory({ ...values, projectId, creadoPor: user.sub })
       .then((res) => {
         if (res.id) {
           toast({
@@ -92,7 +95,7 @@ export default function CreateUserStory() {
         fontSize="lg"
       >
         <form onSubmit={handleSubmit(onSubmit)}>
-          <FormControl isInvalid={errors.nombre}>
+          <FormControl isInvalid={errors.usName}>
             <FormLabel fontSize="25px">Nombre de US</FormLabel>
             <Input
               fontSize="lg"
@@ -108,11 +111,12 @@ export default function CreateUserStory() {
               })}
             />
             <FormErrorMessage>
-              {errors.nombre && errors.nombre.message}
+              {errors.usName && errors.usName.message}
             </FormErrorMessage>
           </FormControl>
-          <FormLabel fontSize="25px">Descripcion</FormLabel>
-          <Input
+          <FormControl isInvalid={errors.description}>
+            <FormLabel fontSize="25px">Descripcion</FormLabel>
+            <Input
               fontSize="lg"
               id="description"
               placeholder="Descripcion"
@@ -126,9 +130,10 @@ export default function CreateUserStory() {
               })}
             />
             <FormErrorMessage>
-              {errors.nombre && errors.nombre.message}
+              {errors.description && errors.description.message}
             </FormErrorMessage>
-            
+          </FormControl>
+
           <Flex>
             <Button
               mt={4}
