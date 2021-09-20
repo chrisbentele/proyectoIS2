@@ -1,80 +1,110 @@
-import { useState } from "react";
-import {
-  Box,
-  FormControl,
-  Input,
-  Checkbox,
-  CheckboxGroup,
-  Select,
-  Grid,
-  Button,
-} from "@chakra-ui/react";
-import { PERMISOS, ROLES } from "./permisos";
-import React from "react";
-import { set, useForm } from "react-hook-form";
+// //api.addRole(projectId, "nombre", permisos[])
 
-export const Role = () => {
-  const [rol, setRol] = useState();
-  const [add, setAdd] = useState();
-  let roles = [
-    { title: "Admin", permisos: PERMISOS.map((x) => x.value) },
-    { title: "Scrum Master", permisos: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
-    { title: "Developer team", permisos: [1, 2, 5, 6, 7, 8, 10, 11] },
-  ];
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-    setValue,
-  } = useForm();
-  const onSubmit = (data) => console.log(data);
-  //console.log(watch("example")); // watch input value by passing the name of it
-  //value={x.value.toString()}
+// import { useState } from "react";
+// import {
+//   Box,
+//   FormControl,
+//   FormLabel,
+//   FormErrorMessage,
+//   FormHelperText,
+//   Input,
+//   Radio,
+//   Stack,
+//   RadioGroup,
+//   Checkbox,
+//   CheckboxGroup,
+//   Select,
+//   Grid,
+//   GridItem,
+//   Button,
+//   ButtonGroup,
+//   Flex,
+// } from "@chakra-ui/react";
+// import { PERMISOS, ROLES } from "./permisos";
+// import React from "react";
+// import { set, useForm } from "react-hook-form";
+// import { api } from "../../api/"
 
-  //console.log(rol);
-  //console.log(rol?.permisos.includes(0));
-  //{PERMISOS.map(x => (console.log(rol?.permisos.includes(x.value))))}
-  //{add ? x.value.toString():null}
+// export const Role = () => {
+//   const [add, setAdd] = useState();
+//   const projectId = props.computedMatch.params.id;
+//   const {
+//     register,
+//     handleSubmit,
+//     watch,
+//     formState: { errors },
+//     setValue,
+//   } = useForm();
+//   const onSubmit = (data) => {
+//     api.addRole(projectId, data.nombre_rol, data.permisos);
+//     console.log(data.nombre_rol, data.permisos);
+//   };
+//   const permisos_rol = watch("permisos", []); // Cambia los permisos de acuerdo al rol y permisos seleccionados
+//   const nombre_rol = watch("nombre_rol", []);
 
-  return (
-    <Box>
-      <Select
-        onChange={(e) => {
-          setRol(roles[e.target.value]);
-        }}
-      >
-        <option hidden>Seleccione un rol</option>
-        {roles.map((x, i) => (
-          <option key={i} value={i} onClick={() => setAdd(false)}>
-            {x.title}
-          </option>
-        ))}
-        <option onClick={() => setAdd(true)}>Agregar</option>
-      </Select>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl>
-          <CheckboxGroup>
-            <Grid templateColumns="repeat(5, 1fr)" gap={6} padding="10">
-              {PERMISOS.map((x) => (
-                <Checkbox
-                  value={add ? x.value.toString() : undefined}
-                  isDisabled={"Admin" === rol?.title || (!rol && !add)}
-                  isChecked={rol?.permisos.includes(x.value)}
-                >
-                  {x.title}
-                </Checkbox>
-              ))}
-            </Grid>
-          </CheckboxGroup>
-        </FormControl>
+//   return (
+//     <Flex p="16" justifyContent="center">
+//       <Box w="90ch">
+//         <Select
+//           pb="4"
+//           onChange={(e) => {
+//             const rol = ROLES[e.target.value];
+//             setAdd(true);
+//             setValue("nombre_rol", rol?.title || "");
+//             setValue(
+//               "permisos",
+//               ROLES[e.target.value]?.permisos.map((x) => x.toString()) || [] // Mapea los permisos si es un rol predefinido
+//             );
+//           }}
+//         >
+//           <option hidden>Seleccione un rol</option>
+//           {ROLES.map((x, i) => (
+//             <option key={i} value={i}>
+//               {x.title}
+//             </option>
+//           ))}
+//           <option onClick={() => setAdd(true)}>Agregar</option>
+//         </Select>
+//         <Box hidden={!add}>
+//           <form onSubmit={handleSubmit(onSubmit)}>
+//             <Input
+//               isDisabled={
+//                 ROLES.filter((x) => x.title == nombre_rol).length != 0 // si el rol es uno pre definido
+//               }
+//               placeholder="Nombre del Rol"
+//               {...register("nombre_rol")}
+//             />
+//             <FormControl>
+//               <CheckboxGroup
+//                 value={permisos_rol}
+//                 onChange={(val) => setValue("permisos", val)}
+//               >
+//                 <Grid templateColumns="repeat(5, 1fr)" gap={6} padding="10">
+//                   {PERMISOS.map((x) => (
+//                     <Checkbox
+//                       key={x.value.toString()}
+//                       value={x.value.toString()}
+//                       isDisabled={
+//                         ROLES.filter((x) => x.title == nombre_rol).length != 0 // si el rol es uno pre definido
+//                       }
+//                     >
+//                       {x.title}
+//                     </Checkbox>
+//                   ))}
+//                 </Grid>
+//               </CheckboxGroup>
+//             </FormControl>
+//             <Button
+//               hidden={ROLES.filter((x) => x.title == nombre_rol).length != 0} // si el rol es uno pre definido
+//               type="submit"
+//             >
+//               Agregar
+//             </Button>
+//           </form>
+//         </Box>
+//       </Box>
+//     </Flex>
+//   );
+// };
 
-        <Button type="submit" ml="2rem">
-          Agregar
-        </Button>
-      </form>
-    </Box>
-  );
-};
-
-export default Role;
+// export default Role;
