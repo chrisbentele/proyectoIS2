@@ -19,8 +19,7 @@ function useProvideDbAuth() {
 
   useEffect(() => {
     if (user) {
-      console.log(user);
-      getUser(user.email, user.name).then((x) => setDbUser(x));
+      getUser(user.sub, user.email, user.name).then((x) => setDbUser(x));
     }
   }, [user]);
 

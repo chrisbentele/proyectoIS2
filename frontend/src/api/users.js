@@ -17,25 +17,35 @@ export const getUsers = async () => {
 //La funcion sirve para que al iniciar sesion con el SSO, se busque al usuario en la base de datos,
 //si no se encuentra al mismo se lo agregara a la base de datos
 //manda como parametro el email del usuario
-export const getUser = async (email, nombre) => {
+export const getUser = async (id = null, email = null, nombre = null) => {
   try {
     console.log(email);
-    let res = await axiosInstance
-      .get("usuarios", {
-        params: {
-          email,
-        },
-      })
-      .catch((e) => {
+    let res;
+    if (id) {
+      res = await axiosInstance.get(`usuarios/${id}`).catch((e) => {
         console.log(e.response.status);
         if (e.response.status == 404) return false;
         else throw e;
       });
+    } else if (email) {
+      res = await axiosInstance
+        .get("usuarios", {
+          params: {
+            email,
+          },
+        })
+        .catch((e) => {
+          console.log(e.response.status);
+          if (e.response.status == 404) return false;
+          else throw e;
+        });
+    }
     console.log(res);
 
     if (!res) {
       // Si no existe el usuario crear
       res = await axiosInstance.post("usuarios", {
+        id,
         email,
         nombre,
       });
