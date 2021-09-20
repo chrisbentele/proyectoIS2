@@ -2,11 +2,10 @@ from .serializers import (
     ProyectoSerializer,
     RolAsignadoSerializer,
     RolSerializer,
-    SprintSerializer,
     USSerializer,
     UsuarioSerializer,
 )
-from api.models import US, Proyecto, Rol, RolAsignado, Sprint, Usuario
+from api.models import US, Proyecto, Rol, RolAsignado, Usuario
 from django.http.response import (
     HttpResponseBadRequest,
     HttpResponseNotFound,
@@ -43,7 +42,6 @@ def proyectos(request, proyect_id=None):
         p = Proyecto.objects.get(id=proyect_id)
         p.delete()
         return JsonResponse(True, safe=False, status=204)
-
 
     elif request.method == "PUT":
         if proyect_id:
@@ -86,7 +84,7 @@ def usuarios(request, user_id=None):
             else:
                 u = Usuario.objects.get(id=user_id)
                 serializer = UsuarioSerializer(u)
-                print(serializer.data)
+
             return JsonResponse(serializer.data, safe=False)
         except Usuario.DoesNotExist:
             return HttpResponseNotFound()
@@ -237,7 +235,7 @@ def roles(request, proyect_id, rol_id=None):
 
 
 # Api para asignar los roles a los usuarios
-def usuarios_proyectos_roles(request, proyect_id, user_id, rol_id=None):
+def proyectos_miembros_roles(request, proyect_id, user_id, rol_id=None):
 
     if request.method == "POST":
         # En caso de POST asigna un rol a un usuario
@@ -308,7 +306,7 @@ def user_stories(request, proyect_id, us_id=None):
     elif request.method == "DELETE":
         us = US.objects.get(id=us_id)
         us.delete()
-        return JsonResponse(True, status=204)
+        return JsonResponse(True, status=204, safe=False)
 
     elif request.method == "PUT":
         if us_id:
