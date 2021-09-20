@@ -156,7 +156,7 @@ export default function CreateUserStory({ props }) {
               fontSize="lg"
             >
               <Link
-                to="/profile"
+                to={`/projects/${projectId}`}
                 mt={4}
                 colorScheme="teal"
                 borderColor="black"
