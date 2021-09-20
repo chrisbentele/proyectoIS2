@@ -40,6 +40,18 @@ export const getRole = async (proyectoId, roleId) => {
   }
 };
 
+//trae los roles
+export const getRoles = async (proyectoId) => {
+  try {
+    const res = await axiosInstance.get(
+      `/proyectos/${proyectoId}/roles`
+    );
+    return res.data;
+  } catch (error) {
+    return error;
+  }
+};
+
 //Editar rol
 export const editRole = async (
   proyectoId,
