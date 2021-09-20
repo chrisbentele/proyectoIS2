@@ -1,4 +1,8 @@
-// Lista de permisos generales
+/**
+ * @file permisos.js
+ * @brief Aquí se encuentran los templates para algunos roles ya predefinidos
+ */
+//! Lista de permisos generales
 export const PERMISOS = [
   { title: "Crear proyecto", value: 0 },
   { title: "Ver proyecto", value: 1 },
@@ -20,7 +24,7 @@ export const PERMISOS = [
   { title: "Eliminar usuario", value: 17 },
 ];
 
-//Lista de roles predefinidos
+//! Lista de roles predefinidos
 export const ROLES = [
   { title: "Admin", permisos: PERMISOS.map((x) => x.value) },
   { title: "Scrum Master", permisos: [1, 2] },

@@ -1,6 +1,10 @@
-//Pagina de creacion de proyectos
-
+/**
+ * @file index.js
+ * @brief Página de creación de proyectos
+ */
+//! Componente de React Select
 import Select from "react-select";
+//! Componentes del Chakra UI
 import {
   FormControl,
   FormLabel,
@@ -21,6 +25,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { Controller, useForm } from "react-hook-form";
+//! Librerías de React.js.
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../providers/DbAuth";
 import { useHistory } from "react-router";
@@ -28,6 +33,10 @@ import { Link } from "react-router-dom";
 import { api } from "../../api";
 import { useAuth0 } from "@auth0/auth0-react";
 
+/**
+ * Función principal de esta vista
+ * @returns React Component
+ */
 export default function CreateProject() {
   const [users, setUsers] = useState([]); //Los usuarios del sistema
   const { user } = useAuth0();

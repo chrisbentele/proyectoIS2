@@ -1,4 +1,11 @@
+/**
+ * @file profile.js
+ * @brief Página de incio de al sistema.
+ */
+
+//! Componentes de React.js
 import React, { useEffect, useState } from "react";
+//! Componente de Auth0
 import { useAuth0 } from "@auth0/auth0-react";
 import { Link } from "react-router-dom";
 import { Box, Flex, Heading, HStack, VStack, Text, LinkBox, LinkOverlay } from "@chakra-ui/layout";
@@ -8,6 +15,7 @@ import { api } from "../api";
 import { useAuth } from "../providers/DbAuth";
 import { projectStateToString } from "../util";
 
+//! Componente principal de esta página
 const Profile = (props) => {
   const { user, isAuthenticated, isLoading } = useAuth0();
   const [userProjects, setUserProjects] = useState([]);

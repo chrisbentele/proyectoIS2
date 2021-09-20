@@ -1,3 +1,8 @@
+/**
+ * @file index.js
+ * @brief Funciones de API para el frontend
+ */
+
 import axios from "axios";
 
 import {

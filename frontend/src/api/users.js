@@ -1,9 +1,12 @@
-//Importar la instancia de axios
+//! Importar la instancia de axios
 import { axiosInstance } from ".";
 
-//Endpoints de usuarios
+/**
+ * @file users.js
+ * @brief Endpoints de usuarios
+ */
 
-//Listar todos los usuarios
+//! Listar todos los usuarios
 export const getUsers = async () => {
   try {
     const res = await axiosInstance.get("/usuarios");
@@ -13,10 +16,14 @@ export const getUsers = async () => {
   }
 };
 
-//Obtener usuario
-//La funcion sirve para que al iniciar sesion con el SSO, se busque al usuario en la base de datos,
-//si no se encuentra al mismo se lo agregara a la base de datos
-//manda como parametro el email del usuario
+/**
+ * Obtener usuario \n
+ * La funcion sirve para que al iniciar sesion con el SSO, se busque al usuario en la base de datos,si no se encuentra al mismo se lo agregara a la base de datos manda como parametro el email del usuario
+ * @param id 
+ * @param email 
+ * @param nombre 
+ * @returns Resultado de la operación
+ */
 export const getUser = async (id = null, email = null, nombre = null) => {
   try {
     console.log(email);
@@ -57,8 +64,12 @@ export const getUser = async (id = null, email = null, nombre = null) => {
   }
 };
 
-//Eliminar usuario
-//La funcion recibe como parametro el id del usuario a eliminar
+/**
+ * Eliminar usuario \n
+ * La funcion recibe como parametro el id del usuario a eliminar
+ * @param userId
+ * @returns Resultado de la operación
+ */
 export const deleteUser = async (userId) => {
   try {
     const res = await axiosInstance.delete(`/usuarios/${userId}`);
@@ -68,8 +79,12 @@ export const deleteUser = async (userId) => {
   }
 };
 
-//Buscar a usuarios por nombre
-//La funcion recibe como parametro un string, que seria el nombre del usuario, retorna los usuarios que contienen este string
+/**
+ * Buscar a usuarios por nombre \n
+ * La funcion recibe como parametro un string, que seria el nombre del usuario, retorna los usuarios que contienen este string
+ * @param string
+ * @returns Resultado de la operación
+ */
 export const searchUsersByName = async (string) => {
   try {
     const res = await axiosInstance.get(`/usuarios?searchTerm=string`);
