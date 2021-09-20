@@ -89,7 +89,22 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <div class="title">Bienvenido a la documentación de System.A. </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>Esta decumentación explicará los componentes del sistema para su futura referencia. </p>
+<div class="textblock"><p>Esta decumentación explicará los componentes del sistema para su futura referencia.</p>
+<h2>Requerimientos</h2>
+<p>El software ha sido probado en Ubuntu 20.04 </p><h2>Instalación</h2>
+<p>Primeramente se deben instalar las dependencias del proyecto, para ello primeramente clone con el comando:</p>
+<p><code>$ git clone <a href="https://github.com/chrisbentele/proyectoIS2.git">https://github.com/chrisbentele/proyectoIS2.git</a></code></p>
+<p>Una vez clonado el repositorio, ejecute el siguiente comando para instalar las dependencias:</p>
+<p><code>$ cd proyecto</code></p>
+<p><code>$ ./install.sh</code></p>
+<h2>Uso</h2>
+<p>Una bez instaladas las dependencias proceda a ejecutar en dos terminales separadas los siguiente scripts</p>
+<p><code>$ ./backend.sh</code></p>
+<p>Y luego</p>
+<p><code>$ ./frontend.sh</code></p>
+<p>En este momento la página debería desplegarse, o puede acceder a ella en <a href="http://localhost:3000">http://localhost:3000</a></p>
+<h2>Troubleshooting</h2>
+<p>Si tiene algún problema con la base de datos, puede ejecutar el script <code>$ ./backend/cread_db.sh</code>, este script creará una base de datos nueva. </p>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 </div><!-- doc-content -->

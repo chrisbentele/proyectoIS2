@@ -94,7 +94,7 @@ $(document).ready(function(){initNavTree('namespaceapi_1_1urls.html',''); initRe
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:acf0791c020d762f380a28d47325b3943"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceapi_1_1urls.html#acf0791c020d762f380a28d47325b3943">apiPaths</a> = [path(&quot;proyecto/&quot;, proyecto), path(&quot;proyecto/&lt;str:id&gt;&quot;, proyecto)]</td></tr>
+<tr class="memitem:acf0791c020d762f380a28d47325b3943"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceapi_1_1urls.html#acf0791c020d762f380a28d47325b3943">apiPaths</a></td></tr>
 <tr class="separator:acf0791c020d762f380a28d47325b3943"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae1c754cb38c35b590f6a741ace140a07"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceapi_1_1urls.html#ae1c754cb38c35b590f6a741ace140a07">urlpatterns</a> = [path(&quot;api/&quot;, include(<a class="el" href="namespaceapi_1_1urls.html#acf0791c020d762f380a28d47325b3943">apiPaths</a>))]</td></tr>
 <tr class="separator:ae1c754cb38c35b590f6a741ace140a07"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -122,11 +122,32 @@ Including another URLconf
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">list api.urls.apiPaths = [path(&quot;proyecto/&quot;, proyecto), path(&quot;proyecto/&lt;str:id&gt;&quot;, proyecto)]</td>
+          <td class="memname">list api.urls.apiPaths</td>
         </tr>
       </table>
 </div><div class="memdoc">
-
+<b>Initial value:</b><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;=  [</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;    path(<span class="stringliteral">&quot;proyectos&quot;</span>, proyectos),</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;    path(<span class="stringliteral">&quot;proyectos/&lt;str:proyect_id&gt;&quot;</span>, proyectos),</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;    path(<span class="stringliteral">&quot;proyectos/&lt;str:proyect_id&gt;/miembros&quot;</span>, proyectos_miembros),</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;    path(<span class="stringliteral">&quot;proyectos/&lt;str:proyect_id&gt;/miembros/&lt;str:user_id&gt;&quot;</span>, proyectos_miembros),</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;    path(<span class="stringliteral">&quot;proyectos/&lt;str:proyect_id&gt;/user_stories&quot;</span>, user_stories),</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;    path(<span class="stringliteral">&quot;proyectos/&lt;str:proyect_id&gt;/user_stories/&lt;str:us_id&gt;&quot;</span>, user_stories),</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    path(<span class="stringliteral">&quot;usuarios&quot;</span>, usuarios),</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    path(<span class="stringliteral">&quot;usuarios/&lt;str:user_id&gt;&quot;</span>, usuarios),</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    path(<span class="stringliteral">&quot;usuarios/&lt;str:user_id&gt;/proyectos&quot;</span>, usuarios_proyectos),</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    path(<span class="stringliteral">&quot;proyectos/&lt;str:proyect_id&gt;/roles&quot;</span>, roles),</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    path(<span class="stringliteral">&quot;proyectos/&lt;str:proyect_id&gt;/roles/&lt;str:rol_id&gt;&quot;</span>, roles),</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    path(</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;        <span class="stringliteral">&quot;proyectos/&lt;str:proyect_id&gt;/miembros/&lt;str:user_id&gt;/roles&quot;</span>,</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        proyectos_miembros_roles,</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    ),</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    path(</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        <span class="stringliteral">&quot;proyectos/&lt;str:proyect_id&gt;/miembros/&lt;str:user_id&gt;/roles/&lt;str:rol_id&gt;&quot;</span>,</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        proyectos_miembros_roles,</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    ),</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;]</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="ae1c754cb38c35b590f6a741ace140a07"></a>
