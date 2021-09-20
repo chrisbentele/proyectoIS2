@@ -37,6 +37,7 @@ estadoProyecto = ((0, "Pendiente"), (1, "Activo"), (2, "Terminado"))
 
 
 class Usuario(Model):
+    id = CharField(primary_key=True, max_length=100, editable=False)
     nombre = CharField(max_length=100)
     email = EmailField(unique=True)
 

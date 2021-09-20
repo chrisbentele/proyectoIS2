@@ -15,7 +15,7 @@ const Profile = (props) => {
     if (!isLoading) {
       console.log(user);
       api
-        .getProjects(user.id)
+        .getProjects(user.sub)
         .then((projects) => setUserProjects(projects))
         .catch((err) => console.log(err));
       console.log("done");

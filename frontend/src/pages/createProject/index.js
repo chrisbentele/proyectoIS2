@@ -107,7 +107,7 @@ export default function CreateProject() {
               setFormValues({ ...formValues, scrumMasterId: e.value })
             }
             options={users.map((user) => {
-              return { value: user.id, label: user.nombre };
+              return { value: user.sub, label: user.nombre };
             })}
           />
           <FormControl isInvalid={errors["estimado"]}>

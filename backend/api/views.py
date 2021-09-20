@@ -65,7 +65,10 @@ def usuarios(request, user_id=None):
         data = JSONParser().parse(request)
         serializer = UsuarioSerializer(data=data)
         if serializer.is_valid():
-            serializer.save()
+            if data.get("id"):
+                serializer.save(id=data.get("id"))
+            else:
+                serializer.save()
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400, safe=False)
 
