@@ -1,8 +1,12 @@
-//Import la instancia de axios
+//! Import la instancia de axios
 import { axiosInstance } from ".";
 
-//Endpoints para los miembros
-//Listar todos los miembros
+/**
+ * @file members.js
+ * @brief Endpoints para los miembros
+ */
+
+//!Listar todos los miembros
 export const getMembers = async (projectId) => {
   try {
     const res = await axiosInstance.get(`proyectos/${projectId}/miembros`);
@@ -12,7 +16,7 @@ export const getMembers = async (projectId) => {
   }
 };
 
-//Editar los roles de un miembro
+//! Editar los roles de un miembro
 export const editMembersRole = async (memberId, roleId) => {
   try {
     const res = await axiosInstance.put(`/members/${memberId}`, { roleId });
@@ -22,6 +26,7 @@ export const editMembersRole = async (memberId, roleId) => {
   }
 };
 
+//! Agregar los roles de un miembro
 export const addMemberToProject = async (projectId, userId) => {
   try {
     const res = await axiosInstance.post(
@@ -33,6 +38,7 @@ export const addMemberToProject = async (projectId, userId) => {
   }
 };
 
+//! Eliminar los roles de un miembro
 export const removeMemberFromProject = async (projectId, userId) => {
   try {
     const res = await axiosInstance.delete(

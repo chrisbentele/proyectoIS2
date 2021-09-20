@@ -1,3 +1,8 @@
+/**
+ * @file deleteIcon.js
+ * @brief Botón para borrar
+ */
+
 import React from "react";
 import { AiFillDelete as Delete } from "react-icons/ai";
 import "./deleteIcon.css";

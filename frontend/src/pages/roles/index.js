@@ -1,15 +1,9 @@
-// import React from "react";
-// import Role from "./role";
-
-// export const Roles = () => {
-//   return < Role />
-// }
-
-// export default Roles;
-
-//api.addRole(projectId, "nombre", permisos[])
-
-import { useEffect, useState } from "react";
+/**
+ * @file index.js
+ * @brief Componente de la página para configurar roles.
+ */
+//! Librerías de React.js.
+import React, { useEffect, useState } from "react";
 import {
   Box,
   FormControl,
@@ -22,9 +16,8 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { PERMISOS, ROLES } from "./permisos";
-import React from "react";
 import { set, useForm } from "react-hook-form";
-import { api } from "../../api/"
+import { api } from "../../api/";
 
 export default function Roles({ props }) {
   const [add, setAdd] = useState();
@@ -46,8 +39,10 @@ export default function Roles({ props }) {
   const permisos_rol = watch("permisos", []); // Cambia los permisos de acuerdo al rol y permisos seleccionados
   const nombre_rol = watch("nombre_rol", []);
   const [listaRoles, setListaRoles] = useState([]);
-  useEffect(() => { api.getRoles(projectId).then((listaR) => setListaRoles(listaR)) }, []);
-  console.log(listaRoles)
+  useEffect(() => {
+    api.getRoles(projectId).then((listaR) => setListaRoles(listaR));
+  }, []);
+  console.log(listaRoles);
 
   return (
     <Flex p="16" justifyContent="center">
@@ -56,6 +51,7 @@ export default function Roles({ props }) {
           pb="4"
           onChange={(e) => {
             const rol = ROLES[e.target.value];
+            console.log(e.target.value);
             setAdd(true);
             setValue("nombre_rol", rol?.title || "");
             setValue(
@@ -70,11 +66,11 @@ export default function Roles({ props }) {
               {x.title}
             </option>
           ))}
-          {listaRoles.map((x, i) =>
-            <option key={i} value={i}>
+          {listaRoles.map((x, i) => (
+            <option key={i} value={x.id}>
               {x.nombre}
             </option>
-          )}
+          ))}
           <option onClick={() => setAdd(true)}>Agregar</option>
         </Select>
         <Box hidden={!add}>
@@ -117,6 +113,6 @@ export default function Roles({ props }) {
       </Box>
     </Flex>
   );
-};
+}
 
 //export default Roles;

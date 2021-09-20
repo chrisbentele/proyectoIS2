@@ -1,6 +1,14 @@
+/**
+ * @file index.js
+ * @brief Pagina de 404 Not Found, cuando un URL es erróneo.
+ */
+//! Librerías de React.js.
 import React from "react";
 
-//Pagina de 404 Not Found, cuando un URL es erroneo
+/**
+ * Función de React para la página 404
+ * @returns React Component
+ */
 export default function NotFound() {
   return (
     <div>
