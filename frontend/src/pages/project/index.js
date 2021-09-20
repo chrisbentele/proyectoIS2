@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { api } from "../../api";
 import { Spinner } from "@chakra-ui/spinner";
-import { Box, Heading, Flex } from "@chakra-ui/layout";
+import { Box, Heading, Flex, HStack, Text } from "@chakra-ui/layout";
 import { Link } from "react-router-dom";
 
 export default function Index({ props }) {
@@ -24,11 +24,12 @@ export default function Index({ props }) {
   return (
     <Box
       minHeight="100vh"
-      width="full"
+      minWidth="full"
       bg={"#F5F4F5"}
       color="#2b2d42"
       d="flex"
       justifyContent="left"
+      overflow="auto"
     >
       {project ? ( //si ya se cargo el proyecto se muestra el mismo, si no se muestra la pantalla de carga
         <Box>
@@ -41,89 +42,96 @@ export default function Index({ props }) {
           right="0"
           // boxShadow="md"
           width="full"
-          p="5px"
+          pl="3"
           mb="3rem"
           >
-            <Flex justifyContent="left">
-              <Box></Box>
-
+            <HStack spacing="24px">
               <Box>
                 {/* <Link to="/projects">Projects</Link> */}
-                <Heading>{project.nombre}</Heading>
+                <Heading fontWeight="medium">{project.nombre}</Heading>
               </Box>
-              <Heading>
+              <Heading fontWeight="medium">
                 <Link to={`${projectId}/members`}>Miembros</Link>
               </Heading>
-              <Heading>
+              <Heading fontWeight="medium">
                 <Link to={`${projectId}/roles`}>Configurar roles</Link>
               </Heading>
-            </Flex>
+            </HStack>
           </Box>
-          <Flex pl="2" pr="2">
-            <Flex
+          <HStack pl="5" pr="5" mt="8rem">
+            <Box
               w="xs"
-              height="200px"
+              minHeight="100px"
+              maxHeight="80%"
               borderWidth="1px"
               borderRadius="lg"
-              overflow="hidden"
-              fontSize="3xl"
-              fontWeight="bold"
+              fontSize="2xl"
               bg="white"
               justifyContent="center"
-              alignItems="center"
-              mt="8rem"
             >
-              <Heading to="/createProject/">To Do</Heading>
-            </Flex>
-            <Flex
+              <Flex justify="center">
+                <Heading fontSize="3xl">To Do</Heading>
+              </Flex>
+              <Box p="5">
+                <Text Text>+ agregar nueva tarjeta</Text>
+              </Box>
+              
+            </Box>
+            <Box
               w="xs"
-              height="200px"
+              minHeight="100px"
+              maxHeight="80%"
               borderWidth="1px"
               borderRadius="lg"
-              overflow="hidden"
-              fontSize="3xl"
-              fontWeight="bold"
+              fontSize="2xl"
               bg="white"
               justifyContent="center"
-              alignItems="center"
-              mt="8rem"
             >
-              <Heading to="/createProject/">Doing</Heading>
-            </Flex>
-            <Flex
+              <Flex justify="center">
+                <Heading fontSize="3xl">Doing</Heading>
+              </Flex>
+              <Box p="5">
+                <Text Text>+ agregar nueva tarjeta</Text>
+              </Box>
+              
+            </Box>
+            <Box
               w="xs"
-              height="200px"
+              minHeight="100px"
+              maxHeight="80%"
               borderWidth="1px"
               borderRadius="lg"
-              overflow="hidden"
-              fontSize="3xl"
-              fontWeight="bold"
+              fontSize="2xl"
               bg="white"
               justifyContent="center"
-              alignItems="center"
-              mt="8rem"
             >
-              <Heading to="/createProject/">Done</Heading>
-            </Flex>
-            <Flex
+              <Flex justify="center">
+                <Heading fontSize="3xl">Done</Heading>
+              </Flex>
+              <Box p="5">
+                <Text Text>+ agregar nueva tarjeta</Text>
+              </Box>
+              
+            </Box>
+            <Box
               w="xs"
-              height="200px"
+              minHeight="100px"
+              maxHeight="80%"
               borderWidth="1px"
               borderRadius="lg"
-              overflow="hidden"
-              fontSize="3xl"
-              fontWeight="bold"
+              fontSize="2xl"
               bg="white"
               justifyContent="center"
-              alignItems="center"
-              mt="8rem"
             >
-              <Heading to="/createProject/">todas las us</Heading>
+              <Flex justify="center">
+                <Heading fontSize="3xl">Todas las US</Heading>
+              </Flex>
               {project.userStories
               ? project.userStories.map((us) => <p>{us.nombre}</p>)
               : null}
-            </Flex>
-          </Flex>  
+              
+            </Box>
+          </HStack>  
         </Box>
       ) : (
         <Spinner size="xl" />

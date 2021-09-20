@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Link } from "react-router-dom";
-import { Box, Flex, Heading, HStack, VStack } from "@chakra-ui/layout";
+import { Box, Flex, Heading, HStack, VStack, Text } from "@chakra-ui/layout";
 import { Image } from "@chakra-ui/image";
 import { Grid, GridItem, SimpleGrid } from "@chakra-ui/react";
 import { api } from "../api";
@@ -15,7 +15,7 @@ const Profile = (props) => {
     if (!isLoading) {
       console.log(user);
       api
-        .getProjects(user.id)
+        .getProjects(user.sub)
         .then((projects) => setUserProjects(projects))
         .catch((err) => console.log(err));
       console.log("done");
@@ -98,16 +98,18 @@ const Profile = (props) => {
                         {project.nombre}
                       </Link>
                       <br />
-
-                      <p style={{ fontSize: "20px" }}>
-                        {projectStateToString(project.estado)}
-                      </p>
-                      <p style={{ fontSize: "20px" }}>
-                        Duracion estimada: {project.duracionEstimada} semanas
-                      </p>
-                      <p style={{ fontSize: "20px" }}>
-                        Iniciado: {project.fechaInicio}
-                      </p>
+                      <Box pb="2" fontSize="lg">
+                        <Text>
+                          {projectStateToString(project.estado)}
+                        </Text>
+                        <Text>
+                          Duracion estimada: {project.duracionEstimada} semanas
+                        </Text>
+                        <Text>
+                          Iniciado: {project.fechaInicio}
+                        </Text>
+                      </Box>
+                      
                     </Flex>
                   );
                 })

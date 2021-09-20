@@ -21,7 +21,7 @@ export default function ProjectMembers({ props }) {
       api.getMembers(projectId).then((membersRes) => {
         let membersIds = membersRes.map((member) => member.id);
         let filteredUsers = usersRes.filter(
-          (user) => !membersIds.includes(user.id)
+          (user) => !membersIds.includes(user.sub)
         );
         setState({ ...state, loading: false });
         setUsers([...filteredUsers]);
@@ -37,7 +37,7 @@ export default function ProjectMembers({ props }) {
         if (res) {
           let addedUser;
           const updatedUsers = users.filter((user) => {
-            if (user.id != userId) {
+            if (user.sub != userId) {
               return true;
             } else {
               addedUser = { ...user };
@@ -157,7 +157,7 @@ export default function ProjectMembers({ props }) {
             .map((user) => {
               return {
                 nombre: user.nombre,
-                add: <AddIcon id={user.id} addById={addMemberById} />,
+                add: <AddIcon id={user.sub} addById={addMemberById} />,
               };
             })}
           columns={addTableColumns}

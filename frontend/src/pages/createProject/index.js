@@ -71,10 +71,10 @@ export default function CreateProject() {
       </Heading>
       <Flex
         justifyContent="center"
-        width="80ch"
+        width="70ch"
         borderWidth="2px"
         borderRadius="4"
-        p="150px"
+        p="120px"
         bg="white"
         fontSize="lg"
       >
@@ -107,7 +107,7 @@ export default function CreateProject() {
               setFormValues({ ...formValues, scrumMasterId: e.value })
             }
             options={users.map((user) => {
-              return { value: user.id, label: user.nombre };
+              return { value: user.sub, label: user.nombre };
             })}
           />
           <FormControl isInvalid={errors["estimado"]}>
