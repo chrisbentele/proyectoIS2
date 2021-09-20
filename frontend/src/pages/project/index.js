@@ -73,7 +73,7 @@ export default function Index({ props }) {
                 <Heading fontSize="3xl">To Do</Heading>
               </Flex>
               <Box p="5">
-                <Text Text>+ agregar nueva tarjeta</Text>
+                <Link to={`${projectId}/createUS`}>+ agregar nueva tarjeta</Link>
               </Box>
               
             </Box>
@@ -91,7 +91,7 @@ export default function Index({ props }) {
                 <Heading fontSize="3xl">Doing</Heading>
               </Flex>
               <Box p="5">
-                <Text Text>+ agregar nueva tarjeta</Text>
+                <Link to={`${projectId}/createUS`}>+ agregar nueva tarjeta</Link>
               </Box>
               
             </Box>
@@ -109,7 +109,7 @@ export default function Index({ props }) {
                 <Heading fontSize="3xl">Done</Heading>
               </Flex>
               <Box p="5">
-                <Text Text>+ agregar nueva tarjeta</Text>
+                <Link to={`${projectId}/createUS`}>+ agregar nueva tarjeta</Link>
               </Box>
               
             </Box>

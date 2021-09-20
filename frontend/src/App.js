@@ -15,6 +15,7 @@ import { Box } from "@chakra-ui/react";
 import NotFound from "./pages/notFound";
 import createProject from "./pages/createProject/index";
 import PrivateRoute from "./components/privateRoute";
+import CreateUserStory from "./pages/createUS";
 
 export default function App() {
   return (
@@ -44,6 +45,11 @@ export default function App() {
           <PrivateRoute
             path="/projects/:id/config"
             component={ProjectConfig}
+            exact
+          />
+          <PrivateRoute
+            path="/projects/:id/createUS"
+            component={CreateUserStory}
             exact
           />
           <Route path="/" component={NotFound} />
