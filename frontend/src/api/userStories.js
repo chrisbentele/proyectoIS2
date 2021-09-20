@@ -1,17 +1,14 @@
 import { axiosInstance } from ".";
 
-export const createUserStory = async (
-  idProyecto,
-  usName,
-  description,
-  creadoPor
-) => {
+export const createUserStory = async (usData) => {
+  console.log(usData);
+  const { projectId, usName, description, creadoPor } = usData;
   try {
     const res = await axiosInstance.post(
-      `/proyectos/${idProyecto}/user_stories`,
+      `/proyectos/${projectId}/user_stories`,
       {
-        usName,
-        description,
+        nombre: usName,
+        contenido: description,
         creadoPor,
       }
     );
