@@ -24,7 +24,7 @@ export default function Index({ props }) {
   return (
     <Box
       minHeight="100vh"
-      width="full"
+      minWidth="full"
       bg={"#F5F4F5"}
       color="#2b2d42"
       d="flex"
@@ -59,21 +59,25 @@ export default function Index({ props }) {
               </Heading>
             </Flex>
           </Box>
-          <Flex pl="2" pr="2">
+          <Flex pl="2" pr="2" flexWrap="nowrap">
             <Flex
               w="xs"
               height="200px"
               borderWidth="1px"
               borderRadius="lg"
               overflow="hidden"
-              fontSize="3xl"
+              fontSize="2xl"
               fontWeight="bold"
               bg="white"
               justifyContent="center"
-              alignItems="center"
+              display="row"
               mt="8rem"
             >
-              <Heading to="/createProject/">To Do</Heading>
+              
+              <Heading fontSize="3xl">To Do</Heading>
+              <Box p="5">
+                hola
+              </Box>
             </Flex>
             <Flex
               w="xs"
@@ -81,14 +85,14 @@ export default function Index({ props }) {
               borderWidth="1px"
               borderRadius="lg"
               overflow="hidden"
-              fontSize="3xl"
+              fontSize="2xl"
               fontWeight="bold"
               bg="white"
               justifyContent="center"
-              alignItems="center"
+              display="row"
               mt="8rem"
             >
-              <Heading to="/createProject/">Doing</Heading>
+              <Heading fontSize="3xl">Doing</Heading>
             </Flex>
             <Flex
               w="xs"
@@ -96,14 +100,13 @@ export default function Index({ props }) {
               borderWidth="1px"
               borderRadius="lg"
               overflow="hidden"
-              fontSize="3xl"
+              fontSize="2xl"
               fontWeight="bold"
               bg="white"
               justifyContent="center"
-              alignItems="center"
               mt="8rem"
             >
-              <Heading to="/createProject/">Done</Heading>
+              <Heading fontSize="3xl">Done</Heading>
             </Flex>
             <Flex
               w="xs"
@@ -111,14 +114,13 @@ export default function Index({ props }) {
               borderWidth="1px"
               borderRadius="lg"
               overflow="hidden"
-              fontSize="3xl"
+              fontSize="2xl"
               fontWeight="bold"
               bg="white"
               justifyContent="center"
-              alignItems="center"
               mt="8rem"
             >
-              <Heading to="/createProject/">todas las us</Heading>
+              <Heading fontSize="3xl">todas las us</Heading>
               {project.userStories
               ? project.userStories.map((us) => <p>{us.nombre}</p>)
               : null}
