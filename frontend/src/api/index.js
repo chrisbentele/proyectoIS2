@@ -19,7 +19,7 @@ import {
   getRole,
   getRoles,
   deleteRole,
-  asignarUserRole,
+  setUserRole,
   removeUserRole,
 } from "./roles";
 import {
@@ -53,7 +53,7 @@ export const api = {
   getRole,
   getRoles,
   deleteRole,
-  asignarUserRole,
+  setUserRole,
   removeUserRole,
   //Members
   addMemberToProject,
