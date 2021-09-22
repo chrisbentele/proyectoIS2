@@ -31,6 +31,10 @@ PERMISOS = (
     (15, "Agregar usuario"),
     (16, "Editar rol del usuario"),
     (17, "Eliminar usuario"),
+    (18, "Crear Sprint"),
+    (19, "Modificar Sprint"),
+    (20, "Eliminar Sprint"),
+    (21, "Estimar Sprint"),
 )
 ESTADO_US = ((0, "To do"), (1, "Doing"), (2, "Done"), (4, "Backlog"))
 
