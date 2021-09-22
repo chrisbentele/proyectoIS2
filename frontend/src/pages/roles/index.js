@@ -50,22 +50,23 @@ export default function Roles({ props }) {
         <Select
           pb="4"
           onChange={(e) => {
-            const rol = ROLES[e.target.value];
+            const id = e.target.value;
+            const rol = listaRoles.filter((x) => x.id == id)[0];
             console.log(e.target.value);
             setAdd(true);
-            setValue("nombre_rol", rol?.title || "");
+            setValue("nombre_rol", rol?.nombre || "");
             setValue(
               "permisos",
-              ROLES[e.target.value]?.permisos.map((x) => x.toString()) || [] // Mapea los permisos si es un rol predefinido
+              rol?.permisos.map((x) => x.toString()) || [] // Mapea los permisos si es un rol predefinido
             );
           }}
         >
           <option hidden>Seleccione un rol</option>
-          {ROLES.map((x, i) => (
+          {/* {ROLES.map((x, i) => (
             <option key={i} value={i}>
               {x.title}
             </option>
-          ))}
+          ))} */}
           {listaRoles.map((x, i) => (
             <option key={i} value={x.id}>
               {x.nombre}
@@ -77,7 +78,7 @@ export default function Roles({ props }) {
           <form onSubmit={handleSubmit(onSubmit)}>
             <Input
               isDisabled={
-                ROLES.filter((x) => x.title == nombre_rol).length != 0 // si el rol es uno pre definido
+                listaRoles.filter((x) => x.title == nombre_rol).length != 0 // si el rol es uno pre definido
               }
               placeholder="Nombre del Rol"
               {...register("nombre_rol")}
@@ -93,7 +94,8 @@ export default function Roles({ props }) {
                       key={x.value.toString()}
                       value={x.value.toString()}
                       isDisabled={
-                        ROLES.filter((x) => x.title == nombre_rol).length != 0 // si el rol es uno pre definido
+                        listaRoles.filter((x) => x.title == nombre_rol)
+                          .length != 0 // si el rol es uno pre definido
                       }
                     >
                       {x.title}
@@ -103,7 +105,9 @@ export default function Roles({ props }) {
               </CheckboxGroup>
             </FormControl>
             <Button
-              hidden={ROLES.filter((x) => x.title == nombre_rol).length != 0} // si el rol es uno pre definido
+              hidden={
+                listaRoles.filter((x) => x.title == nombre_rol).length != 0
+              } // si el rol es uno pre definido
               type="submit"
             >
               Agregar

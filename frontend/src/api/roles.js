@@ -104,7 +104,7 @@ export const editRole = async (
  * @param proyectoId
  * @param userId
  */
-export const asignarUserRole = async (roleId, projectId, userId) => {
+export const setUserRole = async (roleId, projectId, userId) => {
   try {
     const res = await axiosInstance.post(
       `proyectos/${projectId}/miembros/${userId}/roles/${roleId}`
