@@ -48,7 +48,7 @@ export default function App() {
   return (
     <Router>
       <Header />
-      <Box m="0" height="100%" width="100%">
+      <Box m="0" mt="55px" height="100%" width="100%">
         <Switch>
           <Route path="/" component={Home} exact />
           <Route path="/login" component={Login} exact />
@@ -64,11 +64,7 @@ export default function App() {
             component={ProjectMembers}
             exact
           />
-          <PrivateRoute
-            path="/projects/:id/roles"
-            component={Roles}
-            exact
-          />
+          <PrivateRoute path="/projects/:id/roles" component={Roles} exact />
           <PrivateRoute
             path="/projects/:id/config"
             component={ProjectConfig}

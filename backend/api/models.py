@@ -9,6 +9,7 @@ from django.db.models.fields import (
 )
 from django.db.models.fields.related import ForeignKey, ManyToManyField, OneToOneField
 from django.contrib.postgres.fields import ArrayField
+import uuid
 
 # Create your models here.
 PERMISOS = (
@@ -30,6 +31,10 @@ PERMISOS = (
     (15, "Agregar usuario"),
     (16, "Editar rol del usuario"),
     (17, "Eliminar usuario"),
+    (18, "Crear Sprint"),
+    (19, "Modificar Sprint"),
+    (20, "Eliminar Sprint"),
+    (21, "Estimar Sprint"),
 )
 ESTADO_US = ((0, "To do"), (1, "Doing"), (2, "Done"), (4, "Backlog"))
 
@@ -37,7 +42,9 @@ estadoProyecto = ((0, "Pendiente"), (1, "Activo"), (2, "Terminado"))
 
 
 class Usuario(Model):
-    id = CharField(primary_key=True, max_length=100, editable=False)
+    id = CharField(
+        primary_key=True, default=str(uuid.uuid4()), max_length=100, editable=False
+    )
     nombre = CharField(max_length=100)
     email = EmailField(unique=True)
 

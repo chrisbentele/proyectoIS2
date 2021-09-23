@@ -94,18 +94,30 @@ $(document).ready(function(){initNavTree('namespaceapi_1_1views.html',''); initR
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a4224109c2b468edbab1e546bce9642bb"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceapi_1_1views.html#a4224109c2b468edbab1e546bce9642bb">proyecto</a> (request, id=None)</td></tr>
-<tr class="separator:a4224109c2b468edbab1e546bce9642bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a308fb6ca7ed69b9aebed843b6786eff9"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceapi_1_1views.html#a308fb6ca7ed69b9aebed843b6786eff9">proyectos</a> (request, proyect_id=None)</td></tr>
+<tr class="separator:a308fb6ca7ed69b9aebed843b6786eff9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cf2387f02ec05f86f8bb1498b22bf82"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceapi_1_1views.html#a7cf2387f02ec05f86f8bb1498b22bf82">usuarios</a> (request, user_id=None)</td></tr>
+<tr class="separator:a7cf2387f02ec05f86f8bb1498b22bf82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2327e2b202bdc28234ebfe3ec1bdf8b7"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceapi_1_1views.html#a2327e2b202bdc28234ebfe3ec1bdf8b7">usuarios_proyectos</a> (request, user_id)</td></tr>
+<tr class="separator:a2327e2b202bdc28234ebfe3ec1bdf8b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25c497cc085e6d9efce65bd77c05304b"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceapi_1_1views.html#a25c497cc085e6d9efce65bd77c05304b">proyectos_miembros</a> (request, proyect_id, user_id=None)</td></tr>
+<tr class="separator:a25c497cc085e6d9efce65bd77c05304b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ff787143d0f02c45e8c53ad077347b2"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceapi_1_1views.html#a8ff787143d0f02c45e8c53ad077347b2">roles</a> (request, proyect_id, rol_id=None)</td></tr>
+<tr class="separator:a8ff787143d0f02c45e8c53ad077347b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4706beb584a487d0cfa109e562e1ac3e"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceapi_1_1views.html#a4706beb584a487d0cfa109e562e1ac3e">proyectos_miembros_roles</a> (request, proyect_id, user_id, rol_id=None)</td></tr>
+<tr class="separator:a4706beb584a487d0cfa109e562e1ac3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90b750ebd195cf58a5b9add3a9d7fa88"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceapi_1_1views.html#a90b750ebd195cf58a5b9add3a9d7fa88">user_stories</a> (request, proyect_id, us_id=None)</td></tr>
+<tr class="separator:a90b750ebd195cf58a5b9add3a9d7fa88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a4224109c2b468edbab1e546bce9642bb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4224109c2b468edbab1e546bce9642bb">&#9670;&nbsp;</a></span>proyecto()</h2>
+<a id="a308fb6ca7ed69b9aebed843b6786eff9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a308fb6ca7ed69b9aebed843b6786eff9">&#9670;&nbsp;</a></span>proyectos()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">def api.views.proyecto </td>
+          <td class="memname">def api.views.proyectos </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>request</em>, </td>
@@ -114,7 +126,205 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>id</em> = <code>None</code>&#160;</td>
+          <td class="paramname"><em>proyect_id</em> = <code>None</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a25c497cc085e6d9efce65bd77c05304b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a25c497cc085e6d9efce65bd77c05304b">&#9670;&nbsp;</a></span>proyectos_miembros()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def api.views.proyectos_miembros </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>request</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>proyect_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>user_id</em> = <code>None</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4706beb584a487d0cfa109e562e1ac3e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4706beb584a487d0cfa109e562e1ac3e">&#9670;&nbsp;</a></span>proyectos_miembros_roles()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def api.views.proyectos_miembros_roles </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>request</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>proyect_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>user_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>rol_id</em> = <code>None</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8ff787143d0f02c45e8c53ad077347b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ff787143d0f02c45e8c53ad077347b2">&#9670;&nbsp;</a></span>roles()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def api.views.roles </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>request</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>proyect_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>rol_id</em> = <code>None</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a90b750ebd195cf58a5b9add3a9d7fa88"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90b750ebd195cf58a5b9add3a9d7fa88">&#9670;&nbsp;</a></span>user_stories()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def api.views.user_stories </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>request</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>proyect_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>us_id</em> = <code>None</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7cf2387f02ec05f86f8bb1498b22bf82"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7cf2387f02ec05f86f8bb1498b22bf82">&#9670;&nbsp;</a></span>usuarios()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def api.views.usuarios </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>request</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>user_id</em> = <code>None</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2327e2b202bdc28234ebfe3ec1bdf8b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2327e2b202bdc28234ebfe3ec1bdf8b7">&#9670;&nbsp;</a></span>usuarios_proyectos()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def api.views.usuarios_proyectos </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>request</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>user_id</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
