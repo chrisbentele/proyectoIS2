@@ -15,8 +15,10 @@ import "react-table-v6/react-table.css";
 import { api } from "../../api";
 //! Botón de agregar
 import AddIcon from "../../components/addIcon";
-import { Button } from "@chakra-ui/react";
+import { Button, Select } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import { PERMISOS, ROLES } from "../roles/permisos";
+import { useForm } from "react-hook-form";
 
 /**
  * Componente principal de esta página
@@ -100,6 +102,10 @@ export default function ProjectMembers({ props }) {
       accessor: "nombre", // String-based value accessors!
     },
     {
+      Header: "Rol",
+      accessor: "role"
+    },
+    {
       Header: "Eliminar",
       accessor: "remove",
     },
@@ -123,6 +129,10 @@ export default function ProjectMembers({ props }) {
       setState({ ...state, searchUsersError: "error buscando usuarios" });
     }
   };
+
+  const setValue = useForm();
+  const [listaRoles, setListaRoles] = useState([]);
+
   return (
     <div
       style={{
@@ -140,6 +150,25 @@ export default function ProjectMembers({ props }) {
         data={members.map((member) => {
           return {
             nombre: member.nombre,
+            role: 
+              <Select
+              pb="4"
+              onChange={(e) => {
+                api
+                  .setUserRole(e.target.value, projectId, member.id);
+              }}
+            >  <option hidden>Seleccione un rol</option>
+              {ROLES.map((x, i) => (
+                <option key={i} value={i}>
+                  {x.title}
+                </option>
+              ))}
+              {listaRoles.map((x, i) =>
+                <option key={i} value={i}>
+                  {x.nombre}
+                </option>
+              )}
+            </Select>,
             remove: <DeleteIcon id={member.id} deleteById={removeMember} />,
           };
         })}
