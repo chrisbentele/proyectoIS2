@@ -1,8 +1,6 @@
 var searchData=
 [
-  ['templates_43',['TEMPLATES',['../namespacecontroller_1_1settings.html#a049247735b924169691cb0e2e8af326f',1,'controller::settings']]],
-  ['test_5ftestprotectoindex_44',['test_testprotectoindex',['../classapi_1_1tests_1_1URLTests.html#abfae26f3e00feff0a40a05a80ccec79f',1,'api::tests::URLTests']]],
-  ['test_5ftestproyectonamed_45',['test_testproyectonamed',['../classapi_1_1tests_1_1URLTests.html#a142d5c04693d1ade7fd285d2b646d116',1,'api::tests::URLTests']]],
-  ['tests_2epy_46',['tests.py',['../tests_8py.html',1,'']]],
-  ['time_5fzone_47',['TIME_ZONE',['../namespacecontroller_1_1settings.html#afe04221194632fc56a73f478e226ade5',1,'controller::settings']]]
+  ['name_114',['name',['../classapi_1_1apps_1_1ApiConfig.html#a0522ec96b80f15fd5f61aaabd032e107',1,'api::apps::ApiConfig']]],
+  ['nombre_115',['nombre',['../classapi_1_1models_1_1Usuario.html#af3df75f90d228fffff68eec4652bc68d',1,'api.models.Usuario.nombre()'],['../classapi_1_1models_1_1Proyecto.html#ae5b0f679f72b2be64f8557d5a7dc588a',1,'api.models.Proyecto.nombre()'],['../classapi_1_1models_1_1US.html#abacdafc01d32b34df6ecb80673ba2188',1,'api.models.US.nombre()'],['../classapi_1_1models_1_1Rol.html#aaa364a661548f2938a494b15d3bc002c',1,'api.models.Rol.nombre()']]],
+  ['notfound_116',['notFound',['../App_8js.html#a94e69c3d158530a19f406379a79b0542',1,'notFound():&#160;App.js'],['../pages_2notFound_2index_8js.html#ae1a2c1a9b457c29a0ad8f5a403140c41',1,'NotFound():&#160;index.js']]]
 ];

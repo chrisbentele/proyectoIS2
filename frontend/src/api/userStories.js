@@ -28,3 +28,17 @@ export const getUserStories = async (idProyecto) => {
     console.log(error);
   }
 };
+
+export const cambiarEstadoUS = async (projectId, estado, us_id) => {
+  try {
+    const res = await axiosInstance.put(
+      `/proyectos/${projectId}/user_stories/${us_id}`,
+      {
+        estado,
+      }
+    );
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

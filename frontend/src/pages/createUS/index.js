@@ -75,7 +75,7 @@ export default function CreateUserStory({ props }) {
           });
         }
 
-        history.push(`/projects/${res.id}`); //luego de crear exitosamente el proyecto, se redirige a la pagina del proyecto
+        history.push(`/projects/${projectId}`); //luego de crear exitosamente el proyecto, se redirige a la pagina del proyecto
       })
       .catch((err) => console.log(err));
   }
@@ -156,7 +156,7 @@ export default function CreateUserStory({ props }) {
               fontSize="lg"
             >
               <Link
-                to="/profile"
+                to={`/projects/${projectId}`}
                 mt={4}
                 colorScheme="teal"
                 borderColor="black"
