@@ -22,6 +22,10 @@ export const PERMISOS = [
   { title: "Agregar usuario", value: 15 },
   { title: "Editar rol del usuario", value: 16 },
   { title: "Eliminar usuario", value: 17 },
+  { value: 18, title: "Crear Sprint" },
+  { value: 19, title: "Modificar Sprint" },
+  { value: 20, title: "Eliminar Sprint" },
+  { value: 21, title: "Estimar Sprint" },
 ];
 
 //! Lista de roles predefinidos
