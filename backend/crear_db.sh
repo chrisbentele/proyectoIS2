@@ -6,6 +6,8 @@ sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public
 sudo -u postgres psql -c "CREATE DATABASE $USER;"
 sudo -u postgres -i psql --command "DROP ROLE IF EXISTS admin_proyecto; CREATE ROLE admin_proyecto superuser;";
 sudo -u postgres -i dropdb --if-exists proyectoIS2; createdb proyectoIS2;
+source .venv/bin/activate && \
+python3 manage.py migrate --run-syncdb
 # sudo -i -u postgres dropuser --if-exists admin_proyecto; createuser admin_proyecto;
 # sudo -i -u postgres psql --command "ALTER USER admin_proyecto WITH SUPERUSER;";
  # echo '\x \\ SELECT * FROM foo;' | psql
