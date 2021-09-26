@@ -42,9 +42,7 @@ estadoProyecto = ((0, "Pendiente"), (1, "Activo"), (2, "Terminado"))
 
 
 class Usuario(Model):
-    id = CharField(
-        primary_key=True, default=str(uuid.uuid4()), max_length=100, editable=False
-    )
+    id = CharField(primary_key=True, default=uuid.uuid4, max_length=100, editable=False)
     nombre = CharField(max_length=100)
     email = EmailField(unique=True)
 
@@ -64,11 +62,13 @@ class Retrospectiva(Model):
 
 
 class Sprint(Model):
+    activo = BooleanField(default=False)
     fechaInicio = DateField(auto_now_add=True)
     fechaFinalizacion = DateField()
     creadoPor = ForeignKey(Usuario, on_delete=CASCADE)
     terminado = BooleanField(default=False)
     retro = OneToOneField(Retrospectiva, blank=True, null=True, on_delete=CASCADE)
+    proyecto = ForeignKey(Proyecto, on_delete=CASCADE)
 
 
 class US(Model):
