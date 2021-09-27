@@ -11,7 +11,7 @@ import { axiosInstance } from ".";
  * estimation: la estimacion de duracion del proyecto \n
  * scrumMasterId: en el backend seria un array, los miembros, pero el primer miembro tiene que ser el scrum master \n
  * projectName: nombre del proyecto
- * @param {*} projectData 
+ * @param {*} projectData
  * @returns Resultado de la operación
  */
 export const createProject = async (projectData) => {
@@ -29,6 +29,7 @@ export const createProject = async (projectData) => {
     const res = await axiosInstance.post("proyectos", {
       duracionEstimada: estimation,
       miembros: [scrumMasterId],
+      scrumMasterId: scrumMasterId,
       nombre: projectName,
     });
     return res.data;
@@ -46,7 +47,7 @@ export const createProject = async (projectData) => {
  * Listar proyectos \n
  * Si no se provee el id de usuario la funcion solicita al servidor todos los proyectos. \n
  * Si se provee el id de usuario la funcion solicita todos los proyectos de un usuario en especifico. \n
- * @param {*} userId 
+ * @param {*} userId
  * @returns Resultado de la operación
  */
 export const getProjects = async (userId) => {
@@ -72,9 +73,9 @@ export const editProject = async (projectId, projectConfig) => {
 };
 
 /** Listar proyecto por id
-  * La funcion recibe como parametro el id del proyecto y luego retorna la informacion del mismo
-  * @param projectId
-*/
+ * La funcion recibe como parametro el id del proyecto y luego retorna la informacion del mismo
+ * @param projectId
+ */
 export const getProjectById = async (projectId) => {
   try {
     const res = await axiosInstance.get(`proyectos/${projectId}`);
@@ -85,9 +86,9 @@ export const getProjectById = async (projectId) => {
 };
 
 /** Eliminar proyecto
-  * La funcion recibe como parametro el id del proyecto a eliminar, retorna true si se pudo eliminar el proyecto
-  * @param projectId
-  */
+ * La funcion recibe como parametro el id del proyecto a eliminar, retorna true si se pudo eliminar el proyecto
+ * @param projectId
+ */
 export const deleteProject = async (projectId) => {
   try {
     const res = await axiosInstance.delete(`proyectos/${projectId}`);

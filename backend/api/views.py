@@ -1,11 +1,13 @@
+from rest_framework.exceptions import ValidationError
 from .serializers import (
     ProyectoSerializer,
     RolAsignadoSerializer,
     RolSerializer,
+    SprintSerializer,
     USSerializer,
     UsuarioSerializer,
 )
-from api.models import US, Proyecto, Rol, RolAsignado, Usuario
+from api.models import US, Proyecto, Rol, RolAsignado, Sprint, Usuario
 from django.http.response import (
     HttpResponseBadRequest,
     HttpResponseNotFound,
@@ -19,24 +21,94 @@ def proyectos(request, proyect_id=None):
     if request.method == "POST":
         # Crea el proyecto
         data = JSONParser().parse(request)
-        serializer = ProyectoSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=400, safe=False)
+        try:
+            proy_seri = ProyectoSerializer(data=data)
+            proy_seri.is_valid(raise_exception=True)
+            proy = proy_seri.save()
+
+            # crear el rol scrum master
+            rol_seri = RolSerializer(
+                data={
+                    "nombre": "Scrum Master",
+                    "proyecto": proy.id,
+                    "permisos": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9,
+                        10,
+                        11,
+                        12,
+                        13,
+                        14,
+                        15,
+                        16,
+                        17,
+                        18,
+                        19,
+                        20,
+                        21,
+                    ],
+                }
+            )
+
+            rol_seri.is_valid(raise_exception=True)
+            scrum_rol = rol_seri.save()
+            # asigna el rol scrum mastes al miembro en la posicion 0
+            rol_asignado_seri = RolAsignadoSerializer(
+                data={
+                    "rol": scrum_rol.id,
+                    "usuario": data["scrumMasterId"],
+                    "proyecto": proy.id,
+                }
+            )
+            rol_asignado_seri.is_valid(raise_exception=True)
+            rol_asignado_seri.save(id=-1)
+
+            rol_seri = RolSerializer(
+                data={
+                    "nombre": "Developer",
+                    "proyecto": proy.id,
+                    "permisos": [
+                        6,
+                        8,
+                        10,
+                    ],
+                }
+            )
+
+            rol_seri.is_valid(raise_exception=True)
+            scrum_rol = rol_seri.save()
+
+            return JsonResponse(proy_seri.data, status=201, safe=False)
+        except ValidationError as e:
+            return JsonResponse(e.detail, status=400, safe=False)
+        except Exception as e:
+            return JsonResponse(e, safe=False)
 
     elif request.method == "GET":
         if proyect_id != None:
             try:
                 p = Proyecto.objects.get(id=proyect_id)
-                serializer = ProyectoSerializer(p)
-                return JsonResponse(serializer.data, safe=False)
+                proy_seri = ProyectoSerializer(p)
+                proy_data = proy_seri.data
+                scrum_obj = RolAsignado.objects.get(
+                    id=-1
+                )  ## obtiene el RolAsignado con el id -1, el del scrum master
+                scrum_data = RolAsignadoSerializer(scrum_obj).data
+                proy_data.update({"scrumMaster": scrum_data})
+                return JsonResponse(proy_data, safe=False)
             except Usuario.DoesNotExist:
                 return HttpResponseNotFound()
         else:
             p = Proyecto.objects.all()
-            serializer = ProyectoSerializer(p, many=True)
-            return JsonResponse(serializer.data, safe=False)
+            proy_seri = ProyectoSerializer(p, many=True)
+            return JsonResponse(proy_seri.data, safe=False)
 
     elif request.method == "DELETE":
         p = Proyecto.objects.get(id=proyect_id)
@@ -49,13 +121,12 @@ def proyectos(request, proyect_id=None):
 
             rol = Proyecto.objects.get(id=proyect_id)
 
-            serializer = ProyectoSerializer(rol, data=data, partial=True)
+            proy_seri = ProyectoSerializer(rol, data=data, partial=True)
 
-            if serializer.is_valid():
-                # Obtiene el id del Rol para vincular
-                serializer.save()
-                return JsonResponse(serializer.data, status=200)
-            return JsonResponse(serializer.errors, status=400, safe=False)
+            if proy_seri.is_valid():
+                proy_seri.save()
+                return JsonResponse(proy_seri.data, status=200)
+            return JsonResponse(proy_seri.errors, status=400, safe=False)
         return HttpResponseBadRequest("Falta proyect_id")
 
 
@@ -154,13 +225,23 @@ def proyectos_miembros(request, proyect_id, user_id=None):
             u_list = []
             for id in serializer.data["miembros"]:
                 u = Usuario.objects.get(id=id)
-                u_list.append(UsuarioSerializer(u).data)
+                u_data = UsuarioSerializer(u).data
+                r = RolAsignado.objects.filter(proyecto=proyect_id, usuario=id)
+                rol_data = RolAsignadoSerializer(r, many=True).data
+                rol_data = rol_data[0] if len(rol_data) > 0 else None
+                u_data.update({"rol": rol_data})
+                u_list.append(u_data)
             return JsonResponse(u_list, safe=False)
 
         try:
             u = Usuario.objects.get(id=user_id)
+            user_data = UsuarioSerializer(u).data
+            r = RolAsignado.objects.filter(proyecto=proyect_id, usuario=user_id)
+            rol_data = RolAsignadoSerializer(r, many=True).data
+            rol_data = rol_data[0] if len(rol_data) > 0 else None
 
-            return JsonResponse(UsuarioSerializer(u).data, safe=False)
+            user_data.update({"rol": rol_data})
+            return JsonResponse(user_data, safe=False)
         except Usuario.DoesNotExist:
             return HttpResponseNotFound()
 
@@ -245,6 +326,10 @@ def proyectos_miembros_roles(request, proyect_id, user_id, rol_id=None):
         if not rol_id:
             return HttpResponseBadRequest("Falta rol_id")
 
+        rolAsig = RolAsignado.objects.filter(proyecto=proyect_id, usuario=user_id)
+        for i in rolAsig:
+            i.delete()
+
         seri = RolAsignadoSerializer(
             data={"usuario": user_id, "rol": rol_id, "proyecto": proyect_id}
         )
@@ -255,9 +340,14 @@ def proyectos_miembros_roles(request, proyect_id, user_id, rol_id=None):
     elif request.method == "GET":
         # En caso de GET trae todos los roles del usuario en el proyecto
         try:
-            r = RolAsignado.objects.filter(proyecto=proyect_id, usuario=user_id)
-            seri = RolAsignadoSerializer(r, many=True)
-            return JsonResponse(seri.data, safe=False)
+            rolAsig = RolAsignado.objects.filter(proyecto=proyect_id, usuario=user_id)
+            rolAsi = rolAsig[0] if len(rolAsig) > 0 else None
+            seri = RolAsignadoSerializer(rolAsi)
+
+            rol = Rol.objects.get(id=seri.data["id"])
+            rol_seri = RolSerializer(rol)
+
+            return JsonResponse(rol_seri.data, safe=False)
         except Rol.DoesNotExist:
             return HttpResponseNotFound()
 
@@ -266,10 +356,10 @@ def proyectos_miembros_roles(request, proyect_id, user_id, rol_id=None):
 
         if rol_id:
             try:
-                r = RolAsignado.objects.get(
+                rolAsig = RolAsignado.objects.get(
                     proyecto=proyect_id, usuario=user_id, rol=rol_id
                 )
-                r.delete()
+                rolAsig.delete()
 
                 return JsonResponse(True, safe=False, status=204)
             except RolAsignado.DoesNotExist:
@@ -324,3 +414,52 @@ def user_stories(request, proyect_id, us_id=None):
                 return JsonResponse(serializer.data, status=200)
             return JsonResponse(serializer.errors, status=400, safe=False)
         return HttpResponseBadRequest("Falta us_id")
+
+
+def sprints(request, proyect_id, sprint_id=None):
+    try:
+        proyecto = Proyecto.objects.get(id=proyect_id)
+    except Proyecto.DoesNotExist:
+        return HttpResponseNotFound()
+
+    if request.method == "POST":
+        # Crea el sprint
+        data = JSONParser().parse(request)
+        data["proyecto"] = proyect_id
+        serializer = SprintSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=201)
+        return JsonResponse(serializer.errors, status=400, safe=False)
+
+    elif request.method == "GET":
+        if sprint_id != None:
+            try:
+                spr = Sprint.objects.get(id=sprint_id)
+                serializer = SprintSerializer(spr)
+                return JsonResponse(serializer.data, safe=False)
+            except Sprint.DoesNotExist:
+                return HttpResponseNotFound()
+        else:
+            spr = Sprint.objects.filter(proyecto=proyecto)
+            serializer = SprintSerializer(spr, many=True)
+            return JsonResponse(serializer.data, safe=False)
+
+    elif request.method == "DELETE":
+        spr = Sprint.objects.get(id=sprint_id)
+        spr.delete()
+        return JsonResponse(True, status=204, safe=False)
+
+    elif request.method == "PUT":
+        if sprint_id:
+            data = JSONParser().parse(request)
+
+            spr = Sprint.objects.get(id=sprint_id)
+
+            serializer = SprintSerializer(spr, data=data, partial=True)
+
+            if serializer.is_valid():
+                serializer.save()
+                return JsonResponse(serializer.data, status=200)
+            return JsonResponse(serializer.errors, status=400, safe=False)
+        return HttpResponseBadRequest("Falta sprint_id")
