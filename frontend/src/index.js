@@ -12,13 +12,10 @@ import App from "./App";
 //! Componente principal de Auth0.
 import { Auth0Provider } from "@auth0/auth0-react";
 
-import { ChakraProvider, CSSReset, Box } from "@chakra-ui/react";
+import { ChakraProvider } from "@chakra-ui/react";
 
 //! Tema principal de la apliación.
 import Theme from "./styles/theme.js";
-
-//! Hookforms
-import HookForm from "./pages/createProject/index";
 
 import { ProvideDbAuth } from "./providers/DbAuth";
 

@@ -1,28 +1,20 @@
 //Pagina de creacion de proyectos
 
-import Select from "react-select";
 import {
   FormControl,
   FormLabel,
   FormErrorMessage,
-  FormHelperText,
   Input,
   Button,
   Box,
   Flex,
   Center,
   Heading,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
   Spacer,
   useToast,
 } from "@chakra-ui/react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import React, { useEffect, useState } from "react";
-import { useAuth } from "../../providers/DbAuth";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 import { api } from "../../api";

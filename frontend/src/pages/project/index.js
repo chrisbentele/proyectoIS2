@@ -12,10 +12,7 @@ import {
   Heading,
   Flex,
   HStack,
-  Text,
-  VStack,
-  LinkBox,
-  LinkOverlay,
+  Text
 } from "@chakra-ui/layout";
 import { Link } from "react-router-dom";
 import Select from "react-select";
@@ -119,7 +116,7 @@ export default function Index({ props }) {
                 </Flex>
                 {userStories
                   ? userStories
-                      .filter((us) => us.estado == 0)
+                      .filter((us) => us.estado === 0)
                       .map((us) => (
                         <Box
                           border="2px"
@@ -167,7 +164,7 @@ export default function Index({ props }) {
                 </Flex>
                 {userStories
                   ? userStories
-                      .filter((us) => us.estado == 1)
+                      .filter((us) => us.estado === 1)
                       .map((us) => (
                         <Box
                           border="2px"
@@ -215,7 +212,7 @@ export default function Index({ props }) {
                 </Flex>
                 {userStories
                   ? userStories
-                      .filter((us) => us.estado == 2)
+                      .filter((us) => us.estado === 2)
                       .map((us) => (
                         <Box
                           border="2px"
@@ -263,7 +260,7 @@ export default function Index({ props }) {
                 </Flex>
                 {userStories
                   ? userStories
-                      .filter((us) => us.estado == 4)
+                      .filter((us) => us.estado === 4)
                       .map((us) => (
                         <Box
                           border="2px"
