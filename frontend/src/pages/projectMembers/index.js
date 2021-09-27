@@ -33,7 +33,7 @@ export default function ProjectMembers({ props }) {
       api.getMembers(projectId).then((membersRes) => {
         let membersIds = membersRes.map((member) => member.id);
         let filteredUsers = usersRes.filter(
-          (user) => !membersIds.includes(user.sub)
+          (user) => !membersIds.includes(user.id)
         );
         setState({ ...state, loading: false });
         setUsers([...filteredUsers]);
