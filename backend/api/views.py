@@ -343,7 +343,11 @@ def proyectos_miembros_roles(request, proyect_id, user_id, rol_id=None):
             rolAsig = RolAsignado.objects.filter(proyecto=proyect_id, usuario=user_id)
             rolAsi = rolAsig[0] if len(rolAsig) > 0 else None
             seri = RolAsignadoSerializer(rolAsi)
-            return JsonResponse(seri.data, safe=False)
+
+            rol = Rol.objects.get(id=seri.data["id"])
+            rol_seri = RolSerializer(rol)
+
+            return JsonResponse(rol_seri.data, safe=False)
         except Rol.DoesNotExist:
             return HttpResponseNotFound()
 
