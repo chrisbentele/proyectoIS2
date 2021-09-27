@@ -1,5 +1,4 @@
 from rest_framework.exceptions import ValidationError
-from api.views_utils import crear_proyecto
 from .serializers import (
     ProyectoSerializer,
     RolAsignadoSerializer,
@@ -22,13 +21,73 @@ def proyectos(request, proyect_id=None):
     if request.method == "POST":
         # Crea el proyecto
         data = JSONParser().parse(request)
-        print(data)
         try:
+            proy_seri = ProyectoSerializer(data=data)
+            proy_seri.is_valid(raise_exception=True)
+            proy = proy_seri.save()
 
-            res = crear_proyecto(data)
-            return JsonResponse(res, status=201, safe=False)
+            # crear el rol scrum master
+            rol_seri = RolSerializer(
+                data={
+                    "nombre": "Scrum Master",
+                    "proyecto": proy.id,
+                    "permisos": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9,
+                        10,
+                        11,
+                        12,
+                        13,
+                        14,
+                        15,
+                        16,
+                        17,
+                        18,
+                        19,
+                        20,
+                        21,
+                    ],
+                }
+            )
+
+            rol_seri.is_valid(raise_exception=True)
+            scrum_rol = rol_seri.save()
+            # asigna el rol scrum mastes al miembro en la posicion 0
+            rol_asignado_seri = RolAsignadoSerializer(
+                data={
+                    "rol": scrum_rol.id,
+                    "usuario": data["scrumMasterId"],
+                    "proyecto": proy.id,
+                }
+            )
+            rol_asignado_seri.is_valid(raise_exception=True)
+            rol_asignado_seri.save(id=-1)
+
+            rol_seri = RolSerializer(
+                data={
+                    "nombre": "Developer",
+                    "proyecto": proy.id,
+                    "permisos": [
+                        6,
+                        8,
+                        10,
+                    ],
+                }
+            )
+
+            rol_seri.is_valid(raise_exception=True)
+            scrum_rol = rol_seri.save()
+
+            return JsonResponse(proy_seri.data, status=201, safe=False)
         except ValidationError as e:
-            return JsonResponse(e.detail, safe=False)
+            return JsonResponse(e.detail, status=400, safe=False)
         except Exception as e:
             return JsonResponse(e, safe=False)
 
@@ -169,7 +228,8 @@ def proyectos_miembros(request, proyect_id, user_id=None):
                 u_data = UsuarioSerializer(u).data
                 r = RolAsignado.objects.filter(proyecto=proyect_id, usuario=id)
                 rol_data = RolAsignadoSerializer(r, many=True).data
-                u_data.update({"roles": rol_data})
+                rol_data = rol_data[0] if len(rol_data) > 0 else None
+                u_data.update({"rol": rol_data})
                 u_list.append(u_data)
             return JsonResponse(u_list, safe=False)
 
@@ -178,7 +238,9 @@ def proyectos_miembros(request, proyect_id, user_id=None):
             user_data = UsuarioSerializer(u).data
             r = RolAsignado.objects.filter(proyecto=proyect_id, usuario=user_id)
             rol_data = RolAsignadoSerializer(r, many=True).data
-            user_data.update({"roles": rol_data})
+            rol_data = rol_data[0] if len(rol_data) > 0 else None
+
+            user_data.update({"rol": rol_data})
             return JsonResponse(user_data, safe=False)
         except Usuario.DoesNotExist:
             return HttpResponseNotFound()
@@ -264,8 +326,8 @@ def proyectos_miembros_roles(request, proyect_id, user_id, rol_id=None):
         if not rol_id:
             return HttpResponseBadRequest("Falta rol_id")
 
-        r = RolAsignado.objects.filter(proyecto=proyect_id, usuario=user_id)
-        for i in r:
+        rolAsig = RolAsignado.objects.filter(proyecto=proyect_id, usuario=user_id)
+        for i in rolAsig:
             i.delete()
 
         seri = RolAsignadoSerializer(
@@ -278,9 +340,8 @@ def proyectos_miembros_roles(request, proyect_id, user_id, rol_id=None):
     elif request.method == "GET":
         # En caso de GET trae todos los roles del usuario en el proyecto
         try:
-            r = RolAsignado.objects.filter(proyecto=proyect_id, usuario=user_id)
-            print(len(r))
-            rolAsi = r[0] if len(r) > 0 else None
+            rolAsig = RolAsignado.objects.filter(proyecto=proyect_id, usuario=user_id)
+            rolAsi = rolAsig[0] if len(rolAsig) > 0 else None
             seri = RolAsignadoSerializer(rolAsi)
             return JsonResponse(seri.data, safe=False)
         except Rol.DoesNotExist:
@@ -291,10 +352,10 @@ def proyectos_miembros_roles(request, proyect_id, user_id, rol_id=None):
 
         if rol_id:
             try:
-                r = RolAsignado.objects.get(
+                rolAsig = RolAsignado.objects.get(
                     proyecto=proyect_id, usuario=user_id, rol=rol_id
                 )
-                r.delete()
+                rolAsig.delete()
 
                 return JsonResponse(True, safe=False, status=204)
             except RolAsignado.DoesNotExist:
