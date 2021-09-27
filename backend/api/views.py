@@ -264,6 +264,10 @@ def proyectos_miembros_roles(request, proyect_id, user_id, rol_id=None):
         if not rol_id:
             return HttpResponseBadRequest("Falta rol_id")
 
+        r = RolAsignado.objects.filter(proyecto=proyect_id, usuario=user_id)
+        for i in r:
+            i.delete()
+
         seri = RolAsignadoSerializer(
             data={"usuario": user_id, "rol": rol_id, "proyecto": proyect_id}
         )
@@ -275,7 +279,9 @@ def proyectos_miembros_roles(request, proyect_id, user_id, rol_id=None):
         # En caso de GET trae todos los roles del usuario en el proyecto
         try:
             r = RolAsignado.objects.filter(proyecto=proyect_id, usuario=user_id)
-            seri = RolAsignadoSerializer(r, many=True)
+            print(len(r))
+            rolAsi = r[0] if len(r) > 0 else None
+            seri = RolAsignadoSerializer(rolAsi)
             return JsonResponse(seri.data, safe=False)
         except Rol.DoesNotExist:
             return HttpResponseNotFound()
