@@ -13,9 +13,10 @@ import {
   Tr,
   Th,
   Td,
+  useToast
 } from '@chakra-ui/react';
 
-export default function ProjectMembersTable( props ) {
+export default function ProjectMembersTable(props) {
 
   const users = props.users;
   const setUsers = props.setUsers;
@@ -23,8 +24,12 @@ export default function ProjectMembersTable( props ) {
   const projectId = props.projectId;
   const setMembers = props.setMembers;
   const ROLES = props.ROLES;
+  const toast = useToast();
 
-  //funcion que se encarga de eliminar un usuario del proyecto mediante la tabla
+  /**
+   * funcion que se encarga de eliminar un usuario del proyecto mediante la
+   * tabla
+   */
   const removeMember = (memberId) => {
     if (window.confirm(`desea eliminar al usuario del proyecto?`)) {
       //solicita la confirmacion al usuario
@@ -46,30 +51,77 @@ export default function ProjectMembersTable( props ) {
     }
   };
 
+  /**
+   * Cambiar el role de un miembro del proyecto, si se cambia a un role
+   * distinto al de Scrum Master, se procede normalmente, sino se verifica
+   * quién es el Scrum Master actual y se lo parte del Dev team y luego se
+   * asigna al Scrum Master nuevo (Se asume que el rol 1 está reservado para
+   * el Scrum Master).
+   * @param roleId      El rol a asignar  
+   * @param memberId    Miembro al cual se le asignará 
+   */
+  const changeRole = (roleId, memberId) => {
+      if (roleId !== 1) {
+        api
+          .setUserRole(roleId, projectId, memberId);
+        api.getMembers(projectId).then(membersRes => setMembers(membersRes));
+      }
+      else {
+        if (members.filter(x => x.rol.rol === 1).length > 0) {
+          api.setUserRole(2, projectId, members.filter(x => x.rol.rol === 1)[0].id);
+          api.setUserRole(roleId, projectId, memberId);
+          api.getMembers(projectId).then(membersRes => setMembers(membersRes));
+        }
+      }
+  }
+
   const data = React.useMemo(() => {
     return (
-      members.map((member) => {
-        return {
-          nombre: member.nombre,
-          role:
-            <Select
-              pb="4"
-              onChange={(e) => {
-                api
-                  .setUserRole(e.target.value, projectId, member.id);
-              }}
-            >
-              <option hidden>{console.log(member)}</option>
-              {ROLES.map((x, i) => (
-                <option key={i} value={i}>
-                  {x.nombre}
+      members.map(member => {
+        if (member) {
+          return {
+            nombre: member.nombre,
+            role: member.rol.rol !== 1 ?
+              <Select
+                pb="4"
+                onChange={(e) => changeRole(parseInt(e.target.value) + 1, member.id)}
+              >
+                <option hidden>{
+                  ROLES.filter(x => x.id === member.rol.rol).length > 0 ?
+                    ROLES.filter(x => x.id === member.rol.rol)[0].nombre :
+                    null
+                }
                 </option>
-              ))}
+                {ROLES.map((x, i) => (
+                  <option key={i} value={i}>
+                    {x.nombre}
+                  </option>
+                ))}
+              </Select> :
+              <Select
+              pb="4"
+              isDisabled="true"
+              >
+                <option hidden>{
+                  ROLES.filter(x => x.id === member.rol.rol).length > 0 ?
+                    ROLES.filter(x => x.id === member.rol.rol)[0].nombre :
+                    null
+                }
+                </option>
             </Select>,
-          remove: <DeleteIcon id={member.id} deleteById={removeMember} />
+            remove: member.rol.rol !== 1 ?
+              <DeleteIcon id={member.id} deleteById={removeMember} /> :
+              null,
+          }
+        } else {
+          return {
+            nombre: null,
+            role: null,
+            remove: null,
+          }
         }
       }))
-  }, [members, ROLES, projectId])
+  }, [members, ROLES, removeMember, projectId, changeRole])
 
 
   const columns = React.useMemo(

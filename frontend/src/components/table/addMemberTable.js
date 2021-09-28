@@ -19,27 +19,34 @@ export default function AddMemberTable( props ) {
   const users = props.users;
   const setUsers = props.setUsers;
   const state = props.state;
-  const members = props.members;
+  let members = props.members;
   const projectId = props.projectId;
   const setMembers = props.setMembers;
 
   
-  //funcion que se encarga de agregar un usuario al proyecto mediante la tabla
+  /** 
+   * funcion que se encarga de agregar un usuario al proyecto mediante la tabla
+   */
   const addMemberById = (userId) => {
-    console.log(userId);
+    console.log('members antes');
+    console.log(members);
     if (window.confirm(`desea agregar al usuario al proyecto?`)) {
       api.addMemberToProject(projectId, userId).then((res) => {
+        console.log(res);
         if (res) {
           let addedUser;
           const updatedUsers = users.filter((user) => {
-            if (user.sub !== userId) {
+            if (user.id !== userId) {
               return true;
             } else {
               addedUser = { ...user };
               return false;
             }
           });
+          console.log('hola');
           setMembers([...members, addedUser]);
+          console.log('members despues');
+          console.log(members);
           setUsers(updatedUsers);
         }
       });
@@ -55,7 +62,7 @@ export default function AddMemberTable( props ) {
         .map((user) => {
           return {
             nombre: user.nombre,
-            add: <AddIcon id={user.sub} addById={addMemberById} />,
+            add: <AddIcon id={user.id} addById={addMemberById} />,
           };
         })
     )

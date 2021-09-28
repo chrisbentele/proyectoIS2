@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 //! API del frontend.
 import { api } from "../../api";
-import { Button } from '@chakra-ui/react';
+import { Button, Grid, Input } from '@chakra-ui/react';
 import { useAuth0 } from "@auth0/auth0-react";
 import AddMemberTable from '../../components/table/addMemberTable';
 import ProjectMembersTable from '../../components/table/projectMembersTable';
@@ -24,7 +24,7 @@ export default function ProjectMembers({ props }) {
   const url = props.computedMatch.url;
 
   const { user } = useAuth0();
-  
+
   console.log(thisUserRole);
 
   useEffect(() => {
@@ -55,6 +55,14 @@ export default function ProjectMembers({ props }) {
     }
   };
 
+  const actualizarMiembros = (miembrosNuevos) => {
+    setMembers(miembrosNuevos);
+  }
+
+  const actualizarUsuarios = (usuariosNuevos) => {
+    setUsers(usuariosNuevos);
+  }
+
   return (
     <div
       style={{
@@ -69,13 +77,13 @@ export default function ProjectMembers({ props }) {
       </Button>
       <h2>Miembros del proyecto</h2>
       < ProjectMembersTable
-          members={members}
-          setMembers={setMembers}
-          projectId={projectId}
-          ROLES={ROLES}
-          users={users}
-          setUsers={setUsers}
-          state={state}
+        members={[...members]}
+        setMembers={actualizarMiembros}
+        projectId={projectId}
+        ROLES={ROLES}
+        users={[...users]}
+        setUsers={actualizarUsuarios}
+        state={state}
       />
 
       <h2
@@ -83,19 +91,23 @@ export default function ProjectMembers({ props }) {
       >
         Agregar nuevo miembro
       </h2>
-      <input
-        onChange={handleSearchChange}
-        style={{ border: "2px black solid", marginBottom: "20px" }}
-      />
-      < AddMemberTable 
-          members={members}
-          setMembers={setMembers}
+      <Grid
+        gap={6}
+      >
+        <Input
+          onChange={handleSearchChange}
+          width="400px"
+        />
+        < AddMemberTable
+          members={[...members]}
+          setMembers={actualizarMiembros}
           projectId={projectId}
           ROLES={ROLES}
-          users={users}
-          setUsers={setUsers}
+          users={[...users]}
+          setUsers={actualizarUsuarios}
           state={state}
-      />
+        />
+      </Grid>
     </div>
   )
 }
