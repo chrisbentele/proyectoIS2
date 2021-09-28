@@ -1,4 +1,3 @@
-  
 import React, { useEffect, useState } from "react";
 import { api } from "../../api";
 import { Spinner } from "@chakra-ui/spinner";
@@ -8,6 +7,10 @@ import { Link } from "react-router-dom";
 export default function Index({ props }) {
   const projectId = props.computedMatch.params.id; //id del proyecto, se extrae del URL
   const [project, setProject] = useState({ userStories: [] }); //estado del proyecto
+
+  const kanbanSection = (sectionTitle, userStories) => {
+    return <Box></Box>;
+  };
 
   //Al cargarse la pagina se busca el proyecto con el id del URL y se lo asigna a projectId
   useEffect(() => {
@@ -34,16 +37,16 @@ export default function Index({ props }) {
       {project ? ( //si ya se cargo el proyecto se muestra el mismo, si no se muestra la pantalla de carga
         <Box>
           <Box
-          pos="fixed"
-          top="50px"
-          zIndex="100"
-          bg={"#F7FFF7"}
-          left="0"
-          right="0"
-          // boxShadow="md"
-          width="full"
-          pl="3"
-          mb="3rem"
+            pos="fixed"
+            top="50px"
+            zIndex="100"
+            bg={"#F7FFF7"}
+            left="0"
+            right="0"
+            // boxShadow="md"
+            width="full"
+            pl="3"
+            mb="3rem"
           >
             <HStack spacing="24px">
               <Box>
@@ -73,9 +76,10 @@ export default function Index({ props }) {
                 <Heading fontSize="3xl">To Do</Heading>
               </Flex>
               <Box p="5">
-                <Link to={`${projectId}/createUS`}>+ agregar nueva tarjeta</Link>
+                <Link to={`${projectId}/createUS`}>
+                  + agregar nueva tarjeta
+                </Link>
               </Box>
-              
             </Box>
             <Box
               w="xs"
@@ -91,9 +95,10 @@ export default function Index({ props }) {
                 <Heading fontSize="3xl">Doing</Heading>
               </Flex>
               <Box p="5">
-                <Link to={`${projectId}/createUS`}>+ agregar nueva tarjeta</Link>
+                <Link to={`${projectId}/createUS`}>
+                  + agregar nueva tarjeta
+                </Link>
               </Box>
-              
             </Box>
             <Box
               w="xs"
@@ -109,9 +114,10 @@ export default function Index({ props }) {
                 <Heading fontSize="3xl">Done</Heading>
               </Flex>
               <Box p="5">
-                <Link to={`${projectId}/createUS`}>+ agregar nueva tarjeta</Link>
+                <Link to={`${projectId}/createUS`}>
+                  + agregar nueva tarjeta
+                </Link>
               </Box>
-              
             </Box>
             <Box
               w="xs"
@@ -127,11 +133,10 @@ export default function Index({ props }) {
                 <Heading fontSize="3xl">Todas las US</Heading>
               </Flex>
               {project.userStories
-              ? project.userStories.map((us) => <p>{us.nombre}</p>)
-              : null}
-              
+                ? project.userStories.map((us) => <p>{us.nombre}</p>)
+                : null}
             </Box>
-          </HStack>  
+          </HStack>
         </Box>
       ) : (
         <Spinner size="xl" />
