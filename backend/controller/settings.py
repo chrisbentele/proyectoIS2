@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "api.apps.ApiConfig",
     "corsheaders",
     "rest_framework",
+    # "django_nose",
 ]
 
 # CORS_ALLOWED_ORIGIN = ["http://localhost:3000",]
@@ -144,3 +145,12 @@ STATIC_URL = "/static/"
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# # Use nose to run all tests
+# TEST_RUNNER = "django_nose.NoseTestSuiteRunner"
+
+# # Tell nose to measure coverage on the 'api' app
+# NOSE_ARGS = [
+#     "--with-coverage",
+#     "--cover-package=api",
+# ]
