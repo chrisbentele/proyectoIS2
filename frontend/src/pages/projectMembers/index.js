@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 //! API del frontend.
 import { api } from "../../api";
-import { Button, Grid, Input } from '@chakra-ui/react';
+import { Box, Button, Grid, Input, Text } from '@chakra-ui/react';
 import { useAuth0 } from "@auth0/auth0-react";
 import AddMemberTable from '../../components/table/addMemberTable';
 import ProjectMembersTable from '../../components/table/projectMembersTable';
@@ -64,7 +64,7 @@ export default function ProjectMembers({ props }) {
   }
 
   return (
-    <div
+    <Box
       style={{
         display: "flex",
         flexDirection: "column",
@@ -75,7 +75,7 @@ export default function ProjectMembers({ props }) {
       <Button style={{ marginLeft: "5px", alignSelf: "flex-start" }}>
         <Link to={url.replace("/members", "")}>Volver al Proyecto</Link>
       </Button>
-      <h2>Miembros del proyecto</h2>
+      <Text>Miembros del proyecto</Text>
       < ProjectMembersTable
         members={[...members]}
         setMembers={actualizarMiembros}
@@ -86,11 +86,12 @@ export default function ProjectMembers({ props }) {
         state={state}
       />
 
-      <h2
+      <Text
         style={{ marginTop: "50px", marginBottom: "10px", fontWeight: "bold" }}
       >
         Agregar nuevo miembro
-      </h2>
+      </Text>
+
       <Grid
         gap={6}
       >
@@ -108,6 +109,6 @@ export default function ProjectMembers({ props }) {
           state={state}
         />
       </Grid>
-    </div>
+    </Box>
   )
 }

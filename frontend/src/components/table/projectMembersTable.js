@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTable } from 'react-table'
 //! API del frontend.
 import { api } from "../../api";
 //! Botón de borrar
-import DeleteIcon from "../../components/deleteIcon/deleteIcon";
 import {
   Box,
+  Button,
   Select,
   Table,
   Thead,
@@ -13,8 +13,16 @@ import {
   Tr,
   Th,
   Td,
-  useToast
+  useToast,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
 } from '@chakra-ui/react';
+
+import { DeleteIcon } from "@chakra-ui/icons";
 
 export default function ProjectMembersTable(props) {
 
@@ -26,29 +34,45 @@ export default function ProjectMembersTable(props) {
   const ROLES = props.ROLES;
   const toast = useToast();
 
+  const [isOpen, setIsOpen] = useState()
+  const onClose = () => setIsOpen(false)
+  const onDelete = (memberId) => {
+    setIsOpen(false);
+    removeMember(memberId);
+  }
+  const cancelRef = React.useRef()
+
   /**
    * funcion que se encarga de eliminar un usuario del proyecto mediante la
    * tabla
    */
   const removeMember = (memberId) => {
-    if (window.confirm(`desea eliminar al usuario del proyecto?`)) {
-      //solicita la confirmacion al usuario
-      api.removeMemberFromProject(projectId, memberId).then((res) => {
-        if (res) {
-          let removedUser;
-          const updatedMembers = members.filter((member) => {
-            if (member.id !== memberId) {
-              return true;
-            } else {
-              removedUser = { ...member };
-              return false;
-            }
+    console.log('entra a remove member');
+    console.log('member id es:');
+    console.log(memberId);
+    api.removeMemberFromProject(projectId, memberId).then((res) => {
+      console.log('entra al then');
+      console.log('res es un: ');
+      console.log(res);
+      if (!res) {
+        api.getUsers().then((usersRes) => {
+          api.getMembers(projectId).then((membersRes) => {
+            let membersIds = membersRes.map((member) => member.id);
+            let filteredUsers = usersRes.filter(
+              (user) => !membersIds.includes(user.id)
+            );
+            setUsers([...filteredUsers]);
+            setMembers(membersRes);
           });
-          setUsers([...users, removedUser]);
-          setMembers(updatedMembers);
+          console.log('hola');
+          //setMembers([...members, addedUser]);
+          console.log('members despues');
+          console.log(members);
+          //setUsers(updatedUsers);
         }
-      });
-    }
+        )
+      }
+    });
   };
 
   /**
@@ -61,18 +85,18 @@ export default function ProjectMembersTable(props) {
    * @param memberId    Miembro al cual se le asignará 
    */
   const changeRole = (roleId, memberId) => {
-      if (roleId !== 1) {
-        api
-          .setUserRole(roleId, projectId, memberId);
+    if (roleId !== 1) {
+      api
+        .setUserRole(roleId, projectId, memberId);
+      api.getMembers(projectId).then(membersRes => setMembers(membersRes));
+    }
+    else {
+      if (members.filter(x => x.rol.rol === 1).length > 0) {
+        api.setUserRole(2, projectId, members.filter(x => x.rol.rol === 1)[0].id);
+        api.setUserRole(roleId, projectId, memberId);
         api.getMembers(projectId).then(membersRes => setMembers(membersRes));
       }
-      else {
-        if (members.filter(x => x.rol.rol === 1).length > 0) {
-          api.setUserRole(2, projectId, members.filter(x => x.rol.rol === 1)[0].id);
-          api.setUserRole(roleId, projectId, memberId);
-          api.getMembers(projectId).then(membersRes => setMembers(membersRes));
-        }
-      }
+    }
   }
 
   const data = React.useMemo(() => {
@@ -81,14 +105,15 @@ export default function ProjectMembersTable(props) {
         if (member) {
           return {
             nombre: member.nombre,
-            role: member.rol.rol !== 1 ?
+            role:
               <Select
                 pb="4"
                 onChange={(e) => changeRole(parseInt(e.target.value) + 1, member.id)}
+                isDisabled={member.rol?.rol === 1}
               >
                 <option hidden>{
-                  ROLES.filter(x => x.id === member.rol.rol).length > 0 ?
-                    ROLES.filter(x => x.id === member.rol.rol)[0].nombre :
+                  ROLES.filter(x => x.id === member.rol?.rol).length > 0 ?
+                    ROLES.filter(x => x.id === member.rol?.rol)[0].nombre :
                     null
                 }
                 </option>
@@ -97,20 +122,39 @@ export default function ProjectMembersTable(props) {
                     {x.nombre}
                   </option>
                 ))}
-              </Select> :
-              <Select
-              pb="4"
-              isDisabled="true"
-              >
-                <option hidden>{
-                  ROLES.filter(x => x.id === member.rol.rol).length > 0 ?
-                    ROLES.filter(x => x.id === member.rol.rol)[0].nombre :
-                    null
-                }
-                </option>
-            </Select>,
-            remove: member.rol.rol !== 1 ?
-              <DeleteIcon id={member.id} deleteById={removeMember} /> :
+              </Select>,
+            remove: member.rol?.rol !== 1 ?
+              <>
+                <Button onClick={() => setIsOpen(true)} >
+                  <DeleteIcon />
+                </Button>
+                <AlertDialog
+                  isOpen={isOpen}
+                  leastDestructiveRef={cancelRef}
+                  onClose={onClose}
+                >
+                  <AlertDialogOverlay>
+                    <AlertDialogContent>
+                      <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                        Eliminar miembro
+                      </AlertDialogHeader>
+
+                      <AlertDialogBody>
+                        ¿Está seguro que desea eliminar a este miembro?
+                      </AlertDialogBody>
+
+                      <AlertDialogFooter>
+                        <Button ref={cancelRef} onClick={onClose}>
+                          Cancelar
+                        </Button>
+                        <Button colorScheme="red" onClick={() => onDelete(member.id)} ml={3}>
+                          Eliminar
+                        </Button>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialogOverlay>
+                </AlertDialog>
+              </> :
               null,
           }
         } else {
@@ -121,7 +165,7 @@ export default function ProjectMembersTable(props) {
           }
         }
       }))
-  }, [members, ROLES, removeMember, projectId, changeRole])
+  }, [members, ROLES, projectId, changeRole])
 
 
   const columns = React.useMemo(
