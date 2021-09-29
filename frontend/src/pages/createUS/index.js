@@ -28,7 +28,9 @@ import { Link } from "react-router-dom";
 import { api } from "../../api";
 import { useAuth0 } from "@auth0/auth0-react";
 
-export default function CreateUserStory() {
+export default function CreateUserStory({ props }) {
+  console.log(props);
+  const projectId = props.computedMatch.params.id;
   const [users, setUsers] = useState([]); //Los usuarios del sistema
   const { user } = useAuth0();
   const toast = useToast();
@@ -52,9 +54,9 @@ export default function CreateUserStory() {
   const history = useHistory(); //para poder redirigir al usuario luego de la crecion exitosa del proyecto
   async function onSubmit(values) {
     //funcion que define el comportamiento al confirmar el form
-    console.log(values)
+    console.log(user);
     await api
-      .createUserStory({ ...values, id: user.sub })
+      .createUserStory({ ...values, id: user.sub, idProyecto: projectId })
       .then((res) => {
         if (res.id) {
           toast({
@@ -113,22 +115,22 @@ export default function CreateUserStory() {
           </FormControl>
           <FormLabel fontSize="25px">Descripcion</FormLabel>
           <Input
-              fontSize="lg"
-              id="description"
-              placeholder="Descripcion"
-              borderColor="grey.300"
-              {...register("description", {
-                required: "Valor Requerido",
-                minLength: {
-                  value: 4,
-                  message: "Minimum length should be 4",
-                },
-              })}
-            />
-            <FormErrorMessage>
-              {errors.nombre && errors.nombre.message}
-            </FormErrorMessage>
-            
+            fontSize="lg"
+            id="description"
+            placeholder="Descripcion"
+            borderColor="grey.300"
+            {...register("description", {
+              required: "Valor Requerido",
+              minLength: {
+                value: 4,
+                message: "Minimum length should be 4",
+              },
+            })}
+          />
+          <FormErrorMessage>
+            {errors.nombre && errors.nombre.message}
+          </FormErrorMessage>
+
           <Flex>
             <Button
               mt={4}

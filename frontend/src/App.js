@@ -37,11 +37,7 @@ export default function App() {
             component={ProjectMembers}
             exact
           />
-          <PrivateRoute
-            path="/projects/:id/roles"
-            component={Roles}
-            exact
-          />
+          <PrivateRoute path="/projects/:id/roles" component={Roles} exact />
           <PrivateRoute
             path="/projects/:id/config"
             component={ProjectConfig}

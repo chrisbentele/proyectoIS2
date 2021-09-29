@@ -3,13 +3,11 @@ import { axiosInstance } from ".";
 
 //La funcion para crear user stories
 //Recibe id del proyecto, Nombre de la user storie, descripcion de la user story, y el id del creador de la user story
-export const createUserStory = async (
-  idProyecto,
-  usName,
-  description,
-  creadoPor
-) => {
+export const createUserStory = async (f) => {
+  console.log(f);
+  const { idProyecto, usName, description, creadoPor } = {};
   try {
+    console.log("id proyecto:", idProyecto);
     const res = await axiosInstance.post(
       `/proyectos/${idProyecto}/user_stories`,
       {
