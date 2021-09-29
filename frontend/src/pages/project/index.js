@@ -1,8 +1,3 @@
-/**
- * @file index.js
- * @brief Vista principal de un proyecto
- */
-//! Librerías de React.js.
 import React, { useEffect, useState } from "react";
 //! API del frontend.
 import { api } from "../../api";
@@ -13,7 +8,6 @@ import {
   Flex,
   HStack,
   Text,
-  VStack,
   LinkBox,
   LinkOverlay,
 } from "@chakra-ui/layout";
@@ -21,10 +15,6 @@ import { Link } from "react-router-dom";
 import Select from "react-select";
 import { Button } from "@chakra-ui/button";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
-import { FormControl, FormLabel } from "@chakra-ui/form-control";
-import { Input } from "@chakra-ui/input";
-import { useDisclosure } from "@chakra-ui/hooks";
-import AlertDialogExample from "../../components/popupDelete/popupDelete";
 import {
   AlertDialog,
   AlertDialogBody,
@@ -51,6 +41,10 @@ export default function Index({ props }) {
     setIsOpen(false);
   };
   const cancelRef = React.useRef();
+
+  const kanbanSection = (sectionTitle, userStories) => {
+    return <Box></Box>;
+  };
 
   //Al cargarse la pagina se busca el proyecto con el id del URL y se lo asigna a projectId
   useEffect(() => {
