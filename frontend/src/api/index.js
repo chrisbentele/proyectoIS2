@@ -28,7 +28,13 @@ import {
   editMembersRole,
   getMembers,
 } from "./members";
-import { createUserStory, getUserStories, editUS } from "./userStories";
+import {
+  createUserStory,
+  getUserStories,
+  editUS,
+  eliminarUS,
+} from "./userStories";
+
 
 //Instancia de axios, para no tener que escribir en cada request el URL
 export const axiosInstance = axios.create({
@@ -64,4 +70,5 @@ export const api = {
   createUserStory,
   getUserStories,
   editUS,
+  eliminarUS,
 };
