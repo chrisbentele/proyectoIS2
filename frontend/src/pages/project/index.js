@@ -46,7 +46,7 @@ export default function Index({ props }) {
   const moverUS = async (estado, id) => {
     console.log(estado);
     console.log(id);
-    await api.cambiarEstadoUS(projectId, estado, id);
+    await api.cambiarEstadoUS({ projectId, estado, usId });
     api.getUserStories(projectId).then((uss) => setUserStories(uss));
   };
 
