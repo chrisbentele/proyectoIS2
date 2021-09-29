@@ -46,8 +46,9 @@ export default function Index({ props }) {
   const [isOpen, setIsOpen] = React.useState(false);
   const onClose = () => setIsOpen(false);
   const onDelete = (id) => {
-    setIsOpen(false);
+    console.log(id);
     eliminarUS(id);
+    setIsOpen(false);
   };
   const cancelRef = React.useRef();
 
@@ -88,10 +89,9 @@ export default function Index({ props }) {
       d="flex"
       justifyContent="left"
       overflow="auto"
-      mt="3rem"
     >
       {project ? ( //si ya se cargo el proyecto se muestra el mismo, si no se muestra la pantalla de carga
-        <Box>
+        <Box mt="3rem">
           <Box
             pos="fixed"
             top="55px"
@@ -135,90 +135,93 @@ export default function Index({ props }) {
                 {userStories
                   ? userStories
                       .filter((us) => us.estado === 0)
-                      .map((us) => (
-                        <Box
-                          border="2px"
-                          borderRadius="8"
-                          p="2"
-                          m="2"
-                          key={us.id}
-                        >
-                          <Text fontSize="20px" fontWeight="semibold">
-                            {us.nombre}
-                          </Text>
-                          <Text fontSize="15px">{us.contenido}</Text>
-                          <Select
-                            placeholder="cambiar estado"
-                            size="sm"
-                            onChange={(e) => {
-                              moverUS(e.value, us.id);
-                            }}
-                            options={[
-                              // { value: "0", label: "To do" },
-                              { value: "1", label: "En curso" },
-                              { value: "2", label: "Hecho" },
-                              { value: "4", label: "Backlog" },
-                            ]}
-                          />
-                          <Flex>
-                            <Button onClick={() => eliminarUS(us.id)} mt="2">
-                              <EditIcon color="black.500" />
-                            </Button>
-                            <Button
-                              onClick={() => setIsOpen(true)}
-                              mt="2"
-                              ml="auto"
-                              bg="red.500"
-                              _hover={{
-                                background: "red.600",
-                                color: "teal.500",
+                      .map((us) => {
+                        console.log(us.id);
+                        return (
+                          <Box
+                            border="2px"
+                            borderRadius="8"
+                            p="2"
+                            m="2"
+                            key={us.id}
+                          >
+                            <Text fontSize="20px" fontWeight="semibold">
+                              {us.nombre}
+                            </Text>
+                            <Text fontSize="15px">{us.contenido}</Text>
+                            <Select
+                              placeholder="cambiar estado"
+                              size="sm"
+                              onChange={(e) => {
+                                moverUS(e.value, us.id);
                               }}
-                              _active={{
-                                background: "red.600",
-                              }}
-                            >
-                              <DeleteIcon color={"#F5F4F5"} />
-                            </Button>
-                            <AlertDialog
-                              isOpen={isOpen}
-                              leastDestructiveRef={cancelRef}
-                              onClose={onClose}
-                            >
-                              <AlertDialogOverlay>
-                                <AlertDialogContent>
-                                  <AlertDialogHeader
-                                    fontSize="lg"
-                                    fontWeight="bold"
-                                  >
-                                    Eliminar US
-                                  </AlertDialogHeader>
-
-                                  <AlertDialogBody>
-                                    ¿Está seguro que desea eliminar a esta US?
-                                  </AlertDialogBody>
-
-                                  <AlertDialogFooter>
-                                    <Button ref={cancelRef} onClick={onClose}>
-                                      Cancelar
-                                    </Button>
-                                    <Button
-                                      colorScheme="red"
-                                      onClick={() => onDelete(us.id)}
-                                      ml={3}
+                              options={[
+                                // { value: "0", label: "To do" },
+                                { value: "1", label: "En curso" },
+                                { value: "2", label: "Hecho" },
+                                { value: "4", label: "Backlog" },
+                              ]}
+                            />
+                            <Flex>
+                              <Button onClick={() => eliminarUS(us.id)} mt="2">
+                                <EditIcon color="black.500" />
+                              </Button>
+                              <Button
+                                onClick={() => setIsOpen(true)}
+                                mt="2"
+                                ml="auto"
+                                bg="red.500"
+                                _hover={{
+                                  background: "red.600",
+                                  color: "teal.500",
+                                }}
+                                _active={{
+                                  background: "red.600",
+                                }}
+                              >
+                                <DeleteIcon color={"#F5F4F5"} />
+                              </Button>
+                              <AlertDialog
+                                isOpen={isOpen}
+                                leastDestructiveRef={cancelRef}
+                                onClose={onClose}
+                              >
+                                <AlertDialogOverlay>
+                                  <AlertDialogContent>
+                                    <AlertDialogHeader
+                                      fontSize="lg"
+                                      fontWeight="bold"
                                     >
-                                      Eliminar
-                                    </Button>
-                                  </AlertDialogFooter>
-                                </AlertDialogContent>
-                              </AlertDialogOverlay>
-                            </AlertDialog>
-                          </Flex>
+                                      Eliminar US
+                                    </AlertDialogHeader>
 
-                          {/* <Button size="sm" mt="2" bg="red">
+                                    <AlertDialogBody>
+                                      ¿Está seguro que desea eliminar a esta US?
+                                    </AlertDialogBody>
+
+                                    <AlertDialogFooter>
+                                      <Button ref={cancelRef} onClick={onClose}>
+                                        Cancelar
+                                      </Button>
+                                      <Button
+                                        colorScheme="red"
+                                        onClick={() => onDelete(us.id)}
+                                        ml={3}
+                                      >
+                                        Eliminar
+                                      </Button>
+                                    </AlertDialogFooter>
+                                  </AlertDialogContent>
+                                </AlertDialogOverlay>
+                              </AlertDialog>
+                            </Flex>
+
+                            {/* <Button size="sm" mt="2" bg="red">
                             Eliminar
                           </Button> */}
-                        </Box>
-                      ))
+                          </Box>
+                        );
+                      })
                   : null}
                 {/* <Box p="5">
                 <Link to={`${projectId}/createUS`}>
@@ -241,7 +244,7 @@ export default function Index({ props }) {
                 </Flex>
                 {userStories
                   ? userStories
-                      .filter((us) => us.estado == 1)
+                      .filter((us) => us.estado === 1)
                       .map((us) => (
                         <Box
                           border="2px"
@@ -270,7 +273,7 @@ export default function Index({ props }) {
                               <EditIcon color="black.500" />
                             </Button>
                             <Button
-                              onClick={() => eliminarUS(us.id)}
+                              onClick={() => setIsOpen(true)}
                               mt="2"
                               ml="auto"
                               bg="red.500"
@@ -342,7 +345,7 @@ export default function Index({ props }) {
                 </Flex>
                 {userStories
                   ? userStories
-                      .filter((us) => us.estado == 2)
+                      .filter((us) => us.estado === 2)
                       .map((us) => (
                         <Box
                           border="2px"
@@ -371,7 +374,7 @@ export default function Index({ props }) {
                               <EditIcon color="black.500" />
                             </Button>
                             <Button
-                              onClick={() => eliminarUS(us.id)}
+                              onClick={() => setIsOpen(true)}
                               mt="2"
                               ml="auto"
                               bg="red.500"
@@ -472,7 +475,7 @@ export default function Index({ props }) {
                               <EditIcon color="black.500" />
                             </Button>
                             <Button
-                              onClick={() => eliminarUS(us.id)}
+                              onClick={() => setIsOpen(true)}
                               mt="2"
                               ml="auto"
                               bg="red.500"
