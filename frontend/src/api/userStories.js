@@ -29,20 +29,6 @@ export const getUserStories = async (idProyecto) => {
   }
 };
 
-export const cambiarEstadoUS = async ({ projectId, estado, usId }) => {
-  try {
-    const res = await axiosInstance.put(
-      `/proyectos/${projectId}/user_stories/${usId}`,
-      {
-        estado,
-      }
-    );
-    return res.data;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 export const editUS = async (usData) => {
   console.log(usData);
   const { projectId, usName, description, estado, usId } = usData;
