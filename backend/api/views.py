@@ -68,7 +68,7 @@ def proyectos(request, proyect_id=None):
                 }
             )
             rol_asignado_seri.is_valid(raise_exception=True)
-            rol_asignado_seri.save(id=-1)
+            rol_asignado_seri.save(id=proy.id)
 
             rol_seri = RolSerializer(
                 data={
@@ -98,8 +98,8 @@ def proyectos(request, proyect_id=None):
                 proy_seri = ProyectoSerializer(p)
                 proy_data = proy_seri.data
                 scrum_obj = RolAsignado.objects.get(
-                    id=-1
-                )  ## obtiene el RolAsignado con el id -1, el del scrum master
+                    id=proyect_id
+                )  ## obtiene el RolAsignado con el id del proyecto, el del scrum master
                 scrum_data = RolAsignadoSerializer(scrum_obj).data
                 proy_data.update({"scrumMaster": scrum_data})
                 return JsonResponse(proy_data, safe=False)
