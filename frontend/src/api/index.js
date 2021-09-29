@@ -1,3 +1,8 @@
+/**
+ * @file index.js
+ * @brief Funciones de API para el frontend
+ */
+
 import axios from "axios";
 
 import {
@@ -14,7 +19,7 @@ import {
   getRole,
   getRoles,
   deleteRole,
-  asignarUserRole,
+  setUserRole,
   removeUserRole,
 } from "./roles";
 import {
@@ -26,7 +31,8 @@ import {
 import {
   createUserStory,
   getUserStories,
-  deleteUserStory,
+  editUS,
+  eliminarUS,
 } from "./userStories";
 
 //Instancia de axios, para no tener que escribir en cada request el URL
@@ -52,7 +58,7 @@ export const api = {
   getRole,
   getRoles,
   deleteRole,
-  asignarUserRole,
+  setUserRole,
   removeUserRole,
   //Members
   addMemberToProject,
@@ -62,5 +68,6 @@ export const api = {
   //User Stories
   createUserStory,
   getUserStories,
-  deleteUserStory,
+  editUS,
+  eliminarUS,
 };

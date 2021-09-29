@@ -1,14 +1,28 @@
-//Pagina donde se muestran los miembros de un proyecto
+/**
+ * @file index.js
+ * @brief Página donde se muestran los miembros de un proyecto.
+ */
 
+//! Librerías de React.js.
 import React, { useState, useEffect } from "react";
+//! A fast, lightweight, opinionated table and datagrid built on React.
 import ReactTable from "react-table-v6";
+//! Botón de borrar
 import DeleteIcon from "../../components/deleteIcon/deleteIcon";
+//! Estilo de la tabla
 import "react-table-v6/react-table.css";
+//! API del frontend.
 import { api } from "../../api";
+//! Botón de agregar
 import AddIcon from "../../components/addIcon";
 import { Button } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
+/**
+ * Componente principal de esta página
+ * @param { props } param0
+ * @returns Reavt Component
+ */
 export default function ProjectMembers({ props }) {
   const [members, setMembers] = useState([]);
   const [users, setUsers] = useState([]);

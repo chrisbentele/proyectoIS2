@@ -1,15 +1,13 @@
-//Pagina de inicio
+/**
+ * @file home.js
+ * @brief Página de inicio
+ */
 
-import {
-  VStack,
-  Stack,
-  Flex,
-  Box,
-  Center,
-  Text,
-  Heading,
-} from "@chakra-ui/react";
+//! Componentes del Chakra UI
+import { Stack, Flex, Box, Center, Text, Heading } from "@chakra-ui/react";
+//! Librerías de React.js.
 import React from "react";
+//! Botón del login
 import LoginButton from "../../components/auth/loginButton/loginButton";
 import { Link } from "react-router-dom";
 
@@ -25,6 +23,10 @@ import { Link } from "react-router-dom";
 //   );
 // }
 
+/**
+ * Función principal de esta vista
+ * @returns React Component
+ */
 export default function Home() {
   return (
     <Box overflow="auto" as="main">

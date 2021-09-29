@@ -1,39 +1,32 @@
 //Pagina de creacion de proyectos
 
-import Select from "react-select";
 import {
   FormControl,
   FormLabel,
   FormErrorMessage,
-  FormHelperText,
   Input,
   Button,
   Box,
   Flex,
   Center,
   Heading,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
   Spacer,
   useToast,
 } from "@chakra-ui/react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import React, { useEffect, useState } from "react";
-import { useAuth } from "../../providers/DbAuth";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 import { api } from "../../api";
 import { useAuth0 } from "@auth0/auth0-react";
 
 export default function CreateUserStory({ props }) {
-  console.log(props);
-  const projectId = props.computedMatch.params.id;
   const [users, setUsers] = useState([]); //Los usuarios del sistema
   const { user } = useAuth0();
   const toast = useToast();
+  console.log(props);
+  const projectId = props.computedMatch.params.id;
+
   //Al cargarse la pagina se buscan todos los usuarios
   useEffect(() => {
     api
@@ -44,19 +37,17 @@ export default function CreateUserStory({ props }) {
       })
       .catch((err) => console.log(err));
   }, []);
+
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
-    control,
-    setValue,
   } = useForm();
   const history = useHistory(); //para poder redirigir al usuario luego de la crecion exitosa del proyecto
   async function onSubmit(values) {
     //funcion que define el comportamiento al confirmar el form
-    console.log(user);
     await api
-      .createUserStory({ ...values, id: user.sub, idProyecto: projectId })
+      .createUserStory({ ...values, projectId, creadoPor: user.sub })
       .then((res) => {
         if (res.id) {
           toast({
@@ -74,7 +65,7 @@ export default function CreateUserStory({ props }) {
           });
         }
 
-        history.push(`/projects/${res.id}`); //luego de crear exitosamente el proyecto, se redirige a la pagina del proyecto
+        history.push(`/projects/${projectId}`); //luego de crear exitosamente el proyecto, se redirige a la pagina del proyecto
       })
       .catch((err) => console.log(err));
   }
@@ -94,7 +85,7 @@ export default function CreateUserStory({ props }) {
         fontSize="lg"
       >
         <form onSubmit={handleSubmit(onSubmit)}>
-          <FormControl isInvalid={errors.nombre}>
+          <FormControl isInvalid={errors.usName}>
             <FormLabel fontSize="25px">Nombre de US</FormLabel>
             <Input
               fontSize="lg"
@@ -110,26 +101,28 @@ export default function CreateUserStory({ props }) {
               })}
             />
             <FormErrorMessage>
-              {errors.nombre && errors.nombre.message}
+              {errors.usName && errors.usName.message}
             </FormErrorMessage>
           </FormControl>
-          <FormLabel fontSize="25px">Descripcion</FormLabel>
-          <Input
-            fontSize="lg"
-            id="description"
-            placeholder="Descripcion"
-            borderColor="grey.300"
-            {...register("description", {
-              required: "Valor Requerido",
-              minLength: {
-                value: 4,
-                message: "Minimum length should be 4",
-              },
-            })}
-          />
-          <FormErrorMessage>
-            {errors.nombre && errors.nombre.message}
-          </FormErrorMessage>
+          <FormControl isInvalid={errors.description}>
+            <FormLabel fontSize="25px">Descripcion</FormLabel>
+            <Input
+              fontSize="lg"
+              id="description"
+              placeholder="Descripcion"
+              borderColor="grey.300"
+              {...register("description", {
+                required: "Valor Requerido",
+                minLength: {
+                  value: 4,
+                  message: "Minimum length should be 4",
+                },
+              })}
+            />
+            <FormErrorMessage>
+              {errors.description && errors.description.message}
+            </FormErrorMessage>
+          </FormControl>
 
           <Flex>
             <Button
@@ -153,7 +146,7 @@ export default function CreateUserStory({ props }) {
               fontSize="lg"
             >
               <Link
-                to="/profile"
+                to={`/projects/${projectId}`}
                 mt={4}
                 colorScheme="teal"
                 borderColor="black"

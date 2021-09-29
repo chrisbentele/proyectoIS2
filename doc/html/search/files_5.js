@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['tests_2epy_82',['tests.py',['../tests_8py.html',1,'']]]
+  ['loginbutton_2ejs_275',['loginButton.js',['../loginButton_8js.html',1,'']]],
+  ['logoutbutton_2ejs_276',['logoutButton.js',['../logoutButton_8js.html',1,'']]]
 ];

@@ -1,9 +1,14 @@
+/**
+ * @file header.js
+ * @brief Header de la página
+ */
+
 import React from "react";
 import { Route, useLocation, Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import LoginButton from "../auth/loginButton/loginButton";
 import LogoutButton from "../auth/logoutButton/logoutButton";
-import { Box, Flex, Heading, Spacer} from "@chakra-ui/layout";
+import { Box, Flex, Heading, Spacer } from "@chakra-ui/layout";
 import { Image } from "@chakra-ui/image";
 
 const Header = () => {
@@ -24,6 +29,7 @@ const Header = () => {
       width="full"
       p="5px"
       mb="3rem"
+      height="55px"
     >
       {isAuthenticated ? (
         <Flex justifyContent="center">
@@ -33,26 +39,20 @@ const Header = () => {
           <Spacer />
           {location.pathname !== "/" ? (
             <Box>
-                <Heading>
-                  <Link to="/">Trellon't</Link>
-                </Heading>
+              <Heading>
+                <Link to="/">Trellon't</Link>
+              </Heading>
             </Box>
-          ) : (
-            null
-          )}
+          ) : null}
           <Spacer />
-          
+
           {location.pathname !== "/profile" ? (
             <Box boxSize="40px">
               <Link to="/profile">
                 <Image borderRadius="100" src={user.picture} />
               </Link>
             </Box>
-          
-
-          ) : (
-            null
-          )}
+          ) : null}
         </Flex>
       ) : (
         <Box mr="auto">

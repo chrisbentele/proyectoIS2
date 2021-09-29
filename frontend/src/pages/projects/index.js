@@ -1,5 +1,7 @@
+//! Librerías de React.js.
 import React from "react";
 
+//! Componentes de proyectos.
 export default function Projects(props) {
   console.log(props.match.params.id);
   const projects = [
