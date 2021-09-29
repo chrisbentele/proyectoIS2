@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 //! API del frontend.
 import { api } from "../../api";
 import { Box, Button, Grid, Input, Text } from '@chakra-ui/react';
-import { useAuth0 } from "@auth0/auth0-react";
 import AddMemberTable from '../../components/table/addMemberTable';
 import ProjectMembersTable from '../../components/table/projectMembersTable';
 
@@ -18,14 +17,10 @@ export default function ProjectMembers({ props }) {
     searchUsersError: "",
     searchTerm: "",
   });
-  const [thisUserRole, setThisUserRole] = useState([]);
 
   const projectId = props.computedMatch.params.id;
   const url = props.computedMatch.url;
 
-  const { user } = useAuth0();
-
-  console.log(thisUserRole);
 
   useEffect(() => {
     //Al cargar la pagina se buscan los usuarios

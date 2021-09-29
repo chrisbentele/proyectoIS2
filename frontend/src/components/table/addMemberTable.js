@@ -44,10 +44,7 @@ export default function AddMemberTable(props) {
    * funcion que se encarga de agregar un usuario al proyecto mediante la tabla
    */
   const addMemberById = (userId) => {
-    console.log('members antes');
-    console.log(members);
     api.addMemberToProject(projectId, userId).then((res) => {
-      console.log(res);
       if (res) {
         api.setUserRole(2, projectId, userId);
         api.getUsers().then((usersRes) => {
@@ -59,11 +56,6 @@ export default function AddMemberTable(props) {
             setUsers([...filteredUsers]);
             setMembers(membersRes);
           });
-          console.log('hola');
-          //setMembers([...members, addedUser]);
-          console.log('members despues');
-          console.log(members);
-          //setUsers(updatedUsers);
         }
         )
       }

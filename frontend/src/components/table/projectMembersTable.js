@@ -13,7 +13,6 @@ import {
   Tr,
   Th,
   Td,
-  useToast,
   AlertDialog,
   AlertDialogBody,
   AlertDialogFooter,
@@ -26,13 +25,11 @@ import { DeleteIcon } from "@chakra-ui/icons";
 
 export default function ProjectMembersTable(props) {
 
-  const users = props.users;
   const setUsers = props.setUsers;
   const members = props.members;
   const projectId = props.projectId;
   const setMembers = props.setMembers;
   const ROLES = props.ROLES;
-  const toast = useToast();
 
   const [isOpen, setIsOpen] = useState()
   const onClose = () => setIsOpen(false)
@@ -47,13 +44,7 @@ export default function ProjectMembersTable(props) {
    * tabla
    */
   const removeMember = (memberId) => {
-    console.log('entra a remove member');
-    console.log('member id es:');
-    console.log(memberId);
     api.removeMemberFromProject(projectId, memberId).then((res) => {
-      console.log('entra al then');
-      console.log('res es un: ');
-      console.log(res);
       if (!res) {
         api.getUsers().then((usersRes) => {
           api.getMembers(projectId).then((membersRes) => {
@@ -64,11 +55,6 @@ export default function ProjectMembersTable(props) {
             setUsers([...filteredUsers]);
             setMembers(membersRes);
           });
-          console.log('hola');
-          //setMembers([...members, addedUser]);
-          console.log('members despues');
-          console.log(members);
-          //setUsers(updatedUsers);
         }
         )
       }
