@@ -47,7 +47,8 @@ export const editUS = async (usData) => {
   }
 };
 
-export const deleteUs = async (projectId, us_id) => {
+export const eliminarUS = async (projectId, us_id) => {
+
   try {
     const res = await axiosInstance.delete(
       `/proyectos/${projectId}/user_stories/${us_id}`
