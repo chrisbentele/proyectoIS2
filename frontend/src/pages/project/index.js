@@ -43,9 +43,9 @@ export default function Index({ props }) {
       .catch((err) => console.log(err));
   }, []);
 
-  const moverUS = async (estado, id) => {
+  const moverUS = async (estado, usId) => {
     console.log(estado);
-    console.log(id);
+    console.log(usId);
     await api.cambiarEstadoUS({ projectId, estado, usId });
     api.getUserStories(projectId).then((uss) => setUserStories(uss));
   };
