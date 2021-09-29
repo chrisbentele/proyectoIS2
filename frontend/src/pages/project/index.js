@@ -19,6 +19,20 @@ import {
 } from "@chakra-ui/layout";
 import { Link } from "react-router-dom";
 import Select from "react-select";
+import { Button } from "@chakra-ui/button";
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { FormControl, FormLabel } from "@chakra-ui/form-control";
+import { Input } from "@chakra-ui/input";
+import { useDisclosure } from "@chakra-ui/hooks";
+import AlertDialogExample from "../../components/popupDelete/popupDelete";
+import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
+} from "@chakra-ui/react";
 
 /**
  * Función que contiene el código de la vista
@@ -29,6 +43,13 @@ export default function Index({ props }) {
   const projectId = props.computedMatch.params.id; //id del proyecto, se extrae del URL
   const [project, setProject] = useState(); //estado del proyecto
   const [userStories, setUserStories] = useState([]); //estado del proyecto
+  const [isOpen, setIsOpen] = React.useState(false);
+  const onClose = () => setIsOpen(false);
+  const onDelete = (id) => {
+    setIsOpen(false);
+    eliminarUS(id);
+  };
+  const cancelRef = React.useRef();
 
   //Al cargarse la pagina se busca el proyecto con el id del URL y se lo asigna a projectId
   useEffect(() => {
@@ -50,13 +71,19 @@ export default function Index({ props }) {
     api.getUserStories(projectId).then((uss) => setUserStories(uss));
   };
 
+  const eliminarUS = async (id) => {
+    console.log(id);
+    await api.eliminarUS(projectId, id);
+    api.getUserStories(projectId).then((uss) => setUserStories(uss));
+  };
+
   console.log(project);
   console.log(userStories);
   return (
     <Box
       minHeight="100vh"
       minWidth="full"
-      bg={"#F5F4F5"}
+      bg={"#ffe66d"}
       color="#2b2d42"
       d="flex"
       justifyContent="left"
@@ -69,7 +96,7 @@ export default function Index({ props }) {
             pos="fixed"
             top="55px"
             zIndex="100"
-            bg={"#F7FFF7"}
+            bg={"#FFE047"}
             left="0"
             right="0"
             // boxShadow="md"
@@ -91,7 +118,7 @@ export default function Index({ props }) {
             </HStack>
           </Box>
           <Box mt="50px">
-            <HStack p="5" alignItems="top" float="top" height="fit-content">
+            <HStack p="5" alignItems="top" float="top">
               <Box
                 w="xs"
                 minHeight="100px"
@@ -107,7 +134,7 @@ export default function Index({ props }) {
                 </Flex>
                 {userStories
                   ? userStories
-                      .filter((us) => us.estado == 0)
+                      .filter((us) => us.estado === 0)
                       .map((us) => (
                         <Box
                           border="2px"
@@ -133,6 +160,63 @@ export default function Index({ props }) {
                               { value: "4", label: "Backlog" },
                             ]}
                           />
+                          <Flex>
+                            <Button onClick={() => eliminarUS(us.id)} mt="2">
+                              <EditIcon color="black.500" />
+                            </Button>
+                            <Button
+                              onClick={() => setIsOpen(true)}
+                              mt="2"
+                              ml="auto"
+                              bg="red.500"
+                              _hover={{
+                                background: "red.600",
+                                color: "teal.500",
+                              }}
+                              _active={{
+                                background: "red.600",
+                              }}
+                            >
+                              <DeleteIcon color={"#F5F4F5"} />
+                            </Button>
+                            <AlertDialog
+                              isOpen={isOpen}
+                              leastDestructiveRef={cancelRef}
+                              onClose={onClose}
+                            >
+                              <AlertDialogOverlay>
+                                <AlertDialogContent>
+                                  <AlertDialogHeader
+                                    fontSize="lg"
+                                    fontWeight="bold"
+                                  >
+                                    Eliminar US
+                                  </AlertDialogHeader>
+
+                                  <AlertDialogBody>
+                                    ¿Está seguro que desea eliminar a esta US?
+                                  </AlertDialogBody>
+
+                                  <AlertDialogFooter>
+                                    <Button ref={cancelRef} onClick={onClose}>
+                                      Cancelar
+                                    </Button>
+                                    <Button
+                                      colorScheme="red"
+                                      onClick={() => onDelete(us.id)}
+                                      ml={3}
+                                    >
+                                      Eliminar
+                                    </Button>
+                                  </AlertDialogFooter>
+                                </AlertDialogContent>
+                              </AlertDialogOverlay>
+                            </AlertDialog>
+                          </Flex>
+
+                          {/* <Button size="sm" mt="2" bg="red">
+                            Eliminar
+                          </Button> */}
                         </Box>
                       ))
                   : null}
@@ -181,6 +265,59 @@ export default function Index({ props }) {
                               { value: "4", label: "Backlog" },
                             ]}
                           />
+                          <Flex>
+                            <Button onClick={() => eliminarUS(us.id)} mt="2">
+                              <EditIcon color="black.500" />
+                            </Button>
+                            <Button
+                              onClick={() => eliminarUS(us.id)}
+                              mt="2"
+                              ml="auto"
+                              bg="red.500"
+                              _hover={{
+                                background: "red.600",
+                                color: "teal.500",
+                              }}
+                              _active={{
+                                background: "red.600",
+                              }}
+                            >
+                              <DeleteIcon color={"#F5F4F5"} />
+                            </Button>
+                            <AlertDialog
+                              isOpen={isOpen}
+                              leastDestructiveRef={cancelRef}
+                              onClose={onClose}
+                            >
+                              <AlertDialogOverlay>
+                                <AlertDialogContent>
+                                  <AlertDialogHeader
+                                    fontSize="lg"
+                                    fontWeight="bold"
+                                  >
+                                    Eliminar US
+                                  </AlertDialogHeader>
+
+                                  <AlertDialogBody>
+                                    ¿Está seguro que desea eliminar a esta US?
+                                  </AlertDialogBody>
+
+                                  <AlertDialogFooter>
+                                    <Button ref={cancelRef} onClick={onClose}>
+                                      Cancelar
+                                    </Button>
+                                    <Button
+                                      colorScheme="red"
+                                      onClick={() => onDelete(us.id)}
+                                      ml={3}
+                                    >
+                                      Eliminar
+                                    </Button>
+                                  </AlertDialogFooter>
+                                </AlertDialogContent>
+                              </AlertDialogOverlay>
+                            </AlertDialog>
+                          </Flex>
                         </Box>
                       ))
                   : null}
@@ -229,6 +366,59 @@ export default function Index({ props }) {
                               { value: "4", label: "Backlog" },
                             ]}
                           />
+                          <Flex>
+                            <Button onClick={() => eliminarUS(us.id)} mt="2">
+                              <EditIcon color="black.500" />
+                            </Button>
+                            <Button
+                              onClick={() => eliminarUS(us.id)}
+                              mt="2"
+                              ml="auto"
+                              bg="red.500"
+                              _hover={{
+                                background: "red.600",
+                                color: "teal.500",
+                              }}
+                              _active={{
+                                background: "red.600",
+                              }}
+                            >
+                              <DeleteIcon color={"#F5F4F5"} />
+                            </Button>
+                            <AlertDialog
+                              isOpen={isOpen}
+                              leastDestructiveRef={cancelRef}
+                              onClose={onClose}
+                            >
+                              <AlertDialogOverlay>
+                                <AlertDialogContent>
+                                  <AlertDialogHeader
+                                    fontSize="lg"
+                                    fontWeight="bold"
+                                  >
+                                    Eliminar US
+                                  </AlertDialogHeader>
+
+                                  <AlertDialogBody>
+                                    ¿Está seguro que desea eliminar a esta US?
+                                  </AlertDialogBody>
+
+                                  <AlertDialogFooter>
+                                    <Button ref={cancelRef} onClick={onClose}>
+                                      Cancelar
+                                    </Button>
+                                    <Button
+                                      colorScheme="red"
+                                      onClick={() => onDelete(us.id)}
+                                      ml={3}
+                                    >
+                                      Eliminar
+                                    </Button>
+                                  </AlertDialogFooter>
+                                </AlertDialogContent>
+                              </AlertDialogOverlay>
+                            </AlertDialog>
+                          </Flex>
                         </Box>
                       ))
                   : null}
@@ -277,6 +467,59 @@ export default function Index({ props }) {
                               { value: "2", label: "Hecho" },
                             ]}
                           />
+                          <Flex>
+                            <Button onClick={() => eliminarUS(us.id)} mt="2">
+                              <EditIcon color="black.500" />
+                            </Button>
+                            <Button
+                              onClick={() => eliminarUS(us.id)}
+                              mt="2"
+                              ml="auto"
+                              bg="red.500"
+                              _hover={{
+                                background: "red.600",
+                                color: "teal.500",
+                              }}
+                              _active={{
+                                background: "red.600",
+                              }}
+                            >
+                              <DeleteIcon color={"#F5F4F5"} />
+                            </Button>
+                            <AlertDialog
+                              isOpen={isOpen}
+                              leastDestructiveRef={cancelRef}
+                              onClose={onClose}
+                            >
+                              <AlertDialogOverlay>
+                                <AlertDialogContent>
+                                  <AlertDialogHeader
+                                    fontSize="lg"
+                                    fontWeight="bold"
+                                  >
+                                    Eliminar US
+                                  </AlertDialogHeader>
+
+                                  <AlertDialogBody>
+                                    ¿Está seguro que desea eliminar a esta US?
+                                  </AlertDialogBody>
+
+                                  <AlertDialogFooter>
+                                    <Button ref={cancelRef} onClick={onClose}>
+                                      Cancelar
+                                    </Button>
+                                    <Button
+                                      colorScheme="red"
+                                      onClick={() => onDelete(us.id)}
+                                      ml={3}
+                                    >
+                                      Eliminar
+                                    </Button>
+                                  </AlertDialogFooter>
+                                </AlertDialogContent>
+                              </AlertDialogOverlay>
+                            </AlertDialog>
+                          </Flex>
                         </Box>
                       ))
                   : null}
@@ -305,7 +548,9 @@ export default function Index({ props }) {
           </Box>
         </Box>
       ) : (
-        <Spinner size="xl" />
+        <Flex align="center" ml="auto">
+          <Spinner size="xl" />
+        </Flex>
       )}
     </Box>
   );

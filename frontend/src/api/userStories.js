@@ -42,3 +42,14 @@ export const cambiarEstadoUS = async (projectId, estado, us_id) => {
     console.log(error);
   }
 };
+
+export const eliminarUS = async (projectId, us_id) => {
+  try {
+    const res = await axiosInstance.delete(
+      `/proyectos/${projectId}/user_stories/${us_id}`
+    );
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
