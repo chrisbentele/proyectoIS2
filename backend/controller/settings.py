@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import environ
+import sys
 
 env = environ.Env()
 environ.Env.read_env()
@@ -48,7 +49,7 @@ INSTALLED_APPS = [
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
-ALLOWED_HOSTS = ['*'] 
+ALLOWED_HOSTS = ["*"]
 
 CORS_ALLOW_HEADERS = list(default_headers) + [
     "auth-token",
@@ -90,6 +91,7 @@ WSGI_APPLICATION = "controller.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+
 DATABASES = {
     "default": {
         # "ENGINE": "django.db.backends.sqlite3",
@@ -98,10 +100,16 @@ DATABASES = {
         "NAME": "proyectois2",
         "USER": "postgres",
         "PASSWORD": "superadmin",
-        "HOST":"db",
+        "HOST": "db",
         "PORT": "5432",
     }
 }
+
+if "test" in sys.argv:
+    DATABASES["default"] = {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": "proyectois2",
+    }
 
 
 # Password validation
