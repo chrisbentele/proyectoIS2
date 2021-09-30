@@ -42,8 +42,6 @@ export default function CreateUserStory({ props }) {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
-    control,
-    setValue,
   } = useForm();
   const history = useHistory(); //para poder redirigir al usuario luego de la crecion exitosa del proyecto
   async function onSubmit(values) {

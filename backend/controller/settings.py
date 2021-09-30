@@ -44,10 +44,11 @@ INSTALLED_APPS = [
     "api.apps.ApiConfig",
     "corsheaders",
     "rest_framework",
+    # "django_nose",
 ]
 
-# CORS_ALLOWED_ORIGIN = ["http://localhost:3000",]
 CORS_ORIGIN_ALLOW_ALL = True
+ALLOWED_HOSTS = ['*'] 
 
 CORS_ALLOW_HEADERS = list(default_headers) + [
     "auth-token",
@@ -94,9 +95,10 @@ DATABASES = {
         # "ENGINE": "django.db.backends.sqlite3",
         # "NAME": BASE_DIR / "db.sqlite3",
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "proyectoIS2",
-        # "USER": "admin_proyecto",
-        "PASSWORD": "",
+        "NAME": "proyectois2",
+        "USER": "postgres",
+        "PASSWORD": "superadmin",
+        "HOST":"db",
         "PORT": "5432",
     }
 }
@@ -144,3 +146,12 @@ STATIC_URL = "/static/"
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# # Use nose to run all tests
+# TEST_RUNNER = "django_nose.NoseTestSuiteRunner"
+
+# # Tell nose to measure coverage on the 'api' app
+# NOSE_ARGS = [
+#     "--with-coverage",
+#     "--cover-package=api",
+# ]

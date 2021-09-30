@@ -31,7 +31,8 @@ import {
 import {
   createUserStory,
   getUserStories,
-  cambiarEstadoUS,
+  editUS,
+  eliminarUS,
 } from "./userStories";
 
 //Instancia de axios, para no tener que escribir en cada request el URL
@@ -67,5 +68,6 @@ export const api = {
   //User Stories
   createUserStory,
   getUserStories,
-  cambiarEstadoUS,
+  editUS,
+  eliminarUS,
 };

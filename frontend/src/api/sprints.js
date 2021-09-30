@@ -1,7 +1,6 @@
-//Endpoints para crear User Stories
 import { axiosInstance } from ".";
 
-export const createUserStory = async (usData) => {
+export const createSprint = async (usData) => {
   console.log(usData);
   const { projectId, usName, description, creadoPor } = usData;
   try {
@@ -13,15 +12,13 @@ export const createUserStory = async (usData) => {
         creadoPor,
       }
     );
-    return res.data; //retorna al usuario la respuesta del servidor
+    return res.data;
   } catch (error) {
     console.log(error);
   }
 };
 
-//Endpoint para obtener todas las user stories de un proyecto
-//recibe como parametro el id del proyeto
-export const getUserStories = async (idProyecto) => {
+export const getSprint = async (idProyecto) => {
   try {
     const res = await axiosInstance.get(
       `/proyectos/${idProyecto}/user_stories`
@@ -32,9 +29,9 @@ export const getUserStories = async (idProyecto) => {
   }
 };
 
-export const editUS = async (usData) => {
+export const editSprint = async (usId, usData) => {
   console.log(usData);
-  const { projectId, usName, description, estado, usId } = usData;
+  const { projectId, usName, description, estado } = usData;
   try {
     const res = await axiosInstance.put(
       `/proyectos/${projectId}/user_stories/${usId}`,
@@ -50,7 +47,7 @@ export const editUS = async (usData) => {
   }
 };
 
-export const eliminarUS = async (projectId, us_id) => {
+export const deleteSprint = async (projectId, us_id) => {
   try {
     const res = await axiosInstance.delete(
       `/proyectos/${projectId}/user_stories/${us_id}`

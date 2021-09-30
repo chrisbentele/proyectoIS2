@@ -1,8 +1,3 @@
-/**
- * @file index.js
- * @brief Vista principal de un proyecto
- */
-//! Librerías de React.js.
 import React, { useEffect, useState } from "react";
 //! API del frontend.
 import { api } from "../../api";
@@ -12,10 +7,16 @@ import {
   Heading,
   Flex,
   HStack,
-  Text
+  Text,
+  LinkBox,
+  LinkOverlay,
 } from "@chakra-ui/layout";
 import { Link } from "react-router-dom";
 import Select from "react-select";
+import { Button } from "@chakra-ui/button";
+import { FormControl, FormLabel } from "@chakra-ui/form-control";
+import { Input } from "@chakra-ui/input";
+import USList from "../../components/userStoryList/userStoryList";
 
 /**
  * Función que contiene el código de la vista
@@ -26,6 +27,10 @@ export default function Index({ props }) {
   const projectId = props.computedMatch.params.id; //id del proyecto, se extrae del URL
   const [project, setProject] = useState(); //estado del proyecto
   const [userStories, setUserStories] = useState([]); //estado del proyecto
+
+  const kanbanSection = (sectionTitle, userStories) => {
+    return <Box></Box>;
+  };
 
   //Al cargarse la pagina se busca el proyecto con el id del URL y se lo asigna a projectId
   useEffect(() => {
@@ -40,32 +45,25 @@ export default function Index({ props }) {
       .catch((err) => console.log(err));
   }, []);
 
-  const moverUS = async (estado, id) => {
-    console.log(estado);
-    console.log(id);
-    await api.cambiarEstadoUS(projectId, estado, id);
-    api.getUserStories(projectId).then((uss) => setUserStories(uss));
-  };
-
   console.log(project);
   console.log(userStories);
   return (
     <Box
       minHeight="100vh"
       minWidth="full"
-      bg={"#F5F4F5"}
+      bg={"#ffe66d"}
       color="#2b2d42"
       d="flex"
       justifyContent="left"
       overflow="auto"
     >
       {project ? ( //si ya se cargo el proyecto se muestra el mismo, si no se muestra la pantalla de carga
-        <Box>
+        <Box mt="3rem">
           <Box
             pos="fixed"
             top="55px"
             zIndex="100"
-            bg={"#F7FFF7"}
+            bg={"#FFE047"}
             left="0"
             right="0"
             // boxShadow="md"
@@ -87,212 +85,59 @@ export default function Index({ props }) {
             </HStack>
           </Box>
           <Box mt="50px">
-            <Box
-              borderRadius="4px"
-              bg="buttonScale.800"
-              color="richBlack"
-              width="max-content"
-              p={("2", "2", "2", "2")}
-              fontWeight="600"
-              m="0"
-            >
-              <Link to={`${projectId}/createUS`} width="fit-content">
-                + agregar nueva tarjeta
-              </Link>
-            </Box>
-            <HStack p="5">
-              <Box
-                w="xs"
-                minHeight="100px"
-                maxHeight="80%"
-                borderWidth="1px"
-                borderRadius="lg"
-                fontSize="2xl"
-                bg="white"
-                justifyContent="center"
+            <HStack p="5" alignItems="top" float="top">
+              <USList
+                projectId={projectId}
+                setUserStories={setUserStories}
+                nombreLista="Pendiente"
+                userStories={userStories.filter((us) => us.estado === 0)}
+              ></USList>
+              <USList
+                projectId={projectId}
+                setUserStories={setUserStories}
+                nombreLista="En curso"
+                userStories={userStories.filter((us) => us.estado === 1)}
+              ></USList>
+              <USList
+                projectId={projectId}
+                setUserStories={setUserStories}
+                nombreLista="Hecho"
+                userStories={userStories.filter((us) => us.estado === 2)}
+              ></USList>
+              <USList
+                projectId={projectId}
+                setUserStories={setUserStories}
+                nombreLista="Backlog"
+                userStories={userStories.filter((us) => us.estado === 4)}
               >
                 <Flex justify="center">
-                  <Heading fontSize="3xl">To Do</Heading>
+                  <LinkBox
+                    to={`${projectId}/createUS`}
+                    pt="2px"
+                    pl="2"
+                    pr="2"
+                    borderRadius="5"
+                    m="10px"
+                    justify="center"
+                    d="flex"
+                    _hover={{
+                      background: "#F5F4F5",
+                      color: "teal.500",
+                    }}
+                  >
+                    <LinkOverlay href={`${projectId}/createUS`} fontSize="lg">
+                      + agregar nueva tarjeta
+                    </LinkOverlay>
+                  </LinkBox>
                 </Flex>
-                {userStories
-                  ? userStories
-                      .filter((us) => us.estado === 0)
-                      .map((us) => (
-                        <Box
-                          border="2px"
-                          borderRadius="8"
-                          p="2"
-                          m="2"
-                          key={us.id}
-                        >
-                          <Text fontSize="25px" fontWeight="semibold">
-                            {us.nombre}
-                          </Text>
-                          <p>{us.contenido}</p>
-                          <Select
-                            onChange={(e) => {
-                              moverUS(e.value, us.id);
-                            }}
-                            options={[
-                              // { value: "0", label: "To do" },
-                              { value: "1", label: "Doing" },
-                              { value: "2", label: "Done" },
-                              { value: "4", label: "Backlog" },
-                            ]}
-                          />
-                        </Box>
-                      ))
-                  : null}
-                {/* <Box p="5">
-                <Link to={`${projectId}/createUS`}>
-                  + agregar nueva tarjeta
-                </Link>
-              </Box> */}
-              </Box>
-              <Box
-                w="xs"
-                minHeight="100px"
-                maxHeight="80%"
-                borderWidth="1px"
-                borderRadius="lg"
-                fontSize="2xl"
-                bg="white"
-                justifyContent="center"
-              >
-                <Flex justify="center">
-                  <Heading fontSize="3xl">Doing</Heading>
-                </Flex>
-                {userStories
-                  ? userStories
-                      .filter((us) => us.estado === 1)
-                      .map((us) => (
-                        <Box
-                          border="2px"
-                          borderRadius="8"
-                          p="2"
-                          m="2"
-                          key={us.id}
-                        >
-                          <Text fontSize="25px" fontWeight="semibold">
-                            {us.nombre}
-                          </Text>
-                          <p>{us.contenido}</p>
-                          <Select
-                            onChange={(e) => {
-                              moverUS(e.value, us.id);
-                            }}
-                            options={[
-                              { value: "0", label: "To do" },
-                              // { value: "1", label: "Doing" },
-                              { value: "2", label: "Done" },
-                              { value: "4", label: "Backlog" },
-                            ]}
-                          />
-                        </Box>
-                      ))
-                  : null}
-                {/* <Box p="5">
-                <Link to={`${projectId}/createUS`}>
-                  + agregar nueva tarjeta
-                </Link>
-              </Box> */}
-              </Box>
-              <Box
-                w="xs"
-                minHeight="100px"
-                maxHeight="80%"
-                borderWidth="1px"
-                borderRadius="lg"
-                fontSize="2xl"
-                bg="white"
-                justifyContent="center"
-              >
-                <Flex justify="center">
-                  <Heading fontSize="3xl">Done</Heading>
-                </Flex>
-                {userStories
-                  ? userStories
-                      .filter((us) => us.estado === 2)
-                      .map((us) => (
-                        <Box
-                          border="2px"
-                          borderRadius="8"
-                          p="2"
-                          m="2"
-                          key={us.id}
-                        >
-                          <Text fontSize="25px" fontWeight="semibold">
-                            {us.nombre}
-                          </Text>
-                          <p>{us.contenido}</p>
-                          <Select
-                            onChange={(e) => {
-                              moverUS(e.value, us.id);
-                            }}
-                            options={[
-                              { value: "0", label: "To do" },
-                              { value: "1", label: "Doing" },
-                              // { value: "2", label: "Done" },
-                              { value: "4", label: "Backlog" },
-                            ]}
-                          />
-                        </Box>
-                      ))
-                  : null}
-                {/* <Box p="5">
-                <Link to={`${projectId}/createUS`}>
-                  + agregar nueva tarjeta
-                </Link>
-              </Box> */}
-              </Box>
-              <Box
-                w="xs"
-                minHeight="100px"
-                maxHeight="80%"
-                borderWidth="1px"
-                borderRadius="lg"
-                fontSize="2xl"
-                bg="white"
-                justifyContent="center"
-              >
-                <Flex justify="center">
-                  <Heading fontSize="3xl">Backlog</Heading>
-                </Flex>
-                {userStories
-                  ? userStories
-                      .filter((us) => us.estado === 4)
-                      .map((us) => (
-                        <Box
-                          border="2px"
-                          borderRadius="8"
-                          p="2"
-                          m="2"
-                          key={us.id}
-                        >
-                          <Text fontSize="25px" fontWeight="semibold">
-                            {us.nombre}
-                          </Text>
-                          <p>{us.contenido}</p>
-                          <Select
-                            onChange={(e) => {
-                              moverUS(e.value, us.id);
-                            }}
-                            options={[
-                              // { value: "4", label: "Backlog" },
-                              { value: "0", label: "To do" },
-                              { value: "1", label: "Doing" },
-                              { value: "2", label: "Done" },
-                            ]}
-                          />
-                        </Box>
-                      ))
-                  : null}
-              </Box>
+              </USList>
             </HStack>
           </Box>
         </Box>
       ) : (
-        <Spinner size="xl" />
+        <Flex align="center" ml="auto">
+          <Spinner size="xl" />
+        </Flex>
       )}
     </Box>
   );
