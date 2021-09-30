@@ -35,6 +35,8 @@ import {
   eliminarUS,
 } from "./userStories";
 
+import sprints from "./sprints";
+
 //Instancia de axios, para no tener que escribir en cada request el URL
 export const axiosInstance = axios.create({
   baseURL: "http://localhost:8000/api",
@@ -70,4 +72,6 @@ export const api = {
   getUserStories,
   editUS,
   eliminarUS,
+  //Sprints
+  sprints,
 };
