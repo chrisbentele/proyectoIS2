@@ -4,8 +4,7 @@
  */
 
 import { useAuth0 } from "@auth0/auth0-react";
-import { Route, Redirect } from "react-router-dom";
-import { useAuth } from "../../providers/DbAuth";
+import { Route } from "react-router-dom";
 
 export default function PrivateRoute({ children, ...rest }) {
   const { isAuthenticated, loginWithRedirect, isLoading } = useAuth0();

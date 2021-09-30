@@ -15,9 +15,10 @@ import {
   Button,
   Flex,
 } from "@chakra-ui/react";
-import { PERMISOS, ROLES } from "./permisos";
-import { set, useForm } from "react-hook-form";
+import { PERMISOS } from "./permisos";
+import { useForm } from "react-hook-form";
 import { api } from "../../api/";
+import { Link } from "react-router-dom";
 
 export default function Roles({ props }) {
   const [add, setAdd] = useState();
@@ -39,83 +40,99 @@ export default function Roles({ props }) {
   const permisos_rol = watch("permisos", []); // Cambia los permisos de acuerdo al rol y permisos seleccionados
   const nombre_rol = watch("nombre_rol", []);
   const [listaRoles, setListaRoles] = useState([]);
+
+  const url = props.computedMatch.url;
+
+
   useEffect(() => {
     api.getRoles(projectId).then((listaR) => setListaRoles(listaR));
   }, []);
   console.log(listaRoles);
 
   return (
-    <Flex p="16" justifyContent="center">
-      <Box w="90ch">
-        <Select
-          pb="4"
-          onChange={(e) => {
-            const id = e.target.value;
-            const rol = listaRoles.filter((x) => x.id == id)[0];
-            console.log(e.target.value);
-            setAdd(true);
-            setValue("nombre_rol", rol?.nombre || "");
-            setValue(
-              "permisos",
-              rol?.permisos.map((x) => x.toString()) || [] // Mapea los permisos si es un rol predefinido
-            );
-          }}
-        >
-          <option hidden>Seleccione un rol</option>
-          {/* {ROLES.map((x, i) => (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        marginTop: "70px",
+      }}
+    >
+      <Button style={{ marginLeft: "5px", alignSelf: "flex-start" }}>
+        <Link to={url.replace("/roles", "")}>Volver al Proyecto</Link>
+      </Button>
+      <Flex p="16" justifyContent="center">
+        <Box w="90ch">
+          <Select
+            pb="4"
+            onChange={(e) => {
+              const id = e.target.value;
+              const rol = listaRoles.filter((x) => x.id === id)[0];
+              console.log(e.target.value);
+              setAdd(true);
+              setValue("nombre_rol", rol?.nombre || "");
+              setValue(
+                "permisos",
+                rol?.permisos.map((x) => x.toString()) || [] // Mapea los permisos si es un rol predefinido
+              );
+            }}
+          >
+            <option hidden>Seleccione un rol</option>
+            {/* {ROLES.map((x, i) => (
             <option key={i} value={i}>
               {x.title}
             </option>
           ))} */}
-          {listaRoles.map((x, i) => (
-            <option key={i} value={x.id}>
-              {x.nombre}
-            </option>
-          ))}
-          <option onClick={() => setAdd(true)}>Agregar</option>
-        </Select>
-        <Box hidden={!add}>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Input
-              isDisabled={
-                listaRoles.filter((x) => x.title == nombre_rol).length != 0 // si el rol es uno pre definido
-              }
-              placeholder="Nombre del Rol"
-              {...register("nombre_rol")}
-            />
-            <FormControl>
-              <CheckboxGroup
-                value={permisos_rol}
-                onChange={(val) => setValue("permisos", val)}
+            {listaRoles.map((x, i) => (
+              <option key={i} value={x.id}>
+                {x.nombre}
+              </option>
+            ))}
+            <option onClick={() => setAdd(true)}>Agregar</option>
+          </Select>
+          <Box hidden={!add}>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Input
+                isDisabled={
+                  listaRoles.filter((x) => x.title === nombre_rol).length !== 0 // si el rol es uno pre definido
+                }
+                placeholder="Nombre del Rol"
+                {...register("nombre_rol")}
+              />
+              <FormControl>
+                <CheckboxGroup
+                  value={permisos_rol}
+                  onChange={(val) => setValue("permisos", val)}
+                >
+                  <Grid templateColumns="repeat(5, 1fr)" gap={6} padding="10">
+                    {PERMISOS.map((x) => (
+                      <Checkbox
+                        key={x.value.toString()}
+                        value={x.value.toString()}
+                        isDisabled={
+                          listaRoles.filter((x) => x.title === nombre_rol)
+                            .length !== 0 // si el rol es uno pre definido
+                        }
+                      >
+                        {x.title}
+                      </Checkbox>
+                    ))}
+                  </Grid>
+                </CheckboxGroup>
+              </FormControl>
+              <Button
+                hidden={
+                  listaRoles.filter((x) => x.title === nombre_rol).length !== 0
+                } // si el rol es uno pre definido
+                type="submit"
               >
-                <Grid templateColumns="repeat(5, 1fr)" gap={6} padding="10">
-                  {PERMISOS.map((x) => (
-                    <Checkbox
-                      key={x.value.toString()}
-                      value={x.value.toString()}
-                      isDisabled={
-                        listaRoles.filter((x) => x.title == nombre_rol)
-                          .length != 0 // si el rol es uno pre definido
-                      }
-                    >
-                      {x.title}
-                    </Checkbox>
-                  ))}
-                </Grid>
-              </CheckboxGroup>
-            </FormControl>
-            <Button
-              hidden={
-                listaRoles.filter((x) => x.title == nombre_rol).length != 0
-              } // si el rol es uno pre definido
-              type="submit"
-            >
-              Agregar
-            </Button>
-          </form>
+                Agregar
+              </Button>
+            </form>
+          </Box>
         </Box>
-      </Box>
-    </Flex>
+      </Flex>
+    </div>
   );
 }
 
