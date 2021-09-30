@@ -358,3 +358,26 @@ class sprints(TestCase):
             content_type="application/json",
         )
         self.assertEqual(res.json()["fechaFinalizacion"], now)
+
+    def test_sprints_user_stories(self):
+        u = crear_user()
+        p = crear_proyecto(self, [u["id"]])
+        sp = crear_sprint(self, p)
+
+        us = crear_US(p["id"], u["id"])
+
+        res = self.client.put(
+            f"/api/proyectos/{p['id']}/user_stories/{us['id']}",
+            json.dumps({"sprint": sp["id"]}),
+            content_type="application/json",
+        )
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(sp["id"], res.json()["sprint"])
+
+        res = self.client.get(
+            f"/api/proyectos/{p['id']}/sprints/{sp['id']}/user_stories"
+        )
+        newUs = res.json()[0]
+        self.assertEqual(res.status_code, 200)
+        self.assertJSONNotEqual(json.dumps(newUs), json.dumps(us))
+        self.assertEqual(newUs["sprint"], sp["id"])
