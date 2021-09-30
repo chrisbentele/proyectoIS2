@@ -1,3 +1,4 @@
+from datetime import datetime
 import json
 import uuid
 from api.serializers import (
@@ -20,7 +21,8 @@ def crear_user():
 
 
 def crear_proyecto(self, miembros=None):
-    miembros = [str(crear_user()["id"])]
+    if miembros == None:
+        miembros = [str(crear_user()["id"])]
     res = self.client.post(
         f"/api/proyectos",
         json.dumps(
@@ -59,6 +61,18 @@ def crear_US(proyect_id, user_id):
         seri.save()
 
     return seri.data
+
+
+def crear_sprint(self, proyecto=None):
+    if proyecto == None:
+        proyecto = crear_proyecto(self)
+
+    res = self.client.post(
+        f"/api/proyectos/{proyecto['id']}/sprints",
+        json.dumps({"creadoPor": str(proyecto["miembros"][0])}),
+        content_type="application/json",
+    )
+    return res.json()
 
 
 class Proyectos_Tests(TestCase):
@@ -303,3 +317,67 @@ class user_stories(TestCase):
             content_type="application/json",
         )
         self.assertEqual(res.json()["nombre"], "testeado")
+
+
+class sprints(TestCase):
+    def test_sprints_crear(self):
+        u = crear_user()
+        p = crear_proyecto(self, [u["id"]])
+
+        res = self.client.post(
+            f"/api/proyectos/{p['id']}/sprints",
+            json.dumps({"creadoPor": str(u["id"])}),
+            content_type="application/json",
+        )
+
+        self.assertEqual(res.status_code, 201)
+
+    def test_sprints_get(self):
+
+        sp = crear_sprint(self)
+
+        res = self.client.get(f"/api/proyectos/{sp['proyecto']}/sprints/{sp['id']}")
+
+        self.assertEqual(res.status_code, 200)
+
+    def test_sprints_delete(self):
+
+        sp = crear_sprint(self)
+
+        res = self.client.delete(f"/api/proyectos/{sp['proyecto']}/sprints/{sp['id']}")
+
+        self.assertEqual(res.status_code, 204)
+
+    def test_sprints_update(self):
+
+        sp = crear_sprint(self)
+        now = datetime.date(datetime.now()).__str__()
+        res = self.client.put(
+            f"/api/proyectos/{sp['proyecto']}/sprints/{sp['id']}",
+            json.dumps({"fechaFinalizacion": now}),
+            content_type="application/json",
+        )
+        self.assertEqual(res.json()["fechaFinalizacion"], now)
+
+    def test_sprints_user_stories(self):
+        u = crear_user()
+        p = crear_proyecto(self, [u["id"]])
+        sp = crear_sprint(self, p)
+
+        us = crear_US(p["id"], u["id"])
+
+        res = self.client.put(
+            f"/api/proyectos/{p['id']}/user_stories/{us['id']}",
+            json.dumps({"sprint": sp["id"]}),
+            content_type="application/json",
+        )
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(sp["id"], res.json()["sprint"])
+
+        res = self.client.get(
+            f"/api/proyectos/{p['id']}/sprints/{sp['id']}/user_stories"
+        )
+        newUs = res.json()[0]
+        self.assertEqual(res.status_code, 200)
+        self.assertJSONNotEqual(json.dumps(newUs), json.dumps(us))
+        self.assertEqual(newUs["sprint"], sp["id"])

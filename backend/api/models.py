@@ -64,7 +64,7 @@ class Retrospectiva(Model):
 class Sprint(Model):
     activo = BooleanField(default=False)
     fechaInicio = DateField(auto_now_add=True)
-    fechaFinalizacion = DateField()
+    fechaFinalizacion = DateField(blank=True, null=True)
     creadoPor = ForeignKey(Usuario, on_delete=CASCADE)
     terminado = BooleanField(default=False)
     retro = OneToOneField(Retrospectiva, blank=True, null=True, on_delete=CASCADE)
@@ -104,6 +104,7 @@ class Rol(Model):
 
 
 class RolAsignado(Model):
+    id = CharField(primary_key=True, max_length=100, editable=False)
     rol = ForeignKey(Rol, on_delete=CASCADE)
     usuario = ForeignKey(Usuario, on_delete=CASCADE)
     proyecto = ForeignKey(Proyecto, on_delete=CASCADE)
