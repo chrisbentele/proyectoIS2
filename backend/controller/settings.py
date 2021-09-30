@@ -47,8 +47,8 @@ INSTALLED_APPS = [
     # "django_nose",
 ]
 
-# CORS_ALLOWED_ORIGIN = ["http://localhost:3000",]
 CORS_ORIGIN_ALLOW_ALL = True
+ALLOWED_HOSTS = ['*'] 
 
 CORS_ALLOW_HEADERS = list(default_headers) + [
     "auth-token",
@@ -95,9 +95,10 @@ DATABASES = {
         # "ENGINE": "django.db.backends.sqlite3",
         # "NAME": BASE_DIR / "db.sqlite3",
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "proyectoIS2",
-        # "USER": "admin_proyecto",
-        "PASSWORD": "",
+        "NAME": "proyectois2",
+        "USER": "postgres",
+        "PASSWORD": "superadmin",
+        "HOST":"db",
         "PORT": "5432",
     }
 }

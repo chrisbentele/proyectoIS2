@@ -1,8 +1,3 @@
-/**
- * @file index.js
- * @brief Vista principal de un proyecto
- */
-//! Librerías de React.js.
 import React, { useEffect, useState } from "react";
 //! API del frontend.
 import { api } from "../../api";
@@ -13,14 +8,12 @@ import {
   Flex,
   HStack,
   Text,
-  VStack,
   LinkBox,
   LinkOverlay,
 } from "@chakra-ui/layout";
 import { Link } from "react-router-dom";
 import Select from "react-select";
 import { Button } from "@chakra-ui/button";
-
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
 import USList from "../../components/userStoryList/userStoryList";
@@ -34,6 +27,10 @@ export default function Index({ props }) {
   const projectId = props.computedMatch.params.id; //id del proyecto, se extrae del URL
   const [project, setProject] = useState(); //estado del proyecto
   const [userStories, setUserStories] = useState([]); //estado del proyecto
+
+  const kanbanSection = (sectionTitle, userStories) => {
+    return <Box></Box>;
+  };
 
   //Al cargarse la pagina se busca el proyecto con el id del URL y se lo asigna a projectId
   useEffect(() => {
