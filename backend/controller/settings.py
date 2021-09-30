@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import environ
 import sys
+import os
 
 env = environ.Env()
 environ.Env.read_env()
@@ -105,7 +106,7 @@ DATABASES = {
     }
 }
 
-if "test" in sys.argv:
+if not os.path.exists("/.dockerenv") or "test" in sys.argv:
     DATABASES["default"] = {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
         "NAME": "proyectois2",
