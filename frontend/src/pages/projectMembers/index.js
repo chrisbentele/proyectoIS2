@@ -1,92 +1,16 @@
-/**
- * @file index.js
- * @brief Página donde se muestran los miembros de un proyecto.
- */
-
-//! Librerías de React.js.
-import React, { useState, useEffect } from "react";
-//! A fast, lightweight, opinionated table and datagrid built on React.
-import ReactTable from "react-table-v6";
-//! Botón de borrar
-import DeleteIcon from "../../components/deleteIcon/deleteIcon";
-//! Estilo de la tabla
-import "react-table-v6/react-table.css";
+import React, { useState, useEffect } from 'react';
+import { Link } from "react-router-dom";
 //! API del frontend.
 import { api } from "../../api";
-//! Botón de agregar
-import AddIcon from "../../components/addIcon";
-import { Button } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Box, Button, Grid, Input, Text } from '@chakra-ui/react';
+import AddMemberTable from '../../components/table/addMemberTable';
+import ProjectMembersTable from '../../components/table/projectMembersTable';
 
-/**
- * Componente principal de esta página
- * @param { props } param0
- * @returns Reavt Component
- */
+
 export default function ProjectMembers({ props }) {
   const [members, setMembers] = useState([]);
+  const [ROLES, setROLES] = useState([]);
   const [users, setUsers] = useState([]);
-  const projectId = props.computedMatch.params.id;
-  const url = props.computedMatch.url;
-
-  useEffect(() => {
-    //Al cargar la pagina se buscan los usuarios
-    api.getUsers().then((usersRes) => {
-      api.getMembers(projectId).then((membersRes) => {
-        let membersIds = membersRes.map((member) => member.id);
-        let filteredUsers = usersRes.filter(
-          (user) => !membersIds.includes(user.sub)
-        );
-        setState({ ...state, loading: false });
-        setUsers([...filteredUsers]);
-        setMembers(membersRes);
-      });
-    });
-  }, []);
-
-  //funcion que se encarga de agregar un usuario al proyecto mediante la tabla
-  const addMemberById = (userId) => {
-    if (window.confirm(`desea agregar al usuario al proyecto?`)) {
-      api.addMemberToProject(projectId, userId).then((res) => {
-        if (res) {
-          let addedUser;
-          const updatedUsers = users.filter((user) => {
-            if (user.sub != userId) {
-              return true;
-            } else {
-              addedUser = { ...user };
-              return false;
-            }
-          });
-          setMembers([...members, addedUser]);
-          setUsers(updatedUsers);
-        }
-      });
-    } //solicita la confirmacion al usuario
-  };
-
-  //funcion que se encarga de eliminar un usuario del proyecto mediante la tabla
-  const removeMember = (memberId) => {
-    if (window.confirm(`desea eliminar al usuario del proyecto?`)) {
-      //solicita la confirmacion al usuario
-      api.removeMemberFromProject(projectId, memberId).then((res) => {
-        if (res) {
-          let removedUser;
-          const updatedMembers = members.filter((member) => {
-            if (member.id != memberId) {
-              return true;
-            } else {
-              removedUser = { ...member };
-              return false;
-            }
-          });
-          setUsers([...users, removedUser]);
-          setMembers(updatedMembers);
-        }
-      });
-    }
-  };
-
   const [state, setState] = useState({
     loading: true,
     getMembersError: false,
@@ -94,26 +18,28 @@ export default function ProjectMembers({ props }) {
     searchTerm: "",
   });
 
-  const columns = [
-    {
-      Header: "Nombre",
-      accessor: "nombre", // String-based value accessors!
-    },
-    {
-      Header: "Eliminar",
-      accessor: "remove",
-    },
-  ];
-  const addTableColumns = [
-    {
-      Header: "Nombre",
-      accessor: "nombre", // String-based value accessors!
-    },
-    {
-      Header: "Agregar",
-      accessor: "add",
-    },
-  ];
+  const projectId = props.computedMatch.params.id;
+  const url = props.computedMatch.url;
+
+
+  useEffect(() => {
+    //Al cargar la pagina se buscan los usuarios
+    api.getUsers().then((usersRes) => {
+      api.getMembers(projectId).then((membersRes) => {
+        let membersIds = membersRes.map((member) => member.id);
+        let filteredUsers = usersRes.filter(
+          (user) => !membersIds.includes(user.id)
+        );
+        setState({ ...state, loading: false });
+        setUsers([...filteredUsers]);
+        setMembers(membersRes);
+      });
+    });
+    api
+      .getRoles(projectId)
+      .then((listaR) => setROLES(listaR));
+
+  }, []);
 
   const handleSearchChange = async (e) => {
     //TODO: add timeout
@@ -123,8 +49,17 @@ export default function ProjectMembers({ props }) {
       setState({ ...state, searchUsersError: "error buscando usuarios" });
     }
   };
+
+  const actualizarMiembros = (miembrosNuevos) => {
+    setMembers(miembrosNuevos);
+  }
+
+  const actualizarUsuarios = (usuariosNuevos) => {
+    setUsers(usuariosNuevos);
+  }
+
   return (
-    <div
+    <Box
       style={{
         display: "flex",
         flexDirection: "column",
@@ -135,56 +70,40 @@ export default function ProjectMembers({ props }) {
       <Button style={{ marginLeft: "5px", alignSelf: "flex-start" }}>
         <Link to={url.replace("/members", "")}>Volver al Proyecto</Link>
       </Button>
-      <h2>Miembros del proyecto</h2>
-      <ReactTable
-        data={members.map((member) => {
-          return {
-            nombre: member.nombre,
-            remove: <DeleteIcon id={member.id} deleteById={removeMember} />,
-          };
-        })}
-        columns={columns}
-        showPaginationTop={false} //no mostrar las paginas arriba
-        showPaginationBottom={false} //no mostrar las paginas abajo
-        minRows={1} // la minima cantidade de filas
-        loadingText={"Cargando"} //Texto de carga
-        noDataText={"No se han encontrado miembros"} //Texto a mostrar cuando no se han encontrado miembros
-        style={{ width: 700 }} //ancho de la tabla
+      <Text>Miembros del proyecto</Text>
+      < ProjectMembersTable
+        members={[...members]}
+        setMembers={actualizarMiembros}
+        projectId={projectId}
+        ROLES={ROLES}
+        users={[...users]}
+        setUsers={actualizarUsuarios}
+        state={state}
       />
-      <h2
+
+      <Text
         style={{ marginTop: "50px", marginBottom: "10px", fontWeight: "bold" }}
       >
         Agregar nuevo miembro
-      </h2>
-      <p>Buscar por nombre</p>
-      <input
-        onChange={handleSearchChange}
-        style={{ border: "2px black solid", marginBottom: "20px" }}
-      />
-      <p>{state.searchUsersError}</p>
-      {users.length > 0 ? (
-        <ReactTable
-          data={users
-            .filter((user) =>
-              user.nombre.toLowerCase().includes(state.searchTerm.toLowerCase())
-            )
-            .map((user) => {
-              return {
-                nombre: user.nombre,
-                add: <AddIcon id={user.sub} addById={addMemberById} />,
-              };
-            })}
-          columns={addTableColumns}
-          showPaginationTop={false} //no mostrar las paginas arriba
-          showPaginationBottom={false} //no mostrar las paginas abajo
-          minRows={1} //minima cantidad de filas
-          loading={state.loading} //estado de busqueda
-          defaultPageSize={100} //cantidad de filas default
-          loadingText={"Cargando"} //texto de carga
-          noDataText={"No se han encontrado Usuarios"} //texto a mostrar cuando no se han encontrado usuarios
-          style={{ width: 700 }}
+      </Text>
+
+      <Grid
+        gap={6}
+      >
+        <Input
+          onChange={handleSearchChange}
+          width="400px"
         />
-      ) : null}
-    </div>
-  );
+        < AddMemberTable
+          members={[...members]}
+          setMembers={actualizarMiembros}
+          projectId={projectId}
+          ROLES={ROLES}
+          users={[...users]}
+          setUsers={actualizarUsuarios}
+          state={state}
+        />
+      </Grid>
+    </Box>
+  )
 }

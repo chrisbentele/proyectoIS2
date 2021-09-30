@@ -6,7 +6,7 @@
 //! Librerías de React.js.
 import React from "react";
 //! Librerías de routing declarativo para React.
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 //! Componente de la página del login.
 import Login from "./pages/login";
 //! Componente de la página de inicio.
