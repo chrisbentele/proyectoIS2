@@ -1,44 +1,33 @@
 import { axiosInstance } from ".";
 
-export const createSprint = async (usData) => {
+const createSprint = async (usData) => {
   console.log(usData);
-  const { projectId, usName, description, creadoPor } = usData;
+  const { projectId, creadoPor } = usData;
   try {
-    const res = await axiosInstance.post(
-      `/proyectos/${projectId}/user_stories`,
-      {
-        nombre: usName,
-        contenido: description,
-        creadoPor,
-      }
-    );
+    const res = await axiosInstance.post(`/proyectos/${projectId}/sprints`, {
+      creadoPor,
+    });
     return res.data;
   } catch (error) {
     console.log(error);
   }
 };
 
-export const getSprint = async (idProyecto) => {
+const getSprints = async (idProyecto) => {
   try {
-    const res = await axiosInstance.get(
-      `/proyectos/${idProyecto}/user_stories`
-    );
+    const res = await axiosInstance.get(`/proyectos/${idProyecto}/sprints`);
     return res.data;
   } catch (error) {
     console.log(error);
   }
 };
 
-export const editSprint = async (usId, usData) => {
-  console.log(usData);
-  const { projectId, usName, description, estado } = usData;
+const editSprint = async ({ projectId, spId, activo }) => {
   try {
     const res = await axiosInstance.put(
-      `/proyectos/${projectId}/user_stories/${usId}`,
+      `/proyectos/${projectId}/sprints/${spId}`,
       {
-        nombre: usName,
-        contenido: description,
-        estado,
+        activo,
       }
     );
     return res.data;
@@ -47,13 +36,37 @@ export const editSprint = async (usId, usData) => {
   }
 };
 
-export const deleteSprint = async (projectId, us_id) => {
+const terminarSprint = async ({ projectId, spId }) => {
   try {
-    const res = await axiosInstance.delete(
-      `/proyectos/${projectId}/user_stories/${us_id}`
+    const res = await axiosInstance.put(
+      `/proyectos/${projectId}/sprints/${spId}`,
+      {
+        activo: false,
+        fechaFinalizacion: new Date().getDate().toString(),
+      }
     );
     return res.data;
   } catch (error) {
     console.log(error);
   }
 };
+
+const deleteSprint = async ({ projectId, spId }) => {
+  try {
+    const res = await axiosInstance.delete(
+      `/proyectos/${projectId}/sprints/${spId}`
+    );
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const sprints = {
+  createSprint,
+  getSprints,
+  editSprint,
+  terminarSprint,
+  deleteSprint,
+};
+export default sprints;

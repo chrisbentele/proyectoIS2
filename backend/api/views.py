@@ -68,7 +68,7 @@ def proyectos(request, proyect_id=None):
                 }
             )
             rol_asignado_seri.is_valid(raise_exception=True)
-            rol_asignado_seri.save(id=-1)
+            rol_asignado_seri.save(id=proy.id)
 
             rol_seri = RolSerializer(
                 data={
@@ -98,8 +98,8 @@ def proyectos(request, proyect_id=None):
                 proy_seri = ProyectoSerializer(p)
                 proy_data = proy_seri.data
                 scrum_obj = RolAsignado.objects.get(
-                    id=-1
-                )  ## obtiene el RolAsignado con el id -1, el del scrum master
+                    id=proyect_id
+                )  ## obtiene el RolAsignado con el id del proyecto, el del scrum master
                 scrum_data = RolAsignadoSerializer(scrum_obj).data
                 proy_data.update({"scrumMaster": scrum_data})
                 return JsonResponse(proy_data, safe=False)
@@ -374,7 +374,7 @@ def user_stories(request, proyect_id, us_id=None):
         return HttpResponseNotFound()
 
     if request.method == "POST":
-        # Crea el user storie
+        # Crea la user storie
         data = JSONParser().parse(request)
         data["proyecto"] = proyect_id
         serializer = USSerializer(data=data)
@@ -423,7 +423,7 @@ def sprints(request, proyect_id, sprint_id=None):
         return HttpResponseNotFound()
 
     if request.method == "POST":
-        # Crea el sprint
+        # Crea un sprint
         data = JSONParser().parse(request)
         data["proyecto"] = proyect_id
         serializer = SprintSerializer(data=data)
@@ -434,6 +434,7 @@ def sprints(request, proyect_id, sprint_id=None):
 
     elif request.method == "GET":
         if sprint_id != None:
+            # Retorna un sprint
             try:
                 spr = Sprint.objects.get(id=sprint_id)
                 serializer = SprintSerializer(spr)
@@ -441,6 +442,7 @@ def sprints(request, proyect_id, sprint_id=None):
             except Sprint.DoesNotExist:
                 return HttpResponseNotFound()
         else:
+            # Retorna los sprints de un proyecto
             spr = Sprint.objects.filter(proyecto=proyecto)
             serializer = SprintSerializer(spr, many=True)
             return JsonResponse(serializer.data, safe=False)
@@ -463,3 +465,16 @@ def sprints(request, proyect_id, sprint_id=None):
                 return JsonResponse(serializer.data, status=200)
             return JsonResponse(serializer.errors, status=400, safe=False)
         return HttpResponseBadRequest("Falta sprint_id")
+
+
+# Retorna los user stories de un sprint
+def sprints_user_stories(request, proyect_id, sprint_id):
+    try:
+        proyecto = Proyecto.objects.get(id=proyect_id)
+    except Proyecto.DoesNotExist:
+        return HttpResponseNotFound()
+    if request.method == "GET":
+        us = US.objects.filter(proyecto=proyecto, sprint=sprint_id)
+        serializer = USSerializer(us, many=True)
+        return JsonResponse(serializer.data, safe=False)
+    return HttpResponseBadRequest("Falta sprint_id")
