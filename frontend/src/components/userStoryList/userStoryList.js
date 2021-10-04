@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
+
+import { useForm } from "react-hook-form";
 
 import {
   AlertDialog,
@@ -12,6 +14,19 @@ import {
   Flex,
   Heading,
   Text,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  FormControl,
+  FormLabel,
+  Input,
+  FormErrorMessage,
+  toast,
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { api } from "../../api";
@@ -25,7 +40,7 @@ const USList = ({
   children,
   ...props
 }) => {
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const onClose = () => setIsOpen(false);
   const onDelete = (id) => {
     console.log(id);
@@ -41,10 +56,10 @@ const USList = ({
     api.getUserStories(projectId).then((uss) => setUserStories(uss));
   };
 
-  const editarUS = async (nombre, contenido, usId) => {
-    console.log(nombre);
+  const editarUS = async (usName, description, usId) => {
+    console.log(usName);
     console.log(usId);
-    await api.editUS({ projectId, nombre, contenido, usId });
+    await api.editUS({ projectId, usName, description, usId });
     api.getUserStories(projectId).then((uss) => setUserStories(uss));
   };
 
@@ -53,6 +68,51 @@ const USList = ({
     await api.eliminarUS(projectId, id);
     api.getUserStories(projectId).then((uss) => setUserStories(uss));
   };
+
+  const { onOpen } = useDisclosure();
+  const [isOpenModal, setIsOpenModal] = React.useState(false);
+  const onCloseModal = () => setIsOpenModal(false);
+  const onEdit = (nombre, contenido, id) => {
+    console.log(id);
+    editarUS(nombre, contenido, id);
+    setIsOpenModal(false);
+  };
+
+  const initialRef = React.useRef();
+
+  const {
+    handleSubmit,
+    register,
+    formState: { errors, isSubmitting },
+  } = useForm();
+
+  const [focusedUS, setFocusedUS] = useState();
+
+  async function onSubmit(values) {
+    //funcion que define el comportamiento al confirmar el form
+    await api
+      .editUS({ ...values, projectId, usId: focusedUS?.id })
+      .then((res) => {
+        if (res.id) {
+          toast({
+            description: "US cambiada.",
+            status: "success",
+            duration: 5000,
+            isClosable: true,
+          });
+        } else {
+          toast({
+            description: "US no pudo ser cambiada.",
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+        }
+      })
+      .catch((err) => console.log(err));
+    api.getUserStories(projectId).then((uss) => setUserStories(uss));
+    setIsOpenModal(false);
+  }
 
   return (
     <Box
@@ -110,9 +170,82 @@ const USList = ({
                   ]}
                 />
                 <Flex>
-                  <Button onClick={() => editarUS(us.id)} mt="2">
+                  <Button
+                    onClick={() => {
+                      setIsOpenModal(true);
+                      setFocusedUS(us);
+                    }}
+                    mt="2"
+                  >
                     <EditIcon color="black.500" />
                   </Button>
+
+                  <Modal
+                    initialFocusRef={initialRef}
+                    isOpen={isOpenModal}
+                    onClose={onCloseModal}
+                  >
+                    <ModalOverlay />
+                    <ModalContent>
+                      <ModalHeader>Editar US</ModalHeader>
+
+                      <ModalCloseButton />
+                      <form onSubmit={handleSubmit(onSubmit)}>
+                        <ModalBody pb={6}>
+                          <FormControl isInvalid={errors.name}>
+                            <FormLabel htmlFor="name">Nombre US</FormLabel>
+                            <Input
+                              id="name"
+                              ref={initialRef}
+                              defaultValue={us.nombre}
+                              {...register("usName", {
+                                required: "This is required",
+                                minLength: {
+                                  value: 4,
+                                  message: "Minimum length should be 4",
+                                },
+                              })}
+                            />
+                            <FormErrorMessage>
+                              {errors.name && errors.name.message}
+                            </FormErrorMessage>
+                          </FormControl>
+                          <FormControl isInvalid={errors.description} mt={4}>
+                            <FormLabel htmlFor="description" mt={4}>
+                              Descripción
+                            </FormLabel>
+                            <Input
+                              id="description"
+                              defaultValue={us.contenido}
+                              {...register("description", {
+                                required: "This is required",
+                                minLength: {
+                                  value: 4,
+                                  message: "Minimum length should be 4",
+                                },
+                              })}
+                            />
+                            <FormErrorMessage>
+                              {errors.description && errors.description.message}
+                            </FormErrorMessage>
+                          </FormControl>
+                        </ModalBody>
+
+                        <ModalFooter>
+                          <Button
+                            mr={4}
+                            colorScheme="blue"
+                            isLoading={isSubmitting}
+                            type="submit"
+                          >
+                            Guardar
+                          </Button>
+                          <Button onClick={onCloseModal}>Cancelar</Button>
+                        </ModalFooter>
+                      </form>
+                    </ModalContent>
+                  </Modal>
+
                   <Button
                     onClick={() => setIsOpen(true)}
                     mt="2"
