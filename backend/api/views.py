@@ -26,7 +26,7 @@ def proyectos(request, proyect_id=None):
             proy_seri.is_valid(raise_exception=True)
             proy = proy_seri.save()
 
-            # crear el rol scrum master
+            # Crea el rol scrum master en el proyecto
             rol_seri = RolSerializer(
                 data={
                     "nombre": "Scrum Master",
@@ -59,7 +59,8 @@ def proyectos(request, proyect_id=None):
 
             rol_seri.is_valid(raise_exception=True)
             scrum_rol = rol_seri.save(id=proy.id)
-            # asigna el rol scrum mastes al miembro en la posicion 0
+
+            # Asigna el rol scrum mastes al miembro en la posicion 0
             rol_asignado_seri = RolAsignadoSerializer(
                 data={
                     "rol": scrum_rol.id,
@@ -70,14 +71,35 @@ def proyectos(request, proyect_id=None):
             rol_asignado_seri.is_valid(raise_exception=True)
             rol_asignado_seri.save(id=proy.id)
 
+            # Crea el rol Developer en el proyecto
             rol_seri = RolSerializer(
                 data={
                     "nombre": "Developer",
                     "proyecto": proy.id,
                     "permisos": [
+                        1,
                         6,
                         8,
                         10,
+                    ],
+                }
+            )
+
+            rol_seri.is_valid(raise_exception=True)
+            scrum_rol = rol_seri.save()
+
+            # Crea el rol Product Owner en el proyecto
+            rol_seri = RolSerializer(
+                data={
+                    "nombre": "Product Owner",
+                    "proyecto": proy.id,
+                    "permisos": [
+                        1,
+                        2,
+                        5,
+                        6,
+                        7,
+                        9,
                     ],
                 }
             )
@@ -93,6 +115,7 @@ def proyectos(request, proyect_id=None):
 
     elif request.method == "GET":
         if proyect_id != None:
+            # Trae un proyecto por su proyect_id
             try:
                 p = Proyecto.objects.get(id=proyect_id)
                 proy_seri = ProyectoSerializer(p)
@@ -106,17 +129,20 @@ def proyectos(request, proyect_id=None):
             except Usuario.DoesNotExist:
                 return HttpResponseNotFound()
         else:
+            # Trae todos los proyectos
             p = Proyecto.objects.all()
             proy_seri = ProyectoSerializer(p, many=True)
             return JsonResponse(proy_seri.data, safe=False)
 
     elif request.method == "DELETE":
+        # Elimina un proyecto
         p = Proyecto.objects.get(id=proyect_id)
         p.delete()
         return JsonResponse(True, safe=False, status=204)
 
     elif request.method == "PUT":
         if proyect_id:
+            # Editar la informacion de un proyecto
             data = JSONParser().parse(request)
 
             rol = Proyecto.objects.get(id=proyect_id)
@@ -132,7 +158,7 @@ def proyectos(request, proyect_id=None):
 
 def usuarios(request, user_id=None):
     if request.method == "POST":
-
+        # Crea un Nuevo usuario
         data = JSONParser().parse(request)
         serializer = UsuarioSerializer(data=data)
         if serializer.is_valid():
@@ -145,6 +171,7 @@ def usuarios(request, user_id=None):
 
     elif request.method == "GET":
         if not user_id and not request.GET.get("email"):
+            # Trae Todos los usuarios de la base de datos
             u = Usuario.objects.all()
             serializer = UsuarioSerializer(u, many=True)
             return JsonResponse(serializer.data, safe=False)
@@ -152,6 +179,7 @@ def usuarios(request, user_id=None):
         if not request.GET.get("email") and not user_id:
             return HttpResponseBadRequest("Falta el mail o el user en el body")
         try:
+            # Trae Un usuario por su respectivo user_id o email
             if request.GET.get("email"):
                 u = Usuario.objects.get(email=request.GET.get("email"))
                 serializer = UsuarioSerializer(u)
@@ -164,6 +192,7 @@ def usuarios(request, user_id=None):
             return HttpResponseNotFound()
     elif request.method == "PUT":
         if user_id:
+            # Edita la informacion de un Usuario
             data = JSONParser().parse(request)
 
             rol = Usuario.objects.get(id=user_id)
@@ -171,22 +200,21 @@ def usuarios(request, user_id=None):
             serializer = UsuarioSerializer(rol, data=data, partial=True)
 
             if serializer.is_valid():
-                # Obtiene el id del Rol para vincular
                 serializer.save()
                 return JsonResponse(serializer.data, status=200)
             return JsonResponse(serializer.errors, status=400, safe=False)
         return HttpResponseBadRequest("Falta user_id")
     elif request.method == "DELETE":
+        # Elimina un usuario
         u = Usuario.objects.get(id=user_id)
         u.delete()
         return JsonResponse(True, safe=False, status=204)
 
 
 def usuarios_proyectos(request, user_id):
-    # agregar y eliminar\
+    # trae todos los usuarios del proyecto
 
     if request.method == "GET":
-        # trae los proyectos del usuario
 
         try:
             p = Proyecto.objects.filter(miembros__id__contains=user_id)
@@ -197,8 +225,8 @@ def usuarios_proyectos(request, user_id):
 
 
 def proyectos_miembros(request, proyect_id, user_id=None):
-    # agregar y eliminar\
-    # proyect_id = request.GET.get("proyect_id")
+    # agregar y eliminar usuarios
+
     if request.method == "POST":
         if not user_id:
             return JsonResponse(False, status=400, safe=False)
@@ -212,6 +240,20 @@ def proyectos_miembros(request, proyect_id, user_id=None):
                 )
             p.miembros.add(u)
             p.save()
+
+            # Asgina el rol de Developer al usuario
+            pr = Rol.objects.filter(proyecto=proyect_id)
+            pr_seri = RolSerializer(pr, many=True)
+            for rol in pr_seri.data:
+                if rol["nombre"] == "Developer":
+                    RolAsignadoSerializer(
+                        data={
+                            "usuario": user_id,
+                            "proyecto": proyect_id,
+                            "rol": rol["id"],
+                        }
+                    )
+                    break
 
             return JsonResponse(True, status=201, safe=False)
         except Exception as e:
@@ -254,6 +296,15 @@ def proyectos_miembros(request, proyect_id, user_id=None):
             p = Proyecto.objects.get(id=proyect_id)
             p.miembros.remove(user_id)
             p.save()
+
+            # Elimina Roles asignados al proyecto
+            rolesAsignados = RolAsignado.objects.filter(
+                proyecto=proyect_id, usuario=user_id
+            )
+
+            for ra in rolesAsignados:
+                ra.delete()
+
             serializer = ProyectoSerializer(p)
             return JsonResponse(serializer.data, safe=False, status=204)
         except Usuario.DoesNotExist:
@@ -263,8 +314,8 @@ def proyectos_miembros(request, proyect_id, user_id=None):
 # api para manejar los roles
 def roles(request, proyect_id, rol_id=None):
     if request.method == "POST":
-        data = JSONParser().parse(request)
         # Crea un nuevo rol en el proyecto
+        data = JSONParser().parse(request)
         serializer = RolSerializer(
             data={
                 "nombre": data["nombre"],
@@ -273,12 +324,16 @@ def roles(request, proyect_id, rol_id=None):
             }
         )
         if serializer.is_valid():
-            # Obtiene el id del Rol para vincular
             serializer.save()
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400, safe=False)
     elif request.method == "PUT":
         if rol_id:
+            # Editar un Rol
+            if rol_id == proyect_id:
+                return JsonResponse(
+                    "No se puede editar el Rol de Scrum Master", safe=False, status=400
+                )
             data = JSONParser().parse(request)
 
             rol = Rol.objects.get(id=rol_id)
@@ -299,6 +354,7 @@ def roles(request, proyect_id, rol_id=None):
             return JsonResponse(seri.data, safe=False)
 
         try:
+            # Trae un Rol por su id
             u = Rol.objects.get(id=rol_id)
             return JsonResponse(RolSerializer(u).data, safe=False)
         except Usuario.DoesNotExist:
@@ -308,6 +364,10 @@ def roles(request, proyect_id, rol_id=None):
         # En caso de DELETE elimina el rol  del proyecto
 
         if rol_id:
+            if rol_id == proyect_id:
+                return JsonResponse(
+                    "No se puede eliminar el Rol", safe=False, status=400
+                )
             try:
                 r = Rol.objects.get(proyecto=proyect_id, id=rol_id)
                 r.delete()
