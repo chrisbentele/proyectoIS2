@@ -33,4 +33,17 @@ const theme = extendTheme({
   },
 });
 
+export function mapStateColor(projectState) {
+  switch (projectState) {
+    case 0:
+      return "#ffe66d";
+    case 1:
+      return "#a0ff6d";
+    case 2:
+      return "#726bff";
+    default:
+      return "#ffffff";
+  }
+}
+
 export default theme;

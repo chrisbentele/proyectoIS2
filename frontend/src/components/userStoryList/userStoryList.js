@@ -122,7 +122,7 @@ const USList = ({
       borderWidth="1px"
       borderRadius="lg"
       fontSize="sm"
-      bg="white"
+      bg={"#F5F4F5"}
       justifyContent="center"
     >
       <Flex justify="center">
@@ -135,7 +135,14 @@ const USList = ({
             console.log(us.estado);
             console.log(us.estado === 0);
             return (
-              <Box border="2px" borderRadius="8" p="2" m="2" key={us.id}>
+              <Box
+                borderRadius="8"
+                p="2"
+                m="2"
+                key={us.id}
+                bg="white"
+                boxShadow="md"
+              >
                 <Text fontSize="20px" fontWeight="semibold">
                   {us.nombre}
                 </Text>
