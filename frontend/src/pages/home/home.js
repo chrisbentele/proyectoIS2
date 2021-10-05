@@ -9,7 +9,6 @@ import { Stack, Flex, Box, Center, Text, Heading } from "@chakra-ui/react";
 import React from "react";
 //! Botón del login
 import LoginButton from "../../components/auth/loginButton/loginButton";
-import { Link } from "react-router-dom";
 
 // export default function Home() {
 //   return (

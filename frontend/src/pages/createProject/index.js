@@ -9,7 +9,6 @@ import {
   FormControl,
   FormLabel,
   FormErrorMessage,
-  FormHelperText,
   Input,
   Button,
   Box,
@@ -27,7 +26,6 @@ import {
 import { Controller, useForm } from "react-hook-form";
 //! Librerías de React.js.
 import React, { useEffect, useState } from "react";
-import { useAuth } from "../../providers/DbAuth";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 import { api } from "../../api";
@@ -71,6 +69,7 @@ export default function CreateProject() {
             duration: 5000,
             isClosable: true,
           });
+          history.push(`/projects/${res.id}`); //luego de crear exitosamente el proyecto, se redirige a la pagina del proyecto
         } else {
           toast({
             description: "Proyecto no pudo crearse.",
@@ -80,7 +79,6 @@ export default function CreateProject() {
           });
         }
 
-        history.push(`/projects/${res.id}`); //luego de crear exitosamente el proyecto, se redirige a la pagina del proyecto
       })
       .catch((err) => console.log(err));
   }

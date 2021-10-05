@@ -31,7 +31,7 @@ export const getUser = async (id = null, email = null, nombre = null) => {
     if (id) {
       res = await axiosInstance.get(`usuarios/${id}`).catch((e) => {
         console.log(e.response.status);
-        if (e.response.status == 404) return false;
+        if (e.response.status === 404) return false;
         else throw e;
       });
     } else if (email) {
@@ -43,7 +43,7 @@ export const getUser = async (id = null, email = null, nombre = null) => {
         })
         .catch((e) => {
           console.log(e.response.status);
-          if (e.response.status == 404) return false;
+          if (e.response.status === 404) return false;
           else throw e;
         });
     }
