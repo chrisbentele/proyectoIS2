@@ -75,9 +75,28 @@ def proyectos(request, proyect_id=None):
                     "nombre": "Developer",
                     "proyecto": proy.id,
                     "permisos": [
+                        1,
                         6,
                         8,
                         10,
+                    ],
+                }
+            )
+
+            rol_seri.is_valid(raise_exception=True)
+            scrum_rol = rol_seri.save(id=proy.id)
+
+            rol_seri = RolSerializer(
+                data={
+                    "nombre": "Product Owner",
+                    "proyecto": proy.id,
+                    "permisos": [
+                        1,
+                        2,
+                        5,
+                        6,
+                        7,
+                        9,
                     ],
                 }
             )
@@ -183,7 +202,7 @@ def usuarios(request, user_id=None):
 
 
 def usuarios_proyectos(request, user_id):
-    # agregar y eliminar\
+    # trae todos los usuarios del proyecto
 
     if request.method == "GET":
         # trae los proyectos del usuario
@@ -279,6 +298,8 @@ def roles(request, proyect_id, rol_id=None):
         return JsonResponse(serializer.errors, status=400, safe=False)
     elif request.method == "PUT":
         if rol_id:
+            if rol_id == proyect_id:
+                return JsonResponse("No se puede editar el Rol", safe=False, status=400)
             data = JSONParser().parse(request)
 
             rol = Rol.objects.get(id=rol_id)
@@ -308,6 +329,10 @@ def roles(request, proyect_id, rol_id=None):
         # En caso de DELETE elimina el rol  del proyecto
 
         if rol_id:
+            if rol_id == proyect_id:
+                return JsonResponse(
+                    "No se puede eliminar el Rol", safe=False, status=400
+                )
             try:
                 r = Rol.objects.get(proyecto=proyect_id, id=rol_id)
                 r.delete()
