@@ -48,6 +48,7 @@ class Usuario(Model):
 
 
 class Proyecto(Model):
+    id = CharField(primary_key=True, default=uuid.uuid4, max_length=100, editable=False)
     duracionEstimada = IntegerField(null=True)
     fechaInicio = DateField(auto_now_add=True)
     fechaFinalizacion = DateField(blank=True, null=True)
@@ -98,6 +99,7 @@ class Comentario(Model):
 
 
 class Rol(Model):
+    id = CharField(primary_key=True, default=uuid.uuid4, max_length=100, editable=False)
     nombre = CharField(max_length=100)
     proyecto = ForeignKey(Proyecto, on_delete=CASCADE)
     permisos = ArrayField(IntegerField(), blank=True)
