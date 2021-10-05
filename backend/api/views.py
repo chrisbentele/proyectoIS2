@@ -58,7 +58,7 @@ def proyectos(request, proyect_id=None):
             )
 
             rol_seri.is_valid(raise_exception=True)
-            scrum_rol = rol_seri.save()
+            scrum_rol = rol_seri.save(id=proy.id)
             # asigna el rol scrum mastes al miembro en la posicion 0
             rol_asignado_seri = RolAsignadoSerializer(
                 data={
@@ -326,17 +326,30 @@ def proyectos_miembros_roles(request, proyect_id, user_id, rol_id=None):
         if not rol_id:
             return HttpResponseBadRequest("Falta rol_id")
 
-        rolAsig = RolAsignado.objects.filter(proyecto=proyect_id, usuario=user_id)
-        for i in rolAsig:
-            i.delete()
+        try:
+            rolAsig = RolAsignado.objects.filter(proyecto=proyect_id, usuario=user_id)
+            for ra in rolAsig:
+                ra.delete()
 
-        seri = RolAsignadoSerializer(
-            data={"usuario": user_id, "rol": rol_id, "proyecto": proyect_id}
-        )
-        if seri.is_valid():
+            if proyect_id == rol_id:
+                # Si es scrum master el rol asignado cambia
+                scrum = RolAsignado.objects.get(id=rol_id)
+                seri = RolAsignadoSerializer(
+                    scrum,
+                    data={
+                        "usuario": user_id,
+                    },
+                    partial=True,
+                )
+            else:
+                seri = RolAsignadoSerializer(
+                    data={"usuario": user_id, "rol": rol_id, "proyecto": proyect_id}
+                )
+            seri.is_valid(raise_exception=True)
             seri.save()
             return JsonResponse(seri.data, status=201)
-        return JsonResponse(seri.errors, status=400, safe=False)
+        except:
+            return JsonResponse(seri.errors, status=400, safe=False)
     elif request.method == "GET":
         # En caso de GET trae todos los roles del usuario en el proyecto
         try:
