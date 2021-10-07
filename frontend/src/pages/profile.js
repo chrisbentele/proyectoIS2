@@ -8,14 +8,21 @@ import React, { useEffect, useState } from "react";
 //! Componente de Auth0
 import { useAuth0 } from "@auth0/auth0-react";
 import { Link } from "react-router-dom";
-import { Box, Flex, Heading, Text, LinkBox, LinkOverlay } from "@chakra-ui/layout";
+import {
+  Box,
+  Flex,
+  Heading,
+  Text,
+  LinkBox,
+  LinkOverlay,
+} from "@chakra-ui/layout";
 import { Image } from "@chakra-ui/image";
-import { Grid } from "@chakra-ui/react";
+import { Grid, toast, useToast } from "@chakra-ui/react";
 import { api } from "../api";
 import { projectStateToString } from "../util";
 
 //! Componente principal de esta página
-const Profile = (props) => {
+const Profile = ({ dispatchError }) => {
   const { user, isLoading } = useAuth0();
   const [userProjects, setUserProjects] = useState([]);
   useEffect(() => {
@@ -24,8 +31,9 @@ const Profile = (props) => {
       api
         .getProjects(user.sub)
         .then((projects) => setUserProjects(projects))
-        .catch((err) => console.log(err));
-      console.log("done");
+        .catch((err) =>
+          dispatchError(null, "Error cargando proyectos del usuario")
+        );
     }
   }, [user, isLoading]);
   if (isLoading) {
@@ -106,17 +114,12 @@ const Profile = (props) => {
                       </Link>
                       <br />
                       <Box pb="2" fontSize="lg">
-                        <Text>
-                          {projectStateToString(project.estado)}
-                        </Text>
+                        <Text>{projectStateToString(project.estado)}</Text>
                         <Text>
                           Duracion estimada: {project.duracionEstimada} semanas
                         </Text>
-                        <Text>
-                          Iniciado: {project.fechaInicio}
-                        </Text>
+                        <Text>Iniciado: {project.fechaInicio}</Text>
                       </Box>
-                      
                     </Flex>
                   );
                 })

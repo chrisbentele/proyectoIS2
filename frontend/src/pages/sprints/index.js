@@ -13,6 +13,7 @@ import {
   Flex,
   HStack,
   Text,
+  Grid,
   VStack,
   LinkBox,
   LinkOverlay,
@@ -25,7 +26,7 @@ import Select from "react-select";
  * @param { props } param0
  * @returns React Component
  */
-export default function Index({ props }) {
+export default function Index({ props, dispatchError }) {
   const projectId = props.computedMatch.params.id; //id del proyecto, se extrae del URL
   const [project, setProject] = useState(); //estado del proyecto
   const [userStories, setUserStories] = useState([]); //estado del proyecto
@@ -35,13 +36,15 @@ export default function Index({ props }) {
     api
       .getProjectById(projectId)
       .then((res) => setProject(res))
-      .catch((err) => console.log(err));
+      .catch(() => dispatchError(null, "No se ha podido cargar el proyecto"));
 
     api
       .getUserStories(projectId)
       .then((US) => setUserStories(US))
-      .catch((err) => console.log(err));
-    api.sprints.getSprints(projectId).then((e) => console.log(e));
+      .catch((err) => dispatchError(null, "No se han podido cargas las USs"));
+    api.sprints
+      .getSprints(projectId)
+      .then((e) => dispatchError(null, "No se han podido cargar los sprints"));
   }, []);
 
   console.log(project);
