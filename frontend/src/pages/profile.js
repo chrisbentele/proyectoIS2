@@ -1,41 +1,44 @@
+/**
+ * @file profile.js
+ * @brief Página de incio de al sistema.
+ */
+
+//! Componentes de React.js
 import React, { useEffect, useState } from "react";
+//! Componente de Auth0
 import { useAuth0 } from "@auth0/auth0-react";
 import { Link } from "react-router-dom";
-import { Box, Flex, Heading, HStack, VStack } from "@chakra-ui/layout";
+import {
+  Box,
+  Flex,
+  Heading,
+  Text,
+  LinkBox,
+  LinkOverlay,
+} from "@chakra-ui/layout";
 import { Image } from "@chakra-ui/image";
-import { Grid, GridItem, SimpleGrid } from "@chakra-ui/react";
+import { Grid, toast, useToast } from "@chakra-ui/react";
 import { api } from "../api";
-import { useAuth } from "../providers/DbAuth";
 import { projectStateToString } from "../util";
+import { mapStateColor } from "../styles/theme";
 
-const Profile = (props) => {
-  const { user, isAuthenticated, isLoading } = useAuth0();
+//! Componente principal de esta página
+const Profile = ({ dispatchError }) => {
+  const { user, isLoading } = useAuth0();
   const [userProjects, setUserProjects] = useState([]);
   useEffect(() => {
     if (!isLoading) {
       console.log(user);
       api
-        .getProjects(user.id)
+        .getProjects(user.sub)
         .then((projects) => setUserProjects(projects))
-        .catch((err) => console.log(err));
-      console.log("done");
+        .catch((err) =>
+          dispatchError(null, "Error cargando proyectos del usuario")
+        );
     }
   }, [user, isLoading]);
   if (isLoading) {
     return <div>Loading ...</div>;
-  }
-
-  function mapStateColor(projectState) {
-    switch (projectState) {
-      case 0:
-        return "#ffe66d";
-      case 1:
-        return "#a0ff6d";
-      case 2:
-        return "#726bff";
-      default:
-        return "#ffffff";
-    }
   }
 
   return (
@@ -53,7 +56,7 @@ const Profile = (props) => {
         <Image borderRadius="100" src={user.picture} alt={user.name} />
         <Heading>{user.name}</Heading>
         <p>{user.email}</p>
-        <Box
+        {/* <Box
           borderRadius="4px"
           bg="buttonScale.800"
           color="richBlack"
@@ -63,7 +66,7 @@ const Profile = (props) => {
           fontWeight="600"
         >
           <Link to="/roles">Configurar Roles</Link>
-        </Box>
+        </Box> */}
       </Box>
       <Box width="70%" p="10" pl="16" mt="3rem">
         <Box>
@@ -74,7 +77,8 @@ const Profile = (props) => {
             {Array.isArray(userProjects)
               ? userProjects.map((project) => {
                   return (
-                    <Flex
+                    <LinkBox
+                      d="flex"
                       flexDirection="column"
                       w="xs"
                       height="200px"
@@ -87,8 +91,8 @@ const Profile = (props) => {
                       pl="5"
                       pt="2"
                     >
-                      <Link
-                        to={`projects/${project.id}`}
+                      <LinkOverlay
+                        href={`projects/${project.id}`}
                         style={{
                           fontWeight: "bold",
                           width: "100%",
@@ -96,23 +100,20 @@ const Profile = (props) => {
                         }}
                       >
                         {project.nombre}
-                      </Link>
-                      <br />
-
-                      <p style={{ fontSize: "20px" }}>
-                        {projectStateToString(project.estado)}
-                      </p>
-                      <p style={{ fontSize: "20px" }}>
-                        Duracion estimada: {project.duracionEstimada} semanas
-                      </p>
-                      <p style={{ fontSize: "20px" }}>
-                        Iniciado: {project.fechaInicio}
-                      </p>
-                    </Flex>
+                      </LinkOverlay>
+                      <Box pb="2" fontSize="lg">
+                        <Text>{projectStateToString(project.estado)}</Text>
+                        <Text>
+                          Duracion estimada: {project.duracionEstimada} semanas
+                        </Text>
+                        <Text>Iniciado: {project.fechaInicio}</Text>
+                      </Box>
+                    </LinkBox>
                   );
                 })
               : null}
-            <Flex
+            <LinkBox
+              display="flex"
               w="xs"
               height="200px"
               borderWidth="1px"
@@ -124,8 +125,8 @@ const Profile = (props) => {
               justifyContent="center"
               alignItems="center"
             >
-              <Link to="/createProject/">Crear Proyecto</Link>
-            </Flex>
+              <LinkOverlay href="/createProject/">Crear Proyecto</LinkOverlay>
+            </LinkBox>
           </Grid>
         </Flex>
       </Box>

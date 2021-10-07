@@ -5,8 +5,8 @@ import { extendTheme } from "@chakra-ui/react";
 
 const theme = extendTheme({
   fonts: {
-    body: "'zilla slab', sans-serif",
-    heading: "'zilla slab',  sans-serif, ",
+    body: "'Lato', sans-serif;",
+    Heading: "'Lora',  sans-serif, ",
   },
   colors: {
     richBlack: "#151316",
@@ -32,5 +32,18 @@ const theme = extendTheme({
     boxShadow: "none !important",
   },
 });
+
+export function mapStateColor(projectState) {
+  switch (projectState) {
+    case 0:
+      return "#ffe66d";
+    case 1:
+      return "#a0ff6d";
+    case 2:
+      return "#726bff";
+    default:
+      return "#ffffff";
+  }
+}
 
 export default theme;

@@ -18,8 +18,10 @@ from django.urls import path, include
 from .views import (
     proyectos,
     roles,
+    sprints,
+    sprints_user_stories,
     user_stories,
-    usuarios_proyectos_roles,
+    proyectos_miembros_roles,
     usuarios,
     proyectos_miembros,
     usuarios_proyectos,
@@ -32,6 +34,12 @@ apiPaths = [
     path("proyectos/<str:proyect_id>/miembros/<str:user_id>", proyectos_miembros),
     path("proyectos/<str:proyect_id>/user_stories", user_stories),
     path("proyectos/<str:proyect_id>/user_stories/<str:us_id>", user_stories),
+    path("proyectos/<str:proyect_id>/sprints", sprints),
+    path("proyectos/<str:proyect_id>/sprints/<str:sprint_id>", sprints),
+    path(
+        "proyectos/<str:proyect_id>/sprints/<str:sprint_id>/user_stories",
+        sprints_user_stories,
+    ),
     path("usuarios", usuarios),
     path("usuarios/<str:user_id>", usuarios),
     path("usuarios/<str:user_id>/proyectos", usuarios_proyectos),
@@ -39,11 +47,11 @@ apiPaths = [
     path("proyectos/<str:proyect_id>/roles/<str:rol_id>", roles),
     path(
         "proyectos/<str:proyect_id>/miembros/<str:user_id>/roles",
-        usuarios_proyectos_roles,
+        proyectos_miembros_roles,
     ),
     path(
         "proyectos/<str:proyect_id>/miembros/<str:user_id>/roles/<str:rol_id>",
-        usuarios_proyectos_roles,
+        proyectos_miembros_roles,
     ),
 ]
 

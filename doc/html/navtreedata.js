@@ -24,7 +24,7 @@ var NAVTREE =
 [
   [ "System.A", "index.html", [
     [ "Bienvenido a la documentación de System.A.", "index.html", null ],
-    [ "Getting Started with Create React App", "md__mnt_c_Users_Mat_xC3_xADas_OneDrive_IIN_7mo_semestre_Ingenier_xC3_xADa_de_Software_II_proyectoIS2_frontend_README.html", null ],
+    [ "Getting Started with Create React App", "md__home_matias_proyectoIS2_frontend_README.html", null ],
     [ "Packages", "namespaces.html", [
       [ "Packages", "namespaces.html", "namespaces_dup" ],
       [ "Package Functions", "namespacemembers.html", [
@@ -44,14 +44,20 @@ var NAVTREE =
       ] ]
     ] ],
     [ "Files", "files.html", [
-      [ "File List", "files.html", "files_dup" ]
+      [ "File List", "files.html", "files_dup" ],
+      [ "File Members", "globals.html", [
+        [ "All", "globals.html", null ],
+        [ "Functions", "globals_func.html", null ],
+        [ "Variables", "globals_vars.html", null ]
+      ] ]
     ] ]
   ] ]
 ];
 
 var NAVTREEINDEX =
 [
-"admin_8py.html"
+"App_8js.html",
+"pages_2login_2index_8js.html#add1b12ed746e3d47b68a6e1430aacdc4"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

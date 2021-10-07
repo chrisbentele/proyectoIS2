@@ -9,6 +9,7 @@ from django.db.models.fields import (
 )
 from django.db.models.fields.related import ForeignKey, ManyToManyField, OneToOneField
 from django.contrib.postgres.fields import ArrayField
+import uuid
 
 # Create your models here.
 PERMISOS = (
@@ -30,18 +31,24 @@ PERMISOS = (
     (15, "Agregar usuario"),
     (16, "Editar rol del usuario"),
     (17, "Eliminar usuario"),
+    (18, "Crear Sprint"),
+    (19, "Modificar Sprint"),
+    (20, "Eliminar Sprint"),
+    (21, "Estimar Sprint"),
 )
-ESTADO_US = ((0, "To do"), (1, "Doing"), (2, "Done"))
+ESTADO_US = ((0, "To do"), (1, "Doing"), (2, "Done"), (4, "Backlog"))
 
 estadoProyecto = ((0, "Pendiente"), (1, "Activo"), (2, "Terminado"))
 
 
 class Usuario(Model):
+    id = CharField(primary_key=True, default=uuid.uuid4, max_length=100, editable=False)
     nombre = CharField(max_length=100)
     email = EmailField(unique=True)
 
 
 class Proyecto(Model):
+    id = CharField(primary_key=True, default=uuid.uuid4, max_length=100, editable=False)
     duracionEstimada = IntegerField(null=True)
     fechaInicio = DateField(auto_now_add=True)
     fechaFinalizacion = DateField(blank=True, null=True)
@@ -56,11 +63,13 @@ class Retrospectiva(Model):
 
 
 class Sprint(Model):
-    fechaInicio = DateField()
-    fechaFinalizacion = DateField()
+    activo = BooleanField(default=False)
+    fechaInicio = DateField(auto_now_add=True)
+    fechaFinalizacion = DateField(blank=True, null=True)
     creadoPor = ForeignKey(Usuario, on_delete=CASCADE)
     terminado = BooleanField(default=False)
     retro = OneToOneField(Retrospectiva, blank=True, null=True, on_delete=CASCADE)
+    proyecto = ForeignKey(Proyecto, on_delete=CASCADE)
 
 
 class US(Model):
@@ -68,7 +77,7 @@ class US(Model):
     contenido = CharField(max_length=100)
     creadoPor = ForeignKey(Usuario, on_delete=CASCADE)
     fechaCreacion = DateField(auto_now_add=True)
-    estado = IntegerField(choices=ESTADO_US, default=0)
+    estado = IntegerField(choices=ESTADO_US, default=4)
     estimacionSM = IntegerField(null=True)
     estimacionesDev = IntegerField(null=True)
     duracionEstimada = IntegerField(null=True)
@@ -90,12 +99,14 @@ class Comentario(Model):
 
 
 class Rol(Model):
+    id = CharField(primary_key=True, default=uuid.uuid4, max_length=100, editable=False)
     nombre = CharField(max_length=100)
     proyecto = ForeignKey(Proyecto, on_delete=CASCADE)
     permisos = ArrayField(IntegerField(), blank=True)
 
 
 class RolAsignado(Model):
+    id = CharField(primary_key=True, max_length=100, editable=False)
     rol = ForeignKey(Rol, on_delete=CASCADE)
     usuario = ForeignKey(Usuario, on_delete=CASCADE)
     proyecto = ForeignKey(Proyecto, on_delete=CASCADE)

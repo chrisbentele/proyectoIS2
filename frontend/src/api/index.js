@@ -1,3 +1,8 @@
+/**
+ * @file index.js
+ * @brief Funciones de API para el frontend
+ */
+
 import axios from "axios";
 
 import {
@@ -8,13 +13,29 @@ import {
   getProjects,
 } from "./projects";
 import { getUsers, deleteUser, searchUsersByName } from "./users";
-import { addRole, editRole, deleteRole } from "./roles";
+import {
+  addRole,
+  editRole,
+  getRole,
+  getRoles,
+  deleteRole,
+  setUserRole,
+  removeUserRole,
+} from "./roles";
 import {
   addMemberToProject,
   removeMemberFromProject,
   editMembersRole,
   getMembers,
 } from "./members";
+import {
+  createUserStory,
+  getUserStories,
+  editUS,
+  eliminarUS,
+} from "./userStories";
+
+import sprints from "./sprints";
 
 //Instancia de axios, para no tener que escribir en cada request el URL
 export const axiosInstance = axios.create({
@@ -36,10 +57,21 @@ export const api = {
   //Roles
   addRole,
   editRole,
+  getRole,
+  getRoles,
   deleteRole,
+  setUserRole,
+  removeUserRole,
   //Members
   addMemberToProject,
   removeMemberFromProject,
   editMembersRole,
   getMembers,
+  //User Stories
+  createUserStory,
+  getUserStories,
+  editUS,
+  eliminarUS,
+  //Sprints
+  sprints,
 };

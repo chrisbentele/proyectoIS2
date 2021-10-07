@@ -1,11 +1,14 @@
-//Pagina de creacion de proyectos
-
+/**
+ * @file index.js
+ * @brief Página de creación de proyectos
+ */
+//! Componente de React Select
 import Select from "react-select";
+//! Componentes del Chakra UI
 import {
   FormControl,
   FormLabel,
   FormErrorMessage,
-  FormHelperText,
   Input,
   Button,
   Box,
@@ -18,23 +21,24 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
   Spacer,
+  useToast,
 } from "@chakra-ui/react";
 import { Controller, useForm } from "react-hook-form";
+//! Librerías de React.js.
 import React, { useEffect, useState } from "react";
-import { useAuth } from "../../providers/DbAuth";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 import { api } from "../../api";
+import { useAuth0 } from "@auth0/auth0-react";
 
-export default function CreateProject() {
+/**
+ * Función principal de esta vista
+ * @returns React Component
+ */
+export default function CreateProject({ dispatchError }) {
   const [users, setUsers] = useState([]); //Los usuarios del sistema
-  const [formValues, setFormValues] = useState({
-    //Los valores del form
-    projectName: "", //nombre del proyecto
-    scrumMasterId: null, //id del scrum master
-    estimation: null, //duracion estimada del proyecto
-  });
-
+  const { user } = useAuth0();
+  const toast = useToast();
   //Al cargarse la pagina se buscan todos los usuarios
   useEffect(() => {
     api
@@ -43,25 +47,27 @@ export default function CreateProject() {
         if (!Array.isArray(fetchedUsers)) return;
         setUsers(fetchedUsers);
       })
-      .catch((err) => console.log(err));
+      .catch((err) =>
+        dispatchError(null, "error cargando usuarios del sistema")
+      );
   }, []);
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
     control,
+    setValue,
   } = useForm();
   const history = useHistory(); //para poder redirigir al usuario luego de la crecion exitosa del proyecto
-  const { dbUser } = useAuth();
   async function onSubmit(values) {
     //funcion que define el comportamiento al confirmar el form
     await api
-      .createProject(formValues)
-      .then((res) => {
-        console.log(res);
-        history.push(`/projects/${res.id}`); //luego de crear exitosamente el proyecto, se redirige a la pagina del proyecto
+      .createProject({ ...values, id: user.sub })
+      .then(({ data }) => {
+        console.log(data);
+        history.push(`/projects/${data.id}`); //luego de crear exitosamente el proyecto, se redirige a la pagina del proyecto
       })
-      .catch((err) => console.log(err));
+      .catch((err) => dispatchError(null, "No se ha podido crear el proyecto"));
   }
 
   return (
@@ -71,10 +77,10 @@ export default function CreateProject() {
       </Heading>
       <Flex
         justifyContent="center"
-        width="80ch"
+        width="70ch"
         borderWidth="2px"
         borderRadius="4"
-        p="150px"
+        p="120px"
         bg="white"
         fontSize="lg"
       >
@@ -83,19 +89,16 @@ export default function CreateProject() {
             <FormLabel fontSize="25px">Nombre del proyecto</FormLabel>
             <Input
               fontSize="lg"
-              id="nombre"
+              id="projectName"
               placeholder="Proyecto 1"
               borderColor="grey.300"
-              {...register("nombre", {
+              {...register("projectName", {
                 required: "Valor Requerido",
                 minLength: {
                   value: 4,
                   message: "Minimum length should be 4",
                 },
               })}
-              onChange={(e) =>
-                setFormValues({ ...formValues, projectName: e.target.value })
-              }
             />
             <FormErrorMessage>
               {errors.nombre && errors.nombre.message}
@@ -103,9 +106,7 @@ export default function CreateProject() {
           </FormControl>
           <FormLabel fontSize="25px">Scrum Master</FormLabel>
           <Select
-            onChange={(e) =>
-              setFormValues({ ...formValues, scrumMasterId: e.value })
-            }
+            onChange={(e) => setValue("scrumMasterId", e.value)}
             options={users.map((user) => {
               return { value: user.id, label: user.nombre };
             })}
@@ -113,7 +114,7 @@ export default function CreateProject() {
           <FormControl isInvalid={errors["estimado"]}>
             <FormLabel fontSize="25px">Duracion estimada(semanas)</FormLabel>
             <Controller
-              name="estimado"
+              name="estimation"
               control={control}
               rules={{ required: "Valor Requerido" }}
               defaultValue={1}
@@ -127,12 +128,6 @@ export default function CreateProject() {
                     //TODO: Only allow numbers, also accepts 'e' char
                     fontSize="lg"
                     borderColor="grey.300"
-                    onChange={(e) =>
-                      setFormValues({
-                        ...formValues,
-                        estimation: e.target.value,
-                      })
-                    }
                   />
                   <NumberInputStepper>
                     <NumberIncrementStepper />
