@@ -20,7 +20,7 @@ import { Link } from "react-router-dom";
 import { api } from "../../api";
 import { useAuth0 } from "@auth0/auth0-react";
 
-export default function CreateUserStory({ props }) {
+export default function CreateUserStory({ props, dispatchError }) {
   const [users, setUsers] = useState([]); //Los usuarios del sistema
   const { user } = useAuth0();
   const toast = useToast();
@@ -35,6 +35,9 @@ export default function CreateUserStory({ props }) {
         if (!Array.isArray(fetchedUsers)) return;
         setUsers(fetchedUsers);
       })
+      .catch((err) =>
+        dispatchError(null, "error cargando usuarios del sistema")
+      )
       .catch((err) => console.log(err));
   }, []);
 
@@ -67,7 +70,7 @@ export default function CreateUserStory({ props }) {
 
         history.push(`/projects/${projectId}`); //luego de crear exitosamente el proyecto, se redirige a la pagina del proyecto
       })
-      .catch((err) => console.log(err));
+      .catch((err) => dispatchError(null, "error creando US"));
   }
 
   return (

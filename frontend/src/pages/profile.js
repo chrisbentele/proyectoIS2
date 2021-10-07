@@ -20,6 +20,7 @@ import { Image } from "@chakra-ui/image";
 import { Grid, toast, useToast } from "@chakra-ui/react";
 import { api } from "../api";
 import { projectStateToString } from "../util";
+import { mapStateColor } from "../styles/theme";
 
 //! Componente principal de esta página
 const Profile = ({ dispatchError }) => {
@@ -38,19 +39,6 @@ const Profile = ({ dispatchError }) => {
   }, [user, isLoading]);
   if (isLoading) {
     return <div>Loading ...</div>;
-  }
-
-  function mapStateColor(projectState) {
-    switch (projectState) {
-      case 0:
-        return "#ffe66d";
-      case 1:
-        return "#a0ff6d";
-      case 2:
-        return "#726bff";
-      default:
-        return "#ffffff";
-    }
   }
 
   return (
@@ -89,7 +77,8 @@ const Profile = ({ dispatchError }) => {
             {Array.isArray(userProjects)
               ? userProjects.map((project) => {
                   return (
-                    <Flex
+                    <LinkBox
+                      d="flex"
                       flexDirection="column"
                       w="xs"
                       height="200px"
@@ -102,8 +91,8 @@ const Profile = ({ dispatchError }) => {
                       pl="5"
                       pt="2"
                     >
-                      <Link
-                        to={`projects/${project.id}`}
+                      <LinkOverlay
+                        href={`projects/${project.id}`}
                         style={{
                           fontWeight: "bold",
                           width: "100%",
@@ -111,8 +100,7 @@ const Profile = ({ dispatchError }) => {
                         }}
                       >
                         {project.nombre}
-                      </Link>
-                      <br />
+                      </LinkOverlay>
                       <Box pb="2" fontSize="lg">
                         <Text>{projectStateToString(project.estado)}</Text>
                         <Text>
@@ -120,7 +108,7 @@ const Profile = ({ dispatchError }) => {
                         </Text>
                         <Text>Iniciado: {project.fechaInicio}</Text>
                       </Box>
-                    </Flex>
+                    </LinkBox>
                   );
                 })
               : null}

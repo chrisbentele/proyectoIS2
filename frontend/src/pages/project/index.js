@@ -18,6 +18,10 @@ import { Button } from "@chakra-ui/button";
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
 import USList from "../../components/userStoryList/userStoryList";
+import { mapStateColor } from "../../styles/theme";
+import { SettingsIcon } from "@chakra-ui/icons";
+import { MdBuild, MdCall } from "react-icons/md";
+import { useHistory } from "react-router-dom";
 
 /**
  * Función que contiene el código de la vista
@@ -29,9 +33,7 @@ export default function Index({ props }) {
   const [project, setProject] = useState(); //estado del proyecto
   const [userStories, setUserStories] = useState([]); //estado del proyecto
 
-  const kanbanSection = (sectionTitle, userStories) => {
-    return <Box></Box>;
-  };
+  const history = useHistory();
 
   //Al cargarse la pagina se busca el proyecto con el id del URL y se lo asigna a projectId
   useEffect(() => {
@@ -48,11 +50,12 @@ export default function Index({ props }) {
 
   console.log(project);
   console.log(userStories);
+
   return (
     <Box
       minHeight="100vh"
       minWidth="full"
-      bg={"#ffe66d"}
+      bg={mapStateColor(project?.estado)}
       color="#2b2d42"
       d="flex"
       justifyContent="left"
@@ -64,7 +67,7 @@ export default function Index({ props }) {
             pos="fixed"
             top="55px"
             zIndex="100"
-            bg={"#FFE047"}
+            bg={mapStateColor(project.estado) - 40}
             left="0"
             right="0"
             // boxShadow="md"
@@ -72,17 +75,36 @@ export default function Index({ props }) {
             pl="3"
             mb="3rem"
           >
-            <HStack spacing="24px" fontSize="2xl">
+            <HStack spacing="24px" fontSize="2xl" p="2">
               <Box>
                 {/* <Link to="/projects">Projects</Link> */}
                 <Text fontWeight="medium">{project.nombre}</Text>
               </Box>
-              <Text fontWeight="medium">
-                <Link to={`${projectId}/members`}>Miembros</Link>
-              </Text>
-              <Text fontWeight="medium">
-                <Link to={`${projectId}/roles`}>Configurar roles</Link>
-              </Text>
+              <Button
+                colorScheme="yellow"
+                variant="solid"
+                // opacity="30%"
+                onClick={() => history.push(`${projectId}/members`)}
+              >
+                Miembros
+              </Button>
+              <Button
+                colorScheme="yellow"
+                variant="solid"
+                // opacity="30%"
+                onClick={() => history.push(`${projectId}/roles`)}
+              >
+                Configurar Roles
+              </Button>
+              <Button
+                leftIcon={<MdBuild />}
+                colorScheme="yellow"
+                variant="solid"
+                // opacity="30%"
+                onClick={() => history.push(`${projectId}/projectConfig`)}
+              >
+                Configurar Proyecto
+              </Button>
             </HStack>
           </Box>
           <Box mt="50px">
