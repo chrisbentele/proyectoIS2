@@ -21,13 +21,13 @@ export default function Index({ props, dispatchError }) {
   useEffect(() => {
     api
       .getProjectById(projectId)
-      .then((res) => setProject({ ...project, ...res }))
+      .then(({data}) => setProject({ ...project, ...data }))
       .catch((err) =>
         dispatchError(null, "No se ha podido cargar el proyecto")
       );
     api
       .getUserStories(projectId)
-      .then((US) => setProject({ ...project, userStories: US }))
+      .then(({data}) => setProject({ ...project, userStories: data }))
       .catch((err) => dispatchError(null, "error cargando USs"));
   }, []);
   console.log(project);

@@ -43,9 +43,9 @@ export default function CreateProject({ dispatchError }) {
   useEffect(() => {
     api
       .getUsers()
-      .then((fetchedUsers) => {
-        if (!Array.isArray(fetchedUsers)) return;
-        setUsers(fetchedUsers);
+      .then(({ data }) => {
+        if (!Array.isArray(data)) return;
+        setUsers(data);
       })
       .catch((err) =>
         dispatchError(null, "error cargando usuarios del sistema")

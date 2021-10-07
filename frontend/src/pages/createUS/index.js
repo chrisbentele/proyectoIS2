@@ -31,9 +31,9 @@ export default function CreateUserStory({ props, dispatchError }) {
   useEffect(() => {
     api
       .getUsers()
-      .then((fetchedUsers) => {
-        if (!Array.isArray(fetchedUsers)) return;
-        setUsers(fetchedUsers);
+      .then(({ data }) => {
+        if (!Array.isArray(data)) return;
+        setUsers(data);
       })
       .catch((err) =>
         dispatchError(null, "error cargando usuarios del sistema")
@@ -51,8 +51,8 @@ export default function CreateUserStory({ props, dispatchError }) {
     //funcion que define el comportamiento al confirmar el form
     await api
       .createUserStory({ ...values, projectId, creadoPor: user.sub })
-      .then((res) => {
-        if (res.id) {
+      .then(({ data }) => {
+        if (data.id) {
           toast({
             description: "US Creado.",
             status: "success",
