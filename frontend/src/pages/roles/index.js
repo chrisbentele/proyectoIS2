@@ -48,7 +48,7 @@ export default function Roles({ props, dispatchError }) {
   useEffect(() => {
     api
       .getRoles(projectId)
-      .then((listaR) => setListaRoles(listaR))
+      .then((res) => setListaRoles(res.data))
       .catch(() => dispatchError(null, "No se han podido cargar los roles"));
   }, []);
   console.log(listaRoles);

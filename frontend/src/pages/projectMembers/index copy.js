@@ -36,17 +36,17 @@ export default function ProjectMembers({ props, dispatchError }) {
     //Al cargar la pagina se buscan los usuarios
     api
       .getUsers()
-      .then((usersRes) => {
+      .then(({data}) => {
         api
           .getMembers(projectId)
           .then((membersRes) => {
             let membersIds = membersRes.map((member) => member.id);
-            let filteredUsers = usersRes.filter(
+            let filteredUsers = data.filter(
               (user) => !membersIds.includes(user.sub)
             );
             setState({ ...state, loading: false });
             setUsers([...filteredUsers]);
-            setMembers(membersRes);
+            setMembers(membersRes.data);
           })
           .catch((err) =>
             dispatchError(null, "error cargando miembros del proyecto")
@@ -66,7 +66,7 @@ export default function ProjectMembers({ props, dispatchError }) {
   const addMemberById = (userId) => {
     if (window.confirm(`desea agregar al usuario al proyecto?`)) {
       api.addMemberToProject(projectId, userId).then((res) => {
-        if (res) {
+        if (res.data) {
           let addedUser;
           const updatedUsers = users.filter((user) => {
             if (user.sub != userId) {
@@ -79,7 +79,7 @@ export default function ProjectMembers({ props, dispatchError }) {
           setMembers([...members, addedUser]);
           setUsers(updatedUsers);
         }
-      });
+      }).catch(err => dispatchError(null, 'error agregando usuario a proyecto'));
     } //solicita la confirmacion al usuario
   };
 
@@ -88,7 +88,7 @@ export default function ProjectMembers({ props, dispatchError }) {
     if (window.confirm(`desea eliminar al usuario del proyecto?`)) {
       //solicita la confirmacion al usuario
       api.removeMemberFromProject(projectId, memberId).then((res) => {
-        if (res) {
+        if (res.data) {
           let removedUser;
           const updatedMembers = members.filter((member) => {
             if (member.id != memberId) {
@@ -101,7 +101,7 @@ export default function ProjectMembers({ props, dispatchError }) {
           setUsers([...users, removedUser]);
           setMembers(updatedMembers);
         }
-      });
+      }).catch(err => dispatchError(null, 'error removiendo a miembro del proyecto'));
     }
   };
 
