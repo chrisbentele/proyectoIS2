@@ -10,6 +10,8 @@ from api.serializers import (
 )
 from django.test import TestCase
 
+from api.models import RolAsignado
+
 
 def crear_user():
     user_serializer = UsuarioSerializer(
@@ -246,6 +248,9 @@ class Proyectos_Usuarios_Roles_Tests(TestCase):
             f"/api/proyectos/{p['id']}/miembros/{u['id']}/roles/{r['id']}",
         )
         self.assertEqual(res.status_code, 201)
+
+        ra = RolAsignado.objects.get(usuario=u["id"], rol=r["id"])
+        self.assertEqual(res.json()["id"], ra.id)
 
     def test_proyectos_miembros_roles_get(self):
 
