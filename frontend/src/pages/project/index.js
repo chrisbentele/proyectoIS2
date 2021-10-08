@@ -39,12 +39,12 @@ export default function Index({ props }) {
   useEffect(() => {
     api
       .getProjectById(projectId)
-      .then((res) => setProject(res))
+      .then(({data}) => setProject(data))
       .catch((err) => console.log(err));
 
     api
       .getUserStories(projectId)
-      .then((US) => setUserStories(US))
+      .then(({data}) => setUserStories(data))
       .catch((err) => console.log(err));
   }, []);
 

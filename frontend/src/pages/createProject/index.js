@@ -35,7 +35,7 @@ import { useAuth0 } from "@auth0/auth0-react";
  * Función principal de esta vista
  * @returns React Component
  */
-export default function CreateProject() {
+export default function CreateProject({ dispatchError }) {
   const [users, setUsers] = useState([]); //Los usuarios del sistema
   const { user } = useAuth0();
   const toast = useToast();
@@ -43,11 +43,13 @@ export default function CreateProject() {
   useEffect(() => {
     api
       .getUsers()
-      .then((fetchedUsers) => {
-        if (!Array.isArray(fetchedUsers)) return;
-        setUsers(fetchedUsers);
+      .then(({ data }) => {
+        if (!Array.isArray(data)) return;
+        setUsers(data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) =>
+        dispatchError(null, "error cargando usuarios del sistema")
+      );
   }, []);
   const {
     handleSubmit,
@@ -61,26 +63,11 @@ export default function CreateProject() {
     //funcion que define el comportamiento al confirmar el form
     await api
       .createProject({ ...values, id: user.sub })
-      .then((res) => {
-        if (res.id) {
-          toast({
-            description: "Proyecto Creado.",
-            status: "success",
-            duration: 5000,
-            isClosable: true,
-          });
-          history.push(`/projects/${res.id}`); //luego de crear exitosamente el proyecto, se redirige a la pagina del proyecto
-        } else {
-          toast({
-            description: "Proyecto no pudo crearse.",
-            status: "error",
-            duration: 5000,
-            isClosable: true,
-          });
-        }
-
+      .then(({ data }) => {
+        console.log(data);
+        history.push(`/projects/${data.id}`); //luego de crear exitosamente el proyecto, se redirige a la pagina del proyecto
       })
-      .catch((err) => console.log(err));
+      .catch((err) => dispatchError(null, "No se ha podido crear el proyecto"));
   }
 
   return (
