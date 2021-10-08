@@ -15,27 +15,19 @@ import { axiosInstance } from ".";
  * @returns Resultado de la operación
  */
 export const createProject = async (projectData) => {
-  console.log(projectData);
   const { projectName, scrumMasterId, estimation } = projectData;
-  console.log(`estimation: ${estimation}`);
-  console.log(`scrum master id: ${scrumMasterId}`);
-  console.log(`project name:${projectName}`);
   if (!estimation || !scrumMasterId || !projectName) {
+    console.log("error");
     return new Error(
       "Para crear proyecto debes proveer la duracion estimada, miembros y nombre del proyecto"
     );
   }
-  try {
-    const res = await axiosInstance.post("proyectos", {
-      duracionEstimada: estimation,
-      miembros: [scrumMasterId],
-      scrumMasterId: scrumMasterId,
-      nombre: projectName,
-    });
-    return res.data;
-  } catch (error) {
-    return error;
-  }
+  return await axiosInstance.post("proyectos", {
+    duracionEstimada: estimation,
+    miembros: [scrumMasterId],
+    scrumMasterId: scrumMasterId,
+    nombre: projectName,
+  });
 };
 
 //Listar proyectos
@@ -51,49 +43,24 @@ export const createProject = async (projectData) => {
  * @returns Resultado de la operación
  */
 export const getProjects = async (userId) => {
-  try {
-    if (userId) {
-      const res = await axiosInstance.get(`usuarios/${userId}/proyectos`);
-      return res.data;
-    } else {
-      const res = await axiosInstance.get("proyectos");
-      return res.data;
-    }
-  } catch (error) {
-    return error;
+  if (userId) {
+    return await axiosInstance.get(`usuarios/${userId}/proyectos`);
   }
+  return await axiosInstance.get("proyectos");
 };
-
 //! Editar proyeto
-export const editProject = async (projectId, projectConfig) => {
-  try {
-  } catch (error) {
-    return error;
-  }
-};
+export const editProject = async (projectId, projectConfig) => {};
 
 /** Listar proyecto por id
  * La funcion recibe como parametro el id del proyecto y luego retorna la informacion del mismo
  * @param projectId
  */
-export const getProjectById = async (projectId) => {
-  try {
-    const res = await axiosInstance.get(`proyectos/${projectId}`);
-    return res.data;
-  } catch (error) {
-    return error;
-  }
-};
+export const getProjectById = async (projectId) =>
+  await axiosInstance.get(`proyectos/${projectId}`);
 
 /** Eliminar proyecto
  * La funcion recibe como parametro el id del proyecto a eliminar, retorna true si se pudo eliminar el proyecto
  * @param projectId
  */
-export const deleteProject = async (projectId) => {
-  try {
-    const res = await axiosInstance.delete(`proyectos/${projectId}`);
-    return res.data;
-  } catch (error) {
-    return error;
-  }
-};
+export const deleteProject = async (projectId) =>
+  await axiosInstance.delete(`proyectos/${projectId}`);

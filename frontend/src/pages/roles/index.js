@@ -20,7 +20,7 @@ import { useForm } from "react-hook-form";
 import { api } from "../../api/";
 import { Link } from "react-router-dom";
 
-export default function Roles({ props }) {
+export default function Roles({ props, dispatchError }) {
   const [add, setAdd] = useState();
   const projectId = props.computedMatch.params.id;
   const {
@@ -33,7 +33,9 @@ export default function Roles({ props }) {
   const onSubmit = async (data) => {
     const rolesFetch = await api.getRoles(projectId);
     if (rolesFetch.filter((x) => x.nombre === data.nombre_rol).length === 0) {
-      api.addRole(projectId, data.nombre_rol, data.permisos);
+      api
+        .addRole(projectId, data.nombre_rol, data.permisos)
+        .catch((err) => dispatchError(null, "error agregando el rol"));
       window.location.reload(false);
     }
   };
@@ -43,9 +45,11 @@ export default function Roles({ props }) {
 
   const url = props.computedMatch.url;
 
-
   useEffect(() => {
-    api.getRoles(projectId).then((listaR) => setListaRoles(listaR));
+    api
+      .getRoles(projectId)
+      .then((res) => setListaRoles(res.data))
+      .catch(() => dispatchError(null, "No se han podido cargar los roles"));
   }, []);
   console.log(listaRoles);
 

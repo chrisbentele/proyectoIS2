@@ -17,13 +17,13 @@ import {
   LinkOverlay,
 } from "@chakra-ui/layout";
 import { Image } from "@chakra-ui/image";
-import { Grid } from "@chakra-ui/react";
+import { Grid, toast, useToast } from "@chakra-ui/react";
 import { api } from "../api";
 import { projectStateToString } from "../util";
 import { mapStateColor } from "../styles/theme";
 
 //! Componente principal de esta página
-const Profile = (props) => {
+const Profile = ({ dispatchError }) => {
   const { user, isLoading } = useAuth0();
   const [userProjects, setUserProjects] = useState([]);
   useEffect(() => {
@@ -32,8 +32,9 @@ const Profile = (props) => {
       api
         .getProjects(user.sub)
         .then((projects) => setUserProjects(projects))
-        .catch((err) => console.log(err));
-      console.log("done");
+        .catch((err) =>
+          dispatchError(null, "Error cargando proyectos del usuario")
+        );
     }
   }, [user, isLoading]);
   if (isLoading) {

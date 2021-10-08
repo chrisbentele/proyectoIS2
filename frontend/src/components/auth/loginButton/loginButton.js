@@ -28,7 +28,7 @@ const LoginButton = (props) => {
 };
 
 LoginButton.defaultProps = {
-  title: 'Log In'
+  title: 'Iniciar sesión'
 }
 
 export default LoginButton;
