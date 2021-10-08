@@ -30,6 +30,11 @@ export default function AddMemberTable(props) {
   let members = props.members;
   const projectId = props.projectId;
   const setMembers = props.setMembers;
+  const ROLES = props.ROLES;
+
+  const SCRUM_MASTER = 0;
+  const DEV_TEAM = 1;
+  const PROD_OWN = 2;
 
   const [isOpen, setIsOpen] = useState()
   const onClose = () => setIsOpen(false)
@@ -46,7 +51,7 @@ export default function AddMemberTable(props) {
   const addMemberById = (userId) => {
     api.addMemberToProject(projectId, userId).then((res) => {
       if (res) {
-        api.setUserRole(2, projectId, userId);
+        api.setUserRole(ROLES[DEV_TEAM].id, projectId, userId);
         api.getUsers().then((usersRes) => {
           api.getMembers(projectId).then((membersRes) => {
             let membersIds = membersRes.map((member) => member.id);
@@ -73,7 +78,8 @@ export default function AddMemberTable(props) {
         .map((user) => {
           return {
             nombre: user.nombre,
-            add: <>
+            add:
+            <>
               <Button onClick={() => setIsOpen(true)} >
                 <AddIcon />
               </Button>

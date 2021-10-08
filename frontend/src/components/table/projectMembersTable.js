@@ -19,6 +19,7 @@ import {
   AlertDialogHeader,
   AlertDialogContent,
   AlertDialogOverlay,
+  Tooltip
 } from '@chakra-ui/react';
 
 import { DeleteIcon } from "@chakra-ui/icons";
@@ -30,6 +31,10 @@ export default function ProjectMembersTable(props) {
   const projectId = props.projectId;
   const setMembers = props.setMembers;
   const ROLES = props.ROLES;
+
+  const SCRUM_MASTER = 0;
+  const DEV_TEAM = 1;
+  const PROD_OWN = 2;
 
   const [isOpen, setIsOpen] = useState()
   const onClose = () => setIsOpen(false)
@@ -71,17 +76,19 @@ export default function ProjectMembersTable(props) {
    * @param memberId    Miembro al cual se le asignará 
    */
   const changeRole = (roleId, memberId) => {
-    if (roleId !== 1) {
+    if (roleId !== ROLES[SCRUM_MASTER].id) {
       api
         .setUserRole(roleId, projectId, memberId);
       api.getMembers(projectId).then(membersRes => setMembers(membersRes));
+      console.log(members)
     }
     else {
-      if (members.filter(x => x.rol.rol === 1).length > 0) {
-        api.setUserRole(2, projectId, members.filter(x => x.rol.rol === 1)[0].id);
-        api.setUserRole(roleId, projectId, memberId);
-        api.getMembers(projectId).then(membersRes => setMembers(membersRes));
-      }
+      console.log(members)
+      //if (members.filter(x => x.rol.rol === ROLES[SCRUM_MASTER].rol).length > 0) {
+      //   api.setUserRole(2, projectId, members.filter(x => x.rol.rol === 1)[0].id);
+      //   api.setUserRole(roleId, projectId, memberId);
+      //   api.getMembers(projectId).then(membersRes => setMembers(membersRes));
+      // }
     }
   }
 
@@ -94,8 +101,8 @@ export default function ProjectMembersTable(props) {
             role:
               <Select
                 pb="4"
-                onChange={(e) => changeRole(parseInt(e.target.value) + 1, member.id)}
-                isDisabled={member.rol?.rol === 1}
+                onChange={(e) => changeRole(ROLES[e.target.value].id, member.id)}
+                isDisabled={member.rol?.rol === ROLES[SCRUM_MASTER].id}
               >
                 <option hidden>{
                   ROLES.filter(x => x.id === member.rol?.rol).length > 0 ?
@@ -109,11 +116,13 @@ export default function ProjectMembersTable(props) {
                   </option>
                 ))}
               </Select>,
-            remove: member.rol?.rol !== 1 ?
+            remove: member.rol?.rol !== ROLES[SCRUM_MASTER].id ?
               <>
+              <Tooltip label="Eliminar este miembro del proyecto.">
                 <Button onClick={() => setIsOpen(true)} >
                   <DeleteIcon />
                 </Button>
+                </Tooltip>
                 <AlertDialog
                   isOpen={isOpen}
                   leastDestructiveRef={cancelRef}

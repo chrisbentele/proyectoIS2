@@ -101,7 +101,7 @@ export default function Index({ props }) {
                 colorScheme="yellow"
                 variant="solid"
                 // opacity="30%"
-                onClick={() => history.push(`${projectId}/projectConfig`)}
+                onClick={() => history.push(`${projectId}/config`)}
               >
                 Configurar Proyecto
               </Button>

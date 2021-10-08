@@ -18,7 +18,7 @@ import {
 import { PERMISOS } from "./permisos";
 import { useForm } from "react-hook-form";
 import { api } from "../../api/";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 export default function Roles({ props }) {
   const [add, setAdd] = useState();
@@ -43,6 +43,7 @@ export default function Roles({ props }) {
 
   const url = props.computedMatch.url;
 
+  const history = useHistory();
 
   useEffect(() => {
     api.getRoles(projectId).then((listaR) => setListaRoles(listaR));
@@ -58,8 +59,11 @@ export default function Roles({ props }) {
         marginTop: "70px",
       }}
     >
-      <Button style={{ marginLeft: "5px", alignSelf: "flex-start" }}>
-        <Link to={url.replace("/roles", "")}>Volver al Proyecto</Link>
+      <Button
+        onClick={() => history.push(`/projects/${projectId}`)}
+        style={{ marginLeft: "5px", alignSelf: "flex-start" }}
+      >
+        Volver al proyecto
       </Button>
       <Flex p="16" justifyContent="center">
         <Box w="90ch">
@@ -135,5 +139,3 @@ export default function Roles({ props }) {
     </div>
   );
 }
-
-//export default Roles;
