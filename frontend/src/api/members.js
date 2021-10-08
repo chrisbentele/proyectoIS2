@@ -7,45 +7,17 @@ import { axiosInstance } from ".";
  */
 
 //!Listar todos los miembros
-export const getMembers = async (projectId) => {
-  try {
-    const res = await axiosInstance.get(`proyectos/${projectId}/miembros`);
-    return res.data;
-  } catch (error) {
-    return error;
-  }
-};
+export const getMembers = async (projectId) =>
+  await axiosInstance.get(`proyectos/${projectId}/miembros`);
 
 //! Editar los roles de un miembro
-export const editMembersRole = async (memberId, roleId) => {
-  try {
-    const res = await axiosInstance.put(`/members/${memberId}`, { roleId });
-    return res.data;
-  } catch (error) {
-    return new Error("Error cargando los miembros del proyecto");
-  }
-};
+export const editMembersRole = async (memberId, roleId) =>
+  await axiosInstance.put(`/members/${memberId}`, { roleId });
 
 //! Agregar los roles de un miembro
-export const addMemberToProject = async (projectId, userId) => {
-  try {
-    const res = await axiosInstance.post(
-      `/proyectos/${projectId}/miembros/${userId}`
-    );
-    return res.data;
-  } catch (error) {
-    return error;
-  }
-};
+export const addMemberToProject = async (projectId, userId) =>
+  await axiosInstance.post(`/proyectos/${projectId}/miembros/${userId}`);
 
 //! Eliminar los roles de un miembro
-export const removeMemberFromProject = async (projectId, userId) => {
-  try {
-    const res = await axiosInstance.delete(
-      `/proyectos/${projectId}/miembros/${userId}`
-    );
-    return res.data;
-  } catch (error) {
-    return error;
-  }
-};
+export const removeMemberFromProject = async (projectId, userId) =>
+  await axiosInstance.delete(`/proyectos/${projectId}/miembros/${userId}`);

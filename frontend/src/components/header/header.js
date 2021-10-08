@@ -22,7 +22,13 @@ const Header = () => {
       as="header"
       top="0"
       zIndex="100"
-      bg={"#F7FFF7"}
+      bg={
+        location.pathname === "/"
+          ? "#F7FFF7"
+          : location.pathname === "/projects/:id"
+          ? "blue"
+          : "#F7FFF7"
+      }
       left="0"
       right="0"
       boxShadow="md"

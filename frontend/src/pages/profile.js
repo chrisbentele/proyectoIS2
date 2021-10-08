@@ -8,14 +8,22 @@ import React, { useEffect, useState } from "react";
 //! Componente de Auth0
 import { useAuth0 } from "@auth0/auth0-react";
 import { Link } from "react-router-dom";
-import { Box, Flex, Heading, Text, LinkBox, LinkOverlay } from "@chakra-ui/layout";
+import {
+  Box,
+  Flex,
+  Heading,
+  Text,
+  LinkBox,
+  LinkOverlay,
+} from "@chakra-ui/layout";
 import { Image } from "@chakra-ui/image";
-import { Grid } from "@chakra-ui/react";
+import { Grid, toast, useToast } from "@chakra-ui/react";
 import { api } from "../api";
 import { projectStateToString } from "../util";
+import { mapStateColor } from "../styles/theme";
 
 //! Componente principal de esta página
-const Profile = (props) => {
+const Profile = ({ dispatchError }) => {
   const { user, isLoading } = useAuth0();
   const [userProjects, setUserProjects] = useState([]);
   useEffect(() => {
@@ -24,25 +32,13 @@ const Profile = (props) => {
       api
         .getProjects(user.sub)
         .then((projects) => setUserProjects(projects))
-        .catch((err) => console.log(err));
-      console.log("done");
+        .catch((err) =>
+          dispatchError(null, "Error cargando proyectos del usuario")
+        );
     }
   }, [user, isLoading]);
   if (isLoading) {
     return <div>Loading ...</div>;
-  }
-
-  function mapStateColor(projectState) {
-    switch (projectState) {
-      case 0:
-        return "#ffe66d";
-      case 1:
-        return "#a0ff6d";
-      case 2:
-        return "#726bff";
-      default:
-        return "#ffffff";
-    }
   }
 
   return (
@@ -81,7 +77,8 @@ const Profile = (props) => {
             {Array.isArray(userProjects)
               ? userProjects.map((project) => {
                   return (
-                    <Flex
+                    <LinkBox
+                      d="flex"
                       flexDirection="column"
                       w="xs"
                       height="200px"
@@ -94,8 +91,8 @@ const Profile = (props) => {
                       pl="5"
                       pt="2"
                     >
-                      <Link
-                        to={`projects/${project.id}`}
+                      <LinkOverlay
+                        href={`projects/${project.id}`}
                         style={{
                           fontWeight: "bold",
                           width: "100%",
@@ -103,21 +100,15 @@ const Profile = (props) => {
                         }}
                       >
                         {project.nombre}
-                      </Link>
-                      <br />
+                      </LinkOverlay>
                       <Box pb="2" fontSize="lg">
-                        <Text>
-                          {projectStateToString(project.estado)}
-                        </Text>
+                        <Text>{projectStateToString(project.estado)}</Text>
                         <Text>
                           Duracion estimada: {project.duracionEstimada} semanas
                         </Text>
-                        <Text>
-                          Iniciado: {project.fechaInicio}
-                        </Text>
+                        <Text>Iniciado: {project.fechaInicio}</Text>
                       </Box>
-                      
-                    </Flex>
+                    </LinkBox>
                   );
                 })
               : null}

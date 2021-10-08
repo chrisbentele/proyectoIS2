@@ -7,21 +7,14 @@ import { axiosInstance } from ".";
  */
 
 //! Listar todos los usuarios
-export const getUsers = async () => {
-  try {
-    const res = await axiosInstance.get("/usuarios");
-    return res.data;
-  } catch (error) {
-    return error;
-  }
-};
+export const getUsers = async () => await axiosInstance.get("/usuarios");
 
 /**
  * Obtener usuario \n
  * La funcion sirve para que al iniciar sesion con el SSO, se busque al usuario en la base de datos,si no se encuentra al mismo se lo agregara a la base de datos manda como parametro el email del usuario
- * @param id 
- * @param email 
- * @param nombre 
+ * @param id
+ * @param email
+ * @param nombre
  * @returns Resultado de la operación
  */
 export const getUser = async (id = null, email = null, nombre = null) => {
@@ -70,14 +63,8 @@ export const getUser = async (id = null, email = null, nombre = null) => {
  * @param userId
  * @returns Resultado de la operación
  */
-export const deleteUser = async (userId) => {
-  try {
-    const res = await axiosInstance.delete(`/usuarios/${userId}`);
-    return res.status(204);
-  } catch (error) {
-    return error;
-  }
-};
+export const deleteUser = async (userId) =>
+  await axiosInstance.delete(`/usuarios/${userId}`);
 
 /**
  * Buscar a usuarios por nombre \n
@@ -85,11 +72,5 @@ export const deleteUser = async (userId) => {
  * @param string
  * @returns Resultado de la operación
  */
-export const searchUsersByName = async (string) => {
-  try {
-    const res = await axiosInstance.get(`/usuarios?searchTerm=string`);
-    return res.data;
-  } catch (error) {
-    return error;
-  }
-};
+export const searchUsersByName = async (string) =>
+  await axiosInstance.get(`/usuarios?searchTerm=string`);
