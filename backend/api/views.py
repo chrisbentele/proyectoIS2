@@ -16,8 +16,9 @@ from django.http.response import (
 )
 from rest_framework.parsers import JSONParser
 
-# Create your views here.
+
 def proyectos(request, proyect_id=None):
+    """Funcion para manejo de proyectos"""
     if request.method == "POST":
         # Crea el proyecto
         data = JSONParser().parse(request)
@@ -157,6 +158,7 @@ def proyectos(request, proyect_id=None):
 
 
 def usuarios(request, user_id=None):
+    """Metodos p/ admin de usuarios"""
     if request.method == "POST":
         # Crea un Nuevo usuario
         data = JSONParser().parse(request)
@@ -212,7 +214,7 @@ def usuarios(request, user_id=None):
 
 
 def usuarios_proyectos(request, user_id):
-    # trae todos los usuarios del proyecto
+    """trae todos los usuarios del proyecto"""
 
     if request.method == "GET":
 
@@ -225,7 +227,7 @@ def usuarios_proyectos(request, user_id):
 
 
 def proyectos_miembros(request, proyect_id, user_id=None):
-    # agregar y eliminar usuarios
+    """Metodos p/ admin de miembros de proyecto"""
 
     if request.method == "POST":
         if not user_id:
@@ -313,6 +315,8 @@ def proyectos_miembros(request, proyect_id, user_id=None):
 
 # api para manejar los roles
 def roles(request, proyect_id, rol_id=None):
+    """Metodos p/ admin de roles de proyecto"""
+
     if request.method == "POST":
         # Crea un nuevo rol en el proyecto
         data = JSONParser().parse(request)
@@ -380,6 +384,7 @@ def roles(request, proyect_id, rol_id=None):
 
 # Api para asignar los roles a los usuarios
 def proyectos_miembros_roles(request, proyect_id, user_id, rol_id=None):
+    """Metodos p/ admin de roles de miembros de proyecto"""
 
     if request.method == "POST":
         # En caso de POST asigna un rol a un usuario
@@ -441,6 +446,8 @@ def proyectos_miembros_roles(request, proyect_id, user_id, rol_id=None):
 
 
 def user_stories(request, proyect_id, us_id=None):
+    """Metodos p/ admin de US de proyecto"""
+
     try:
         proyecto = Proyecto.objects.get(id=proyect_id)
     except Proyecto.DoesNotExist:
@@ -490,6 +497,8 @@ def user_stories(request, proyect_id, us_id=None):
 
 
 def sprints(request, proyect_id, sprint_id=None):
+    """Metodos p/ admin de sprints de proyecto"""
+
     try:
         proyecto = Proyecto.objects.get(id=proyect_id)
     except Proyecto.DoesNotExist:
@@ -540,8 +549,9 @@ def sprints(request, proyect_id, sprint_id=None):
         return HttpResponseBadRequest("Falta sprint_id")
 
 
-# Retorna los user stories de un sprint
 def sprints_user_stories(request, proyect_id, sprint_id):
+    """Retorna los user stories de un sprint de proyecto"""
+
     try:
         proyecto = Proyecto.objects.get(id=proyect_id)
     except Proyecto.DoesNotExist:
