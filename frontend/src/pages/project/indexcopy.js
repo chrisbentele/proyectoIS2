@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/layout";
 import { Link } from "react-router-dom";
 
-export default function Index({ props }) {
+export default function Index({ props, dispatchError }) {
   const projectId = props.computedMatch.params.id; //id del proyecto, se extrae del URL
   const [project, setProject] = useState({ userStories: [] }); //estado del proyecto
 
@@ -21,12 +21,14 @@ export default function Index({ props }) {
   useEffect(() => {
     api
       .getProjectById(projectId)
-      .then((res) => setProject({ ...project, ...res }))
-      .catch((err) => console.log(err));
+      .then(({data}) => setProject({ ...project, ...data }))
+      .catch((err) =>
+        dispatchError(null, "No se ha podido cargar el proyecto")
+      );
     api
       .getUserStories(projectId)
-      .then((US) => setProject({ ...project, userStories: US }))
-      .catch((err) => console.log(err));
+      .then(({data}) => setProject({ ...project, userStories: data }))
+      .catch((err) => dispatchError(null, "error cargando USs"));
   }, []);
   console.log(project);
   return (

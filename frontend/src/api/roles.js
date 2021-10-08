@@ -12,64 +12,33 @@ import { axiosInstance } from ".";
  * @param roleName
  * @param permissions
  */
-export const addRole = async (proyectoId, roleName, permissions) => {
-  try {
-    const res = await axiosInstance.post(`/proyectos/${proyectoId}/roles`, {
-      nombre: roleName,
-      permisos: permissions,
-    });
-    return res.status;
-  } catch (error) {
-    return error;
-  }
-};
+export const addRole = async (proyectoId, roleName, permissions) =>
+  await axiosInstance.post(`/proyectos/${proyectoId}/roles`, {
+    nombre: roleName,
+    permisos: permissions,
+  });
 
 /**
  * Eliminar role
  * @param proyectoId
  * @param roleId
  */
-export const deleteRole = async (proyectoId, roleId) => {
-  try {
-    const res = await axiosInstance.delete(
-      `/proyectos/${proyectoId}/roles/${roleId}`
-    );
-    return res.status;
-  } catch (error) {
-    return error;
-  }
-};
-
+export const deleteRole = async (proyectoId, roleId) =>
+  await axiosInstance.delete(`/proyectos/${proyectoId}/roles/${roleId}`);
 /**
  * Conseguir un rol
  * @param proyectoId
  * @param roleId
  */
-export const getRole = async (proyectoId, roleId) => {
-  try {
-    const res = await axiosInstance.get(
-      `/proyectos/${proyectoId}/roles/${roleId}`
-    );
-    return res.data;
-  } catch (error) {
-    return error;
-  }
-};
+export const getRole = async (proyectoId, roleId) =>
+  await axiosInstance.get(`/proyectos/${proyectoId}/roles/${roleId}`);
 
 /**
  * Conseguir un roles
  * @param proyectoId
  */
-export const getRoles = async (proyectoId) => {
-  try {
-    const res = await axiosInstance.get(
-      `/proyectos/${proyectoId}/roles`
-    );
-    return res.data;
-  } catch (error) {
-    return error;
-  }
-};
+export const getRoles = async (proyectoId) =>
+  await axiosInstance.get(`/proyectos/${proyectoId}/roles`);
 
 /**
  * Editar un rol
@@ -84,36 +53,24 @@ export const editRole = async (
   role_name = null,
   permissions = null
 ) => {
-  try {
-    let req_data = {};
-    if (role_name) req_data.nombre = role_name;
-    if (permissions) req_data.permisos = permissions;
-    const res = await axiosInstance.put(
-      `/proyectos/${proyectoId}/roles/${roleId}`,
-      req_data
-    );
-    return res.data;
-  } catch (error) {
-    return error;
-  }
+  let req_data = {};
+  if (role_name) req_data.nombre = role_name;
+  if (permissions) req_data.permisos = permissions;
+  return await axiosInstance.put(
+    `/proyectos/${proyectoId}/roles/${roleId}`,
+    req_data
+  );
 };
-
 /**
  * Asignar un rol
  * @param roleId
  * @param proyectoId
  * @param userId
  */
-export const setUserRole = async (roleId, projectId, userId) => {
-  try {
-    const res = await axiosInstance.post(
-      `proyectos/${projectId}/miembros/${userId}/roles/${roleId}`
-    );
-    return res.data;
-  } catch (error) {
-    return error;
-  }
-};
+export const setUserRole = async (roleId, projectId, userId) =>
+  await axiosInstance.post(
+    `proyectos/${projectId}/miembros/${userId}/roles/${roleId}`
+  );
 
 /**
  * Quitar un rol a un usuario
@@ -121,13 +78,7 @@ export const setUserRole = async (roleId, projectId, userId) => {
  * @param proyectoId
  * @param userId
  */
-export const removeUserRole = async (roleId, projectId, userId) => {
-  try {
-    const res = await axiosInstance.delete(
-      `proyectos/${projectId}/miembros/${userId}/roles/${roleId}`
-    );
-    return res.data;
-  } catch (error) {
-    return error;
-  }
-};
+export const removeUserRole = async (roleId, projectId, userId) =>
+  await axiosInstance.delete(
+    `proyectos/${projectId}/miembros/${userId}/roles/${roleId}`
+  );

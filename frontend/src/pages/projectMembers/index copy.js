@@ -24,7 +24,7 @@ import { useAuth0 } from "@auth0/auth0-react";
  * @param { props } param0
  * @returns Reavt Component
  */
-export default function ProjectMembers({ props }) {
+export default function ProjectMembers({ props, dispatchError }) {
   const [members, setMembers] = useState([]);
   const [users, setUsers] = useState([]);
   const projectId = props.computedMatch.params.id;
@@ -34,28 +34,39 @@ export default function ProjectMembers({ props }) {
 
   useEffect(() => {
     //Al cargar la pagina se buscan los usuarios
-    api.getUsers().then((usersRes) => {
-      api.getMembers(projectId).then((membersRes) => {
-        let membersIds = membersRes.map((member) => member.id);
-        let filteredUsers = usersRes.filter(
-          (user) => !membersIds.includes(user.sub)
-        );
-        setState({ ...state, loading: false });
-        setUsers([...filteredUsers]);
-        setMembers(membersRes);
-      });
-    });
+    api
+      .getUsers()
+      .then(({data}) => {
+        api
+          .getMembers(projectId)
+          .then((membersRes) => {
+            let membersIds = membersRes.map((member) => member.id);
+            let filteredUsers = data.filter(
+              (user) => !membersIds.includes(user.sub)
+            );
+            setState({ ...state, loading: false });
+            setUsers([...filteredUsers]);
+            setMembers(membersRes.data);
+          })
+          .catch((err) =>
+            dispatchError(null, "error cargando miembros del proyecto")
+          );
+      })
+      .catch((err) =>
+        dispatchError(null, "error cargando usuarios del sistema")
+      );
     api
       .getRoles(projectId)
-      .then((listaR) => setROLES(listaR));
-      console.log(ROLES);
+      .then((listaR) => setROLES(listaR))
+      .catch((err) => dispatchError(null, "error cargando roles"));
+    console.log(ROLES);
   }, []);
 
   //funcion que se encarga de agregar un usuario al proyecto mediante la tabla
   const addMemberById = (userId) => {
     if (window.confirm(`desea agregar al usuario al proyecto?`)) {
       api.addMemberToProject(projectId, userId).then((res) => {
-        if (res) {
+        if (res.data) {
           let addedUser;
           const updatedUsers = users.filter((user) => {
             if (user.sub != userId) {
@@ -68,7 +79,7 @@ export default function ProjectMembers({ props }) {
           setMembers([...members, addedUser]);
           setUsers(updatedUsers);
         }
-      });
+      }).catch(err => dispatchError(null, 'error agregando usuario a proyecto'));
     } //solicita la confirmacion al usuario
   };
 
@@ -77,7 +88,7 @@ export default function ProjectMembers({ props }) {
     if (window.confirm(`desea eliminar al usuario del proyecto?`)) {
       //solicita la confirmacion al usuario
       api.removeMemberFromProject(projectId, memberId).then((res) => {
-        if (res) {
+        if (res.data) {
           let removedUser;
           const updatedMembers = members.filter((member) => {
             if (member.id != memberId) {
@@ -90,7 +101,7 @@ export default function ProjectMembers({ props }) {
           setUsers([...users, removedUser]);
           setMembers(updatedMembers);
         }
-      });
+      }).catch(err => dispatchError(null, 'error removiendo a miembro del proyecto'));
     }
   };
 
@@ -108,7 +119,7 @@ export default function ProjectMembers({ props }) {
     },
     {
       Header: "Rol",
-      accessor: "role"
+      accessor: "role",
     },
     {
       Header: "Eliminar",
@@ -135,7 +146,6 @@ export default function ProjectMembers({ props }) {
     }
   };
 
-
   return (
     <div
       style={{
@@ -153,20 +163,22 @@ export default function ProjectMembers({ props }) {
         data={members.map((member) => {
           return {
             nombre: member.nombre,
-            role: 
+            role: (
               <Select
-              pb="4"
-              onChange={(e) => {
-                api
-                  .setUserRole(e.target.value, projectId, member.id);
-              }}
-            >  <option hidden>Seleccione un rol</option>
-              {ROLES.map((x, i) => (
-                <option key={i} value={i}>
-                  {x.nombre}
-                </option>
-              ))}
-            </Select>,
+                pb="4"
+                onChange={(e) => {
+                  api.setUserRole(e.target.value, projectId, member.id);
+                }}
+              >
+                {" "}
+                <option hidden>Seleccione un rol</option>
+                {ROLES.map((x, i) => (
+                  <option key={i} value={i}>
+                    {x.nombre}
+                  </option>
+                ))}
+              </Select>
+            ),
             remove: <DeleteIcon id={member.id} deleteById={removeMember} />,
           };
         })}
