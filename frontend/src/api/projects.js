@@ -65,11 +65,13 @@ export const getProjects = async (userId) => {
 };
 
 //! Editar proyeto
-export const editProject = async (projectId, projectConfig) => {
-  try {
-  } catch (error) {
-    return error;
-  }
+export const editProject = async (projectData) => {
+  const { projectId, projectName, estimation } = projectData;
+  const res = await axiosInstance.put(`proyectos/${projectId}`, {
+    duracionEstimada: estimation,
+    nombre: projectName,
+  });
+  return res;
 };
 
 /** Listar proyecto por id
