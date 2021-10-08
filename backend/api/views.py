@@ -248,13 +248,15 @@ def proyectos_miembros(request, proyect_id, user_id=None):
             pr_seri = RolSerializer(pr, many=True)
             for rol in pr_seri.data:
                 if rol["nombre"] == "Developer":
-                    RolAsignadoSerializer(
+                    ra = RolAsignadoSerializer(
                         data={
                             "usuario": user_id,
                             "proyecto": proyect_id,
                             "rol": rol["id"],
                         }
                     )
+                    ra.is_valid()
+                    ra.save()
                     break
 
             return JsonResponse(True, status=201, safe=False)
