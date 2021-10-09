@@ -51,10 +51,11 @@ export const getProjects = async (userId) => {
 //! Editar proyeto
 
 export const editProject = async (projectData) => {
-  const { projectId, projectName, estimation } = projectData;
+  const { projectId, projectName, estimation, status } = projectData;
   const res = await axiosInstance.put(`proyectos/${projectId}`, {
     duracionEstimada: estimation,
     nombre: projectName,
+    estado: status
   });
   return res;
 };

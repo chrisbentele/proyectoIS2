@@ -9,7 +9,7 @@ import ProjectMembersTable from "../../components/table/projectMembersTable";
 import { useHistory } from 'react-router-dom';
 
 
-export default function ProjectMembers({ props }) {
+export default function ProjectMembers({ props, dispatchError }) {
   const [members, setMembers] = useState([]);
   const [ROLES, setROLES] = useState([]);
   const [users, setUsers] = useState([]);

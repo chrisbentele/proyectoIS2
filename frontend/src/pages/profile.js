@@ -31,7 +31,7 @@ const Profile = ({ dispatchError }) => {
       console.log(user);
       api
         .getProjects(user.sub)
-        .then((projects) => setUserProjects(projects))
+        .then(({data: projects}) => setUserProjects(projects))
         .catch((err) =>
           dispatchError(null, "Error cargando proyectos del usuario")
         );
@@ -75,7 +75,7 @@ const Profile = ({ dispatchError }) => {
         <Flex mt="10">
           <Grid templateColumns="repeat(2, 1fr)" gap={4} autoFlow>
             {Array.isArray(userProjects)
-              ? userProjects.map((project) => {
+              ? userProjects.map((project, i) => {
                   return (
                     <LinkBox
                       d="flex"
@@ -90,6 +90,7 @@ const Profile = ({ dispatchError }) => {
                       justifyContent="left"
                       pl="5"
                       pt="2"
+                      key={i}
                     >
                       <LinkOverlay
                         href={`projects/${project.id}`}

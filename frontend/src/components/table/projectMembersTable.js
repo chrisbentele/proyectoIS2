@@ -50,9 +50,9 @@ export default function ProjectMembersTable(props) {
    */
   const removeMember = (memberId) => {
     api.removeMemberFromProject(projectId, memberId).then((res) => {
-      if (!res) {
-        api.getUsers().then((usersRes) => {
-          api.getMembers(projectId).then((membersRes) => {
+      
+        api.getUsers().then(({data: usersRes}) => {
+          api.getMembers(projectId).then(({data: membersRes}) => {
             let membersIds = membersRes.map((member) => member.id);
             let filteredUsers = usersRes.filter(
               (user) => !membersIds.includes(user.id)
@@ -62,7 +62,7 @@ export default function ProjectMembersTable(props) {
           });
         }
         )
-      }
+      
     });
   };
 
