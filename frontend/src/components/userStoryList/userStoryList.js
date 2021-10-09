@@ -53,20 +53,20 @@ const USList = ({
     console.log(estado);
     console.log(usId);
     await api.editUS({ projectId, estado, usId });
-    api.getUserStories(projectId).then((uss) => setUserStories(uss));
+    api.getUserStories(projectId).then(({ data }) => setUserStories(data));
   };
 
   const editarUS = async (usName, description, usId) => {
     console.log(usName);
     console.log(usId);
     await api.editUS({ projectId, usName, description, usId });
-    api.getUserStories(projectId).then((uss) => setUserStories(uss));
+    api.getUserStories(projectId).then(({ data }) => setUserStories(data));
   };
 
   const eliminarUS = async (id) => {
     console.log(id);
     await api.eliminarUS(projectId, id);
-    api.getUserStories(projectId).then((uss) => setUserStories(uss));
+    api.getUserStories(projectId).then(({ data }) => setUserStories(data));
   };
 
   const { onOpen } = useDisclosure();
@@ -110,7 +110,7 @@ const USList = ({
         }
       })
       .catch((err) => console.log(err));
-    api.getUserStories(projectId).then((uss) => setUserStories(uss));
+    api.getUserStories(projectId).then(({ data }) => setUserStories(data));
     setIsOpenModal(false);
   }
 
