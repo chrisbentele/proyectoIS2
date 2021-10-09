@@ -8,7 +8,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { Button } from "@chakra-ui/react";
 
 const LoginButton = (props) => {
-  const { loginWithRedirect } = useAuth0();
+  const { loginWithRedirect, isLoading } = useAuth0();
 
   return (
     <Button
@@ -21,6 +21,7 @@ const LoginButton = (props) => {
         background: "buttonScale.900",
         color: "#f7fff7",
       }}
+      isLoading={isLoading}
     >
       {props.title}
     </Button>

@@ -19,6 +19,7 @@ import {
   AlertDialogHeader,
   AlertDialogContent,
   AlertDialogOverlay,
+  Tooltip
 } from '@chakra-ui/react';
 
 import { DeleteIcon } from "@chakra-ui/icons";
@@ -31,23 +32,57 @@ export default function ProjectMembersTable(props) {
   const setMembers = props.setMembers;
   const ROLES = props.ROLES;
 
+  const SCRUM_MASTER = 0;
+  // const DEV_TEAM = 1;
+  // const PROD_OWN = 2;
+
   const [isOpen, setIsOpen] = useState()
   const onClose = () => setIsOpen(false)
-  const onDelete = (memberId) => {
-    setIsOpen(false);
-    removeMember(memberId);
-  }
   const cancelRef = React.useRef()
 
-  /**
+
+  const data = React.useMemo(() => {
+
+    const onDelete = (memberId) => {
+      setIsOpen(false);
+      removeMember(memberId);
+    }
+
+    /**
+   * Cambiar el role de un miembro del proyecto, si se cambia a un role
+   * distinto al de Scrum Master, se procede normalmente, sino se verifica
+   * quién es el Scrum Master actual y se lo parte del Dev team y luego se
+   * asigna al Scrum Master nuevo (Se asume que el rol 1 está reservado para
+   * el Scrum Master).
+   * @param roleId      El rol a asignar  
+   * @param memberId    Miembro al cual se le asignará 
+   */
+    const changeRole = (roleId, memberId) => {
+      if (roleId !== ROLES[SCRUM_MASTER].id) {
+        api
+          .setUserRole(roleId, projectId, memberId);
+        api.getMembers(projectId).then(membersRes => setMembers(membersRes));
+        console.log(members)
+      }
+      else {
+        console.log(members)
+        //if (members.filter(x => x.rol.rol === ROLES[SCRUM_MASTER].rol).length > 0) {
+        //   api.setUserRole(2, projectId, members.filter(x => x.rol.rol === 1)[0].id);
+        //   api.setUserRole(roleId, projectId, memberId);
+        //   api.getMembers(projectId).then(membersRes => setMembers(membersRes));
+        // }
+      }
+    }
+
+    /**
    * funcion que se encarga de eliminar un usuario del proyecto mediante la
    * tabla
    */
-  const removeMember = (memberId) => {
-    api.removeMemberFromProject(projectId, memberId).then((res) => {
-      if (!res) {
-        api.getUsers().then((usersRes) => {
-          api.getMembers(projectId).then((membersRes) => {
+    const removeMember = (memberId) => {
+      api.removeMemberFromProject(projectId, memberId).then((res) => {
+
+        api.getUsers().then(({ data: usersRes }) => {
+          api.getMembers(projectId).then(({ data: membersRes }) => {
             let membersIds = membersRes.map((member) => member.id);
             let filteredUsers = usersRes.filter(
               (user) => !membersIds.includes(user.id)
@@ -57,35 +92,10 @@ export default function ProjectMembersTable(props) {
           });
         }
         )
-      }
-    });
-  };
 
-  /**
-   * Cambiar el role de un miembro del proyecto, si se cambia a un role
-   * distinto al de Scrum Master, se procede normalmente, sino se verifica
-   * quién es el Scrum Master actual y se lo parte del Dev team y luego se
-   * asigna al Scrum Master nuevo (Se asume que el rol 1 está reservado para
-   * el Scrum Master).
-   * @param roleId      El rol a asignar  
-   * @param memberId    Miembro al cual se le asignará 
-   */
-  const changeRole = (roleId, memberId) => {
-    if (roleId !== 1) {
-      api
-        .setUserRole(roleId, projectId, memberId);
-      api.getMembers(projectId).then(membersRes => setMembers(membersRes));
-    }
-    else {
-      if (members.filter(x => x.rol.rol === 1).length > 0) {
-        api.setUserRole(2, projectId, members.filter(x => x.rol.rol === 1)[0].id);
-        api.setUserRole(roleId, projectId, memberId);
-        api.getMembers(projectId).then(membersRes => setMembers(membersRes));
-      }
-    }
-  }
+      });
+    };
 
-  const data = React.useMemo(() => {
     return (
       members.map(member => {
         if (member) {
@@ -94,8 +104,8 @@ export default function ProjectMembersTable(props) {
             role:
               <Select
                 pb="4"
-                onChange={(e) => changeRole(parseInt(e.target.value) + 1, member.id)}
-                isDisabled={member.rol?.rol === 1}
+                onChange={(e) => changeRole(ROLES[e.target.value].id, member.id)}
+                isDisabled={member.rol?.rol === ROLES[SCRUM_MASTER].id}
               >
                 <option hidden>{
                   ROLES.filter(x => x.id === member.rol?.rol).length > 0 ?
@@ -109,11 +119,13 @@ export default function ProjectMembersTable(props) {
                   </option>
                 ))}
               </Select>,
-            remove: member.rol?.rol !== 1 ?
+            remove: member.rol?.rol !== ROLES[SCRUM_MASTER].id ?
               <>
-                <Button onClick={() => setIsOpen(true)} >
-                  <DeleteIcon />
-                </Button>
+                <Tooltip label="Eliminar este miembro del proyecto.">
+                  <Button onClick={() => setIsOpen(true)} >
+                    <DeleteIcon />
+                  </Button>
+                </Tooltip>
                 <AlertDialog
                   isOpen={isOpen}
                   leastDestructiveRef={cancelRef}
@@ -151,7 +163,7 @@ export default function ProjectMembersTable(props) {
           }
         }
       }))
-  }, [members, ROLES, projectId, changeRole])
+  }, [members, ROLES, isOpen, projectId, setMembers, setUsers])
 
 
   const columns = React.useMemo(

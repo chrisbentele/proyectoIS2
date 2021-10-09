@@ -4,7 +4,6 @@ import { api } from "../../api";
 import { Spinner } from "@chakra-ui/spinner";
 import {
   Box,
-  Heading,
   Flex,
   HStack,
   Text,
@@ -14,12 +13,9 @@ import {
 import { Link } from "react-router-dom";
 import { Button } from "@chakra-ui/button";
 
-import { FormControl, FormLabel } from "@chakra-ui/form-control";
-import { Input } from "@chakra-ui/input";
 import USList from "../../components/userStoryList/userStoryList";
 import { mapStateColor } from "../../styles/theme";
-import { SettingsIcon } from "@chakra-ui/icons";
-import { MdBuild, MdCall } from "react-icons/md";
+import { MdBuild } from "react-icons/md";
 import { useHistory } from "react-router-dom";
 
 /**
@@ -45,9 +41,9 @@ export default function Index({ props }) {
       .getUserStories(projectId)
       .then(({ data }) => setUserStories(data))
       .catch((err) => console.log(err));
-  }, []);
+  }, [projectId]);
 
-  console.log(project);
+  console.log("Las us son:");
   console.log(userStories);
 
   return (
@@ -100,9 +96,7 @@ export default function Index({ props }) {
                 colorScheme="yellow"
                 variant="solid"
                 // opacity="30%"
-                onClick={() =>
-                  history.push(`/projects/${projectId}/projectConfig`)
-                }
+                onClick={() => history.push(`/projects/${projectId}/config`)}
               >
                 Configurar Proyecto
               </Button>
@@ -114,25 +108,69 @@ export default function Index({ props }) {
                 projectId={projectId}
                 setUserStories={setUserStories}
                 nombreLista="Pendiente"
-                userStories={userStories.filter((us) => us.estado === 0)}
+                userStories={
+                  //Es un array?
+                  Array.isArray(userStories)
+                    ? //Si es un array, qué elementos pertenecen a esta lista?
+                      userStories?.filter((us) => us.estado === 0)
+                    : //Si es un solo elemento, pertenece a esta lista?
+                    userStories?.estado === 0
+                    ? //Si pertenece retorno
+                      userStories
+                    : //Si no pertenece, null
+                      null
+                }
               ></USList>
               <USList
                 projectId={projectId}
                 setUserStories={setUserStories}
                 nombreLista="En curso"
-                userStories={userStories.filter((us) => us.estado === 1)}
+                userStories={
+                  //Es un array?
+                  Array.isArray(userStories)
+                    ? //Si es un array, qué elementos pertenecen a esta lista?
+                      userStories?.filter((us) => us.estado === 1)
+                    : //Si es un solo elemento, pertenece a esta lista?
+                    userStories?.estado === 1
+                    ? //Si pertenece retorno
+                      userStories
+                    : //Si no pertenece, null
+                      null
+                }
               ></USList>
               <USList
                 projectId={projectId}
                 setUserStories={setUserStories}
                 nombreLista="Hecho"
-                userStories={userStories.filter((us) => us.estado === 2)}
+                userStories={
+                  //Es un array?
+                  Array.isArray(userStories)
+                    ? //Si es un array, qué elementos pertenecen a esta lista?
+                      userStories?.filter((us) => us.estado === 2)
+                    : //Si es un solo elemento, pertenece a esta lista?
+                    userStories?.estado === 2
+                    ? //Si pertenece retorno
+                      userStories
+                    : //Si no pertenece, null
+                      null
+                }
               ></USList>
               <USList
                 projectId={projectId}
                 setUserStories={setUserStories}
                 nombreLista="Backlog"
-                userStories={userStories.filter((us) => us.estado === 4)}
+                userStories={
+                  //Es un array?
+                  Array.isArray(userStories)
+                    ? //Si es un array, qué elementos pertenecen a esta lista?
+                      userStories?.filter((us) => us.estado === 4)
+                    : //Si es un solo elemento, pertenece a esta lista?
+                    userStories?.estado === 4
+                    ? //Si pertenece retorno
+                      userStories
+                    : //Si no pertenece, null
+                      null
+                }
               >
                 <Flex justify="center">
                   <LinkBox

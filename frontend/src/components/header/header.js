@@ -46,7 +46,7 @@ const Header = () => {
           {location.pathname !== "/" ? (
             <Box>
               <Heading>
-                <Link to="/">Trellon't</Link>
+                <Link to="/profile">Trellon't</Link>
               </Heading>
             </Box>
           ) : null}
