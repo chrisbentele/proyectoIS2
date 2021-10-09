@@ -35,7 +35,7 @@ const Profile = ({ dispatchError }) => {
           dispatchError(null, "Error cargando proyectos del usuario")
         );
     }
-  }, [user, isLoading]);
+  }, [user, isLoading, dispatchError]);
   if (isLoading) {
     return <div>Loading ...</div>;
   }

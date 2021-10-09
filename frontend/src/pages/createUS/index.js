@@ -39,7 +39,7 @@ export default function CreateUserStory({ props, dispatchError }) {
         dispatchError(null, "error cargando usuarios del sistema")
       )
       .catch((err) => console.log(err));
-  }, []);
+  }, [dispatchError]);
 
   const {
     handleSubmit,

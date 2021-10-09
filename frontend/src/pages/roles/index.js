@@ -49,7 +49,7 @@ export default function Roles({ props, dispatchError }) {
       .getRoles(projectId)
       .then((res) => setListaRoles(res.data))
       .catch(() => dispatchError(null, "No se han podido cargar los roles"));
-  }, [projectId]);
+  }, [projectId, dispatchError]);
   console.log(listaRoles);
 
   return (
