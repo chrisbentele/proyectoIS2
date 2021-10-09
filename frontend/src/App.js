@@ -16,7 +16,7 @@ import Header from "./components/header/header";
 //! Componente de la página de perfil de usuario (actualmente sirve como página principal del proyecto).
 import Profile from "./pages/profile";
 //! Componente de la página de proyecto un proyecto.
-import Project from "./pages/project";
+import Sprints from "./pages/sprints";
 //! Componente de la página de configuración de miembros.
 import ProjectMembers from "./pages/projectMembers";
 //! Componente de la página de configuración de proyectos
@@ -39,7 +39,7 @@ import createProject from "./pages/createProject/index";
 import PrivateRoute from "./components/privateRoute";
 import CreateUserStory from "./pages/createUS";
 
-import Sprints from "./pages/sprint/index";
+import Projects from "./pages/projects/index";
 /**
  * Función principal de la aplicación, funciona como router a las distintas páginas
  * @param ninguno
@@ -61,10 +61,10 @@ export default function App() {
           <PrivateRoute path="/createProject" component={createProject} exact />
           <PrivateRoute
             path="/projects/:id/sprints/:sp_id"
-            component={Project}
+            component={Sprints}
             exact
           />
-          <PrivateRoute path="/projects/:id" component={Sprints} exact />
+          <PrivateRoute path="/projects/:id" component={Projects} exact />
           <PrivateRoute
             path="/projects/:id/members"
             component={ProjectMembers}
