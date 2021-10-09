@@ -39,6 +39,7 @@ import createProject from "./pages/createProject/index";
 import PrivateRoute from "./components/privateRoute";
 import CreateUserStory from "./pages/createUS";
 
+import Sprints from "./pages/sprint/index";
 /**
  * Función principal de la aplicación, funciona como router a las distintas páginas
  * @param ninguno
@@ -58,7 +59,12 @@ export default function App() {
           <PrivateRoute path="/roles" component={Roles} exact />
           <PrivateRoute path="/roles/:id" component={EditRole} exact />
           <PrivateRoute path="/createProject" component={createProject} exact />
-          <PrivateRoute path="/projects/:id" component={Project} exact />
+          <PrivateRoute
+            path="/projects/:id/sprints/:sp_id"
+            component={Project}
+            exact
+          />
+          <PrivateRoute path="/projects/:id" component={Sprints} exact />
           <PrivateRoute
             path="/projects/:id/members"
             component={ProjectMembers}

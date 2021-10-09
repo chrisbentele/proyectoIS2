@@ -30,7 +30,6 @@ import {
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { api } from "../../api";
-import Select from "react-select";
 
 const USList = ({
   projectId,
@@ -147,35 +146,14 @@ const USList = ({
                   {us.nombre}
                 </Text>
                 <Text fontSize="15px">{us.contenido}</Text>
-                <Select
-                  placeholder="cambiar estado"
-                  size="sm"
-                  onChange={(e) => {
-                    moverUS(e.value, us.id);
-                  }}
-                  options={[
-                    {
-                      value: "0",
-                      label: "Pendiente",
-                      isDisabled: us.estado === 0,
-                    },
-                    {
-                      value: "1",
-                      label: "En curso",
-                      isDisabled: us.estado === 1,
-                    },
-                    {
-                      value: "2",
-                      label: "Hecho",
-                      isDisabled: us.estado === 2,
-                    },
-                    {
-                      value: "4",
-                      label: "Backlog",
-                      isDisabled: us.estado === 4,
-                    },
-                  ]}
-                />
+                <Box mt="2">
+                  <Text>{`Estimación SM: ${
+                    us.estimacionSM || "Sin estimar"
+                  }`}</Text>
+                  <Text>{`Estimación Dev: ${
+                    us.estimacionesDev || "Sin estimar"
+                  }`}</Text>
+                </Box>
                 <Flex>
                   <Button
                     onClick={() => {

@@ -20,7 +20,7 @@ import {
 } from "@chakra-ui/layout";
 import { Link } from "react-router-dom";
 import Select from "react-select";
-import USList from "../../components/userStoryList/userStoryList";
+import USList from "../../components/userStoryListUnset/userStoryListUnset";
 
 /**
  * Función que contiene el código de la vista
@@ -46,6 +46,10 @@ export default function Index({ props }) {
       .catch((err) => console.log(err));
     api.sprints.getSprints(projectId).then((e) => console.log(e.data));
   }, []);
+
+  const onCrearSprint = () => {
+    console.log("a");
+  };
 
   return (
     <Box
@@ -92,11 +96,11 @@ export default function Index({ props }) {
                   projectId={projectId}
                   setUserStories={setUserStories}
                   nombreLista="Backlog"
-                  userStories={userStories.filter((us) => us.estado === 4)}
+                  userStories={userStories?.filter((us) => us.estado === 4)}
                 >
                   <Flex justify="center">
                     <LinkBox
-                      to={`${projectId}/createUS`}
+                      to={`projects/${projectId}/createUS`}
                       pt="2px"
                       pl="2"
                       pr="2"
@@ -109,7 +113,10 @@ export default function Index({ props }) {
                         color: "teal.500",
                       }}
                     >
-                      <LinkOverlay href={`${projectId}/createUS`} fontSize="lg">
+                      <LinkOverlay
+                        href={`/projects/${projectId}/createUS`}
+                        fontSize="lg"
+                      >
                         + agregar nueva tarjeta
                       </LinkOverlay>
                     </LinkBox>
@@ -117,12 +124,30 @@ export default function Index({ props }) {
                 </USList>
               </HStack>
               {/* sprints */}
-              <Box w="400px">
+              <Box>
                 <VStack>
-                  <LinkBox
+                  <Box
                     display="flex"
-                    w="xs"
-                    height="200px"
+                    w="lg"
+                    height="180px"
+                    borderWidth="1px"
+                    borderRadius="lg"
+                    overflow="hidden"
+                    fontSize="3xl"
+                    fontWeight="bold"
+                    bg="white"
+                    justifyContent="center"
+                    alignItems="center"
+                    onClick={onCrearSprint}
+                    cursor="pointer"
+                  >
+                    <Text>Crear sprint</Text>
+                  </Box>
+
+                  <VStack
+                    display="flex"
+                    w="lg"
+                    height="180px"
                     borderWidth="1px"
                     borderRadius="lg"
                     overflow="hidden"
@@ -132,8 +157,16 @@ export default function Index({ props }) {
                     justifyContent="center"
                     alignItems="center"
                   >
-                    <LinkOverlay href="/sprints/">Crear sprint</LinkOverlay>
-                  </LinkBox>
+                    <Box>
+                      <Text>Sprint x</Text>
+                    </Box>
+                    <Box fontSize="18px">
+                      <Text>Nro de US: 3</Text>
+                    </Box>
+                    <Box fontSize="18px">
+                      <Text>Duracion estimada: 2</Text>
+                    </Box>
+                  </VStack>
                 </VStack>
               </Box>
             </HStack>
