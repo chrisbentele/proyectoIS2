@@ -48,7 +48,7 @@ export default function CreateProject({ dispatchError }) {
       .catch((err) =>
         dispatchError(null, "error cargando usuarios del sistema")
       );
-  }, []);
+  }, [dispatchError]);
   const {
     handleSubmit,
     register,
