@@ -16,13 +16,24 @@ export const getUserStories = async (idProyecto) =>
   await axiosInstance.get(`/proyectos/${idProyecto}/user_stories`);
 
 export const editUS = async (usData) => {
-  const { projectId, usName, description, estado, usId } = usData;
+  const {
+    projectId,
+    usName,
+    description,
+    estado,
+    usId,
+    estimacionSM,
+    estimacionesDev,
+  } = usData;
+  console.log(usData);
   return await axiosInstance.put(
     `/proyectos/${projectId}/user_stories/${usId}`,
     {
       nombre: usName,
       contenido: description,
       estado,
+      estimacionSM,
+      estimacionesDev,
     }
   );
 };

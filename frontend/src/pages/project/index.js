@@ -12,7 +12,6 @@ import {
   LinkOverlay,
 } from "@chakra-ui/layout";
 import { Link } from "react-router-dom";
-import Select from "react-select";
 import { Button } from "@chakra-ui/button";
 
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
@@ -39,12 +38,12 @@ export default function Index({ props }) {
   useEffect(() => {
     api
       .getProjectById(projectId)
-      .then(({data}) => setProject(data))
+      .then(({ data }) => setProject(data))
       .catch((err) => console.log(err));
 
     api
       .getUserStories(projectId)
-      .then(({data}) => setUserStories(data))
+      .then(({ data }) => setUserStories(data))
       .catch((err) => console.log(err));
   }, []);
 
@@ -76,15 +75,15 @@ export default function Index({ props }) {
             mb="3rem"
           >
             <HStack spacing="24px" fontSize="2xl" p="2">
-              <Box>
+              <Link to={`/projects/${projectId}`}>
                 {/* <Link to="/projects">Projects</Link> */}
                 <Text fontWeight="medium">{project.nombre}</Text>
-              </Box>
+              </Link>
               <Button
                 colorScheme="yellow"
                 variant="solid"
                 // opacity="30%"
-                onClick={() => history.push(`${projectId}/members`)}
+                onClick={() => history.push(`/projects/${projectId}/members`)}
               >
                 Miembros
               </Button>
@@ -92,7 +91,7 @@ export default function Index({ props }) {
                 colorScheme="yellow"
                 variant="solid"
                 // opacity="30%"
-                onClick={() => history.push(`${projectId}/roles`)}
+                onClick={() => history.push(`/projects/${projectId}/roles`)}
               >
                 Configurar Roles
               </Button>
@@ -101,7 +100,9 @@ export default function Index({ props }) {
                 colorScheme="yellow"
                 variant="solid"
                 // opacity="30%"
-                onClick={() => history.push(`${projectId}/projectConfig`)}
+                onClick={() =>
+                  history.push(`/projects/${projectId}/projectConfig`)
+                }
               >
                 Configurar Proyecto
               </Button>
@@ -135,7 +136,7 @@ export default function Index({ props }) {
               >
                 <Flex justify="center">
                   <LinkBox
-                    to={`${projectId}/createUS`}
+                    to={`/projects/${projectId}/createUS`}
                     pt="2px"
                     pl="2"
                     pr="2"
@@ -148,7 +149,10 @@ export default function Index({ props }) {
                       color: "teal.500",
                     }}
                   >
-                    <LinkOverlay href={`${projectId}/createUS`} fontSize="lg">
+                    <LinkOverlay
+                      href={`/projects/${projectId}/createUS`}
+                      fontSize="lg"
+                    >
                       + agregar nueva tarjeta
                     </LinkOverlay>
                   </LinkBox>
