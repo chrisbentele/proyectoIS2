@@ -112,7 +112,7 @@ export default function CreateProject({ dispatchError }) {
             })}
           />
           <FormControl isInvalid={errors["estimado"]}>
-            <FormLabel fontSize="25px">Duracion estimada(semanas)</FormLabel>
+            <FormLabel fontSize="25px">Duración estimada(semanas)</FormLabel>
             <Controller
               name="estimation"
               control={control}

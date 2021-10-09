@@ -6,6 +6,9 @@ import { Box, Button, Grid, Input, Text } from "@chakra-ui/react";
 import AddMemberTable from "../../components/table/addMemberTable";
 import ProjectMembersTable from "../../components/table/projectMembersTable";
 
+import { useHistory } from 'react-router-dom';
+
+
 export default function ProjectMembers({ props, dispatchError }) {
   const [members, setMembers] = useState([]);
   const [ROLES, setROLES] = useState([]);
@@ -19,6 +22,8 @@ export default function ProjectMembers({ props, dispatchError }) {
 
   const projectId = props.computedMatch.params.id;
   const url = props.computedMatch.url;
+
+  const history = useHistory();
 
   useEffect(() => {
     //Al cargar la pagina se buscan los usuarios
@@ -75,8 +80,11 @@ export default function ProjectMembers({ props, dispatchError }) {
         marginTop: "70px",
       }}
     >
-      <Button style={{ marginLeft: "5px", alignSelf: "flex-start" }}>
-        <Link to={url.replace("/members", "")}>Volver al Proyecto</Link>
+      <Button
+        onClick={() => history.push(`/projects/${projectId}`)}
+        style={{ marginLeft: "5px", alignSelf: "flex-start" }}
+      >
+        Volver al proyecto
       </Button>
       <Text>Miembros del proyecto</Text>
       <ProjectMembersTable

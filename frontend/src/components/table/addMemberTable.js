@@ -30,6 +30,11 @@ export default function AddMemberTable(props) {
   let members = props.members;
   const projectId = props.projectId;
   const setMembers = props.setMembers;
+  const ROLES = props.ROLES;
+
+  const SCRUM_MASTER = 0;
+  const DEV_TEAM = 1;
+  const PROD_OWN = 2;
 
   const [isOpen, setIsOpen] = useState()
   const onClose = () => setIsOpen(false)
@@ -45,10 +50,8 @@ export default function AddMemberTable(props) {
    */
   const addMemberById = (userId) => {
     api.addMemberToProject(projectId, userId).then((res) => {
-      if (res) {
-        api.setUserRole(2, projectId, userId);
-        api.getUsers().then((usersRes) => {
-          api.getMembers(projectId).then((membersRes) => {
+        api.getUsers().then(({ data: usersRes }) => {
+          api.getMembers(projectId).then(({ data: membersRes }) => {
             let membersIds = membersRes.map((member) => member.id);
             let filteredUsers = usersRes.filter(
               (user) => !membersIds.includes(user.id)
@@ -58,7 +61,6 @@ export default function AddMemberTable(props) {
           });
         }
         )
-      }
     }
     )
   };//solicita la confirmacion al usuario
@@ -73,37 +75,38 @@ export default function AddMemberTable(props) {
         .map((user) => {
           return {
             nombre: user.nombre,
-            add: <>
-              <Button onClick={() => setIsOpen(true)} >
-                <AddIcon />
-              </Button>
-              <AlertDialog
-                isOpen={isOpen}
-                leastDestructiveRef={cancelRef}
-                onClose={onClose}
-              >
-                <AlertDialogOverlay>
-                  <AlertDialogContent>
-                    <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                      Agregar miembro
-                    </AlertDialogHeader>
+            add:
+              <>
+                <Button onClick={() => setIsOpen(true)} >
+                  <AddIcon />
+                </Button>
+                <AlertDialog
+                  isOpen={isOpen}
+                  leastDestructiveRef={cancelRef}
+                  onClose={onClose}
+                >
+                  <AlertDialogOverlay>
+                    <AlertDialogContent>
+                      <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                        Agregar miembro
+                      </AlertDialogHeader>
 
-                    <AlertDialogBody>
-                      ¿Está seguro que desea agregar a este miembro?
-                    </AlertDialogBody>
+                      <AlertDialogBody>
+                        ¿Está seguro que desea agregar a este miembro?
+                      </AlertDialogBody>
 
-                    <AlertDialogFooter>
-                      <Button ref={cancelRef} onClick={onClose}>
-                        Cancelar
-                      </Button>
-                      <Button colorScheme="green" onClick={() => onAdd(user.id)} ml={3}>
-                        Agregar
-                      </Button>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialogOverlay>
-              </AlertDialog>
-            </>,
+                      <AlertDialogFooter>
+                        <Button ref={cancelRef} onClick={onClose}>
+                          Cancelar
+                        </Button>
+                        <Button colorScheme="green" onClick={() => onAdd(user.id)} ml={3}>
+                          Agregar
+                        </Button>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialogOverlay>
+                </AlertDialog>
+              </>,
           };
         })
     )
