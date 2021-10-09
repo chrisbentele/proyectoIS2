@@ -106,7 +106,7 @@ class Rol(Model):
 
 
 class RolAsignado(Model):
-    id = CharField(primary_key=True, max_length=100, editable=False)
+    id = CharField(primary_key=True, default=uuid.uuid4, max_length=100, editable=False)
     rol = ForeignKey(Rol, on_delete=CASCADE)
     usuario = ForeignKey(Usuario, on_delete=CASCADE)
     proyecto = ForeignKey(Proyecto, on_delete=CASCADE)
