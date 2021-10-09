@@ -13,7 +13,6 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
   Spacer,
-  useToast,
   Spinner,
   Select,
   AlertDialog,
@@ -30,11 +29,9 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 import { api } from "../../api";
-import { useAuth0 } from "@auth0/auth0-react";
 import { projectStateToString } from "../../util";
 
 export default function ProjectConfig({ props, dispatchError }) {
-  const [users, setUsers] = useState([]); //Los usuarios del sistema
   const [project, setProject] = useState();
 
   const projectId = props.computedMatch.params.id;
@@ -44,7 +41,6 @@ export default function ProjectConfig({ props, dispatchError }) {
     register,
     formState: { errors, isSubmitting },
     control,
-    setValue,
   } = useForm();
 
   const history = useHistory(); /*para poder redirigir al usuario luego de la
@@ -57,19 +53,11 @@ export default function ProjectConfig({ props, dispatchError }) {
   //Al cargarse la pagina se buscan todos los usuarios
   useEffect(() => {
     api
-      .getUsers()
-      .then((fetchedUsers) => {
-        if (!Array.isArray(fetchedUsers)) return;
-        setUsers(fetchedUsers);
-      })
-      .catch((err) => console.log(err));
-
-    api
       .getProjectById(projectId)
       .then(({ data: res }) => setProject(res))
       .catch((err) => console.log(err));
 
-  }, []);
+  }, [projectId]);
 
   async function onSubmit(values) {
     //funcion que define el comportamiento al confirmar el form
@@ -161,12 +149,12 @@ export default function ProjectConfig({ props, dispatchError }) {
             <Flex>
               <Button
                 mt={4}
-                bg={"buttonScale.900", "green.200"}
+                bg={"green.200"}
                 isLoading={isSubmitting}
                 type="submit"
                 fontSize="lg"
                 _hover={{ background: "green.400" }}
-                _active={{ background: "green.400", }}
+                _active={{ background: "green.400" }}
               >
                 Guardar
               </Button>

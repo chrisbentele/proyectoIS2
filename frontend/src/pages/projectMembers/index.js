@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 //! API del frontend.
 import { api } from "../../api";
 import { Box, Button, Grid, Input, Text } from "@chakra-ui/react";
@@ -21,7 +20,6 @@ export default function ProjectMembers({ props, dispatchError }) {
   });
 
   const projectId = props.computedMatch.params.id;
-  const url = props.computedMatch.url;
 
   const history = useHistory();
 
@@ -37,7 +35,7 @@ export default function ProjectMembers({ props, dispatchError }) {
             let filteredUsers = usersRes.data.filter(
               (user) => !membersIds.includes(user.id)
             );
-            setState({ ...state, loading: false });
+            setState(state => ({...state, loading: false }));
             setUsers([...filteredUsers]);
             setMembers(membersRes.data);
           })
@@ -52,7 +50,7 @@ export default function ProjectMembers({ props, dispatchError }) {
       .getRoles(projectId)
       .then((res) => setROLES(res.data))
       .catch(() => dispatchError(null, "No se han podido cargar los roles"));
-  }, []);
+  }, [projectId, dispatchError]);
 
   const handleSearchChange = async (e) => {
     //TODO: add timeout
