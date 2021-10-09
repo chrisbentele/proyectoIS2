@@ -21,7 +21,6 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
   Spacer,
-  useToast,
 } from "@chakra-ui/react";
 import { Controller, useForm } from "react-hook-form";
 //! Librerías de React.js.
@@ -38,7 +37,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 export default function CreateProject({ dispatchError }) {
   const [users, setUsers] = useState([]); //Los usuarios del sistema
   const { user } = useAuth0();
-  const toast = useToast();
   //Al cargarse la pagina se buscan todos los usuarios
   useEffect(() => {
     api
@@ -112,7 +110,7 @@ export default function CreateProject({ dispatchError }) {
             })}
           />
           <FormControl isInvalid={errors["estimado"]}>
-            <FormLabel fontSize="25px">Duracion estimada(semanas)</FormLabel>
+            <FormLabel fontSize="25px">Duración estimada(semanas)</FormLabel>
             <Controller
               name="estimation"
               control={control}

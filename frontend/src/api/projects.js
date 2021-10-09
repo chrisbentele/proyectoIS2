@@ -49,7 +49,17 @@ export const getProjects = async (userId) => {
   return await axiosInstance.get("proyectos");
 };
 //! Editar proyeto
-export const editProject = async (projectId, projectConfig) => {};
+
+export const editProject = async (projectData) => {
+  const { projectId, projectName, estimation, status } = projectData;
+  const res = await axiosInstance.put(`proyectos/${projectId}`, {
+    duracionEstimada: estimation,
+    nombre: projectName,
+    estado: status
+  });
+  return res;
+};
+
 
 /** Listar proyecto por id
  * La funcion recibe como parametro el id del proyecto y luego retorna la informacion del mismo

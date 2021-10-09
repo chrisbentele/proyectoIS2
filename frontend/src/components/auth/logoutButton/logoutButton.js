@@ -17,7 +17,7 @@ import {
 import "./logoutButton.css";
 
 const LogoutButton = () => {
-  const { logout } = useAuth0();
+  const { logout, isLoading } = useAuth0();
 
   const [isOpen, setIsOpen] = useState()
   const onClose = () => setIsOpen(false)
@@ -35,6 +35,7 @@ const LogoutButton = () => {
         background: "buttonScale.900",
         color: "#f7fff7",
       }}
+      isLoading={isLoading}
     >
       Cerrar sesión
     </Button>
@@ -57,7 +58,11 @@ const LogoutButton = () => {
           <Button ref={cancelRef} onClick={onClose}>
             Cancelar
           </Button>
-          <Button colorScheme="green" onClick={() => logout({ returnTo: "http://localhost:3000" })} ml={3}>
+          <Button colorScheme="green" onClick={() => {
+              setIsOpen(false);
+              logout({ returnTo: "http://localhost:3000" });
+              }
+            } ml={3}>
             Salir
           </Button>
         </AlertDialogFooter>

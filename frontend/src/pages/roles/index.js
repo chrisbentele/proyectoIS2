@@ -18,7 +18,7 @@ import {
 import { PERMISOS } from "./permisos";
 import { useForm } from "react-hook-form";
 import { api } from "../../api/";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 export default function Roles({ props, dispatchError }) {
   const [add, setAdd] = useState();
@@ -27,7 +27,6 @@ export default function Roles({ props, dispatchError }) {
     register,
     handleSubmit,
     watch,
-    formState: { errors },
     setValue,
   } = useForm();
   const onSubmit = async (data) => {
@@ -43,14 +42,14 @@ export default function Roles({ props, dispatchError }) {
   const nombre_rol = watch("nombre_rol", []);
   const [listaRoles, setListaRoles] = useState([]);
 
-  const url = props.computedMatch.url;
+  const history = useHistory();
 
   useEffect(() => {
     api
       .getRoles(projectId)
       .then((res) => setListaRoles(res.data))
       .catch(() => dispatchError(null, "No se han podido cargar los roles"));
-  }, []);
+  }, [projectId]);
   console.log(listaRoles);
 
   return (
@@ -62,8 +61,11 @@ export default function Roles({ props, dispatchError }) {
         marginTop: "70px",
       }}
     >
-      <Button style={{ marginLeft: "5px", alignSelf: "flex-start" }}>
-        <Link to={url.replace("/roles", "")}>Volver al Proyecto</Link>
+      <Button
+        onClick={() => history.push(`/projects/${projectId}`)}
+        style={{ marginLeft: "5px", alignSelf: "flex-start" }}
+      >
+        Volver al proyecto
       </Button>
       <Flex p="16" justifyContent="center">
         <Box w="90ch">
@@ -139,5 +141,3 @@ export default function Roles({ props, dispatchError }) {
     </div>
   );
 }
-
-//export default Roles;
