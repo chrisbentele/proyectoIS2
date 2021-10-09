@@ -35,8 +35,6 @@ import { projectStateToString } from "../../util";
 
 export default function ProjectConfig({ props, dispatchError }) {
   const [users, setUsers] = useState([]); //Los usuarios del sistema
-  const { user } = useAuth0();
-  const toast = useToast();
   const [project, setProject] = useState();
 
   const projectId = props.computedMatch.params.id;
