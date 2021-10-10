@@ -71,7 +71,7 @@ def crear_sprint(self, proyecto=None):
 
     res = self.client.post(
         f"/api/proyectos/{proyecto['id']}/sprints",
-        json.dumps({"creadoPor": str(proyecto["miembros"][0])}),
+        json.dumps({"creadoPor": str(proyecto["miembros"][0]), "nombre": "Sprint 1"}),
         content_type="application/json",
     )
     return res.json()
@@ -324,14 +324,14 @@ class user_stories(TestCase):
         self.assertEqual(res.json()["nombre"], "testeado")
 
 
-class sprints(TestCase):
+class sprints_Tests(TestCase):
     def test_sprints_crear(self):
         u = crear_user()
         p = crear_proyecto(self, [u["id"]])
 
         res = self.client.post(
             f"/api/proyectos/{p['id']}/sprints",
-            json.dumps({"creadoPor": str(u["id"])}),
+            json.dumps({"creadoPor": str(u["id"]), "nombre": "Sprint 1"}),
             content_type="application/json",
         )
 
