@@ -736,7 +736,7 @@ def sprints_desactivar(request, proyect_id, sprint_id):
     return HttpResponseBadRequest("Falta sprint_id")
 
 
-def user_stories_asignar(request, proyect_id, us_id, user_id):
+def user_stories_asignar(request, proyect_id, us_id, user_id=None):
     """Metodos p/ asignar un miembro a una US del proyecto"""
 
     if request.method == "POST":

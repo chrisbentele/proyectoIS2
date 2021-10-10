@@ -51,11 +51,11 @@ export const editUS = async ({
 export const asignarUsAUsuario = ({ projectId, sprintId, usId, userId }) => {
   if (userId) {
     return axiosInstance.post(
-      `/proyectos/${projectId}/sprints/${sprintId}/user_stories/${usId}/asignar/${userId}`
+      `/proyectos/${projectId}/user_stories/${usId}/asignar/${userId}`
     );
   } else {
     return axiosInstance.delete(
-      `/proyectos/${projectId}/sprints/${sprintId}/user_stories/${usId}/asignar`
+      `/proyectos/${projectId}/user_stories/${usId}/asignar`
     );
   }
 };

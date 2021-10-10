@@ -24,7 +24,7 @@ import { useHistory } from "react-router-dom";
  * @param { props } param0
  * @returns React Component
  */
-export default function Index({ props }) {
+export default function Index({ props, dispatchError }) {
   const projectId = props.computedMatch.params.id; //id del proyecto, se extrae del URL
   const sprintId = props.computedMatch.params.sp_id; //id del sprint, se extrae del URL
   const [project, setProject] = useState(); //estado del proyecto
@@ -119,6 +119,8 @@ export default function Index({ props }) {
             <HStack p="5" alignItems="top" float="top">
               <USList
                 projectId={projectId}
+                sprintId={sprintId}
+                dispatchError={dispatchError}
                 setUserStories={setUserStories}
                 nombreLista="Pendiente"
                 userStories={
@@ -136,6 +138,8 @@ export default function Index({ props }) {
               ></USList>
               <USList
                 projectId={projectId}
+                sprintId={sprintId}
+                dispatchError={dispatchError}
                 setUserStories={setUserStories}
                 nombreLista="En curso"
                 userStories={
@@ -153,6 +157,8 @@ export default function Index({ props }) {
               ></USList>
               <USList
                 projectId={projectId}
+                sprintId={sprintId}
+                dispatchError={dispatchError}
                 setUserStories={setUserStories}
                 nombreLista="Hecho"
                 userStories={
@@ -170,6 +176,8 @@ export default function Index({ props }) {
               ></USList>
               <USList
                 projectId={projectId}
+                sprintId={sprintId}
+                dispatchError={dispatchError}
                 setUserStories={setUserStories}
                 nombreLista="Backlog"
                 userStories={userStories?.filter((us) => us.estado === 4)}

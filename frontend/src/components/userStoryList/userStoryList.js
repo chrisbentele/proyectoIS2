@@ -31,16 +31,19 @@ import {
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { api } from "../../api";
 import Select from "react-select";
-
+import AsignarDevUsModal from "../../components/AsignarDevUsModal/AsignarDevUsModal";
 const USList = ({
   projectId,
+  sprintId,
   setUserStories,
   userStories,
   nombreLista,
   children,
+  dispatchError,
   ...props
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [showAsignarModal, setShowAsignarModal] = useState(false);
   const onClose = () => setIsOpen(false);
   const onDelete = (id) => {
     console.log(id);
@@ -181,6 +184,32 @@ const USList = ({
                   >
                     <EditIcon color="black.500" />
                   </Button>
+
+                  <Button
+                    onClick={() => {
+                      setFocusedUS(us);
+                      setShowAsignarModal(true);
+                    }}
+                    mt="2"
+                  >
+                    Asignar
+                  </Button>
+                  {focusedUS && (
+                    <AsignarDevUsModal
+                      projectId={projectId}
+                      US={focusedUS}
+                      sprintId={sprintId}
+                      isOpen={showAsignarModal}
+                      dispatchError={dispatchError}
+                      onClose={() => {
+                        setShowAsignarModal(false);
+
+                        api
+                          .getUserStories(projectId)
+                          .then(({ data }) => setUserStories(data));
+                      }}
+                    />
+                  )}
 
                   <Modal
                     initialFocusRef={initialRef}
