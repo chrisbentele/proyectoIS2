@@ -15,10 +15,17 @@ export const createUserStory = async (usData) => {
 export const getUserStories = async (idProyecto) =>
   await axiosInstance.get(`/proyectos/${idProyecto}/user_stories`);
 
-export const getUserStoriesNoSprint = async (idProyecto) =>
-  axiosInstance
-    .get(`/proyectos/${idProyecto}/user_stories`)
-    .then((uss) => uss.filter((us) => us.sprint == null));
+export const getUserStoriesSprint = async (idProyecto, sprintId = null) => {
+  if (sprintId == null) {
+    return axiosInstance
+      .get(`/proyectos/${idProyecto}/user_stories`)
+      .then((uss) => uss.filter((us) => us.sprint == null));
+  } else {
+    return axiosInstance.get(
+      `/proyectos/${idProyecto}/user_stories/${sprintId}`
+    );
+  }
+};
 
 export const editUS = async ({
   projectId,
@@ -70,7 +77,9 @@ const userStories = {
   createUserStory,
   getUserStories,
   editUS,
+  getUserStoriesSprint,
   asignarUsAUsuario,
+  asignarUsASprint,
   desasignarUsASprint,
   eliminarUS,
 };
