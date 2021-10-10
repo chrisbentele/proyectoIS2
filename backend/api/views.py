@@ -275,11 +275,14 @@ def proyectos_miembros(request, proyect_id, user_id=None):
                 r = RolAsignado.objects.filter(proyecto=proyect_id, usuario=id)
                 rol_data = RolAsignadoSerializer(r, many=True).data
                 rol_data = rol_data[0] if len(rol_data) > 0 else None
+                if rol_data:
+                    rol = Rol.objects.get(id=rol_data["rol"])
+                    rol_seri = RolSerializer(rol)
 
-                rol = Rol.objects.get(id=rol_data["rol"])
-                rol_seri = RolSerializer(rol)
+                    u_data.update({"rol": rol_seri.data})
+                else:
+                    u_data.update({"rol": None})
 
-                u_data.update({"rol": rol_seri.data})
                 u_list.append(u_data)
             return JsonResponse(u_list, safe=False)
 
