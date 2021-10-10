@@ -33,7 +33,6 @@ const Editar = ({
     api
       .getUsers()
       .then(({ data }) => {
-        if (!Array.isArray(data)) return;
         setUsers(data);
       })
       .catch((err) =>

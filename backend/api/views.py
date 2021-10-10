@@ -771,3 +771,26 @@ def user_stories_asignar(request, proyect_id, us_id, user_id):
             return JsonResponse(True, status=204, safe=False)
         except:
             return JsonResponse(False, status=400, safe=False)
+
+
+def usuarios_admin(request, user_id):
+
+    if request.method == "POST":
+
+        rol = Usuario.objects.get(id=user_id)
+
+        serializer = UsuarioSerializer(rol, data={"proy_admin": True}, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=200)
+        return JsonResponse(serializer.errors, status=400, safe=False)
+    elif request.method == "DELETE":
+        rol = Usuario.objects.get(id=user_id)
+
+        serializer = UsuarioSerializer(rol, data={"proy_admin": False}, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=200)
+        return JsonResponse(serializer.errors, status=400, safe=False)
