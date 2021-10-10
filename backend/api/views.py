@@ -407,7 +407,7 @@ def proyectos_miembros_roles(request, proyect_id, user_id, rol_id=None):
 
             if proyect_id == rol_id:
                 # Si es scrum master el rol asignado cambia
-                scrum = RolAsignado.objects.get(id=rol_id)
+                scrum = RolAsignado.objects.get(rol=rol_id)
                 seri = RolAsignadoSerializer(
                     scrum,
                     data={
