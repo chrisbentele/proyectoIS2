@@ -60,7 +60,7 @@ export const asignarUsAUsuario = ({ projectId, sprintId, usId, userId }) => {
 //! Registra la estimacion de tiempo del usuario
 export const estimarUs = ({ projectId, userId, usId, estimacion }) =>
   axiosInstance.post(`/proyectos/${projectId}/user_stories/${usId}/estimar`, {
-    userId,
+    user_id: userId,
     estimacion,
   });
 
