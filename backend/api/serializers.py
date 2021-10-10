@@ -40,8 +40,11 @@ class SprintSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "activo",
+            "fechaCreacion",
             "fechaInicio",
             "fechaFinalizacion",
+            "estimacion",
+            "horasAsignadas",
             "creadoPor",
             "terminado",
             "retro",

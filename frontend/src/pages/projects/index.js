@@ -21,7 +21,9 @@ import {
 import { Link } from "react-router-dom";
 import Select from "react-select";
 import USList from "../../components/userStoryListUnset/userStoryListUnset";
-
+import CrearSprintModal from "../../components/CrearSprintModal/CrearSprintModal";
+import EditarSprintModal from "../../components/EditarSprintModal/EditarSprintModal";
+import { IconButton } from "@chakra-ui/button";
 /**
  * Función que contiene el código de la vista
  * @param { props } param0
@@ -32,6 +34,8 @@ export default function Index({ props }) {
   const [project, setProject] = useState(); //estado del proyecto
   const [userStories, setUserStories] = useState([]); //estado del proyecto
   const [sprints, setSprints] = useState([]); //estado del proyecto
+  const [isOpenCrearSp, setIsOpenCrearSp] = useState(false); //estado del proyecto
+  const [isOpenEditSp, setIsOpenEditSp] = useState(false); //estado del proyecto
 
   //Al cargarse la pagina se busca el proyecto con el id del URL y se lo asigna a projectId
   useEffect(() => {
@@ -138,35 +142,52 @@ export default function Index({ props }) {
                     bg="white"
                     justifyContent="center"
                     alignItems="center"
-                    onClick={onCrearSprint}
+                    onClick={() => setIsOpenCrearSp(true)}
                     cursor="pointer"
                   >
                     <Text>Crear sprint</Text>
                   </Box>
+                  <CrearSprintModal
+                    projectId={projectId}
+                    isOpen={isOpenCrearSp}
+                    onClose={() => setIsOpenCrearSp(false)}
+                  />
 
-                  <VStack
-                    display="flex"
-                    w="lg"
-                    height="180px"
-                    borderWidth="1px"
-                    borderRadius="lg"
-                    overflow="hidden"
-                    fontSize="3xl"
-                    fontWeight="bold"
-                    bg="white"
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    <Box>
-                      <Text>Sprint x</Text>
-                    </Box>
-                    <Box fontSize="18px">
-                      <Text>Nro de US: 3</Text>
-                    </Box>
-                    <Box fontSize="18px">
-                      <Text>Duracion estimada: 2</Text>
-                    </Box>
-                  </VStack>
+                  {sprints?.map((sprint, index) => (
+                    <>
+                      <VStack
+                        display="flex"
+                        w="lg"
+                        height="180px"
+                        borderWidth="1px"
+                        borderRadius="lg"
+                        overflow="hidden"
+                        fontSize="3xl"
+                        fontWeight="bold"
+                        bg="white"
+                        justifyContent="center"
+                        alignItems="center"
+                        key={index}
+                      >
+                        <Box>
+                          <Text>Sprint x</Text>
+                        </Box>
+                        <Box fontSize="18px">
+                          <Text>Nro de US: 3</Text>
+                        </Box>
+                        <Box fontSize="18px">
+                          <Text>Duracion estimada: 2</Text>
+                        </Box>
+                        <IconButton onClick={() => setIsOpenEditSp(true)} />
+                      </VStack>
+                      <EditarSprintModal
+                        projectId={projectId}
+                        sprint={sprint}
+                        isOpen={isOpenEditSp}
+                        onClose={() => setIsOpenEditSp(false)}
+                      />
+                    </>
+                  ))}
                 </VStack>
               </Box>
             </HStack>

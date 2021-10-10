@@ -38,5 +38,11 @@ export const editUS = async (usData) => {
   );
 };
 
+export const asignarUsASprint = ({ projectId, sprintId }) =>
+  axiosInstance.post(`/proyectos/${projectId}/sprints/${sprintId}/activar`);
+
+export const desasignarUsASprint = ({ projectId, sprintId }) =>
+  axiosInstance.post(`/proyectos/${projectId}/sprints/${sprintId}/desactivar`);
+
 export const eliminarUS = async (projectId, us_id) =>
   await axiosInstance.delete(`/proyectos/${projectId}/user_stories/${us_id}`);
