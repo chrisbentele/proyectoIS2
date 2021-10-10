@@ -282,6 +282,7 @@ def proyectos_miembros(request, proyect_id, user_id=None):
                 rol_seri = RolSerializer(rol)
 
                 u_data.update({"rol": rol_seri.data})
+
                 u_list.append(u_data)
             return JsonResponse(u_list, safe=False)
 
@@ -406,7 +407,7 @@ def proyectos_miembros_roles(request, proyect_id, user_id, rol_id=None):
 
             if proyect_id == rol_id:
                 # Si es scrum master el rol asignado cambia
-                scrum = RolAsignado.objects.get(id=rol_id)
+                scrum = RolAsignado.objects.get(rol=rol_id)
                 seri = RolAsignadoSerializer(
                     scrum,
                     data={
