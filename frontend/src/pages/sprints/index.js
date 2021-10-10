@@ -168,6 +168,12 @@ export default function Index({ props }) {
                       null
                 }
               ></USList>
+              <USList
+                projectId={projectId}
+                setUserStories={setUserStories}
+                nombreLista="Backlog"
+                userStories={userStories?.filter((us) => us.estado === 4)}
+              ></USList>
             </HStack>
           </Box>
           <EditarSprintModal
