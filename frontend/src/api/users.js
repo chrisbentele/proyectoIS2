@@ -7,12 +7,8 @@ import { axiosInstance } from ".";
  */
 
 //! Listar todos los usuarios de un proyecto
-export const getUsers = async (proyectId = null) => {
-  if (!proyectId) {
-    return await axiosInstance.get(`/usuarios`);
-  } else {
-    return await axiosInstance.get(`/proyectos/${proyectId}/usuarios`);
-  }
+export const getUsers = () => {
+  return axiosInstance.get(`/usuarios`);
 };
 
 /**

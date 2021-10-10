@@ -5,7 +5,7 @@
 
 import axios from "axios";
 
-import {
+import projects, {
   createProject,
   deleteProject,
   getProjectById,
@@ -45,6 +45,7 @@ export const axiosInstance = axios.create({
 //Exportar todas las apis, para solo tener que importar un objeto
 export const api = {
   //Projects
+  projects,
   createProject,
   deleteProject,
   getProjectById,
