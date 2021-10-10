@@ -28,7 +28,7 @@ import {
   editMembersRole,
   getMembers,
 } from "./members";
-import {
+import userStories, {
   createUserStory,
   getUserStories,
   editUS,
@@ -72,6 +72,7 @@ export const api = {
   getUserStories,
   editUS,
   eliminarUS,
+  userStories,
   //Sprints
   sprints,
 };
