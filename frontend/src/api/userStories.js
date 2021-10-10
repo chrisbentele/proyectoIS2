@@ -15,6 +15,7 @@ export const createUserStory = async (usData) => {
 export const getUserStories = async (idProyecto) =>
   await axiosInstance.get(`/proyectos/${idProyecto}/user_stories`);
 
+//! Obtiene US de un sprint
 export const getUserStoriesSprint = async (idProyecto, sprintId = null) => {
   if (sprintId == null) {
     return axiosInstance
@@ -26,6 +27,8 @@ export const getUserStoriesSprint = async (idProyecto, sprintId = null) => {
     );
   }
 };
+
+//! Edita info de una US
 
 export const editUS = async ({
   projectId,
@@ -64,16 +67,19 @@ export const estimarUs = ({ projectId, userId, usId, estimacion }) =>
     estimacion,
   });
 
+//! Asigna US a sprint
 export const asignarUsASprint = ({ projectId, sprintId, usId }) =>
   axiosInstance.post(
     `/proyectos/${projectId}/sprints/${sprintId}/user_stories/${usId}`
   );
 
+//! Desasigna US de sprint
 export const desasignarUsASprint = ({ projectId, sprintId, usId }) =>
   axiosInstance.delete(
     `/proyectos/${projectId}/sprints/${sprintId}/user_stories/${usId}`
   );
 
+//! Elimina US
 export const eliminarUS = async (projectId, us_id) =>
   await axiosInstance.delete(`/proyectos/${projectId}/user_stories/${us_id}`);
 
