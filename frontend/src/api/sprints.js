@@ -37,5 +37,7 @@ const sprints = {
   editSprint,
   terminarSprint,
   deleteSprint,
+  activarSprint,
+  desactivarSprint,
 };
 export default sprints;
