@@ -21,7 +21,7 @@ import { useForm, Controller } from "react-hook-form";
 import { api } from "../../api";
 import { useAuth0 } from "@auth0/auth0-react";
 
-const Editar = ({ projectId, US, rolUsuario, user, isOpen, onClose }) => {
+const Editar = ({ projectId, US, rolUsuario, isOpen, onClose }) => {
   const initialRef = useRef();
   const { user } = useAuth0();
   const {
