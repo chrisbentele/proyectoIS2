@@ -602,9 +602,14 @@ def sprints_user_stories(request, proyect_id, sprint_id, us_id=None):
         try:
             us = US.objects.get(id=us_id)
             serializer = USSerializer(us, sprint=sprint_id, partial=True)
-            return JsonResponse(serializer.data, safe=False)
+            if serializer.is_valid():
+                serializer.save()
+                return JsonResponse(serializer.data, status=200)
+            return JsonResponse(serializer.errors, status=400, safe=False)
+
         except US.DoesNotExist:
             return HttpResponseNotFound("us no encontrado")
+
     elif request.method == "DELETE":
         # Remover US del sprint
         if not us_id:
@@ -613,7 +618,12 @@ def sprints_user_stories(request, proyect_id, sprint_id, us_id=None):
         try:
             us = US.objects.get(id=us_id)
             serializer = USSerializer(us, sprint=None, partial=True)
-            return JsonResponse(serializer.data, safe=False)
+
+            if serializer.is_valid():
+                serializer.save()
+                return JsonResponse(serializer.data, status=200)
+            return JsonResponse(serializer.errors, status=400, safe=False)
+
         except US.DoesNotExist:
             return HttpResponseNotFound("us no encontrado")
 
@@ -626,10 +636,19 @@ def sprints_activar(request, proyect_id, sprint_id):
     except Proyecto.DoesNotExist:
         return HttpResponseNotFound()
 
-    if request.method == "GET":
-        us = Sprint.objects.get(proyecto=proyecto, sprint=sprint_id)
+    try:
+        sprint = Sprint.objects.get(id=proyect_id)
+    except Sprint.DoesNotExist:
+        return HttpResponseNotFound()
+
+    if request.method == "POST":
+        us = Sprint.objects.get(id=sprint_id)
         serializer = SprintSerializer(us, data={"activo": True}, partial=True)
-        return JsonResponse(serializer.data, safe=False)
+
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=200)
+        return JsonResponse(serializer.errors, status=400, safe=False)
 
     return HttpResponseBadRequest("Falta sprint_id")
 
@@ -642,10 +661,19 @@ def sprints_desactivar(request, proyect_id, sprint_id):
     except Proyecto.DoesNotExist:
         return HttpResponseNotFound()
 
-    if request.method == "GET":
-        us = Sprint.objects.get(proyecto=proyecto, sprint=sprint_id)
+    try:
+        sprint = Sprint.objects.get(id=proyect_id)
+    except Sprint.DoesNotExist:
+        return HttpResponseNotFound()
+
+    if request.method == "POST":
+        us = Sprint.objects.get(id=sprint_id)
         serializer = SprintSerializer(us, data={"activo": False}, partial=True)
-        return JsonResponse(serializer.data, safe=False)
+
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=200)
+        return JsonResponse(serializer.errors, status=400, safe=False)
 
     return HttpResponseBadRequest("Falta sprint_id")
 
