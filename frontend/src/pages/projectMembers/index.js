@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 //! API del frontend.
 import { api } from "../../api";
-import { Box, Button, Grid, Input, Text } from "@chakra-ui/react";
+import { Box, Button, Grid, Input, Text, Heading } from "@chakra-ui/react";
 import AddMemberTable from "../../components/table/addMemberTable";
 import ProjectMembersTable from "../../components/table/projectMembersTable";
 
-import { useHistory } from 'react-router-dom';
-
+import { useHistory } from "react-router-dom";
+import GoBack from "../../components/button/goBack";
 
 export default function ProjectMembers({ props, dispatchError }) {
   const [members, setMembers] = useState([]);
@@ -35,7 +35,7 @@ export default function ProjectMembers({ props, dispatchError }) {
             let filteredUsers = usersRes.data.filter(
               (user) => !membersIds.includes(user.id)
             );
-            setState(state => ({...state, loading: false }));
+            setState((state) => ({ ...state, loading: false }));
             setUsers([...filteredUsers]);
             setMembers(membersRes.data);
           })
@@ -70,40 +70,16 @@ export default function ProjectMembers({ props, dispatchError }) {
   };
 
   return (
-    <Box
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        marginTop: "70px",
-      }}
-    >
-      <Button
-        onClick={() => history.push(`/projects/${projectId}`)}
-        style={{ marginLeft: "5px", alignSelf: "flex-start" }}
-      >
-        Volver al proyecto
-      </Button>
-      <Text>Miembros del proyecto</Text>
-      <ProjectMembersTable
-        members={[...members]}
-        setMembers={actualizarMiembros}
-        projectId={projectId}
-        ROLES={ROLES}
-        users={[...users]}
-        setUsers={actualizarUsuarios}
-        state={state}
+    <Box mt="55px">
+      <GoBack
+        ruta={`/projects/${projectId}`}
+        title="Volver al proyecto"
+        ml="2"
+        mt="2"
       />
-
-      <Text
-        style={{ marginTop: "50px", marginBottom: "10px", fontWeight: "bold" }}
-      >
-        Agregar nuevo miembro
-      </Text>
-
-      <Grid gap={6}>
-        <Input onChange={handleSearchChange} width="400px" />
-        <AddMemberTable
+      <Box display="flex" flexDirection="column" alignItems="center" top="3rem">
+        <Heading>Miembros del proyecto</Heading>
+        <ProjectMembersTable
           members={[...members]}
           setMembers={actualizarMiembros}
           projectId={projectId}
@@ -112,7 +88,30 @@ export default function ProjectMembers({ props, dispatchError }) {
           setUsers={actualizarUsuarios}
           state={state}
         />
-      </Grid>
+
+        <Text
+          style={{
+            marginTop: "50px",
+            marginBottom: "10px",
+            fontWeight: "bold",
+          }}
+        >
+          Agregar nuevo miembro
+        </Text>
+
+        <Grid gap={6}>
+          <Input onChange={handleSearchChange} width="400px" />
+          <AddMemberTable
+            members={[...members]}
+            setMembers={actualizarMiembros}
+            projectId={projectId}
+            ROLES={ROLES}
+            users={[...users]}
+            setUsers={actualizarUsuarios}
+            state={state}
+          />
+        </Grid>
+      </Box>
     </Box>
   );
 }
