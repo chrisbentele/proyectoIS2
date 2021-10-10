@@ -25,6 +25,8 @@ import CrearSprintModal from "../../components/CrearSprintModal/CrearSprintModal
 import EditarSprintModal from "../../components/EditarSprintModal/EditarSprintModal";
 import { IconButton } from "@chakra-ui/button";
 import { EditIcon } from "@chakra-ui/icons";
+
+import { useHistory } from "react-router";
 /**
  * Función que contiene el código de la vista
  * @param { props } param0
@@ -37,7 +39,7 @@ export default function Index({ props }) {
   const [sprints, setSprints] = useState([]); //estado del proyecto
   const [isOpenCrearSp, setIsOpenCrearSp] = useState(false); //estado del proyecto
   const [isOpenEditSp, setIsOpenEditSp] = useState(false); //estado del proyecto
-
+  const history = useHistory();
   //Al cargarse la pagina se busca el proyecto con el id del URL y se lo asigna a projectId
   useEffect(() => {
     api
@@ -170,6 +172,12 @@ export default function Index({ props }) {
                         justifyContent="center"
                         alignItems="center"
                         key={index}
+                        cursor="pointer"
+                        onClick={() =>
+                          history.push(
+                            `/projects/${projectId}/sprints/${sprint.id}`
+                          )
+                        }
                       >
                         <Box>
                           <Text>{sprint.nombre}</Text>
