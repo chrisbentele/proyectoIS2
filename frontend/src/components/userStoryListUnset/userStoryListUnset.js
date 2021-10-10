@@ -49,34 +49,14 @@ const USList = ({
   };
   const cancelRef = React.useRef();
 
-  const moverUS = async (estado, usId) => {
-    console.log(estado);
-    console.log(usId);
-    await api.editUS({ projectId, estado, usId });
-    api.getUserStories(projectId).then(({ data }) => setUserStories(data));
-  };
-
-  const editarUS = async (usName, description, usId) => {
-    console.log(usName);
-    console.log(usId);
-    await api.editUS({ projectId, usName, description, usId });
-    api.getUserStories(projectId).then(({ data }) => setUserStories(data));
-  };
-
   const eliminarUS = async (id) => {
     console.log(id);
     await api.eliminarUS(projectId, id);
     api.getUserStories(projectId).then(({ data }) => setUserStories(data));
   };
 
-  const { onOpen } = useDisclosure();
   const [isOpenModal, setIsOpenModal] = React.useState(false);
   const onCloseModal = () => setIsOpenModal(false);
-  const onEdit = (nombre, contenido, id) => {
-    console.log(id);
-    editarUS(nombre, contenido, id);
-    setIsOpenModal(false);
-  };
 
   const initialRef = React.useRef();
 
@@ -130,10 +110,6 @@ const USList = ({
       <Grid templateColumns="repeat(3, 1fr)">
         {userStories
           ? userStories.map((us) => {
-              console.log("hola");
-              console.log(us.id);
-              console.log(us.estado);
-              console.log(us.estado === 0);
               return (
                 <Box
                   borderRadius="8"
@@ -165,6 +141,15 @@ const USList = ({
                       mt="2"
                     >
                       <EditIcon color="black.500" />
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        setIsOpenModal(true);
+                        setFocusedUS(us);
+                      }}
+                      mt="2"
+                    >
+                      Estimar
                     </Button>
 
                     <Modal
