@@ -27,6 +27,7 @@ import {
   Input,
   FormErrorMessage,
   toast,
+  Grid,
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { api } from "../../api";
@@ -115,7 +116,6 @@ const USList = ({
 
   return (
     <Box
-      w="xs"
       minHeight="100px"
       maxHeight="80%"
       borderWidth="1px"
@@ -127,160 +127,165 @@ const USList = ({
       <Flex justify="center">
         <Heading fontSize="2xl">{nombreLista}</Heading>
       </Flex>
-      {userStories
-        ? userStories.map((us) => {
-            console.log("hola");
-            console.log(us.id);
-            console.log(us.estado);
-            console.log(us.estado === 0);
-            return (
-              <Box
-                borderRadius="8"
-                p="2"
-                m="2"
-                key={us.id}
-                bg="white"
-                boxShadow="md"
-              >
-                <Text fontSize="20px" fontWeight="semibold">
-                  {us.nombre}
-                </Text>
-                <Text fontSize="15px">{us.contenido}</Text>
-                <Box mt="2">
-                  <Text>{`Estimación SM: ${
-                    us.estimacionSM || "Sin estimar"
-                  }`}</Text>
-                  <Text>{`Estimación Dev: ${
-                    us.estimacionesDev || "Sin estimar"
-                  }`}</Text>
+      <Grid templateColumns="repeat(3, 1fr)">
+        {userStories
+          ? userStories.map((us) => {
+              console.log("hola");
+              console.log(us.id);
+              console.log(us.estado);
+              console.log(us.estado === 0);
+              return (
+                <Box
+                  borderRadius="8"
+                  p="2"
+                  m="2"
+                  key={us.id}
+                  bg="white"
+                  boxShadow="md"
+                  w="xs"
+                >
+                  <Text fontSize="20px" fontWeight="semibold">
+                    {us.nombre}
+                  </Text>
+                  <Text fontSize="15px">{us.contenido}</Text>
+                  <Box mt="2">
+                    <Text>{`Estimación SM: ${
+                      us.estimacionSM || "Sin estimar"
+                    }`}</Text>
+                    <Text>{`Estimación Dev: ${
+                      us.estimacionesDev || "Sin estimar"
+                    }`}</Text>
+                  </Box>
+                  <Flex>
+                    <Button
+                      onClick={() => {
+                        setIsOpenModal(true);
+                        setFocusedUS(us);
+                      }}
+                      mt="2"
+                    >
+                      <EditIcon color="black.500" />
+                    </Button>
+
+                    <Modal
+                      initialFocusRef={initialRef}
+                      isOpen={isOpenModal}
+                      onClose={onCloseModal}
+                    >
+                      <ModalOverlay />
+                      <ModalContent>
+                        <ModalHeader>Editar US</ModalHeader>
+
+                        <ModalCloseButton />
+                        <form onSubmit={handleSubmit(onSubmit)}>
+                          <ModalBody pb={6}>
+                            <FormControl isInvalid={errors.name}>
+                              <FormLabel htmlFor="name">Nombre US</FormLabel>
+                              <Input
+                                id="name"
+                                ref={initialRef}
+                                defaultValue={us.nombre}
+                                {...register("usName", {
+                                  required: "This is required",
+                                  minLength: {
+                                    value: 4,
+                                    message: "Minimum length should be 4",
+                                  },
+                                })}
+                              />
+                              <FormErrorMessage>
+                                {errors.name && errors.name.message}
+                              </FormErrorMessage>
+                            </FormControl>
+                            <FormControl isInvalid={errors.description} mt={4}>
+                              <FormLabel htmlFor="description" mt={4}>
+                                Descripción
+                              </FormLabel>
+                              <Input
+                                id="description"
+                                defaultValue={us.contenido}
+                                {...register("description", {
+                                  required: "This is required",
+                                  minLength: {
+                                    value: 4,
+                                    message: "Minimum length should be 4",
+                                  },
+                                })}
+                              />
+                              <FormErrorMessage>
+                                {errors.description &&
+                                  errors.description.message}
+                              </FormErrorMessage>
+                            </FormControl>
+                          </ModalBody>
+
+                          <ModalFooter>
+                            <Button
+                              mr={4}
+                              colorScheme="blue"
+                              isLoading={isSubmitting}
+                              type="submit"
+                            >
+                              Guardar
+                            </Button>
+                            <Button onClick={onCloseModal}>Cancelar</Button>
+                          </ModalFooter>
+                        </form>
+                      </ModalContent>
+                    </Modal>
+
+                    <Button
+                      onClick={() => setIsOpen(true)}
+                      mt="2"
+                      ml="auto"
+                      bg="red.500"
+                      _hover={{
+                        background: "red.600",
+                        color: "teal.500",
+                      }}
+                      _active={{
+                        background: "red.600",
+                      }}
+                    >
+                      <DeleteIcon color={"#F5F4F5"} />
+                    </Button>
+                    <AlertDialog
+                      isOpen={isOpen}
+                      leastDestructiveRef={cancelRef}
+                      onClose={onClose}
+                    >
+                      <AlertDialogOverlay>
+                        <AlertDialogContent>
+                          <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                            Eliminar US
+                          </AlertDialogHeader>
+
+                          <AlertDialogBody>
+                            ¿Está seguro que desea eliminar a esta US?
+                          </AlertDialogBody>
+
+                          <AlertDialogFooter>
+                            <Button ref={cancelRef} onClick={onClose}>
+                              Cancelar
+                            </Button>
+                            <Button
+                              colorScheme="red"
+                              onClick={() => onDelete(us.id)}
+                              ml={3}
+                            >
+                              Eliminar
+                            </Button>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialogOverlay>
+                    </AlertDialog>
+                  </Flex>
                 </Box>
-                <Flex>
-                  <Button
-                    onClick={() => {
-                      setIsOpenModal(true);
-                      setFocusedUS(us);
-                    }}
-                    mt="2"
-                  >
-                    <EditIcon color="black.500" />
-                  </Button>
+              );
+            })
+          : null}
+      </Grid>
 
-                  <Modal
-                    initialFocusRef={initialRef}
-                    isOpen={isOpenModal}
-                    onClose={onCloseModal}
-                  >
-                    <ModalOverlay />
-                    <ModalContent>
-                      <ModalHeader>Editar US</ModalHeader>
-
-                      <ModalCloseButton />
-                      <form onSubmit={handleSubmit(onSubmit)}>
-                        <ModalBody pb={6}>
-                          <FormControl isInvalid={errors.name}>
-                            <FormLabel htmlFor="name">Nombre US</FormLabel>
-                            <Input
-                              id="name"
-                              ref={initialRef}
-                              defaultValue={us.nombre}
-                              {...register("usName", {
-                                required: "This is required",
-                                minLength: {
-                                  value: 4,
-                                  message: "Minimum length should be 4",
-                                },
-                              })}
-                            />
-                            <FormErrorMessage>
-                              {errors.name && errors.name.message}
-                            </FormErrorMessage>
-                          </FormControl>
-                          <FormControl isInvalid={errors.description} mt={4}>
-                            <FormLabel htmlFor="description" mt={4}>
-                              Descripción
-                            </FormLabel>
-                            <Input
-                              id="description"
-                              defaultValue={us.contenido}
-                              {...register("description", {
-                                required: "This is required",
-                                minLength: {
-                                  value: 4,
-                                  message: "Minimum length should be 4",
-                                },
-                              })}
-                            />
-                            <FormErrorMessage>
-                              {errors.description && errors.description.message}
-                            </FormErrorMessage>
-                          </FormControl>
-                        </ModalBody>
-
-                        <ModalFooter>
-                          <Button
-                            mr={4}
-                            colorScheme="blue"
-                            isLoading={isSubmitting}
-                            type="submit"
-                          >
-                            Guardar
-                          </Button>
-                          <Button onClick={onCloseModal}>Cancelar</Button>
-                        </ModalFooter>
-                      </form>
-                    </ModalContent>
-                  </Modal>
-
-                  <Button
-                    onClick={() => setIsOpen(true)}
-                    mt="2"
-                    ml="auto"
-                    bg="red.500"
-                    _hover={{
-                      background: "red.600",
-                      color: "teal.500",
-                    }}
-                    _active={{
-                      background: "red.600",
-                    }}
-                  >
-                    <DeleteIcon color={"#F5F4F5"} />
-                  </Button>
-                  <AlertDialog
-                    isOpen={isOpen}
-                    leastDestructiveRef={cancelRef}
-                    onClose={onClose}
-                  >
-                    <AlertDialogOverlay>
-                      <AlertDialogContent>
-                        <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                          Eliminar US
-                        </AlertDialogHeader>
-
-                        <AlertDialogBody>
-                          ¿Está seguro que desea eliminar a esta US?
-                        </AlertDialogBody>
-
-                        <AlertDialogFooter>
-                          <Button ref={cancelRef} onClick={onClose}>
-                            Cancelar
-                          </Button>
-                          <Button
-                            colorScheme="red"
-                            onClick={() => onDelete(us.id)}
-                            ml={3}
-                          >
-                            Eliminar
-                          </Button>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialogOverlay>
-                  </AlertDialog>
-                </Flex>
-              </Box>
-            );
-          })
-        : null}
       {children}
     </Box>
   );
