@@ -33,7 +33,7 @@ export default function ProjectMembersTable(props) {
   const ROLES = props.ROLES;
 
   const SCRUM_MASTER = 0;
-  // const DEV_TEAM = 1;
+  const DEV_TEAM = 1;
   // const PROD_OWN = 2;
 
   const [isOpen, setIsOpen] = useState()
@@ -57,20 +57,26 @@ export default function ProjectMembersTable(props) {
    * @param roleId      El rol a asignar  
    * @param memberId    Miembro al cual se le asignará 
    */
-    const changeRole = (roleId, memberId) => {
+    const changeRole = async (roleId, memberId) => {
       if (roleId !== ROLES[SCRUM_MASTER].id) {
-        api
+        console.log('entro')
+        await api
           .setUserRole(roleId, projectId, memberId);
-        api.getMembers(projectId).then(membersRes => setMembers(membersRes));
-        console.log(members)
+        api.getMembers(projectId).then(({data: membersRes}) => setMembers(membersRes));
       }
       else {
-        console.log(members)
-        //if (members.filter(x => x.rol.rol === ROLES[SCRUM_MASTER].rol).length > 0) {
-        //   api.setUserRole(2, projectId, members.filter(x => x.rol.rol === 1)[0].id);
-        //   api.setUserRole(roleId, projectId, memberId);
-        //   api.getMembers(projectId).then(membersRes => setMembers(membersRes));
-        // }
+        if (members
+          .filter(x => x.rol?.id === ROLES[SCRUM_MASTER].id).length > 0) {
+          const oldScrum = members.filter(x => x.rol.id === ROLES[SCRUM_MASTER].id)[0].id
+          console.log('oldScrum: ' + oldScrum)
+          await api.setUserRole(roleId, projectId, memberId);
+          await api
+            .setUserRole(
+              ROLES[DEV_TEAM].id,
+              projectId,
+              members.filter(x => x.id === oldScrum)[0].id);
+          await api.getMembers(projectId).then(({data: membersRes}) => setMembers(membersRes));
+        }
       }
     }
 
@@ -105,11 +111,11 @@ export default function ProjectMembersTable(props) {
               <Select
                 pb="4"
                 onChange={(e) => changeRole(ROLES[e.target.value].id, member.id)}
-                isDisabled={member.rol?.rol === ROLES[SCRUM_MASTER].id}
+                isDisabled={member.rol?.id === ROLES[SCRUM_MASTER].id}
               >
                 <option hidden>{
-                  ROLES.filter(x => x.id === member.rol?.rol).length > 0 ?
-                    ROLES.filter(x => x.id === member.rol?.rol)[0].nombre :
+                  ROLES.filter(x => x.id === member.rol?.id).length > 0 ?
+                    ROLES.filter(x => x.id === member.rol?.id)[0].nombre :
                     null
                 }
                 </option>
@@ -119,7 +125,7 @@ export default function ProjectMembersTable(props) {
                   </option>
                 ))}
               </Select>,
-            remove: member.rol?.rol !== ROLES[SCRUM_MASTER].id ?
+            remove: member.rol?.id !== ROLES[SCRUM_MASTER].id ?
               <>
                 <Tooltip label="Eliminar este miembro del proyecto.">
                   <Button onClick={() => setIsOpen(true)} >
