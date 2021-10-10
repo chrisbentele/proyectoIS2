@@ -20,6 +20,7 @@ import { Grid } from "@chakra-ui/react";
 import { api } from "../api";
 import { projectStateToString } from "../util";
 import { mapStateColor } from "../styles/theme";
+import LogoutButton from "../components/auth/logoutButton/logoutButton";
 
 //! Componente principal de esta página
 const Profile = ({ dispatchError }) => {
@@ -30,7 +31,7 @@ const Profile = ({ dispatchError }) => {
       console.log(user);
       api
         .getProjects(user.sub)
-        .then(({data: projects}) => setUserProjects(projects))
+        .then(({ data: projects }) => setUserProjects(projects))
         .catch((err) =>
           dispatchError(null, "Error cargando proyectos del usuario")
         );
@@ -66,6 +67,9 @@ const Profile = ({ dispatchError }) => {
         >
           <Link to="/roles">Configurar Roles</Link>
         </Box> */}
+        <Box mt="2">
+          <LogoutButton />
+        </Box>
       </Box>
       <Box width="70%" p="10" pl="16" mt="3rem">
         <Box>
