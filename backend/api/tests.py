@@ -386,3 +386,68 @@ class sprints_Tests(TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertJSONNotEqual(json.dumps(newUs), json.dumps(us))
         self.assertEqual(newUs["sprint"], sp["id"])
+
+
+class User_Stories_Estimar_Tests(TestCase):
+    def test_estimar_user_SM(self):
+        u = crear_user()
+        u_dev = crear_user()
+
+        p = crear_proyecto(self, [u["id"], u_dev["id"]])
+        us = crear_US(p["id"], u["id"])
+        res = self.client.post(
+            f"/api/proyectos/{p['id']}/user_stories/{us['id']}/estimar",
+            json.dumps({"user_id": u["id"], "estimacion": 1}),
+            content_type="application/json",
+        )
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(res.json()["estimacionSM"], 1)
+
+    def test_estimar_user_Dev(self):
+        u = crear_user()
+        u_dev = crear_user()
+
+        p = crear_proyecto(self, [u["id"], u_dev["id"]])
+        us = crear_US(p["id"], u["id"])
+
+        roles = self.client.get(f"/api/proyectos/{p['id']}/roles").json()
+        dev_rol = [i for i in roles if i["nombre"] == "Developer"][0]
+        self.client.post(
+            f"/api/proyectos/{p['id']}/miembros/{u_dev['id']}/roles/{dev_rol['id']}",
+        )
+
+        res = self.client.post(
+            f"/api/proyectos/{p['id']}/user_stories/{us['id']}/estimar",
+            json.dumps({"user_id": u_dev["id"], "estimacion": 1}),
+            content_type="application/json",
+        )
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(res.json()["estimacionesDev"], 1)
+
+    def test_estimar_user_Combinado(self):
+        u = crear_user()
+        u_dev = crear_user()
+
+        p = crear_proyecto(self, [u["id"], u_dev["id"]])
+        us = crear_US(p["id"], u["id"])
+        res = self.client.post(
+            f"/api/proyectos/{p['id']}/user_stories/{us['id']}/estimar",
+            json.dumps({"user_id": u["id"], "estimacion": 1}),
+            content_type="application/json",
+        )
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(res.json()["estimacionSM"], 1)
+
+        roles = self.client.get(f"/api/proyectos/{p['id']}/roles").json()
+        dev_rol = [i for i in roles if i["nombre"] == "Developer"][0]
+        self.client.post(
+            f"/api/proyectos/{p['id']}/miembros/{u_dev['id']}/roles/{dev_rol['id']}",
+        )
+
+        res = self.client.post(
+            f"/api/proyectos/{p['id']}/user_stories/{us['id']}/estimar",
+            json.dumps({"user_id": u_dev["id"], "estimacion": 1}),
+            content_type="application/json",
+        )
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(res.json()["estimacionesDev"], 1)
