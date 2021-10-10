@@ -5,10 +5,11 @@ from .serializers import (
     RolAsignadoSerializer,
     RolSerializer,
     SprintSerializer,
+    USAsignadaSerializer,
     USSerializer,
     UsuarioSerializer,
 )
-from api.models import US, Proyecto, Rol, RolAsignado, Sprint, Usuario
+from api.models import US, Proyecto, Rol, RolAsignado, Sprint, USAsignada, Usuario
 from django.http.response import (
     HttpResponseBadRequest,
     HttpResponseNotFound,
@@ -472,17 +473,35 @@ def user_stories(request, proyect_id, us_id=None):
         return JsonResponse(serializer.errors, status=400, safe=False)
 
     elif request.method == "GET":
+
+        def get_asigned_user(us_id):
+
+            asigned_query = USAsignada.objects.filter(
+                us=us_id,
+            )
+            asigned = USAsignadaSerializer(asigned_query, many=True).data
+            return asigned[0]["usuario"] if len(asigned) > 0 else None
+
         if us_id != None:
             try:
                 us = US.objects.get(id=us_id)
                 serializer = USSerializer(us)
-                return JsonResponse(serializer.data, safe=False)
+                us_data = serializer.data
+
+                asigned_user = get_asigned_user(us_id)
+                us_data.update({"asignado": asigned_user})
+
+                return JsonResponse(us_data, safe=False)
             except US.DoesNotExist:
                 return HttpResponseNotFound()
         else:
             us = US.objects.filter(proyecto=proyecto)
             serializer = USSerializer(us, many=True)
-            return JsonResponse(serializer.data, safe=False)
+            us_list = serializer.data
+            for us in us_list:
+                asigned_user = get_asigned_user(us["id"])
+                us.update({"asignado": asigned_user})
+            return JsonResponse(us_list, safe=False)
 
     elif request.method == "DELETE":
         us = US.objects.get(id=us_id)
@@ -566,8 +585,8 @@ def sprints_user_stories(request, proyect_id, sprint_id, us_id=None):
         return HttpResponseNotFound("Proyecto no existe")
 
     try:
-        proyecto = Sprint.objects.get(id=sprint_id)
-    except Proyecto.DoesNotExist:
+        sprint = Sprint.objects.get(id=sprint_id)
+    except Sprint.DoesNotExist:
         return HttpResponseNotFound("Sprint no existe")
 
     if request.method == "GET":
@@ -583,9 +602,14 @@ def sprints_user_stories(request, proyect_id, sprint_id, us_id=None):
         try:
             us = US.objects.get(id=us_id)
             serializer = USSerializer(us, sprint=sprint_id, partial=True)
-            return JsonResponse(serializer.data, safe=False)
+            if serializer.is_valid():
+                serializer.save()
+                return JsonResponse(serializer.data, status=200)
+            return JsonResponse(serializer.errors, status=400, safe=False)
+
         except US.DoesNotExist:
             return HttpResponseNotFound("us no encontrado")
+
     elif request.method == "DELETE":
         # Remover US del sprint
         if not us_id:
@@ -594,7 +618,12 @@ def sprints_user_stories(request, proyect_id, sprint_id, us_id=None):
         try:
             us = US.objects.get(id=us_id)
             serializer = USSerializer(us, sprint=None, partial=True)
-            return JsonResponse(serializer.data, safe=False)
+
+            if serializer.is_valid():
+                serializer.save()
+                return JsonResponse(serializer.data, status=200)
+            return JsonResponse(serializer.errors, status=400, safe=False)
+
         except US.DoesNotExist:
             return HttpResponseNotFound("us no encontrado")
 
@@ -607,10 +636,19 @@ def sprints_activar(request, proyect_id, sprint_id):
     except Proyecto.DoesNotExist:
         return HttpResponseNotFound()
 
-    if request.method == "GET":
-        us = Sprint.objects.get(proyecto=proyecto, sprint=sprint_id)
-        serializer = SprintSerializer(us, data={"activo": True}, partial=True)
-        return JsonResponse(serializer.data, safe=False)
+    try:
+        sprint = Sprint.objects.get(id=sprint_id)
+    except Sprint.DoesNotExist:
+        return HttpResponseNotFound()
+
+    if request.method == "POST":
+        sp = Sprint.objects.get(id=sprint_id)
+        serializer = SprintSerializer(sp, data={"activo": True}, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=200)
+        return JsonResponse(serializer.errors, status=400, safe=False)
 
     return HttpResponseBadRequest("Falta sprint_id")
 
@@ -623,9 +661,55 @@ def sprints_desactivar(request, proyect_id, sprint_id):
     except Proyecto.DoesNotExist:
         return HttpResponseNotFound()
 
-    if request.method == "GET":
-        us = Sprint.objects.get(proyecto=proyecto, sprint=sprint_id)
+    try:
+        sprint = Sprint.objects.get(id=sprint_id)
+    except Sprint.DoesNotExist:
+        return HttpResponseNotFound()
+
+    if request.method == "POST":
+        us = Sprint.objects.get(id=sprint_id)
         serializer = SprintSerializer(us, data={"activo": False}, partial=True)
-        return JsonResponse(serializer.data, safe=False)
+
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=200)
+        return JsonResponse(serializer.errors, status=400, safe=False)
 
     return HttpResponseBadRequest("Falta sprint_id")
+
+
+def user_stories_asignar(request, proyect_id, us_id, user_id):
+    """Metodos p/ asignar un miembro a una US del proyecto"""
+
+    if request.method == "POST":
+        try:
+            usAsignadaList = USAsignada.objects.filter(us=us_id)
+            if len(usAsignadaList) > 0:
+                # Cambia el usuario asignado
+                usAsignada = usAsignadaList[0]
+                seri = USAsignadaSerializer(
+                    usAsignada,
+                    data={
+                        "usuario": user_id,
+                    },
+                    partial=True,
+                )
+            else:
+                # Crea una nueva asignacion
+                seri = USAsignadaSerializer(data={"usuario": user_id, "us": us_id})
+
+            seri.is_valid(raise_exception=True)
+            seri.save()
+            return JsonResponse(seri.data, status=201)
+        except:
+            return JsonResponse(seri.errors, status=400, safe=False)
+
+    elif request.method == "DELETE":
+        try:
+            usAsignadaList = USAsignada.objects.filter(us=us_id)
+            for usAsig in usAsignadaList:
+                usAsig.delete()
+
+            return JsonResponse(True, status=204, safe=False)
+        except:
+            return JsonResponse(False, status=400, safe=False)

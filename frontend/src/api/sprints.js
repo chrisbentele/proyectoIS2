@@ -40,6 +40,8 @@ const sprints = {
   editSprint,
   terminarSprint,
   deleteSprint,
+  activarSprint,
+  desactivarSprint,
   getSprint,
 };
 export default sprints;

@@ -36,11 +36,27 @@ export const editUS = async ({
   );
 };
 
-export const asignarUsASprint = ({ projectId, sprintId }) =>
-  axiosInstance.post(`/proyectos/${projectId}/sprints/${sprintId}/activar`);
+export const asignarUsAUsuario = ({ projectId, sprintId, usId, userId }) => {
+  if (userId) {
+    return axiosInstance.post(
+      `/proyectos/${projectId}/sprints/${sprintId}/user_stories/${usId}/asignar/${userId}`
+    );
+  } else {
+    return axiosInstance.delete(
+      `/proyectos/${projectId}/sprints/${sprintId}/user_stories/${usId}/asignar`
+    );
+  }
+};
 
-export const desasignarUsASprint = ({ projectId, sprintId }) =>
-  axiosInstance.post(`/proyectos/${projectId}/sprints/${sprintId}/desactivar`);
+export const asignarUsASprint = ({ projectId, sprintId, usId }) =>
+  axiosInstance.post(
+    `/proyectos/${projectId}/sprints/${sprintId}/user_stories/${usId}`
+  );
+
+export const desasignarUsASprint = ({ projectId, sprintId, usId }) =>
+  axiosInstance.delete(
+    `/proyectos/${projectId}/sprints/${sprintId}/user_stories/${usId}`
+  );
 
 export const eliminarUS = async (projectId, us_id) =>
   await axiosInstance.delete(`/proyectos/${projectId}/user_stories/${us_id}`);
