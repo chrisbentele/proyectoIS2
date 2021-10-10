@@ -585,7 +585,7 @@ def sprints_user_stories(request, proyect_id, sprint_id, us_id=None):
         return HttpResponseNotFound("Proyecto no existe")
 
     try:
-        proyecto = Sprint.objects.get(id=sprint_id)
+        sprint = Sprint.objects.get(id=sprint_id)
     except Sprint.DoesNotExist:
         return HttpResponseNotFound("Sprint no existe")
 
@@ -637,13 +637,13 @@ def sprints_activar(request, proyect_id, sprint_id):
         return HttpResponseNotFound()
 
     try:
-        sprint = Sprint.objects.get(id=proyect_id)
+        sprint = Sprint.objects.get(id=sprint_id)
     except Sprint.DoesNotExist:
         return HttpResponseNotFound()
 
     if request.method == "POST":
-        us = Sprint.objects.get(id=sprint_id)
-        serializer = SprintSerializer(us, data={"activo": True}, partial=True)
+        sp = Sprint.objects.get(id=sprint_id)
+        serializer = SprintSerializer(sp, data={"activo": True}, partial=True)
 
         if serializer.is_valid():
             serializer.save()
@@ -662,7 +662,7 @@ def sprints_desactivar(request, proyect_id, sprint_id):
         return HttpResponseNotFound()
 
     try:
-        sprint = Sprint.objects.get(id=proyect_id)
+        sprint = Sprint.objects.get(id=sprint_id)
     except Sprint.DoesNotExist:
         return HttpResponseNotFound()
 
