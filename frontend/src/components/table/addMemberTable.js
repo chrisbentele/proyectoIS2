@@ -5,14 +5,12 @@ import { api } from "../../api";
 import {
   Box,
   Button,
-  Select,
   Table,
   Thead,
   Tbody,
   Tr,
   Th,
   Td,
-  useToast,
   AlertDialog,
   AlertDialogBody,
   AlertDialogFooter,
@@ -27,29 +25,26 @@ export default function AddMemberTable(props) {
   const users = props.users;
   const setUsers = props.setUsers;
   const state = props.state;
-  let members = props.members;
   const projectId = props.projectId;
   const setMembers = props.setMembers;
-  const ROLES = props.ROLES;
-
-  const SCRUM_MASTER = 0;
-  const DEV_TEAM = 1;
-  const PROD_OWN = 2;
 
   const [isOpen, setIsOpen] = useState()
   const onClose = () => setIsOpen(false)
-  const onAdd = (memberId) => {
-    setIsOpen(false);
-    addMemberById(memberId);
-  }
   const cancelRef = React.useRef()
 
 
-  /** 
+
+  const data = React.useMemo(() => {
+    const onAdd = (memberId) => {
+      setIsOpen(false);
+      addMemberById(memberId);
+    }
+
+    /** 
    * funcion que se encarga de agregar un usuario al proyecto mediante la tabla
    */
-  const addMemberById = (userId) => {
-    api.addMemberToProject(projectId, userId).then((res) => {
+    const addMemberById = (userId) => {
+      api.addMemberToProject(projectId, userId).then((res) => {
         api.getUsers().then(({ data: usersRes }) => {
           api.getMembers(projectId).then(({ data: membersRes }) => {
             let membersIds = membersRes.map((member) => member.id);
@@ -61,12 +56,10 @@ export default function AddMemberTable(props) {
           });
         }
         )
-    }
-    )
-  };//solicita la confirmacion al usuario
+      }
+      )
+    };//solicita la confirmacion al usuario
 
-
-  const data = React.useMemo(() => {
     return (
       users
         .filter((user) =>
@@ -110,7 +103,7 @@ export default function AddMemberTable(props) {
           };
         })
     )
-  }, [members, addMemberById, state.searchTerm, users]);
+  }, [state.searchTerm, users, isOpen, projectId, setMembers, setUsers]);
 
 
   const columns = React.useMemo(
@@ -123,9 +116,8 @@ export default function AddMemberTable(props) {
         Header: "Agregar",
         accessor: "add",
       },
-    ],
-    []
-  );
+    ]
+    , []);
 
   const tablaAdd = useTable({ columns, data });
   const {

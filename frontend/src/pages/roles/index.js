@@ -27,7 +27,6 @@ export default function Roles({ props, dispatchError }) {
     register,
     handleSubmit,
     watch,
-    formState: { errors },
     setValue,
   } = useForm();
   const onSubmit = async (data) => {
@@ -43,8 +42,6 @@ export default function Roles({ props, dispatchError }) {
   const nombre_rol = watch("nombre_rol", []);
   const [listaRoles, setListaRoles] = useState([]);
 
-  const url = props.computedMatch.url;
-
   const history = useHistory();
 
   useEffect(() => {
@@ -52,7 +49,7 @@ export default function Roles({ props, dispatchError }) {
       .getRoles(projectId)
       .then((res) => setListaRoles(res.data))
       .catch(() => dispatchError(null, "No se han podido cargar los roles"));
-  }, []);
+  }, [projectId, dispatchError]);
   console.log(listaRoles);
 
   return (

@@ -7,7 +7,6 @@
 import React, { useEffect, useState } from "react";
 //! Componente de Auth0
 import { useAuth0 } from "@auth0/auth0-react";
-import { Link } from "react-router-dom";
 import {
   Box,
   Flex,
@@ -17,7 +16,7 @@ import {
   LinkOverlay,
 } from "@chakra-ui/layout";
 import { Image } from "@chakra-ui/image";
-import { Grid, toast, useToast } from "@chakra-ui/react";
+import { Grid } from "@chakra-ui/react";
 import { api } from "../api";
 import { projectStateToString } from "../util";
 import { mapStateColor } from "../styles/theme";
@@ -36,7 +35,7 @@ const Profile = ({ dispatchError }) => {
           dispatchError(null, "Error cargando proyectos del usuario")
         );
     }
-  }, [user, isLoading]);
+  }, [user, isLoading, dispatchError]);
   if (isLoading) {
     return <div>Loading ...</div>;
   }
