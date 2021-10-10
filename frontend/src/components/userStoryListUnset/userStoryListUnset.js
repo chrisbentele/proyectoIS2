@@ -167,6 +167,15 @@ const USList = ({
                         }}
                       />
                     )}
+                    <Button
+                      onClick={() => {
+                        setFocusedUS(us);
+                        setShowEstimarModal(true);
+                      }}
+                      mt="2"
+                    >
+                      Asignar
+                    </Button>
 
                     <Modal
                       initialFocusRef={initialRef}

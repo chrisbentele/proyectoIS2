@@ -28,8 +28,6 @@ import { EditIcon } from "@chakra-ui/icons";
 import { useHistory } from "react-router-dom";
 import { MdBuild } from "react-icons/md";
 
-
-import { useHistory } from "react-router";
 /**
  * Función que contiene el código de la vista
  * @param { props } param0
@@ -216,17 +214,7 @@ export default function Index({ props }) {
                             {sprint.activo ? "Activo" : "No activado"}
                           </Text>
                         </Box>
-                        <IconButton
-                          icon={<EditIcon />}
-                          onClick={() => setIsOpenEditSp(true)}
-                        />
                       </VStack>
-                      <EditarSprintModal
-                        projectId={projectId}
-                        sprint={sprint}
-                        isOpen={isOpenEditSp}
-                        onClose={() => setIsOpenEditSp(false)}
-                      />
                     </>
                   ))}
                 </VStack>

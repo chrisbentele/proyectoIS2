@@ -1,14 +1,13 @@
-import { useRef } from "react";
+import { useRef, useEffect, useState, setValue } from "react";
 import {
   FormControl,
   FormLabel,
   FormErrorMessage,
   Button,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
+  Box,
+  Flex,
+  Center,
+  Select,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -19,8 +18,28 @@ import {
 } from "@chakra-ui/react";
 import { useForm, Controller } from "react-hook-form";
 import { api } from "../../api";
-const Editar = ({ projectId, US, rolUsuario, isOpen, onClose }) => {
+const Editar = ({
+  projectId,
+  US,
+  rolUsuario,
+  isOpen,
+  onClose,
+  dispatchError,
+}) => {
   const initialRef = useRef();
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    api
+      .getUsers()
+      .then(({ data }) => {
+        if (!Array.isArray(data)) return;
+        setUsers(data);
+      })
+      .catch((err) =>
+        dispatchError(null, "error cargando usuarios del sistema")
+      );
+  }, [dispatchError]);
 
   const {
     handleSubmit,
@@ -42,7 +61,7 @@ const Editar = ({ projectId, US, rolUsuario, isOpen, onClose }) => {
     <Modal initialFocusRef={initialRef} isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Estimar US</ModalHeader>
+        <ModalHeader>Asignar US</ModalHeader>
 
         <ModalCloseButton />
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -59,21 +78,12 @@ const Editar = ({ projectId, US, rolUsuario, isOpen, onClose }) => {
                     : parseInt(US.estimacionesDev || 1) || 1
                 }
                 render={(props) => (
-                  <NumberInput
-                    fontSize="lg"
-                    value={props.field.value}
-                    onChange={(n) => {
-                      if (n > 0) {
-                        props.field.onChange(n);
-                      }
-                    }}
-                  >
-                    <NumberInputField fontSize="lg" borderColor="grey.300" />
-                    <NumberInputStepper>
-                      <NumberIncrementStepper />
-                      <NumberDecrementStepper />
-                    </NumberInputStepper>
-                  </NumberInput>
+                  <Select
+                    onChange={(e) => setValue("scrumMasterId", e.value)}
+                    options={users.map((user) => {
+                      return { value: user.id, label: user.nombre };
+                    })}
+                  />
                 )}
               />
               <FormErrorMessage>{errors["estimado"]?.message}</FormErrorMessage>
