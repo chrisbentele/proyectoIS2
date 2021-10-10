@@ -38,13 +38,12 @@ const Crear = ({ projectId, isOpen, onClose }) => {
   const onSubmit = async (data) => {
     console.log(data);
     try {
-      const res = await api.sprints.createSprint({
+      await api.sprints.createSprint({
         projectId,
         creadoPor: user.sub,
         ...data,
       });
-      console.log(res.statusText);
-      console.log(res);
+      onClose();
     } catch (e) {
       console.log(e.message);
     }

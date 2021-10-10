@@ -24,6 +24,7 @@ import USList from "../../components/userStoryListUnset/userStoryListUnset";
 import CrearSprintModal from "../../components/CrearSprintModal/CrearSprintModal";
 import EditarSprintModal from "../../components/EditarSprintModal/EditarSprintModal";
 import { IconButton } from "@chakra-ui/button";
+import { EditIcon } from "@chakra-ui/icons";
 /**
  * Función que contiene el código de la vista
  * @param { props } param0
@@ -48,12 +49,8 @@ export default function Index({ props }) {
       .getUserStories(projectId)
       .then((US) => setUserStories(US.data))
       .catch((err) => console.log(err));
-    api.sprints.getSprints(projectId).then((e) => console.log(e.data));
+    api.sprints.getSprints(projectId).then(({ data }) => setSprints(data));
   }, []);
-
-  const onCrearSprint = () => {
-    console.log("a");
-  };
 
   return (
     <Box
@@ -150,7 +147,12 @@ export default function Index({ props }) {
                   <CrearSprintModal
                     projectId={projectId}
                     isOpen={isOpenCrearSp}
-                    onClose={() => setIsOpenCrearSp(false)}
+                    onClose={() => {
+                      setIsOpenCrearSp(false);
+                      api.sprints
+                        .getSprints(projectId)
+                        .then(({ data }) => setSprints(data));
+                    }}
                   />
 
                   {sprints?.map((sprint, index) => (
@@ -170,15 +172,20 @@ export default function Index({ props }) {
                         key={index}
                       >
                         <Box>
-                          <Text>Sprint x</Text>
+                          <Text>{sprint.nombre}</Text>
                         </Box>
                         <Box fontSize="18px">
-                          <Text>Nro de US: 3</Text>
+                          <Text>Total US: {sprint.cuentaUs}</Text>
                         </Box>
                         <Box fontSize="18px">
-                          <Text>Duracion estimada: 2</Text>
+                          <Text>
+                            {sprint.activo ? "Activo" : "No activado"}
+                          </Text>
                         </Box>
-                        <IconButton onClick={() => setIsOpenEditSp(true)} />
+                        <IconButton
+                          icon={<EditIcon />}
+                          onClick={() => setIsOpenEditSp(true)}
+                        />
                       </VStack>
                       <EditarSprintModal
                         projectId={projectId}
