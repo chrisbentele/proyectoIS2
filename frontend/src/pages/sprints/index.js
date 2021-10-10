@@ -10,6 +10,7 @@ import {
   LinkBox,
   LinkOverlay,
 } from "@chakra-ui/layout";
+import { Link } from "react-router-dom";
 import { Button } from "@chakra-ui/button";
 
 import USList from "../../components/userStoryList/userStoryList";
@@ -33,16 +34,16 @@ export default function Index({ props }) {
   useEffect(() => {
     api
       .getProjectById(projectId)
-      .then(({data}) => setProject(data))
+      .then(({ data }) => setProject(data))
       .catch((err) => console.log(err));
 
     api
       .getUserStories(projectId)
-      .then(({data}) => setUserStories(data))
+      .then(({ data }) => setUserStories(data))
       .catch((err) => console.log(err));
   }, [projectId]);
 
-  console.log('Las us son:');
+  console.log("Las us son:");
   console.log(userStories);
 
   return (
@@ -70,15 +71,15 @@ export default function Index({ props }) {
             mb="3rem"
           >
             <HStack spacing="24px" fontSize="2xl" p="2">
-              <Box>
+              <Link to={`/projects/${projectId}`}>
                 {/* <Link to="/projects">Projects</Link> */}
                 <Text fontWeight="medium">{project.nombre}</Text>
-              </Box>
+              </Link>
               <Button
                 colorScheme="yellow"
                 variant="solid"
                 // opacity="30%"
-                onClick={() => history.push(`${projectId}/members`)}
+                onClick={() => history.push(`/projects/${projectId}/members`)}
               >
                 Miembros
               </Button>
@@ -86,7 +87,7 @@ export default function Index({ props }) {
                 colorScheme="yellow"
                 variant="solid"
                 // opacity="30%"
-                onClick={() => history.push(`${projectId}/roles`)}
+                onClick={() => history.push(`/projects/${projectId}/roles`)}
               >
                 Configurar Roles
               </Button>
@@ -95,7 +96,7 @@ export default function Index({ props }) {
                 colorScheme="yellow"
                 variant="solid"
                 // opacity="30%"
-                onClick={() => history.push(`${projectId}/config`)}
+                onClick={() => history.push(`/projects/${projectId}/config`)}
               >
                 Configurar Proyecto
               </Button>
@@ -109,18 +110,16 @@ export default function Index({ props }) {
                 nombreLista="Pendiente"
                 userStories={
                   //Es un array?
-                  Array.isArray(userStories)?
-                    //Si es un array, qué elementos pertenecen a esta lista?
-                    userStories?.filter((us) => us.estado === 0)
-                  :
-                  //Si es un solo elemento, pertenece a esta lista?
-                  userStories?.estado === 0?
-                    //Si pertenece retorno
-                    userStories
-                    :
-                    //Si no pertenece, null
-                    null
-              }
+                  Array.isArray(userStories)
+                    ? //Si es un array, qué elementos pertenecen a esta lista?
+                      userStories?.filter((us) => us.estado === 0)
+                    : //Si es un solo elemento, pertenece a esta lista?
+                    userStories?.estado === 0
+                    ? //Si pertenece retorno
+                      userStories
+                    : //Si no pertenece, null
+                      null
+                }
               ></USList>
               <USList
                 projectId={projectId}
@@ -128,18 +127,16 @@ export default function Index({ props }) {
                 nombreLista="En curso"
                 userStories={
                   //Es un array?
-                  Array.isArray(userStories)?
-                    //Si es un array, qué elementos pertenecen a esta lista?
-                    userStories?.filter((us) => us.estado === 1)
-                  :
-                  //Si es un solo elemento, pertenece a esta lista?
-                  userStories?.estado === 1?
-                    //Si pertenece retorno
-                    userStories
-                    :
-                    //Si no pertenece, null
-                    null
-              }
+                  Array.isArray(userStories)
+                    ? //Si es un array, qué elementos pertenecen a esta lista?
+                      userStories?.filter((us) => us.estado === 1)
+                    : //Si es un solo elemento, pertenece a esta lista?
+                    userStories?.estado === 1
+                    ? //Si pertenece retorno
+                      userStories
+                    : //Si no pertenece, null
+                      null
+                }
               ></USList>
               <USList
                 projectId={projectId}
@@ -147,41 +144,37 @@ export default function Index({ props }) {
                 nombreLista="Hecho"
                 userStories={
                   //Es un array?
-                  Array.isArray(userStories)?
-                    //Si es un array, qué elementos pertenecen a esta lista?
-                    userStories?.filter((us) => us.estado === 2)
-                  :
-                  //Si es un solo elemento, pertenece a esta lista?
-                  userStories?.estado === 2?
-                    //Si pertenece retorno
-                    userStories
-                    :
-                    //Si no pertenece, null
-                    null
-              }
+                  Array.isArray(userStories)
+                    ? //Si es un array, qué elementos pertenecen a esta lista?
+                      userStories?.filter((us) => us.estado === 2)
+                    : //Si es un solo elemento, pertenece a esta lista?
+                    userStories?.estado === 2
+                    ? //Si pertenece retorno
+                      userStories
+                    : //Si no pertenece, null
+                      null
+                }
               ></USList>
               <USList
                 projectId={projectId}
                 setUserStories={setUserStories}
                 nombreLista="Backlog"
                 userStories={
-                    //Es un array?
-                    Array.isArray(userStories)?
-                      //Si es un array, qué elementos pertenecen a esta lista?
+                  //Es un array?
+                  Array.isArray(userStories)
+                    ? //Si es un array, qué elementos pertenecen a esta lista?
                       userStories?.filter((us) => us.estado === 4)
-                    :
-                    //Si es un solo elemento, pertenece a esta lista?
-                    userStories?.estado === 4?
-                      //Si pertenece retorno
+                    : //Si es un solo elemento, pertenece a esta lista?
+                    userStories?.estado === 4
+                    ? //Si pertenece retorno
                       userStories
-                      :
-                      //Si no pertenece, null
+                    : //Si no pertenece, null
                       null
                 }
               >
                 <Flex justify="center">
                   <LinkBox
-                    to={`${projectId}/createUS`}
+                    to={`/projects/${projectId}/createUS`}
                     pt="2px"
                     pl="2"
                     pr="2"
@@ -194,7 +187,10 @@ export default function Index({ props }) {
                       color: "teal.500",
                     }}
                   >
-                    <LinkOverlay href={`${projectId}/createUS`} fontSize="lg">
+                    <LinkOverlay
+                      href={`/projects/${projectId}/createUS`}
+                      fontSize="lg"
+                    >
                       + agregar nueva tarjeta
                     </LinkOverlay>
                   </LinkBox>

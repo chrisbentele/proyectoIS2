@@ -1,19 +1,27 @@
 import { axiosInstance } from ".";
 
-export const createSprint = async (usData) => {
-  const { projectId, creadoPor } = usData;
-  return await axiosInstance.post(`/proyectos/${projectId}/sprints`, {
+
+const createSprint = ({ projectId, creadoPor, nombre, estimacion }) => {
+  return axiosInstance.post(`/proyectos/${projectId}/sprints`, {
     creadoPor,
+    estimacion,
+    nombre,
   });
 };
 
 export const getSprints = async (idProyecto) =>
   await axiosInstance.get(`/proyectos/${idProyecto}/sprints`);
 
-export const editSprint = async ({ projectId, spId, activo }) =>
-  await axiosInstance.put(`/proyectos/${projectId}/sprints/${spId}`, {
-    activo,
-  });
+const editSprint = async ({ projectId, spId, ...data }) =>
+  await axiosInstance.put(`/proyectos/${projectId}/sprints/${spId}`, data);
+
+const activarSprint = async ({ projectId, spId }) =>
+  await axiosInstance.post(`/proyectos/${projectId}/sprints/${spId}/activar`);
+
+const desactivarSprint = async ({ projectId, spId }) =>
+  await axiosInstance.post(
+    `/proyectos/${projectId}/sprints/${spId}/desactivar`
+  );
 
 export const terminarSprint = async ({ projectId, spId }) =>
   await axiosInstance.put(`/proyectos/${projectId}/sprints/${spId}`, {
