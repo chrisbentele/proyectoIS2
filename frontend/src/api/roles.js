@@ -1,5 +1,5 @@
 //! Importar la instancia de axios
-import { axiosInstance } from ".";
+import { axiosInstance }  from ".";
 
 /**
  * @file roles.js

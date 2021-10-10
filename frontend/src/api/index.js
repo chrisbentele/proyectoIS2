@@ -12,7 +12,7 @@ import {
   editProject,
   getProjects,
 } from "./projects";
-import { getUsers, deleteUser, searchUsersByName } from "./users";
+import { getUsers,getUser, deleteUser, searchUsersByName } from "./users";
 import {
   addRole,
   editRole,
@@ -51,6 +51,7 @@ export const api = {
   editProject,
   getProjects,
   //Users
+  getUser,
   getUsers,
   deleteUser,
   searchUsersByName,
