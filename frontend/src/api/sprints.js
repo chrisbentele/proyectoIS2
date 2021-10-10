@@ -31,6 +31,9 @@ const terminarSprint = async ({ projectId, spId }) =>
 const deleteSprint = async ({ projectId, spId }) =>
   await axiosInstance.delete(`/proyectos/${projectId}/sprints/${spId}`);
 
+const getSprint = async (idProyecto, spId) =>
+  await axiosInstance.get(`/proyectos/${idProyecto}/sprints/${spId}`);
+
 const sprints = {
   createSprint,
   getSprints,
@@ -39,5 +42,6 @@ const sprints = {
   deleteSprint,
   activarSprint,
   desactivarSprint,
+  getSprint,
 };
 export default sprints;

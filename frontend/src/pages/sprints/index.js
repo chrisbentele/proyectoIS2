@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/layout";
 import { Link } from "react-router-dom";
 import { Button } from "@chakra-ui/button";
-
+import EditarSprintModal from "../../components/EditarSprintModal/EditarSprintModal";
 import USList from "../../components/userStoryList/userStoryList";
 import { mapStateColor } from "../../styles/theme";
 import { MdBuild } from "react-icons/md";
@@ -26,8 +26,11 @@ import { useHistory } from "react-router-dom";
  */
 export default function Index({ props }) {
   const projectId = props.computedMatch.params.id; //id del proyecto, se extrae del URL
+  const sprintId = props.computedMatch.params.sp_id; //id del sprint, se extrae del URL
   const [project, setProject] = useState(); //estado del proyecto
   const [userStories, setUserStories] = useState([]); //estado del proyecto
+  const [sprint, setSprint] = useState();
+  const [isOpenEditSp, setIsOpenEditSp] = useState(false);
 
   const history = useHistory();
 
@@ -42,7 +45,12 @@ export default function Index({ props }) {
       .getUserStories(projectId)
       .then(({ data }) => setUserStories(data))
       .catch((err) => console.log(err));
-  }, [projectId]);
+
+    api.sprints
+      .getSprint(projectId, sprintId)
+      .then(({ data }) => setSprint(data))
+      .catch((err) => console.log(err));
+  }, [projectId, sprintId]);
 
   console.log("Las us son:");
   console.log(userStories);
@@ -101,7 +109,7 @@ export default function Index({ props }) {
                 colorScheme="yellow"
                 variant="solid"
                 // opacity="30%"
-                onClick={() => history.push(`/projects/${projectId}/config`)}
+                onClick={() => setIsOpenEditSp(true)}
               >
                 Configurar Sprint
               </Button>
@@ -162,6 +170,12 @@ export default function Index({ props }) {
               ></USList>
             </HStack>
           </Box>
+          <EditarSprintModal
+            projectId={projectId}
+            sprint={sprint}
+            isOpen={isOpenEditSp}
+            onClose={() => setIsOpenEditSp(false)}
+          />
         </Box>
       ) : (
         <Flex align="center" ml="auto">

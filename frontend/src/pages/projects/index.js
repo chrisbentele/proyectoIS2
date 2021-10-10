@@ -214,17 +214,7 @@ export default function Index({ props }) {
                             {sprint.activo ? "Activo" : "No activado"}
                           </Text>
                         </Box>
-                        <IconButton
-                          icon={<EditIcon />}
-                          onClick={() => setIsOpenEditSp(true)}
-                        />
                       </VStack>
-                      <EditarSprintModal
-                        projectId={projectId}
-                        sprint={sprint}
-                        isOpen={isOpenEditSp}
-                        onClose={() => setIsOpenEditSp(false)}
-                      />
                     </>
                   ))}
                 </VStack>
