@@ -54,7 +54,7 @@ const Editar = ({ projectId, sprint, isOpen, onClose }) => {
               <Input
                 id="nombre"
                 ref={initialRef}
-                defaultValue={sprint.nombre}
+                defaultValue={sprint?.nombre}
                 {...register("nombre", {
                   required: "This is required",
                   minLength: {
@@ -74,7 +74,7 @@ const Editar = ({ projectId, sprint, isOpen, onClose }) => {
                 name="estimacion"
                 control={control}
                 rules={{ required: "Valor Requerido" }}
-                defaultValue={sprint.estimacion}
+                defaultValue={sprint?.estimacion}
                 render={(props) => (
                   <NumberInput
                     fontSize="lg"
@@ -103,6 +103,7 @@ const Editar = ({ projectId, sprint, isOpen, onClose }) => {
               colorScheme="blue"
               isLoading={isSubmitting}
               type="submit"
+              onClick={onClose}
             >
               Editar
             </Button>
