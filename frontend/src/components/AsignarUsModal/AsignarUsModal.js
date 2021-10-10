@@ -16,12 +16,12 @@ import {
   ModalBody,
   ModalCloseButton,
 } from "@chakra-ui/react";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { api } from "../../api";
 const Editar = ({
   projectId,
   US,
-  rolUsuario,
+  sprintId,
   isOpen,
   onClose,
   dispatchError,
@@ -45,17 +45,19 @@ const Editar = ({
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
-    control,
   } = useForm();
 
   const onSubmit = (data) => {
-    if (rolUsuario == "SM") {
-      api.editUS({ projectId, usId: US.id, estimacionSM: data.estimacion });
-    } else if (rolUsuario == "dev") {
-      api.editUS({ projectId, usId: US.id, estimacionesDev: data.estimacion });
-    }
+    api.userStories.asignarUsAUsuario({
+      projectId,
+      usId: US.id,
+      sprintId,
+      userId: data.id,
+    });
+
     onClose();
   };
+  console.log(users);
 
   return (
     <Modal initialFocusRef={initialRef} isOpen={isOpen} onClose={onClose}>
@@ -66,28 +68,13 @@ const Editar = ({
         <ModalCloseButton />
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalBody pb={6}>
-            <FormControl isInvalid={errors["estimado"]}>
-              <FormLabel fontSize="25px">awa</FormLabel>
-              <Controller
-                name="estimacion"
-                control={control}
-                rules={{ required: "Valor Requerido" }}
-                defaultValue={
-                  rolUsuario == "SM"
-                    ? parseInt(US.estimacionSM || 1)
-                    : parseInt(US.estimacionesDev || 1) || 1
-                }
-                render={(props) => (
-                  <Select
-                    onChange={(e) => setValue("scrumMasterId", e.value)}
-                    options={users.map((user) => {
-                      return { value: user.id, label: user.nombre };
-                    })}
-                  />
-                )}
-              />
-              <FormErrorMessage>{errors["estimado"]?.message}</FormErrorMessage>
-            </FormControl>
+            <FormLabel fontSize="25px">Seleccionar un desarrollador</FormLabel>
+            <Select
+              onChange={(e) => setValue("developer", e.value)}
+              options={users.map((user) => {
+                return { value: user.id, label: user.nombre };
+              })}
+            />
           </ModalBody>
 
           <ModalFooter>
@@ -97,7 +84,7 @@ const Editar = ({
               isLoading={isSubmitting}
               type="submit"
             >
-              Editar
+              Asignar
             </Button>
             <Button onClick={onClose}>Cancelar</Button>
           </ModalFooter>

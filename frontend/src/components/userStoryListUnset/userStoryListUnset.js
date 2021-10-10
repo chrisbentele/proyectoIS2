@@ -60,6 +60,8 @@ const USList = ({
 
   const [isOpenModal, setIsOpenModal] = React.useState(false);
   const onCloseModal = () => setIsOpenModal(false);
+  const [isOpenModalAssign, setIsOpenModalAssign] = React.useState(false);
+  const onCloseModalAssign = () => setIsOpenModalAssign(false);
 
   const initialRef = React.useRef();
 
@@ -183,9 +185,9 @@ const USList = ({
                         projectId={projectId}
                         US={focusedUS}
                         rolUsuario={"SM"}
-                        isOpen={showEstimarModal}
+                        isOpen={showAsignarModal}
                         onClose={() => {
-                          setShowEstimarModal(false);
+                          setShowAsignarModal(false);
 
                           api
                             .getUserStories(projectId)
@@ -195,8 +197,8 @@ const USList = ({
                     )}
                     <Modal
                       initialFocusRef={initialRef}
-                      isOpen={isOpenModal}
-                      onClose={onCloseModal}
+                      isOpen={isOpenModalAssign}
+                      onClose={onCloseModalAssign}
                     >
                       <ModalOverlay />
                       <ModalContent>
