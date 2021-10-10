@@ -113,7 +113,9 @@ const USList = ({
         }
       })
       .catch((err) => console.log(err));
-    api.getUserStories(projectId).then(({ data }) => setUserStories(data));
+    await api.userStories
+      .getUserStoriesSprint(projectId, sprintId)
+      .then(({ data }) => setUserStories(data));
     setIsOpenModal(false);
   }
 
@@ -133,10 +135,6 @@ const USList = ({
       </Flex>
       {userStories
         ? userStories.map((us) => {
-            console.log("hola");
-            console.log(us.id);
-            console.log(us.estado);
-            console.log(us.estado === 0);
             return (
               <Box
                 borderRadius="8"
@@ -145,6 +143,7 @@ const USList = ({
                 key={us.id}
                 bg="white"
                 boxShadow="md"
+                key={us.id}
               >
                 <Text fontSize="20px" fontWeight="semibold">
                   {us.nombre}

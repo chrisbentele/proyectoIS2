@@ -96,7 +96,9 @@ const USList = ({
         }
       })
       .catch((err) => console.log(err));
-    api.getUserStories(projectId).then(({ data }) => setUserStories(data));
+    await api
+      .getUserStories(projectId)
+      .then(({ data }) => setUserStories(data));
     setIsOpenModal(false);
   }
 
@@ -125,6 +127,7 @@ const USList = ({
                   bg="white"
                   boxShadow="md"
                   w="xs"
+                  key={us.id}
                 >
                   <Text fontSize="20px" fontWeight="semibold">
                     {us.nombre}

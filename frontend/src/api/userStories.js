@@ -20,10 +20,16 @@ export const getUserStoriesSprint = async (idProyecto, sprintId = null) => {
   if (sprintId == null) {
     return axiosInstance
       .get(`/proyectos/${idProyecto}/user_stories`)
-      .then((uss) => uss.filter((us) => us.sprint == null));
+      .then((res) => {
+        let data = res.data?.filter((us) => us.sprint == null);
+        console.log(data);
+        res.data = data;
+        console.log(res);
+        return res;
+      });
   } else {
     return axiosInstance.get(
-      `/proyectos/${idProyecto}/user_stories/${sprintId}`
+      `/proyectos/${idProyecto}/sprints/${sprintId}/user_stories`
     );
   }
 };

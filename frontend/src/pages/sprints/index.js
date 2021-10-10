@@ -41,19 +41,15 @@ export default function Index({ props, dispatchError }) {
       .then(({ data }) => setProject(data))
       .catch((err) => console.log(err));
 
-    api
-      .getUserStories(projectId)
-      .then(({ data }) => setUserStories(data))
-      .catch((err) => console.log(err));
+    api.userStories
+      .getUserStoriesSprint(projectId, sprintId)
+      .then(({ data }) => setUserStories(data));
 
     api.sprints
       .getSprint(projectId, sprintId)
       .then(({ data }) => setSprint(data))
       .catch((err) => console.log(err));
   }, [projectId, sprintId]);
-
-  console.log("Las us son:");
-  console.log(userStories);
 
   return (
     <Box
