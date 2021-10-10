@@ -32,6 +32,7 @@ import {
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { api } from "../../api";
 import EstimarUsModal from "../../components/EstimarUsModal/EstimarUsModal";
+import AsignarUSModal from "../../components/AsignarUsModal/AsignarUsModal";
 const USList = ({
   projectId,
   setUserStories,
@@ -44,6 +45,7 @@ const USList = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showEstimarModal, setShowEstimarModal] = useState(false);
+  const [showAsignarModal, setShowAsignarModal] = useState(false);
   const onClose = () => setIsOpen(false);
   const onDelete = (id) => {
     console.log(id);
@@ -60,6 +62,8 @@ const USList = ({
 
   const [isOpenModal, setIsOpenModal] = React.useState(false);
   const onCloseModal = () => setIsOpenModal(false);
+  const [isOpenModalAssign, setIsOpenModalAssign] = React.useState(false);
+  const onCloseModalAssign = () => setIsOpenModalAssign(false);
 
   const initialRef = React.useRef();
 
@@ -171,11 +175,34 @@ const USList = ({
                         }}
                       />
                     )}
+                    <Button
+                      onClick={() => {
+                        setFocusedUS(us);
+                        setShowAsignarModal(true);
+                      }}
+                      mt="2"
+                    >
+                      Asignar
+                    </Button>
+                    {focusedUS && (
+                      <AsignarUSModal
+                        projectId={projectId}
+                        US={focusedUS}
+                        rolUsuario={"SM"}
+                        isOpen={showAsignarModal}
+                        onClose={() => {
+                          setShowAsignarModal(false);
 
+                          api
+                            .getUserStories(projectId)
+                            .then(({ data }) => setUserStories(data));
+                        }}
+                      />
+                    )}
                     <Modal
                       initialFocusRef={initialRef}
-                      isOpen={isOpenModal}
-                      onClose={onCloseModal}
+                      isOpen={isOpenModalAssign}
+                      onClose={onCloseModalAssign}
                     >
                       <ModalOverlay />
                       <ModalContent>

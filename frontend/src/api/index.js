@@ -12,7 +12,12 @@ import {
   editProject,
   getProjects,
 } from "./projects";
-import { getUsers,getUser, deleteUser, searchUsersByName } from "./users";
+import users, {
+  getUsers,
+  getUser,
+  deleteUser,
+  searchUsersByName,
+} from "./users";
 import {
   addRole,
   editRole,
@@ -29,7 +34,7 @@ import {
   getMembers,
   getMember,
 } from "./members";
-import {
+import userStories, {
   createUserStory,
   getUserStories,
   editUS,
@@ -52,6 +57,7 @@ export const api = {
   editProject,
   getProjects,
   //Users
+  users,
   getUser,
   getUsers,
   deleteUser,
@@ -75,6 +81,7 @@ export const api = {
   getUserStories,
   editUS,
   eliminarUS,
+  userStories,
   //Sprints
   sprints,
 };

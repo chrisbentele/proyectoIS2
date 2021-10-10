@@ -9,10 +9,11 @@ import {
   Text,
   LinkBox,
   LinkOverlay,
+  Divider,
 } from "@chakra-ui/layout";
 import { Link } from "react-router-dom";
 import { Button } from "@chakra-ui/button";
-
+import EditarSprintModal from "../../components/EditarSprintModal/EditarSprintModal";
 import USList from "../../components/userStoryList/userStoryList";
 import { mapStateColor } from "../../styles/theme";
 import { MdBuild } from "react-icons/md";
@@ -25,8 +26,11 @@ import { useHistory } from "react-router-dom";
  */
 export default function Index({ props }) {
   const projectId = props.computedMatch.params.id; //id del proyecto, se extrae del URL
+  const sprintId = props.computedMatch.params.sp_id; //id del sprint, se extrae del URL
   const [project, setProject] = useState(); //estado del proyecto
   const [userStories, setUserStories] = useState([]); //estado del proyecto
+  const [sprint, setSprint] = useState();
+  const [isOpenEditSp, setIsOpenEditSp] = useState(false);
 
   const history = useHistory();
 
@@ -41,7 +45,12 @@ export default function Index({ props }) {
       .getUserStories(projectId)
       .then(({ data }) => setUserStories(data))
       .catch((err) => console.log(err));
-  }, [projectId]);
+
+    api.sprints
+      .getSprint(projectId, sprintId)
+      .then(({ data }) => setSprint(data))
+      .catch((err) => console.log(err));
+  }, [projectId, sprintId]);
 
   console.log("Las us son:");
   console.log(userStories);
@@ -55,6 +64,7 @@ export default function Index({ props }) {
       d="flex"
       justifyContent="left"
       overflow="auto"
+      top="55px"
     >
       {project ? ( //si ya se cargo el proyecto se muestra el mismo, si no se muestra la pantalla de carga
         <Box mt="3rem">
@@ -75,6 +85,9 @@ export default function Index({ props }) {
                 {/* <Link to="/projects">Projects</Link> */}
                 <Text fontWeight="medium">{project.nombre}</Text>
               </Link>
+
+              <Box fontWeight="thin">|</Box>
+
               <Button
                 colorScheme="yellow"
                 variant="solid"
@@ -96,9 +109,9 @@ export default function Index({ props }) {
                 colorScheme="yellow"
                 variant="solid"
                 // opacity="30%"
-                onClick={() => history.push(`/projects/${projectId}/config`)}
+                onClick={() => setIsOpenEditSp(true)}
               >
-                Configurar Proyecto
+                Configurar Sprint
               </Button>
             </HStack>
           </Box>
@@ -155,49 +168,14 @@ export default function Index({ props }) {
                       null
                 }
               ></USList>
-              <USList
-                projectId={projectId}
-                setUserStories={setUserStories}
-                nombreLista="Backlog"
-                userStories={
-                  //Es un array?
-                  Array.isArray(userStories)
-                    ? //Si es un array, qué elementos pertenecen a esta lista?
-                      userStories?.filter((us) => us.estado === 4)
-                    : //Si es un solo elemento, pertenece a esta lista?
-                    userStories?.estado === 4
-                    ? //Si pertenece retorno
-                      userStories
-                    : //Si no pertenece, null
-                      null
-                }
-              >
-                <Flex justify="center">
-                  <LinkBox
-                    to={`/projects/${projectId}/createUS`}
-                    pt="2px"
-                    pl="2"
-                    pr="2"
-                    borderRadius="5"
-                    m="10px"
-                    justify="center"
-                    d="flex"
-                    _hover={{
-                      background: "#F5F4F5",
-                      color: "teal.500",
-                    }}
-                  >
-                    <LinkOverlay
-                      href={`/projects/${projectId}/createUS`}
-                      fontSize="lg"
-                    >
-                      + agregar nueva tarjeta
-                    </LinkOverlay>
-                  </LinkBox>
-                </Flex>
-              </USList>
             </HStack>
           </Box>
+          <EditarSprintModal
+            projectId={projectId}
+            sprint={sprint}
+            isOpen={isOpenEditSp}
+            onClose={() => setIsOpenEditSp(false)}
+          />
         </Box>
       ) : (
         <Flex align="center" ml="auto">

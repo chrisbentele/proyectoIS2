@@ -45,6 +45,7 @@ class Usuario(Model):
     id = CharField(primary_key=True, default=uuid.uuid4, max_length=100, editable=False)
     nombre = CharField(max_length=100)
     # horas = IntegerField(null=True)
+    proy_admin = BooleanField(default=False)
     email = EmailField(unique=True)
 
 

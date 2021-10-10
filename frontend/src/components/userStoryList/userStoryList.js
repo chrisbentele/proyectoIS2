@@ -14,7 +14,7 @@ import {
   Flex,
   Heading,
   Text,
-  useDisclosure,
+  //useDisclosure,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -56,12 +56,12 @@ const USList = ({
     api.getUserStories(projectId).then(({ data }) => setUserStories(data));
   };
 
-  const editarUS = async (usName, description, usId) => {
-    console.log(usName);
-    console.log(usId);
-    await api.editUS({ projectId, usName, description, usId });
-    api.getUserStories(projectId).then(({ data }) => setUserStories(data));
-  };
+  // const editarUS = async (usName, description, usId) => {
+  //   console.log(usName);
+  //   console.log(usId);
+  //   await api.editUS({ projectId, usName, description, usId });
+  //   api.getUserStories(projectId).then(({ data }) => setUserStories(data));
+  // };
 
   const eliminarUS = async (id) => {
     console.log(id);
@@ -69,14 +69,14 @@ const USList = ({
     api.getUserStories(projectId).then(({ data }) => setUserStories(data));
   };
 
-  const { onOpen } = useDisclosure();
+  //const { onOpen } = useDisclosure();
   const [isOpenModal, setIsOpenModal] = React.useState(false);
   const onCloseModal = () => setIsOpenModal(false);
-  const onEdit = (nombre, contenido, id) => {
-    console.log(id);
-    editarUS(nombre, contenido, id);
-    setIsOpenModal(false);
-  };
+  // const onEdit = (nombre, contenido, id) => {
+  //   console.log(id);
+  //   editarUS(nombre, contenido, id);
+  //   setIsOpenModal(false);
+  // };
 
   const initialRef = React.useRef();
 
@@ -168,11 +168,6 @@ const USList = ({
                       value: "2",
                       label: "Hecho",
                       isDisabled: us.estado === 2,
-                    },
-                    {
-                      value: "4",
-                      label: "Backlog",
-                      isDisabled: us.estado === 4,
                     },
                   ]}
                 />
