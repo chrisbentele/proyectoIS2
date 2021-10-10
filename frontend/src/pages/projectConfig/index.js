@@ -149,7 +149,7 @@ export default function ProjectConfig({ props, dispatchError }) {
             <Flex>
               <Button
                 mt={4}
-                bg={"green.200"}
+                bg={["buttonScale.900", "green.200"]}
                 isLoading={isSubmitting}
                 type="submit"
                 fontSize="lg"
