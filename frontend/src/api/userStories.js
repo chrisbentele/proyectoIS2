@@ -15,17 +15,15 @@ export const createUserStory = async (usData) => {
 export const getUserStories = async (idProyecto) =>
   await axiosInstance.get(`/proyectos/${idProyecto}/user_stories`);
 
-export const editUS = async (usData) => {
-  const {
-    projectId,
-    usName,
-    description,
-    estado,
-    usId,
-    estimacionSM,
-    estimacionesDev,
-  } = usData;
-  console.log(usData);
+export const editUS = async ({
+  projectId,
+  usName,
+  description,
+  estado,
+  usId,
+  estimacionSM,
+  estimacionesDev,
+}) => {
   return await axiosInstance.put(
     `/proyectos/${projectId}/user_stories/${usId}`,
     {
@@ -37,6 +35,12 @@ export const editUS = async (usData) => {
     }
   );
 };
+
+export const asignarUsASprint = ({ projectId, sprintId }) =>
+  axiosInstance.post(`/proyectos/${projectId}/sprints/${sprintId}/activar`);
+
+export const desasignarUsASprint = ({ projectId, sprintId }) =>
+  axiosInstance.post(`/proyectos/${projectId}/sprints/${sprintId}/desactivar`);
 
 export const eliminarUS = async (projectId, us_id) =>
   await axiosInstance.delete(`/proyectos/${projectId}/user_stories/${us_id}`);

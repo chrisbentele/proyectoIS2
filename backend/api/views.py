@@ -1,3 +1,4 @@
+from functools import partial
 from rest_framework.exceptions import ValidationError
 from .serializers import (
     ProyectoSerializer,
@@ -275,13 +276,11 @@ def proyectos_miembros(request, proyect_id, user_id=None):
                 r = RolAsignado.objects.filter(proyecto=proyect_id, usuario=id)
                 rol_data = RolAsignadoSerializer(r, many=True).data
                 rol_data = rol_data[0] if len(rol_data) > 0 else None
-                if rol_data:
-                    rol = Rol.objects.get(id=rol_data["rol"])
-                    rol_seri = RolSerializer(rol)
 
-                    u_data.update({"rol": rol_seri.data})
-                else:
-                    u_data.update({"rol": None})
+                rol = Rol.objects.get(id=rol_data["rol"])
+                rol_seri = RolSerializer(rol)
+
+                u_data.update({"rol": rol_seri.data})
 
                 u_list.append(u_data)
             return JsonResponse(u_list, safe=False)
@@ -558,15 +557,75 @@ def sprints(request, proyect_id, sprint_id=None):
         return HttpResponseBadRequest("Falta sprint_id")
 
 
-def sprints_user_stories(request, proyect_id, sprint_id):
-    """Retorna los user stories de un sprint de proyecto"""
+def sprints_user_stories(request, proyect_id, sprint_id, us_id=None):
+    """Administra los user stories de un sprint de proyecto"""
+
+    try:
+        proyecto = Proyecto.objects.get(id=proyect_id)
+    except Proyecto.DoesNotExist:
+        return HttpResponseNotFound("Proyecto no existe")
+
+    try:
+        proyecto = Sprint.objects.get(id=sprint_id)
+    except Proyecto.DoesNotExist:
+        return HttpResponseNotFound("Sprint no existe")
+
+    if request.method == "GET":
+        us = US.objects.filter(proyecto=proyecto, sprint=sprint_id)
+        serializer = USSerializer(us, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
+    elif request.method == "POST":
+        # Agregar US al sprint
+        if not us_id:
+            return HttpResponseNotFound("us_id no encontrado")
+
+        try:
+            us = US.objects.get(id=us_id)
+            serializer = USSerializer(us, sprint=sprint_id, partial=True)
+            return JsonResponse(serializer.data, safe=False)
+        except US.DoesNotExist:
+            return HttpResponseNotFound("us no encontrado")
+    elif request.method == "DELETE":
+        # Remover US del sprint
+        if not us_id:
+            return HttpResponseNotFound("us_id no encontrado")
+
+        try:
+            us = US.objects.get(id=us_id)
+            serializer = USSerializer(us, sprint=None, partial=True)
+            return JsonResponse(serializer.data, safe=False)
+        except US.DoesNotExist:
+            return HttpResponseNotFound("us no encontrado")
+
+
+def sprints_activar(request, proyect_id, sprint_id):
+    """Activa el sprint"""
 
     try:
         proyecto = Proyecto.objects.get(id=proyect_id)
     except Proyecto.DoesNotExist:
         return HttpResponseNotFound()
+
     if request.method == "GET":
-        us = US.objects.filter(proyecto=proyecto, sprint=sprint_id)
-        serializer = USSerializer(us, many=True)
+        us = Sprint.objects.get(proyecto=proyecto, sprint=sprint_id)
+        serializer = SprintSerializer(us, data={"activo": True}, partial=True)
         return JsonResponse(serializer.data, safe=False)
+
+    return HttpResponseBadRequest("Falta sprint_id")
+
+
+def sprints_desactivar(request, proyect_id, sprint_id):
+    """Desactiva el sprint"""
+
+    try:
+        proyecto = Proyecto.objects.get(id=proyect_id)
+    except Proyecto.DoesNotExist:
+        return HttpResponseNotFound()
+
+    if request.method == "GET":
+        us = Sprint.objects.get(proyecto=proyecto, sprint=sprint_id)
+        serializer = SprintSerializer(us, data={"activo": False}, partial=True)
+        return JsonResponse(serializer.data, safe=False)
+
     return HttpResponseBadRequest("Falta sprint_id")
