@@ -678,7 +678,7 @@ def user_stories_asignar(request, proyect_id, us_id, user_id):
 
     elif request.method == "DELETE":
         try:
-            usAsignadaList = USAsignada.objects.filter(us=us_id, usuario=user_id)
+            usAsignadaList = USAsignada.objects.filter(us=us_id)
             for usAsig in usAsignadaList:
                 usAsig.delete()
 

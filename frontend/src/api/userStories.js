@@ -36,6 +36,18 @@ export const editUS = async ({
   );
 };
 
+export const asignarUsAUsuario = ({ projectId, sprintId, usId, userId }) => {
+  if (userId) {
+    return axiosInstance.post(
+      `/proyectos/${projectId}/sprints/${sprintId}/user_stories/${usId}/asignar/${userId}`
+    );
+  } else {
+    return axiosInstance.delete(
+      `/proyectos/${projectId}/sprints/${sprintId}/user_stories/${usId}/asignar`
+    );
+  }
+};
+
 export const asignarUsASprint = ({ projectId, sprintId, usId }) =>
   axiosInstance.post(
     `/proyectos/${projectId}/sprints/${sprintId}/user_stories/${usId}`
