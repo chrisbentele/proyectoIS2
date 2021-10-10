@@ -67,7 +67,7 @@ const Editar = ({
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalBody pb={6}>
             <FormControl isInvalid={errors["estimado"]}>
-              <FormLabel fontSize="25px">Duración estimada(horas)</FormLabel>
+              <FormLabel fontSize="25px">awa</FormLabel>
               <Controller
                 name="estimacion"
                 control={control}
