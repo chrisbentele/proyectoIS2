@@ -659,7 +659,7 @@ def sprints_user_stories(request, proyect_id, sprint_id, us_id=None):
 
         try:
             us = US.objects.get(id=us_id)
-            serializer = USSerializer(us, sprint=sprint_id, partial=True)
+            serializer = USSerializer(us, data={"sprint": sprint_id}, partial=True)
             if serializer.is_valid():
                 serializer.save()
                 return JsonResponse(serializer.data, status=200)
@@ -675,7 +675,7 @@ def sprints_user_stories(request, proyect_id, sprint_id, us_id=None):
 
         try:
             us = US.objects.get(id=us_id)
-            serializer = USSerializer(us, sprint=None, partial=True)
+            serializer = USSerializer(us, data={"sprint": None}, partial=True)
 
             if serializer.is_valid():
                 serializer.save()
