@@ -275,7 +275,14 @@ def proyectos_miembros(request, proyect_id, user_id=None):
                 r = RolAsignado.objects.filter(proyecto=proyect_id, usuario=id)
                 rol_data = RolAsignadoSerializer(r, many=True).data
                 rol_data = rol_data[0] if len(rol_data) > 0 else None
-                u_data.update({"rol": rol_data})
+                if rol_data:
+                    rol = Rol.objects.get(id=rol_data["rol"])
+                    rol_seri = RolSerializer(rol)
+
+                    u_data.update({"rol": rol_seri.data})
+                else:
+                    u_data.update({"rol": None})
+
                 u_list.append(u_data)
             return JsonResponse(u_list, safe=False)
 
@@ -400,7 +407,7 @@ def proyectos_miembros_roles(request, proyect_id, user_id, rol_id=None):
 
             if proyect_id == rol_id:
                 # Si es scrum master el rol asignado cambia
-                scrum = RolAsignado.objects.get(id=rol_id)
+                scrum = RolAsignado.objects.get(rol=rol_id)
                 seri = RolAsignadoSerializer(
                     scrum,
                     data={
@@ -424,7 +431,7 @@ def proyectos_miembros_roles(request, proyect_id, user_id, rol_id=None):
             rolAsi = rolAsig[0] if len(rolAsig) > 0 else None
             seri = RolAsignadoSerializer(rolAsi)
 
-            rol = Rol.objects.get(id=seri.data["id"])
+            rol = Rol.objects.get(id=seri.data["rol"])
             rol_seri = RolSerializer(rol)
 
             return JsonResponse(rol_seri.data, safe=False)
