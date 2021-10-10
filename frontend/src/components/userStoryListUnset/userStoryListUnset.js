@@ -38,6 +38,8 @@ const USList = ({
   userStories,
   nombreLista,
   children,
+  isScrumMaster,
+  isAsigned,
   ...props
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -111,28 +113,30 @@ const USList = ({
       <Grid templateColumns="repeat(3, 1fr)">
         {userStories
           ? userStories.map((us) => {
-              return (
-                <Box
-                  borderRadius="8"
-                  p="2"
-                  m="2"
-                  key={us.id}
-                  bg="white"
-                  boxShadow="md"
-                  w="xs"
-                >
-                  <Text fontSize="20px" fontWeight="semibold">
-                    {us.nombre}
+            return (
+              <Box
+                borderRadius="8"
+                p="2"
+                m="2"
+                key={us.id}
+                bg="white"
+                boxShadow="md"
+                w="xs"
+              >
+                <Text fontSize="20px" fontWeight="semibold">
+                  {us.nombre}
+                </Text>
+                <Text fontSize="15px">{us.contenido}</Text>
+                <Box mt="2">
+                  <Text>{`Estimación SM: ${us.estimacionSM || "Sin estimar"
+                    }`}</Text>
+                  <Text>{`Estimación Dev: ${us.estimacionesDev || "Sin estimar"
+                    }`}</Text>
+                  <Text>{`${us.estimacionesDev && us.estimacionSM ?
+                    (us.estimacionesDev + us.estimacionSM)/2 + ' horas': ''}`}
                   </Text>
-                  <Text fontSize="15px">{us.contenido}</Text>
-                  <Box mt="2">
-                    <Text>{`Estimación SM: ${
-                      us.estimacionSM || "Sin estimar"
-                    }`}</Text>
-                    <Text>{`Estimación Dev: ${
-                      us.estimacionesDev || "Sin estimar"
-                    }`}</Text>
-                  </Box>
+                </Box>
+                {isScrumMaster || isAsigned ?
                   <Flex>
                     <Button
                       onClick={() => {
@@ -156,7 +160,7 @@ const USList = ({
                       <EstimarUsModal
                         projectId={projectId}
                         US={focusedUS}
-                        rolUsuario={"SM"}
+                        rolUsuario={isScrumMaster ? "SM" : "dev"}
                         isOpen={showEstimarModal}
                         onClose={() => {
                           setShowEstimarModal(false);
@@ -234,56 +238,64 @@ const USList = ({
                         </form>
                       </ModalContent>
                     </Modal>
+                    { isScrumMaster ?
+                      <>
+                        <Button
+                          onClick={() => setIsOpen(true)}
+                          mt="2"
+                          ml="auto"
+                          bg="red.500"
+                          _hover={{
+                            background: "red.600",
+                            color: "teal.500",
+                          }}
+                          _active={{
+                            background: "red.600",
+                          }}
+                        >
+                          <DeleteIcon color={"#F5F4F5"} />
+                        </Button>
+                        <AlertDialog
+                          isOpen={isOpen}
+                          leastDestructiveRef={cancelRef}
+                          onClose={onClose}
+                        >
+                          <AlertDialogOverlay>
+                            <AlertDialogContent>
+                              <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                                Eliminar US
+                              </AlertDialogHeader>
 
-                    <Button
-                      onClick={() => setIsOpen(true)}
-                      mt="2"
-                      ml="auto"
-                      bg="red.500"
-                      _hover={{
-                        background: "red.600",
-                        color: "teal.500",
-                      }}
-                      _active={{
-                        background: "red.600",
-                      }}
-                    >
-                      <DeleteIcon color={"#F5F4F5"} />
-                    </Button>
-                    <AlertDialog
-                      isOpen={isOpen}
-                      leastDestructiveRef={cancelRef}
-                      onClose={onClose}
-                    >
-                      <AlertDialogOverlay>
-                        <AlertDialogContent>
-                          <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                            Eliminar US
-                          </AlertDialogHeader>
+                              <AlertDialogBody>
+                                ¿Está seguro que desea eliminar a esta US?
+                              </AlertDialogBody>
 
-                          <AlertDialogBody>
-                            ¿Está seguro que desea eliminar a esta US?
-                          </AlertDialogBody>
-
-                          <AlertDialogFooter>
-                            <Button ref={cancelRef} onClick={onClose}>
-                              Cancelar
-                            </Button>
-                            <Button
-                              colorScheme="red"
-                              onClick={() => onDelete(us.id)}
-                              ml={3}
-                            >
-                              Eliminar
-                            </Button>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialogOverlay>
-                    </AlertDialog>
+                              <AlertDialogFooter>
+                                <Button ref={cancelRef} onClick={onClose}>
+                                  Cancelar
+                                </Button>
+                                <Button
+                                  colorScheme="red"
+                                  onClick={() => onDelete(us.id)}
+                                  ml={3}
+                                >
+                                  Eliminar
+                                </Button>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialogOverlay>
+                        </AlertDialog>
+                      </>
+                      :
+                      null
+                    }
                   </Flex>
-                </Box>
-              );
-            })
+                  :
+                  null
+                }
+              </Box>
+            );
+          })
           : null}
       </Grid>
 

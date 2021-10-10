@@ -9,17 +9,14 @@ import { api } from "../../api";
 import { Spinner } from "@chakra-ui/spinner";
 import {
   Box,
-  Heading,
   Flex,
   HStack,
   Text,
   VStack,
   LinkBox,
   LinkOverlay,
-  Grid,
 } from "@chakra-ui/layout";
 import { Link } from "react-router-dom";
-import Select from "react-select";
 import USList from "../../components/userStoryListUnset/userStoryListUnset";
 import CrearSprintModal from "../../components/CrearSprintModal/CrearSprintModal";
 import EditarSprintModal from "../../components/EditarSprintModal/EditarSprintModal";
@@ -27,6 +24,7 @@ import { IconButton } from "@chakra-ui/button";
 import { EditIcon } from "@chakra-ui/icons";
 
 import { useHistory } from "react-router";
+import { useAuth0 } from "@auth0/auth0-react";
 /**
  * Función que contiene el código de la vista
  * @param { props } param0
@@ -40,6 +38,9 @@ export default function Index({ props }) {
   const [isOpenCrearSp, setIsOpenCrearSp] = useState(false); //estado del proyecto
   const [isOpenEditSp, setIsOpenEditSp] = useState(false); //estado del proyecto
   const history = useHistory();
+  const { user } = useAuth0();
+  const [ thisMember, setThisMember ] = useState();
+
   //Al cargarse la pagina se busca el proyecto con el id del URL y se lo asigna a projectId
   useEffect(() => {
     api
@@ -51,8 +52,20 @@ export default function Index({ props }) {
       .getUserStories(projectId)
       .then((US) => setUserStories(US.data))
       .catch((err) => console.log(err));
-    api.sprints.getSprints(projectId).then(({ data }) => setSprints(data));
+
+    api
+      .sprints
+        .getSprints(projectId)
+        .then(({ data }) => setSprints(data))
+        .catch((err) => console.log(err));
+
+    api
+      .getMember(projectId, user.sub)
+      .then(({data: member}) => setThisMember(member))
+      .catch((err) => console.log(err));
+
   }, []);
+
 
   return (
     <Box
@@ -100,6 +113,8 @@ export default function Index({ props }) {
                   setUserStories={setUserStories}
                   nombreLista="Backlog"
                   userStories={userStories?.filter((us) => us.estado === 4)}
+                  isScrumMaster={project?.scrumMaster.id === thisMember?.rol.id}
+                  isAsigned={true}
                 >
                   <Flex justify="center">
                     <LinkBox
