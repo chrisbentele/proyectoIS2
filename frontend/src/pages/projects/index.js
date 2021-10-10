@@ -28,8 +28,6 @@ import { EditIcon } from "@chakra-ui/icons";
 import { useHistory } from "react-router-dom";
 import { MdBuild } from "react-icons/md";
 
-
-import { useHistory } from "react-router";
 /**
  * Función que contiene el código de la vista
  * @param { props } param0
