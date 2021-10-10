@@ -33,8 +33,6 @@ export const editUS = async ({
   description,
   estado,
   usId,
-  estimacionSM,
-  estimacionesDev,
 }) => {
   return await axiosInstance.put(
     `/proyectos/${projectId}/user_stories/${usId}`,
@@ -42,12 +40,11 @@ export const editUS = async ({
       nombre: usName,
       contenido: description,
       estado,
-      estimacionSM,
-      estimacionesDev,
     }
   );
 };
 
+//! Asigna una US a un Usuario
 export const asignarUsAUsuario = ({ projectId, sprintId, usId, userId }) => {
   if (userId) {
     return axiosInstance.post(
@@ -59,6 +56,13 @@ export const asignarUsAUsuario = ({ projectId, sprintId, usId, userId }) => {
     );
   }
 };
+
+//! Registra la estimacion de tiempo del usuario
+export const estimarUs = ({ projectId, userId, usId, estimacion }) =>
+  axiosInstance.post(`/proyectos/${projectId}/user_stories/${usId}/estimar`, {
+    userId,
+    estimacion,
+  });
 
 export const asignarUsASprint = ({ projectId, sprintId, usId }) =>
   axiosInstance.post(
@@ -82,6 +86,7 @@ const userStories = {
   asignarUsASprint,
   desasignarUsASprint,
   eliminarUS,
+  estimarUs,
 };
 
 export default userStories;
