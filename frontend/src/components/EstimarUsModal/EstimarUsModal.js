@@ -24,7 +24,7 @@ import {
 } from "@chakra-ui/react";
 import { useForm, Controller } from "react-hook-form";
 import { api } from "../../api";
-const Editar = ({ projectId, sprint, isOpen, onClose }) => {
+const Editar = ({ projectId, US, rolUsuario, isOpen, onClose }) => {
   const initialRef = useRef();
 
   const {
@@ -35,46 +35,34 @@ const Editar = ({ projectId, sprint, isOpen, onClose }) => {
   } = useForm();
 
   const onSubmit = (data) => {
-    api.editUS({ projectId });
+    if (rolUsuario == "SM") {
+      api.editUS({ projectId, usId: US.id, estimacionSM: data.estimacion });
+    } else if (rolUsuario == "dev") {
+      api.editUS({ projectId, usId: US.id, estimacionesDev: data.estimacion });
+    }
+    onClose();
   };
 
   return (
     <Modal initialFocusRef={initialRef} isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Editar Sprint</ModalHeader>
+        <ModalHeader>Estimar US</ModalHeader>
 
         <ModalCloseButton />
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalBody pb={6}>
-            <FormControl isInvalid={errors.nombre}>
-              <FormLabel fontSize="25px" htmlFor="nombre">
-                Nombre
-              </FormLabel>
-              <Input
-                id="nombre"
-                ref={initialRef}
-                defaultValue={sprint.nombre}
-                {...register("nombre", {
-                  required: "This is required",
-                  minLength: {
-                    value: 4,
-                    message: "Minimum length should be 4",
-                  },
-                })}
-              />
-              <FormErrorMessage>
-                {errors.nombre && errors.nombre.message}
-              </FormErrorMessage>
-            </FormControl>
-
             <FormControl isInvalid={errors["estimado"]}>
               <FormLabel fontSize="25px">Duración estimada(horas)</FormLabel>
               <Controller
                 name="estimacion"
                 control={control}
                 rules={{ required: "Valor Requerido" }}
-                defaultValue={sprint.estimacion}
+                defaultValue={
+                  rolUsuario == "SM"
+                    ? parseInt(US.estimacionSM || 1)
+                    : parseInt(US.estimacionesDev || 1) || 1
+                }
                 render={(props) => (
                   <NumberInput
                     fontSize="lg"

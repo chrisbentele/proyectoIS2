@@ -31,7 +31,7 @@ import {
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { api } from "../../api";
-
+import EstimarUsModal from "../../components/EstimarUsModal/EstimarUsModal";
 const USList = ({
   projectId,
   setUserStories,
@@ -41,6 +41,7 @@ const USList = ({
   ...props
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [showEstimarModal, setShowEstimarModal] = useState(false);
   const onClose = () => setIsOpen(false);
   const onDelete = (id) => {
     console.log(id);
@@ -144,13 +145,28 @@ const USList = ({
                     </Button>
                     <Button
                       onClick={() => {
-                        setIsOpenModal(true);
                         setFocusedUS(us);
+                        setShowEstimarModal(true);
                       }}
                       mt="2"
                     >
                       Estimar
                     </Button>
+                    {focusedUS && (
+                      <EstimarUsModal
+                        projectId={projectId}
+                        US={focusedUS}
+                        rolUsuario={"SM"}
+                        isOpen={showEstimarModal}
+                        onClose={() => {
+                          setShowEstimarModal(false);
+
+                          api
+                            .getUserStories(projectId)
+                            .then(({ data }) => setUserStories(data));
+                        }}
+                      />
+                    )}
 
                     <Modal
                       initialFocusRef={initialRef}
