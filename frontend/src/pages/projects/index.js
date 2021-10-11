@@ -62,7 +62,6 @@ export default function Index({ dispatchError, props }) {
       .getUserStories(projectId)
       .then((US) => setUserStories(US.data))
       .catch((err) => console.log(err));
- 
 
     api.sprints
       .getSprints(projectId)
@@ -74,7 +73,6 @@ export default function Index({ dispatchError, props }) {
       .then(({ data: member }) => setThisMember(member))
       .catch((err) => console.log(err));
   }, []);
-
 
   return (
     <Box
@@ -107,7 +105,10 @@ export default function Index({ dispatchError, props }) {
               </Link>
 
               <Box fontWeight="thin">|</Box>
-              {tienePermiso(thisMember, PERMISOS_MACRO.EDITAR_MIEMBROS_A_PROYECTO) ?
+              {tienePermiso(
+                thisMember,
+                PERMISOS_MACRO.EDITAR_MIEMBROS_A_PROYECTO
+              ) ? (
                 <Button
                   colorScheme="yellow"
                   variant="solid"
@@ -116,10 +117,11 @@ export default function Index({ dispatchError, props }) {
                 >
                   Miembros
                 </Button>
-                :
-                null
-              }
-              {tienePermiso(thisMember, PERMISOS_MACRO.EDITAR_ROL_DEL_USUARIO) ?
+              ) : null}
+              {tienePermiso(
+                thisMember,
+                PERMISOS_MACRO.EDITAR_ROL_DEL_USUARIO
+              ) ? (
                 <Button
                   colorScheme="yellow"
                   variant="solid"
@@ -128,10 +130,11 @@ export default function Index({ dispatchError, props }) {
                 >
                   Configurar Roles
                 </Button>
-                :
-                null
-              }
-              {tienePermiso(thisMember, PERMISOS_MACRO.EDITAR_CONFIGURACIÓN_DEL_PROYECTO) ?
+              ) : null}
+              {tienePermiso(
+                thisMember,
+                PERMISOS_MACRO.EDITAR_CONFIGURACIÓN_DEL_PROYECTO
+              ) ? (
                 <Button
                   leftIcon={<MdBuild />}
                   colorScheme="yellow"
@@ -141,9 +144,7 @@ export default function Index({ dispatchError, props }) {
                 >
                   Configurar Proyecto
                 </Button>
-                :
-                null
-              }
+              ) : null}
             </HStack>
           </Box>
           <Box as="main" mt="50px" w="100vw">
@@ -172,16 +173,14 @@ export default function Index({ dispatchError, props }) {
                         color: "teal.500",
                       }}
                     >
-                      {tienePermiso(thisMember, PERMISOS_MACRO.CREAR_ROL) ?
+                      {tienePermiso(thisMember, PERMISOS_MACRO.CREAR_ROL) ? (
                         <LinkOverlay
                           href={`/projects/${projectId}/createUS`}
                           fontSize="lg"
                         >
                           + agregar nueva tarjeta
                         </LinkOverlay>
-                        :
-                        null
-                      }
+                      ) : null}
                     </LinkBox>
                   </Flex>
                 </USListUnset>
@@ -189,7 +188,7 @@ export default function Index({ dispatchError, props }) {
               {/* sprints */}
               <Box>
                 <VStack>
-                  {tienePermiso(thisMember, PERMISOS_MACRO.CREAR_SPRINT) ?
+                  {tienePermiso(thisMember, PERMISOS_MACRO.CREAR_SPRINT) ? (
                     <Box
                       display="flex"
                       w="lg"
@@ -207,9 +206,7 @@ export default function Index({ dispatchError, props }) {
                     >
                       <Text>Crear sprint</Text>
                     </Box>
-                    :
-                    null
-                  }
+                  ) : null}
                   <CrearSprintModal
                     projectId={projectId}
                     isOpen={isOpenCrearSp}
@@ -255,7 +252,10 @@ export default function Index({ dispatchError, props }) {
                             {sprint.activo ? "Activo" : "No activado"}
                           </Text>
                         </Box>
-                        {tienePermiso(thisMember, PERMISOS_MACRO.ELIMINAR_SPRINT) ?
+                        {tienePermiso(
+                          thisMember,
+                          PERMISOS_MACRO.ELIMINAR_SPRINT
+                        ) ? (
                           <Button
                             onClick={() => {
                               setFocusedSprint(sprint);
@@ -264,9 +264,7 @@ export default function Index({ dispatchError, props }) {
                           >
                             Eliminar :o
                           </Button>
-                          :
-                          null
-                        }
+                        ) : null}
                         {focusedSprint && (
                           <EliminarSprintModal
                             projectId={projectId}

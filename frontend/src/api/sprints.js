@@ -1,3 +1,4 @@
+import { AiOutlineArrowRight } from "react-icons/ai";
 import { axiosInstance } from ".";
 
 export const createSprint = ({ projectId, creadoPor, nombre, estimacion }) => {
@@ -22,6 +23,9 @@ export const desactivarSprint = async ({ projectId, spId }) =>
     `/proyectos/${projectId}/sprints/${spId}/desactivar`
   );
 
+export const getHoras = async ({ projectId, spId }) =>
+  await axiosInstance.get(`/proyectos/${projectId}/sprints/${spId}`);
+
 export const terminarSprint = async ({ projectId, spId }) =>
   await axiosInstance.put(`/proyectos/${projectId}/sprints/${spId}`, {
     activo: false,
@@ -43,5 +47,6 @@ const sprints = {
   activarSprint,
   desactivarSprint,
   getSprint,
+  getHoras,
 };
 export default sprints;

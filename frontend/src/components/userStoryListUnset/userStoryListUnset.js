@@ -176,6 +176,7 @@ const USListUnset = ({
                       }`}
                     </Text>
                   </Box>
+
                   {thisMember?.rol.nombre === "Scrum Master" || thisMember?.id === us.asignado ? (
                     <Flex>
                       {tienePermiso(thisMember, PERMISOS_MACRO.MODIFICAR_US) ? (
@@ -189,6 +190,7 @@ const USListUnset = ({
                           <EditIcon color="black.500" />
                         </Button>
                       ) : null}
+
                       {tienePermiso(thisMember, PERMISOS_MACRO.ESTIMAR_US) ? (
                         <Button
                           onClick={() => {
@@ -205,6 +207,7 @@ const USListUnset = ({
                         <EstimarUsModal
                           projectId={projectId}
                           US={focusedUS}
+
                           rolUsuario={thisMember?.rol.nombre === "Scrum Master" ? "SM" : "dev"}
                           isOpen={showEstimarModal}
                           onClose={() => {
@@ -216,6 +219,7 @@ const USListUnset = ({
                           }}
                         />
                       )}
+
                       {tienePermiso(thisMember, PERMISOS_MACRO.ASIGNAR_MIEMBROS_A_US) ? (
                         <>
                           <Button
@@ -245,6 +249,7 @@ const USListUnset = ({
                           )}
                         </>
                       ) : null}
+
                       {thisMember?.rol.nombre === "Scrum Master" ? (
                         <Button
                           onClick={() => {
@@ -266,6 +271,7 @@ const USListUnset = ({
                           onClose={onCloseAsignarSprint}
                         />
                       )}
+
                       <Modal
                         initialFocusRef={initialRef}
                         isOpen={isOpenModal}
@@ -335,6 +341,7 @@ const USListUnset = ({
                           </form>
                         </ModalContent>
                       </Modal>
+
                       {tienePermiso(thisMember, PERMISOS_MACRO.ELIMINAR_US) ? (
                         <Button
                           onClick={() => setIsOpen(true)}
