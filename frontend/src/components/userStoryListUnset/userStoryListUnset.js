@@ -263,10 +263,11 @@ const USListUnset = ({
                           onClose={onCloseAsignarSprint}
                         />
                       )}
+
                       <Modal
                         initialFocusRef={initialRef}
-                        isOpen={isOpenModalAssignDev}
-                        onClose={onCloseModalAssignDev}
+                        isOpen={isOpenModal}
+                        onClose={onCloseModal}
                       >
                         <ModalOverlay />
                         <ModalContent>
