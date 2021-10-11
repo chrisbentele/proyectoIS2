@@ -650,7 +650,19 @@ def sprints_user_stories(request, proyect_id, sprint_id, us_id=None):
     if request.method == "GET":
         us = US.objects.filter(proyecto=proyecto, sprint=sprint_id)
         serializer = USSerializer(us, many=True)
-        return JsonResponse(serializer.data, safe=False)
+        us_list = serializer.data
+
+        def get_asigned_user(us_id):
+            asigned_query = USAsignada.objects.filter(
+                us=us_id,
+            )
+            asigned = USAsignadaSerializer(asigned_query, many=True).data
+            return asigned[0]["usuario"] if len(asigned) > 0 else None
+
+        for us in us_list:
+            us.update({"asignado": get_asigned_user(us["id"])})
+
+        return JsonResponse(us_list, safe=False)
 
     elif request.method == "POST":
         # Agregar US al sprint
