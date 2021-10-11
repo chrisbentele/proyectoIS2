@@ -663,6 +663,15 @@ def sprints(request, proyect_id, sprint_id=None):
     elif request.method == "DELETE":
         spr = Sprint.objects.get(id=sprint_id)
         spr.delete()
+        us_list = US.objects.filter(proyecto=proyecto, sprint=sprint_id)
+
+        for us in us_list:
+
+            serializer = USSerializer(us, data={"sprint": None}, partial=True)
+
+            if serializer.is_valid():
+                serializer.save()
+
         return JsonResponse(True, status=204, safe=False)
 
     elif request.method == "PUT":
@@ -786,7 +795,7 @@ def sprints_activar(request, proyect_id, sprint_id):
             return conteo, len(us_list)
 
         if not get_us_count(sprint_id)[0]:
-            return HttpResponseBadRequest("No posible")
+            return HttpResponseBadRequest("Se deben estimar todos los US primero")
 
         serializer = SprintSerializer(
             sp,
@@ -804,7 +813,7 @@ def sprints_activar(request, proyect_id, sprint_id):
                 us_seri.save()
         except Exception as e:
             print(e)
-            return JsonResponse("Falta", status=400, safe=False)
+            return JsonResponse("Error actualizando US", status=400, safe=False)
 
         # estimacion de horas
         if serializer.is_valid():
@@ -831,6 +840,17 @@ def sprints_desactivar(request, proyect_id, sprint_id):
     if request.method == "POST":
         us = Sprint.objects.get(id=sprint_id)
         serializer = SprintSerializer(us, data={"activo": False}, partial=True)
+
+        us_list = US.objects.filter(sprint=sprint_id)
+
+        try:
+            for us in us_list:
+                us_seri = USSerializer(us, data={"estado": 4}, partial=True)
+                us_seri.is_valid(raise_exception=True)
+                us_seri.save()
+        except Exception as e:
+            print(e)
+            return JsonResponse("Error cambiando estado", status=400, safe=False)
 
         if serializer.is_valid():
             serializer.save()
