@@ -463,6 +463,51 @@ class User_Stories_Estimar_Tests(TestCase):
         self.assertEqual(res.json()["estimacionesDev"], 1)
 
 
+class User_Stories_Asignar_Test(TestCase):
+    def test_asignar_user(self):
+        u = crear_user()
+        p = crear_proyecto(self, [u["id"]])
+
+        us = crear_US(p["id"], u["id"])
+        res = self.client.post(
+            f"/api/proyectos/{p['id']}/user_stories/{us['id']}/asignar/{u['id']}",
+        )
+        self.assertEqual(res.status_code, 201)
+        res = self.client.get(
+            f"/api/proyectos/{p['id']}/user_stories/{us['id']}",
+        )
+        self.assertEqual(res.json()["asignado"]["id"], u["id"])
+
+    def test_desasignar_user(self):
+        u = crear_user()
+        p = crear_proyecto(self, [u["id"]])
+
+        us = crear_US(p["id"], u["id"])
+
+        # asignar us a user
+        res = self.client.post(
+            f"/api/proyectos/{p['id']}/user_stories/{us['id']}/asignar/{u['id']}",
+        )
+        self.assertEqual(res.status_code, 201)
+
+        # traer us p/ chequeo de cambios
+        res = self.client.get(
+            f"/api/proyectos/{p['id']}/user_stories/{us['id']}",
+        )
+        self.assertEqual(res.json()["asignado"]["id"], u["id"])
+
+        res = self.client.delete(
+            f"/api/proyectos/{p['id']}/user_stories/{us['id']}/asignar",
+        )
+        self.assertEqual(res.status_code, 204)
+
+        # traer us p/ chequeo de cambios
+        res = self.client.get(
+            f"/api/proyectos/{p['id']}/user_stories/{us['id']}",
+        )
+        self.assertEqual(res.json()["asignado"], None)
+
+
 class Sprint_Activar_Test(TestCase):
     def test_sprint_activar(self):
         u = crear_user()
