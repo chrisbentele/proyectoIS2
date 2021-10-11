@@ -149,9 +149,15 @@ const USListUnset = ({
                   boxShadow="md"
                   w="xs"
                 >
-                  <Text fontSize="20px" fontWeight="semibold">
-                    {us.nombre}
-                  </Text>
+                  <Flex>
+                    <Text fontSize="20px" fontWeight="semibold">
+                      {us.nombre}
+                    </Text>
+                    <Text ml="auto" fontSize="xs">
+                      Asignado a: <br />
+                      {us.asignado?.nombre || "nadie"}
+                    </Text>
+                  </Flex>
                   <Text fontSize="15px">{us.contenido}</Text>
                   <Box mt="2">
                     <Text>{`Estimación SM: ${
