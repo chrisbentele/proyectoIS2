@@ -500,8 +500,15 @@ def user_stories(request, proyect_id, us_id=None):
                 serializer = USSerializer(us)
                 us_data = serializer.data
 
-                asigned_user = get_asigned_user(us_id)
-                us_data.update({"asignado": asigned_user})
+                asigned_user_id = get_asigned_user(us_id)
+                if asigned_user_id:
+                    asigned_user = UsuarioSerializer(
+                        Usuario.objects.get(id=asigned_user_id)
+                    ).data
+                    us_data.update({"asignado": asigned_user})
+
+                else:
+                    us_data.update({"asignado": None})
 
                 return JsonResponse(us_data, safe=False)
             except US.DoesNotExist:
@@ -663,7 +670,17 @@ def sprints_user_stories(request, proyect_id, sprint_id, us_id=None):
             return asigned[0]["usuario"] if len(asigned) > 0 else None
 
         for us in us_list:
-            us.update({"asignado": get_asigned_user(us["id"])})
+
+            asigned_user_id = get_asigned_user(us["id"])
+            if asigned_user_id:
+                asigned_user = UsuarioSerializer(
+                    Usuario.objects.get(id=asigned_user_id)
+                ).data
+                us.update({"asignado": asigned_user})
+
+            else:
+                us.update({"asignado": None})
+
 
         return JsonResponse(us_list, safe=False)
 
@@ -717,7 +734,16 @@ def sprints_activar(request, proyect_id, sprint_id):
     if request.method == "POST":
         sp = Sprint.objects.get(id=sprint_id)
         serializer = SprintSerializer(sp, data={"activo": True}, partial=True)
+        # pasar todos los us a pendiente
 
+        us_list = US.objects.filter(sprint=sprint_id)
+
+        for us in us_list:
+            us_seri = USSerializer(us, data={"estado": 0}, partial=True)
+            us_seri.is_valid(raise_exception=True)
+            us_seri.save()
+
+        # estimacion de horas
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data, status=200)

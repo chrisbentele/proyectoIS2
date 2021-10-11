@@ -61,6 +61,16 @@ export const asignarUsAUsuario = ({ projectId, sprintId, usId, userId }) => {
   }
 };
 
+export const getUsuariosAsignados = ({ projectId, usId }) => {
+  if (true) {
+    return axiosInstance.get(
+      `/proyectos/${projectId}/user_stories/${usId}/asignados`
+    );
+  } else {
+    return null;
+  }
+};
+
 //! Registra la estimacion de tiempo del usuario
 export const estimarUs = ({ projectId, userId, usId, estimacion }) =>
   axiosInstance.post(`/proyectos/${projectId}/user_stories/${usId}/estimar`, {
@@ -93,6 +103,7 @@ const userStories = {
   desasignarUsASprint,
   eliminarUS,
   estimarUs,
+  getUsuariosAsignados,
 };
 
 export default userStories;

@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { useForm } from "react-hook-form";
+
+import { BsFillPersonPlusFill, BsFillPeopleFill } from "react-icons/bs";
 
 import {
   AlertDialog,
@@ -27,11 +29,14 @@ import {
   Input,
   FormErrorMessage,
   toast,
+  Image,
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { api } from "../../api";
 import Select from "react-select";
 import AsignarDevUsModal from "../../components/AsignarDevUsModal/AsignarDevUsModal";
+import { getUsers } from "../../api/users";
+import { desasignarUsASprint } from "../../api/userStories";
 const USList = ({
   projectId,
   sprintId,
@@ -43,18 +48,21 @@ const USList = ({
   ...props
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [showAsignarModal, setShowAsignarModal] = useState(false);
+  const [isOpenAlertSp, setIsOpenAlertSp] = useState(false);
   const onClose = () => setIsOpen(false);
+  const onCloseAlertSp = () => setIsOpenAlertSp(false);
   const onDelete = (id) => {
-    console.log(id);
     eliminarUS(id);
+    setIsOpen(false);
+  };
+  const onRemove = (id) => {
+    console.log(id);
+    desasignarUsASprint({ projectId, sprintId, usId: id });
     setIsOpen(false);
   };
   const cancelRef = React.useRef();
 
   const moverUS = async (estado, usId) => {
-    console.log(estado);
-    console.log(usId);
     await api.editUS({ projectId, estado, usId });
     api
       .getUserStories(projectId, sprintId)
@@ -62,14 +70,11 @@ const USList = ({
   };
 
   // const editarUS = async (usName, description, usId) => {
-  //   console.log(usName);
-  //   console.log(usId);
   //   await api.editUS({ projectId, usName, description, usId });
   //   api.getUserStories(projectId).then(({ data }) => setUserStories(data));
   // };
 
   const eliminarUS = async (id) => {
-    console.log(id);
     await api.eliminarUS(projectId, id);
     api
       .getUserStories(projectId, sprintId)
@@ -80,7 +85,6 @@ const USList = ({
   const [isOpenModal, setIsOpenModal] = React.useState(false);
   const onCloseModal = () => setIsOpenModal(false);
   // const onEdit = (nombre, contenido, id) => {
-  //   console.log(id);
   //   editarUS(nombre, contenido, id);
   //   setIsOpenModal(false);
   // };
@@ -147,11 +151,17 @@ const USList = ({
                 key={us.id}
                 bg="white"
                 boxShadow="md"
-                key={us.id}
               >
-                <Text fontSize="20px" fontWeight="semibold">
-                  {us.nombre}
-                </Text>
+                <Flex>
+                  <Text fontSize="20px" fontWeight="semibold">
+                    {us.nombre}
+                  </Text>
+                  <Text ml="auto" fontSize="xs">
+                    Asignado a: <br />
+                    {us.asignado.nombre}
+                  </Text>
+                </Flex>
+                {/* <Image borderRadius="100" src={us.asignado.picture} /> */}
                 <Text fontSize="15px">{us.contenido}</Text>
                 <Select
                   placeholder="cambiar estado"
@@ -184,35 +194,10 @@ const USList = ({
                       setFocusedUS(us);
                     }}
                     mt="2"
+                    mr="2"
                   >
                     <EditIcon color="black.500" />
                   </Button>
-
-                  <Button
-                    onClick={() => {
-                      setFocusedUS(us);
-                      setShowAsignarModal(true);
-                    }}
-                    mt="2"
-                  >
-                    Asignar
-                  </Button>
-                  {focusedUS && (
-                    <AsignarDevUsModal
-                      projectId={projectId}
-                      US={focusedUS}
-                      sprintId={sprintId}
-                      isOpen={showAsignarModal}
-                      dispatchError={dispatchError}
-                      onClose={async () => {
-                        setShowAsignarModal(false);
-
-                        await api.userStories
-                          .getUserStories(projectId, sprintId)
-                          .then(({ data }) => setUserStories(data));
-                      }}
-                    />
-                  )}
 
                   <Modal
                     initialFocusRef={initialRef}
@@ -268,7 +253,7 @@ const USList = ({
                         <ModalFooter>
                           <Button
                             mr={4}
-                            colorScheme="blue"
+                            colorScheme="green"
                             isLoading={isSubmitting}
                             type="submit"
                           >
@@ -279,7 +264,56 @@ const USList = ({
                       </form>
                     </ModalContent>
                   </Modal>
+                  <Button
+                    mt="2"
+                    onClick={() => setIsOpenAlertSp(true)}
+                    ml="1"
+                    bg=""
+                    color="red.500"
+                    borderWidth="1px"
+                    borderColor="red.500"
+                    _hover={{
+                      background: "grey.200",
+                    }}
+                    _active={{
+                      background: "white.200",
+                    }}
+                  >
+                    Remover del Sprint
+                  </Button>
+                  <AlertDialog
+                    isOpen={isOpenAlertSp}
+                    leastDestructiveRef={cancelRef}
+                    onClose={onCloseAlertSp}
+                  >
+                    <AlertDialogOverlay>
+                      <AlertDialogContent>
+                        <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                          Remover US del Sprint
+                        </AlertDialogHeader>
 
+                        <AlertDialogBody>
+                          ¿Está seguro que desea remover esta US del sprint?
+                        </AlertDialogBody>
+
+                        <AlertDialogFooter>
+                          <Button ref={cancelRef} onClick={onCloseAlertSp}>
+                            Cancelar
+                          </Button>
+                          <Button
+                            colorScheme="red"
+                            onClick={() => {
+                              moverUS(4, us.id);
+                              onRemove(us.id);
+                            }}
+                            ml={3}
+                          >
+                            Remover
+                          </Button>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialogOverlay>
+                  </AlertDialog>
                   <Button
                     onClick={() => setIsOpen(true)}
                     mt="2"

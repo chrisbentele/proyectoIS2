@@ -9,17 +9,21 @@ import {
   AlertDialogFooter,
   Button,
 } from "@chakra-ui/react";
-import { useHistory } from "react-router";
 
-const EliminarSprint = ({ projectId, spId, isOpen, onClose, setSprints }) => {
+const DesasignarUsSprint = ({
+  projectId,
+  spId,
+  usId,
+  isOpen,
+  onClose,
+  setSprints,
+}) => {
   const cancelRef = useRef();
-  const history = useHistory();
 
-  const onDeleteSprint = () => {
-    api.sprints.deleteSprint({ projectId, spId });
+  const onRemoveUs = () => {
+    api.userStories.desasignarUsASprint({ projectId, spId, usId });
     api.sprints.getSprints(projectId).then(({ data }) => setSprints(data)); //actualizar que se elimino
     onClose(true);
-    history.push(`/projects/${projectId}`);
   };
 
   return (
@@ -42,7 +46,7 @@ const EliminarSprint = ({ projectId, spId, isOpen, onClose, setSprints }) => {
             <Button ref={cancelRef} onClick={onClose}>
               Cancelar
             </Button>
-            <Button colorScheme="red" onClick={onDeleteSprint} ml={3}>
+            <Button colorScheme="red" onClick={onRemoveUs} ml={3}>
               Eliminar Sprint
             </Button>
           </AlertDialogFooter>
@@ -52,4 +56,4 @@ const EliminarSprint = ({ projectId, spId, isOpen, onClose, setSprints }) => {
   );
 };
 
-export default EliminarSprint;
+export default DesasignarUsSprint;
