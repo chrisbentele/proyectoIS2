@@ -133,7 +133,11 @@ export default function ProjectConfig({ props, dispatchError }) {
                 <NumberInput
                   fontSize="lg"
                   value={props.field.value}
-                  onChange={props.field.onChange}
+                  onChange={(e) => {
+                    if (e > 0) {
+                      props.field.onChange(e);
+                    }
+                  }}
                 >
                   <NumberInputField
                     //TODO: Only allow numbers, also accepts 'e' char
