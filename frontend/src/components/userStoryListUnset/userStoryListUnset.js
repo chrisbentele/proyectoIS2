@@ -32,13 +32,14 @@ import {
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { api } from "../../api";
 import EstimarUsModal from "../../components/EstimarUsModal/EstimarUsModal";
-import AsignarUsASprintModal from "../AsignarUsASprintModal/AsignarUsASprintModal";
+import AsignarUSModal from "../AsignarUsASprintModal/AsignarUsASprintModal";
 const USListUnset = ({
   projectId,
   setUserStories,
   userStories,
   nombreLista,
   children,
+  dispatchError,
   canModify,
   canEstimate,
   canDelete,
@@ -213,14 +214,9 @@ const USListUnset = ({
                     <AsignarUSModal
                       projectId={projectId}
                       US={focusedUS}
-                      rolUsuario={"SM"}
                       isOpen={showAsignarModal}
-                      onClose={() => {
-                        setShowAsignarModal(false);
-                        api
-                          .getUserStories(projectId)
-                          .then(({ data }) => setUserStories(data));
-                      }}
+                      dispatchError={dispatchError}
+                      onClose={onCloseAsignarSprint}
                     />
                   )}
                   <Modal
@@ -351,11 +347,11 @@ const USListUnset = ({
 };
 
 
-USList.defaultProps = {
+USListUnset.defaultProps = {
   canModify: false,
   canEstimate: false,
   canDelete: false,
   canAsign: false,
 }
 
-export default USList;
+export default USListUnset;
