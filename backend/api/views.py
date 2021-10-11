@@ -1,6 +1,9 @@
 from datetime import datetime
 from functools import partial
+from django.utils.translation import activate
 from rest_framework.exceptions import ValidationError
+
+from backend.api.utils.misc import get_asigned_user, get_us_count
 from .serializers import (
     ProyectoSerializer,
     RolAsignadoSerializer,
@@ -490,14 +493,6 @@ def user_stories(request, proyect_id, us_id=None):
 
     elif request.method == "GET":
 
-        def get_asigned_user(us_id):
-
-            asigned_query = USAsignada.objects.filter(
-                us=us_id,
-            )
-            asigned = USAsignadaSerializer(asigned_query, many=True).data
-            return asigned[0]["usuario"] if len(asigned) > 0 else None
-
         if us_id != None:
             try:
                 us = US.objects.get(id=us_id)
@@ -622,32 +617,17 @@ def sprints(request, proyect_id, sprint_id=None):
 
     elif request.method == "GET":
 
-        def get_us_count(sprint_id):
-            uss = US.objects.filter(proyecto=proyecto, sprint=sprint_id)
-            serializer = USSerializer(uss, many=True)
-            us_list = serializer.data
-            conteo = None
-            for us in us_list:
-                if us["estimacionSM"] != None and us["estimacionesDev"] != None:
-                    if conteo == None:
-                        conteo = 0
-                    conteo += (us["estimacionSM"]) + (us["estimacionesDev"]) / 2
-                else:
-                    conteo = None
-                    break
-
-            return conteo, len(us_list)
-
         if sprint_id != None:
             # Retorna un sprint
             try:
                 spr = Sprint.objects.get(id=sprint_id)
                 serializer = SprintSerializer(spr)
                 spr_data = serializer.data
-                conteo_estimaciones, us_list_length = get_us_count(sprint_id)
+                conteo_estimaciones, us_list_length, activable = get_us_count(sprint_id)
                 spr_data.update(
                     {
                         "sumaHorasAsignadas": conteo_estimaciones,
+                        "activable": activable,
                         "numeroDeUs": us_list_length,
                     }
                 )
@@ -660,11 +640,14 @@ def sprints(request, proyect_id, sprint_id=None):
             serializer = SprintSerializer(spr, many=True)
             spr_list = serializer.data
             for sprint in spr_list:
-                conteo_estimaciones, us_list_length = get_us_count(sprint["id"])
+                conteo_estimaciones, us_list_length, activable = get_us_count(
+                    sprint["id"]
+                )
 
                 sprint.update(
                     {
                         "sumaHorasAsignadas": conteo_estimaciones,
+                        "activable": activable,
                         "numeroDeUs": us_list_length,
                     }
                 )
@@ -716,13 +699,6 @@ def sprints_user_stories(request, proyect_id, sprint_id, us_id=None):
         us = US.objects.filter(proyecto=proyecto, sprint=sprint_id)
         serializer = USSerializer(us, many=True)
         us_list = serializer.data
-
-        def get_asigned_user(us_id):
-            asigned_query = USAsignada.objects.filter(
-                us=us_id,
-            )
-            asigned = USAsignadaSerializer(asigned_query, many=True).data
-            return asigned[0]["usuario"] if len(asigned) > 0 else None
 
         for us in us_list:
 
@@ -787,22 +763,6 @@ def sprints_activar(request, proyect_id, sprint_id):
 
     if request.method == "POST":
         sp = Sprint.objects.get(id=sprint_id)
-
-        def get_us_count(sprint_id):
-            uss = US.objects.filter(proyecto=proyecto, sprint=sprint_id)
-            serializer = USSerializer(uss, many=True)
-            us_list = serializer.data
-            conteo = None
-            for us in us_list:
-                if us["estimacionSM"] != None and us["estimacionesDev"] != None:
-                    if conteo == None:
-                        conteo = 0
-                    conteo += (us["estimacionSM"]) + (us["estimacionesDev"]) / 2
-                else:
-                    conteo = None
-                    break
-
-            return conteo, len(us_list)
 
         if not get_us_count(sprint_id)[0]:
             return HttpResponseBadRequest("Se deben estimar todos los US primero")
