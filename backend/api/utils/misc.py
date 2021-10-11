@@ -28,4 +28,7 @@ def get_us_count(proyect_id, sprint_id):
             conteo += (us["estimacionSM"]) + (us["estimacionesDev"]) / 2
         else:
             activable = False
+
+    if len(us_list):
+        activable = False
     return conteo, len(us_list), activable
