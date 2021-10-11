@@ -18,6 +18,7 @@ import USList from "../../components/userStoryList/userStoryList";
 import { mapStateColor } from "../../styles/theme";
 import { MdBuild } from "react-icons/md";
 import { useHistory } from "react-router-dom";
+import { BsFillPlayFill } from "react-icons/bs";
 
 import { tienePermiso } from "../../util";
 import { PERMISOS_MACRO } from "../roles/permisos";
@@ -35,6 +36,7 @@ export default function Index({ props, dispatchError }) {
   const [userStories, setUserStories] = useState([]); //estado del proyecto
   const [sprint, setSprint] = useState();
   const [isOpenEditSp, setIsOpenEditSp] = useState(false);
+  const [hayUs, setHayUs] = useState(false);
 
   const history = useHistory();
 
@@ -54,7 +56,13 @@ export default function Index({ props, dispatchError }) {
 
     api.sprints
       .getSprint(projectId, sprintId)
-      .then(({ data }) => setSprint(data))
+      .then(({ data }) => {
+        setSprint(data);
+        console.log(data);
+        if (data.activable) {
+          setHayUs(true);
+        }
+      })
       .catch((err) => console.log(err));
 
     api
@@ -63,6 +71,13 @@ export default function Index({ props, dispatchError }) {
       .catch((err) => console.log(err));
   }, [projectId, sprintId]);
 
+  const activateSprint = () => {
+    if (!hayUs) return dispatchError("No se puedo activar el sprint", "");
+    api.sprints.activarSprint(projectId, sprintId);
+    api.sprints.getSprint(projectId).then(({ data }) => setSprint(data)); //actualizar que se elimino
+  };
+
+  console.log(sprint);
   return (
     <Box
       minHeight="100vh"
@@ -131,6 +146,19 @@ export default function Index({ props, dispatchError }) {
                   onClick={() => setIsOpenEditSp(true)}
                 >
                   Configurar Sprint
+                </Button>
+              ) : null}
+              {tienePermiso(thisMember, PERMISOS_MACRO.MODIFICAR_SPRINT) ? (
+                <Button
+                  leftIcon={<BsFillPlayFill />}
+                  colorScheme="yellow"
+                  variant="solid"
+                  // opacity="30%"
+                  onClick={() => {
+                    activateSprint();
+                  }}
+                >
+                  Activar Sprint
                 </Button>
               ) : null}
             </HStack>
