@@ -165,7 +165,7 @@ export default function Index({ props, dispatchError }) {
             <HStack p="5" alignItems="top" float="top">
               <USList
                 projectId={projectId}
-                sprint={sprint?.id}
+                sprint={sprint}
                 dispatchError={dispatchError}
                 setUserStories={setUserStories}
                 nombreLista="Pendiente"
@@ -184,7 +184,7 @@ export default function Index({ props, dispatchError }) {
               ></USList>
               <USList
                 projectId={projectId}
-                sprint={sprint?.id}
+                sprint={sprint}
                 dispatchError={dispatchError}
                 setUserStories={setUserStories}
                 nombreLista="En curso"
@@ -203,7 +203,7 @@ export default function Index({ props, dispatchError }) {
               ></USList>
               <USList
                 projectId={projectId}
-                sprint={sprint?.id}
+                sprint={sprint}
                 dispatchError={dispatchError}
                 setUserStories={setUserStories}
                 nombreLista="Hecho"
@@ -222,7 +222,7 @@ export default function Index({ props, dispatchError }) {
               ></USList>
               <USList
                 projectId={projectId}
-                sprint={sprint?.id}
+                sprint={sprint}
                 dispatchError={dispatchError}
                 setUserStories={setUserStories}
                 nombreLista="Backlog"
