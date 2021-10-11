@@ -63,7 +63,9 @@ export const asignarUsAUsuario = ({ projectId, sprintId, usId, userId }) => {
 
 export const getUsuariosAsignados = ({ projectId, usId }) => {
   if (true) {
-    return axiosInstance.get(`/proyectos/${projectId}/user_stories/${usId}`);
+    return axiosInstance.get(
+      `/proyectos/${projectId}/user_stories/${usId}/asignados`
+    );
   } else {
     return null;
   }

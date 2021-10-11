@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 
 import { useForm } from "react-hook-form";
 
+import { BsFillPersonPlusFill, BsFillPeopleFill } from "react-icons/bs";
+
 import {
   AlertDialog,
   AlertDialogBody,
@@ -33,6 +35,7 @@ import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { api } from "../../api";
 import Select from "react-select";
 import AsignarDevUsModal from "../../components/AsignarDevUsModal/AsignarDevUsModal";
+import { getUsers } from "../../api/users";
 const USList = ({
   projectId,
   sprintId,
@@ -62,7 +65,7 @@ const USList = ({
           setNombre(nombre, asignado.nombre);
         });
     });
-  }, [picture, projectId, userStories]);
+  }, [projectId, userStories, nombre]);
 
   const moverUS = async (estado, usId) => {
     await api.editUS({ projectId, estado, usId });
@@ -157,6 +160,7 @@ const USList = ({
                 <Text fontSize="20px" fontWeight="semibold">
                   {us.nombre}
                 </Text>
+                <Text>{console.log(api.getUser(us.asignado))}</Text>
                 <Image borderRadius="100" src={"a"} />
                 <Text fontSize="15px">{us.contenido}</Text>
                 <Select
@@ -202,7 +206,7 @@ const USList = ({
                     }}
                     mt="2"
                   >
-                    Asignar a Dev
+                    <BsFillPeopleFill />
                   </Button>
                   {focusedUS && (
                     <AsignarDevUsModal
