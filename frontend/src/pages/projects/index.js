@@ -26,7 +26,7 @@ import EditarSprintModal from "../../components/EditarSprintModal/EditarSprintMo
 import { IconButton } from "@chakra-ui/button";
 import { EditIcon } from "@chakra-ui/icons";
 import { useHistory } from "react-router-dom";
-import { MdBuild } from "react-icons/md";
+import { MdBuild, MdTimer } from "react-icons/md";
 import EliminarSprintModal from "../../components/EliminarSprintModal/EliminarSprintModal";
 
 /**
@@ -57,7 +57,7 @@ export default function Index({ dispatchError, props }) {
       .then((US) => setUserStories(US.data))
       .catch((err) => console.log(err));
     api.sprints.getSprints(projectId).then(({ data }) => setSprints(data));
-  }, []);
+  }, [projectId]);
 
   return (
     <Box

@@ -36,6 +36,7 @@ import { api } from "../../api";
 import Select from "react-select";
 import AsignarDevUsModal from "../../components/AsignarDevUsModal/AsignarDevUsModal";
 import { getUsers } from "../../api/users";
+import { desasignarUsASprint } from "../../api/userStories";
 const USList = ({
   projectId,
   sprintId,
@@ -47,25 +48,19 @@ const USList = ({
   ...props
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [showAsignarModal, setShowAsignarModal] = useState(false);
-  const [picture, setPicture] = useState([]);
-  const [nombre, setNombre] = useState([]);
+  const [isOpenAlertSp, setIsOpenAlertSp] = useState(false);
   const onClose = () => setIsOpen(false);
+  const onCloseAlertSp = () => setIsOpenAlertSp(false);
   const onDelete = (id) => {
     eliminarUS(id);
     setIsOpen(false);
   };
+  const onRemove = (id) => {
+    console.log(id);
+    desasignarUsASprint({ projectId, sprintId, usId: id });
+    setIsOpen(false);
+  };
   const cancelRef = React.useRef();
-
-  useEffect(() => {
-    userStories?.forEach((us) => {
-      api.userStories
-        .getUsuariosAsignados(projectId, us.id)
-        .then(({ data: asignado }) => {
-          setNombre(nombre, asignado.nombre);
-        });
-    });
-  }, [projectId, userStories, nombre]);
 
   const moverUS = async (estado, usId) => {
     await api.editUS({ projectId, estado, usId });
@@ -157,11 +152,16 @@ const USList = ({
                 bg="white"
                 boxShadow="md"
               >
-                <Text fontSize="20px" fontWeight="semibold">
-                  {us.nombre}
-                </Text>
-                <Text>{console.log(api.getUser(us.asignado))}</Text>
-                <Image borderRadius="100" src={"a"} />
+                <Flex>
+                  <Text fontSize="20px" fontWeight="semibold">
+                    {us.nombre}
+                  </Text>
+                  <Text ml="auto" fontSize="xs">
+                    Asignado a: <br />
+                    {us.asignado.nombre}
+                  </Text>
+                </Flex>
+                {/* <Image borderRadius="100" src={us.asignado.picture} /> */}
                 <Text fontSize="15px">{us.contenido}</Text>
                 <Select
                   placeholder="cambiar estado"
@@ -198,32 +198,6 @@ const USList = ({
                   >
                     <EditIcon color="black.500" />
                   </Button>
-
-                  <Button
-                    onClick={() => {
-                      setFocusedUS(us);
-                      setShowAsignarModal(true);
-                    }}
-                    mt="2"
-                  >
-                    <BsFillPeopleFill />
-                  </Button>
-                  {focusedUS && (
-                    <AsignarDevUsModal
-                      projectId={projectId}
-                      US={focusedUS}
-                      sprintId={sprintId}
-                      isOpen={showAsignarModal}
-                      dispatchError={dispatchError}
-                      onClose={async () => {
-                        setShowAsignarModal(false);
-
-                        await api.userStories
-                          .getUserStories(projectId, sprintId)
-                          .then(({ data }) => setUserStories(data));
-                      }}
-                    />
-                  )}
 
                   <Modal
                     initialFocusRef={initialRef}
@@ -279,7 +253,7 @@ const USList = ({
                         <ModalFooter>
                           <Button
                             mr={4}
-                            colorScheme="blue"
+                            colorScheme="green"
                             isLoading={isSubmitting}
                             type="submit"
                           >
@@ -290,7 +264,56 @@ const USList = ({
                       </form>
                     </ModalContent>
                   </Modal>
+                  <Button
+                    mt="2"
+                    onClick={() => setIsOpenAlertSp(true)}
+                    ml="1"
+                    bg=""
+                    color="red.500"
+                    borderWidth="1px"
+                    borderColor="red.500"
+                    _hover={{
+                      background: "grey.200",
+                    }}
+                    _active={{
+                      background: "white.200",
+                    }}
+                  >
+                    Remover del Sprint
+                  </Button>
+                  <AlertDialog
+                    isOpen={isOpenAlertSp}
+                    leastDestructiveRef={cancelRef}
+                    onClose={onCloseAlertSp}
+                  >
+                    <AlertDialogOverlay>
+                      <AlertDialogContent>
+                        <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                          Remover US del Sprint
+                        </AlertDialogHeader>
 
+                        <AlertDialogBody>
+                          ¿Está seguro que desea remover esta US del sprint?
+                        </AlertDialogBody>
+
+                        <AlertDialogFooter>
+                          <Button ref={cancelRef} onClick={onCloseAlertSp}>
+                            Cancelar
+                          </Button>
+                          <Button
+                            colorScheme="red"
+                            onClick={() => {
+                              moverUS(4, us.id);
+                              onRemove(us.id);
+                            }}
+                            ml={3}
+                          >
+                            Remover
+                          </Button>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialogOverlay>
+                  </AlertDialog>
                   <Button
                     onClick={() => setIsOpen(true)}
                     mt="2"

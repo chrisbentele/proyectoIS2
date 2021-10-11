@@ -9,14 +9,17 @@ import {
   AlertDialogFooter,
   Button,
 } from "@chakra-ui/react";
+import { useHistory } from "react-router";
 
 const EliminarSprint = ({ projectId, spId, isOpen, onClose, setSprints }) => {
   const cancelRef = useRef();
+  const history = useHistory();
 
   const onDeleteSprint = () => {
     api.sprints.deleteSprint({ projectId, spId });
     api.sprints.getSprints(projectId).then(({ data }) => setSprints(data)); //actualizar que se elimino
     onClose(true);
+    history.push(`/projects/${projectId}`);
   };
 
   return (
