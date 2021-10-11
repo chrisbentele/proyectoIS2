@@ -260,14 +260,18 @@ export default function Index({ dispatchError, props }) {
                             {sprint.activo ? "Activo" : "No activado"}
                           </Text>
                         </Box>
-                        <Button
-                          onClick={() => {
-                            setFocusedSprint(sprint);
-                            setShowEliminarModal(true);
-                          }}
-                        >
-                          Eliminar :o
-                        </Button>
+                        {tienePermiso(thisMember, PERMISOS_MACRO.ELIMINAR_SPRINT) ?
+                          <Button
+                            onClick={() => {
+                              setFocusedSprint(sprint);
+                              setShowEliminarModal(true);
+                            }}
+                          >
+                            Eliminar :o
+                          </Button>
+                          :
+                          null
+                        }
                         {focusedSprint && (
                           <EliminarSprintModal
                             projectId={projectId}
