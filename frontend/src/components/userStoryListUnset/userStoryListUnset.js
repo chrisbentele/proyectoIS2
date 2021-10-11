@@ -32,13 +32,14 @@ import {
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { api } from "../../api";
 import EstimarUsModal from "../../components/EstimarUsModal/EstimarUsModal";
-import AsignarUsASprintModal from "../AsignarUsASprintModal/AsignarUsASprintModal";
+import AsignarUSModal from "../AsignarUsASprintModal/AsignarUsASprintModal";
 const USListUnset = ({
   projectId,
   setUserStories,
   userStories,
   nombreLista,
   children,
+  dispatchError,
   canModify,
   canEstimate,
   canDelete,
@@ -213,82 +214,77 @@ const USListUnset = ({
                     <AsignarUSModal
                       projectId={projectId}
                       US={focusedUS}
-                      rolUsuario={"SM"}
                       isOpen={showAsignarModal}
-                      onClose={() => {
-                        setShowAsignarModal(false);
-                        api
-                          .getUserStories(projectId)
-                          .then(({ data }) => setUserStories(data));
-                      }}
+                      dispatchError={dispatchError}
+                      onClose={onCloseAsignarSprint}
                     />
                   )}
                   <Modal
-                    initialFocusRef={initialRef}
-                    isOpen={isOpenModalAssign}
-                    onClose={onCloseModalAssign}
-                  >
-                    <ModalOverlay />
-                    <ModalContent>
-                      <ModalHeader>Editar US</ModalHeader>
+                      initialFocusRef={initialRef}
+                      isOpen={isOpenModal}
+                      onClose={onCloseModalAssign}
+                    >
+                      <ModalOverlay />
+                      <ModalContent>
+                        <ModalHeader>Editar US</ModalHeader>
 
-                      <ModalCloseButton />
-                      <form onSubmit={handleSubmit(onSubmit)}>
-                        <ModalBody pb={6}>
-                          <FormControl isInvalid={errors.name}>
-                            <FormLabel htmlFor="name">Nombre US</FormLabel>
-                            <Input
-                              id="name"
-                              ref={initialRef}
-                              defaultValue={us.nombre}
-                              {...register("usName", {
-                                required: "This is required",
-                                minLength: {
-                                  value: 4,
-                                  message: "Minimum length should be 4",
-                                },
-                              })}
-                            />
-                            <FormErrorMessage>
-                              {errors.name && errors.name.message}
-                            </FormErrorMessage>
-                          </FormControl>
-                          <FormControl isInvalid={errors.description} mt={4}>
-                            <FormLabel htmlFor="description" mt={4}>
-                              Descripción
-                            </FormLabel>
-                            <Input
-                              id="description"
-                              defaultValue={us.contenido}
-                              {...register("description", {
-                                required: "This is required",
-                                minLength: {
-                                  value: 4,
-                                  message: "Minimum length should be 4",
-                                },
-                              })}
-                            />
-                            <FormErrorMessage>
-                              {errors.description &&
-                                errors.description.message}
-                            </FormErrorMessage>
-                          </FormControl>
-                        </ModalBody>
+                        <ModalCloseButton />
+                        <form onSubmit={handleSubmit(onSubmit)}>
+                          <ModalBody pb={6}>
+                            <FormControl isInvalid={errors.name}>
+                              <FormLabel htmlFor="name">Nombre US</FormLabel>
+                              <Input
+                                id="name"
+                                ref={initialRef}
+                                defaultValue={us.nombre}
+                                {...register("usName", {
+                                  required: "This is required",
+                                  minLength: {
+                                    value: 4,
+                                    message: "Minimum length should be 4",
+                                  },
+                                })}
+                              />
+                              <FormErrorMessage>
+                                {errors.name && errors.name.message}
+                              </FormErrorMessage>
+                            </FormControl>
+                            <FormControl isInvalid={errors.description} mt={4}>
+                              <FormLabel htmlFor="description" mt={4}>
+                                Descripción
+                              </FormLabel>
+                              <Input
+                                id="description"
+                                defaultValue={us.contenido}
+                                {...register("description", {
+                                  required: "This is required",
+                                  minLength: {
+                                    value: 4,
+                                    message: "Minimum length should be 4",
+                                  },
+                                })}
+                              />
+                              <FormErrorMessage>
+                                {errors.description &&
+                                  errors.description.message}
+                              </FormErrorMessage>
+                            </FormControl>
+                          </ModalBody>
 
-                        <ModalFooter>
-                          <Button
-                            mr={4}
-                            colorScheme="blue"
-                            isLoading={isSubmitting}
-                            type="submit"
-                          >
-                            Guardar
-                          </Button>
-                          <Button onClick={onCloseModal}>Cancelar</Button>
-                        </ModalFooter>
-                      </form>
-                    </ModalContent>
-                  </Modal>
+                          <ModalFooter>
+                            <Button
+                              mr={4}
+                              colorScheme="blue"
+                              isLoading={isSubmitting}
+                              type="submit"
+                            >
+                              Guardar
+                            </Button>
+                            <Button onClick={onCloseModal}>Cancelar</Button>
+                          </ModalFooter>
+                        </form>
+                      </ModalContent>
+                    </Modal>
                   {canDelete ?
                     <Button
                       onClick={() => setIsOpen(true)}
@@ -351,11 +347,11 @@ const USListUnset = ({
 };
 
 
-USList.defaultProps = {
+USListUnset.defaultProps = {
   canModify: false,
   canEstimate: false,
   canDelete: false,
   canAsign: false,
 }
 
-export default USList;
+export default USListUnset;
