@@ -172,7 +172,7 @@ const USList = ({
                   </Text>
                   <Text ml="auto" fontSize="xs">
                     Asignado a: <br />
-                    {us.asignado.nombre}
+                    {us.asignado?.nombre || "nadie"}
                   </Text>
                 </Flex>
                 <Text fontSize="15px">{us.contenido}</Text>

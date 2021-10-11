@@ -177,7 +177,8 @@ const USListUnset = ({
                     </Text>
                   </Box>
 
-                  {thisMember?.rol.nombre === "Scrum Master" || thisMember?.id === us.asignado ? (
+                  {thisMember?.rol.nombre === "Scrum Master" ||
+                  thisMember?.id === us.asignado.id ? (
                     <Flex>
                       {tienePermiso(thisMember, PERMISOS_MACRO.MODIFICAR_US) ? (
                         <Button
@@ -207,8 +208,11 @@ const USListUnset = ({
                         <EstimarUsModal
                           projectId={projectId}
                           US={focusedUS}
-
-                          rolUsuario={thisMember?.rol.nombre === "Scrum Master" ? "SM" : "dev"}
+                          rolUsuario={
+                            thisMember?.rol.nombre === "Scrum Master"
+                              ? "SM"
+                              : "dev"
+                          }
                           isOpen={showEstimarModal}
                           onClose={() => {
                             setShowEstimarModal(false);
@@ -220,7 +224,10 @@ const USListUnset = ({
                         />
                       )}
 
-                      {tienePermiso(thisMember, PERMISOS_MACRO.ASIGNAR_MIEMBROS_A_US) ? (
+                      {tienePermiso(
+                        thisMember,
+                        PERMISOS_MACRO.ASIGNAR_MIEMBROS_A_US
+                      ) ? (
                         <>
                           <Button
                             onClick={() => {
