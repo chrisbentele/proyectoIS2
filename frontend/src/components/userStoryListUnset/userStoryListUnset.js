@@ -177,7 +177,7 @@ const USListUnset = ({
                     </Text>
                   </Box>
 
-                  {thisMember?.rol.nombre === "Scrum Master" || thisMember?.id === us.asignado ? (
+                  {thisMember?.rol.nombre === "Scrum Master" || thisMember?.id === us.asignado.id ? (
                     <Flex>
                       {tienePermiso(thisMember, PERMISOS_MACRO.MODIFICAR_US) ? (
                         <Button
