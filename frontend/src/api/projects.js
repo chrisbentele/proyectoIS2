@@ -1,5 +1,16 @@
 //! Importar la instancia de axios
-import { axiosInstance } from ".";
+// import axios from 'axios'
+// let axiosInstance
+// if(process.env.NODE_ENV === 'test'){
+
+//   axiosInstance = axios.create({
+//     baseURL: "http://localhost:8000/api",
+//   });
+// } else {
+// axiosInstance = require(".");
+// }
+import { axiosInstance } from '.';
+
 
 /**
  * @file project.js
@@ -15,6 +26,7 @@ import { axiosInstance } from ".";
  * @returns Resultado de la operación
  */
 export const createProject = async (projectData) => {
+  console.log('create pro')
   const { projectName, scrumMasterId, estimation } = projectData;
   if (!estimation || !scrumMasterId || !projectName) {
     console.log("error");
@@ -22,6 +34,7 @@ export const createProject = async (projectData) => {
       "Para crear proyecto debes proveer la duracion estimada, miembros y nombre del proyecto"
     );
   }
+  console.log(scrumMasterId)
   return await axiosInstance.post("proyectos", {
     duracionEstimada: estimation,
     miembros: [scrumMasterId],

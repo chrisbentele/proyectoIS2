@@ -42,7 +42,7 @@ export default function Index({ props, dispatchError }) {
       .catch((err) => console.log(err));
 
     api.userStories
-      .getUserStoriesSprint(projectId, sprintId)
+      .getUserStories(projectId, sprintId)
       .then(({ data }) => setUserStories(data));
 
     api.sprints

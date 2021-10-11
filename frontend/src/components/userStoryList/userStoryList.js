@@ -56,7 +56,9 @@ const USList = ({
     console.log(estado);
     console.log(usId);
     await api.editUS({ projectId, estado, usId });
-    api.getUserStories(projectId).then(({ data }) => setUserStories(data));
+    api
+      .getUserStories(projectId, sprintId)
+      .then(({ data }) => setUserStories(data));
   };
 
   // const editarUS = async (usName, description, usId) => {
@@ -69,7 +71,9 @@ const USList = ({
   const eliminarUS = async (id) => {
     console.log(id);
     await api.eliminarUS(projectId, id);
-    api.getUserStories(projectId).then(({ data }) => setUserStories(data));
+    api
+      .getUserStories(projectId, sprintId)
+      .then(({ data }) => setUserStories(data));
   };
 
   //const { onOpen } = useDisclosure();
@@ -114,7 +118,7 @@ const USList = ({
       })
       .catch((err) => console.log(err));
     await api.userStories
-      .getUserStoriesSprint(projectId, sprintId)
+      .getUserStories(projectId, sprintId)
       .then(({ data }) => setUserStories(data));
     setIsOpenModal(false);
   }
@@ -200,11 +204,11 @@ const USList = ({
                       sprintId={sprintId}
                       isOpen={showAsignarModal}
                       dispatchError={dispatchError}
-                      onClose={() => {
+                      onClose={async () => {
                         setShowAsignarModal(false);
 
-                        api
-                          .getUserStories(projectId)
+                        await api.userStories
+                          .getUserStories(projectId, sprintId)
                           .then(({ data }) => setUserStories(data));
                       }}
                     />

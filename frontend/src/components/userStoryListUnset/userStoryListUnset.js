@@ -28,12 +28,13 @@ import {
   FormErrorMessage,
   toast,
   Grid,
+  useToast,
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { api } from "../../api";
 import EstimarUsModal from "../../components/EstimarUsModal/EstimarUsModal";
 import AsignarUsASprintModal from "../AsignarUsASprintModal/AsignarUsASprintModal";
-const USList = ({
+const USListUnset = ({
   projectId,
   setUserStories,
   userStories,
@@ -51,6 +52,7 @@ const USList = ({
     eliminarUS(id);
     setIsOpen(false);
   };
+  const toast = useToast();
   const cancelRef = React.useRef();
 
   const eliminarUS = async (id) => {
@@ -79,7 +81,8 @@ const USList = ({
     await api
       .editUS({ ...values, projectId, usId: focusedUS?.id })
       .then((res) => {
-        if (res.id) {
+        console.log(res.statusText);
+        if (res.statusText == "OK") {
           toast({
             description: "US cambiada.",
             status: "success",
@@ -96,11 +99,18 @@ const USList = ({
         }
       })
       .catch((err) => console.log(err));
-    await api
+    await api.userStories
       .getUserStories(projectId)
       .then(({ data }) => setUserStories(data));
     setIsOpenModal(false);
   }
+
+  const onCloseAsignarSprint = async () => {
+    setShowAsignarModal(false);
+    await api
+      .getUserStories(projectId)
+      .then(({ data }) => setUserStories(data));
+  };
 
   return (
     <Box
@@ -190,13 +200,7 @@ const USList = ({
                         US={focusedUS}
                         isOpen={showAsignarModal}
                         dispatchError={dispatchError}
-                        onClose={() => {
-                          setShowAsignarModal(false);
-
-                          api
-                            .getUserStories(projectId)
-                            .then(({ data }) => setUserStories(data));
-                        }}
+                        onClose={onCloseAsignarSprint}
                       />
                     )}
                     <Modal
@@ -323,4 +327,4 @@ const USList = ({
   );
 };
 
-export default USList;
+export default USListUnset;
