@@ -28,8 +28,10 @@ import { EditIcon } from "@chakra-ui/icons";
 import { useHistory } from "react-router-dom";
 import { MdBuild } from "react-icons/md";
 
-import { useHistory } from "react-router";
 import { useAuth0 } from "@auth0/auth0-react";
+import { tienePermiso } from "../../util";
+import { PERMISOS_MACRO } from "../roles/permisos";
+
 /**
  * Función que contiene el código de la vista
  * @param { props } param0
@@ -89,7 +91,6 @@ export default function Index({ props }) {
             bg={mapStateColor(project.estado) - 40}
             left="0"
             right="0"
-            // boxShadow="md"
             width="full"
             pl="3"
             mb="3rem"
@@ -101,32 +102,43 @@ export default function Index({ props }) {
               </Link>
 
               <Box fontWeight="thin">|</Box>
-
-              <Button
-                colorScheme="yellow"
-                variant="solid"
-                // opacity="30%"
-                onClick={() => history.push(`/projects/${projectId}/members`)}
-              >
-                Miembros
-              </Button>
-              <Button
-                colorScheme="yellow"
-                variant="solid"
-                // opacity="30%"
-                onClick={() => history.push(`/projects/${projectId}/roles`)}
-              >
-                Configurar Roles
-              </Button>
-              <Button
-                leftIcon={<MdBuild />}
-                colorScheme="yellow"
-                variant="solid"
-                // opacity="30%"
-                onClick={() => history.push(`/projects/${projectId}/config`)}
-              >
-                Configurar Proyecto
-              </Button>
+              {tienePermiso(thisMember, PERMISOS_MACRO.EDITAR_MIEMBROS_A_PROYECTO) ?
+                <Button
+                  colorScheme="yellow"
+                  variant="solid"
+                  // opacity="30%"
+                  onClick={() => history.push(`/projects/${projectId}/members`)}
+                >
+                  Miembros
+                </Button>
+                :
+                null
+              }
+              {tienePermiso(thisMember, PERMISOS_MACRO.EDITAR_ROL_DEL_USUARIO) ?
+                <Button
+                  colorScheme="yellow"
+                  variant="solid"
+                  // opacity="30%"
+                  onClick={() => history.push(`/projects/${projectId}/roles`)}
+                >
+                  Configurar Roles
+                </Button>
+                :
+                null
+              }
+              {tienePermiso(thisMember, PERMISOS_MACRO.EDITAR_CONFIGURACIÓN_DEL_PROYECTO) ?
+                <Button
+                  leftIcon={<MdBuild />}
+                  colorScheme="yellow"
+                  variant="solid"
+                  // opacity="30%"
+                  onClick={() => history.push(`/projects/${projectId}/config`)}
+                >
+                  Configurar Proyecto
+                </Button>
+                :
+                null
+              }
             </HStack>
           </Box>
           <Box as="main" mt="50px" w="100vw">
@@ -137,8 +149,11 @@ export default function Index({ props }) {
                   setUserStories={setUserStories}
                   nombreLista="Backlog"
                   userStories={userStories?.filter((us) => us.estado === 4)}
-                  isScrumMaster={project?.scrumMaster.id === thisMember?.rol.id}
-                  isAsigned={true}
+                  canModify={tienePermiso(thisMember, PERMISOS_MACRO.MODIFICAR_US)}
+                  canEstimate={tienePermiso(thisMember, PERMISOS_MACRO.ESTIMAR_US)}
+                  canDelete={tienePermiso(thisMember, PERMISOS_MACRO.ELIMINAR_US)}
+                  canAsign={tienePermiso(thisMember, PERMISOS_MACRO.ASIGNAR_MIEMBROS_A_US)}
+                  isScrumMaster={thisMember?.rol.nombre === "Scrum Master"}
                 >
                   <Flex justify="center">
                     <LinkBox
@@ -155,12 +170,16 @@ export default function Index({ props }) {
                         color: "teal.500",
                       }}
                     >
-                      <LinkOverlay
-                        href={`/projects/${projectId}/createUS`}
-                        fontSize="lg"
-                      >
-                        + agregar nueva tarjeta
-                      </LinkOverlay>
+                      {tienePermiso(thisMember, PERMISOS_MACRO.CREAR_ROL) ?
+                        <LinkOverlay
+                          href={`/projects/${projectId}/createUS`}
+                          fontSize="lg"
+                        >
+                          + agregar nueva tarjeta
+                        </LinkOverlay>
+                        :
+                        null
+                      }
                     </LinkBox>
                   </Flex>
                 </USList>
@@ -168,23 +187,27 @@ export default function Index({ props }) {
               {/* sprints */}
               <Box>
                 <VStack>
-                  <Box
-                    display="flex"
-                    w="lg"
-                    height="180px"
-                    borderWidth="1px"
-                    borderRadius="lg"
-                    overflow="hidden"
-                    fontSize="3xl"
-                    fontWeight="bold"
-                    bg="white"
-                    justifyContent="center"
-                    alignItems="center"
-                    onClick={() => setIsOpenCrearSp(true)}
-                    cursor="pointer"
-                  >
-                    <Text>Crear sprint</Text>
-                  </Box>
+                  {tienePermiso(thisMember, PERMISOS_MACRO.CREAR_SPRINT) ?
+                    <Box
+                      display="flex"
+                      w="lg"
+                      height="180px"
+                      borderWidth="1px"
+                      borderRadius="lg"
+                      overflow="hidden"
+                      fontSize="3xl"
+                      fontWeight="bold"
+                      bg="white"
+                      justifyContent="center"
+                      alignItems="center"
+                      onClick={() => setIsOpenCrearSp(true)}
+                      cursor="pointer"
+                    >
+                      <Text>Crear sprint</Text>
+                    </Box>
+                    :
+                    null
+                  }
                   <CrearSprintModal
                     projectId={projectId}
                     isOpen={isOpenCrearSp}
