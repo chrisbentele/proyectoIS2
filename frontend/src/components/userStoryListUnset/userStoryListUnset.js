@@ -14,7 +14,6 @@ import {
   Flex,
   Heading,
   Text,
-  useDisclosure,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -40,7 +39,11 @@ const USListUnset = ({
   userStories,
   nombreLista,
   children,
-  dispatchError,
+  canModify,
+  canEstimate,
+  canDelete,
+  canAsign,
+  isScrumMaster,
   ...props
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -128,30 +131,31 @@ const USListUnset = ({
       <Grid templateColumns="repeat(3, 1fr)">
         {userStories
           ? userStories.map((us) => {
-              return (
-                <Box
-                  borderRadius="8"
-                  p="2"
-                  m="2"
-                  key={us.id}
-                  bg="white"
-                  boxShadow="md"
-                  w="xs"
-                  key={us.id}
-                >
-                  <Text fontSize="20px" fontWeight="semibold">
-                    {us.nombre}
+            return (
+              <Box
+                borderRadius="8"
+                p="2"
+                m="2"
+                key={us.id}
+                bg="white"
+                boxShadow="md"
+                w="xs"
+              >
+                <Text fontSize="20px" fontWeight="semibold">
+                  {us.nombre}
+                </Text>
+                <Text fontSize="15px">{us.contenido}</Text>
+                <Box mt="2">
+                  <Text>{`Estimación SM: ${us.estimacionSM || "Sin estimar"
+                    }`}</Text>
+                  <Text>{`Estimación Dev: ${us.estimacionesDev || "Sin estimar"
+                    }`}</Text>
+                  <Text>{`${us.estimacionesDev && us.estimacionSM ?
+                    (us.estimacionesDev + us.estimacionSM) / 2 + ' horas' : ''}`}
                   </Text>
-                  <Text fontSize="15px">{us.contenido}</Text>
-                  <Box mt="2">
-                    <Text>{`Estimación SM: ${
-                      us.estimacionSM || "Sin estimar"
-                    }`}</Text>
-                    <Text>{`Estimación Dev: ${
-                      us.estimacionesDev || "Sin estimar"
-                    }`}</Text>
-                  </Box>
-                  <Flex>
+                </Box>
+                <Flex>
+                  {canModify ?
                     <Button
                       onClick={() => {
                         setIsOpenModal(true);
@@ -161,6 +165,10 @@ const USListUnset = ({
                     >
                       <EditIcon color="black.500" />
                     </Button>
+                    :
+                    null
+                  }
+                  {canEstimate ?
                     <Button
                       onClick={() => {
                         setFocusedUS(us);
@@ -170,21 +178,25 @@ const USListUnset = ({
                     >
                       Estimar
                     </Button>
-                    {focusedUS && (
-                      <EstimarUsModal
-                        projectId={projectId}
-                        US={focusedUS}
-                        rolUsuario={"SM"}
-                        isOpen={showEstimarModal}
-                        onClose={() => {
-                          setShowEstimarModal(false);
+                    :
+                    null
+                  }
+                  {focusedUS && (
+                    <EstimarUsModal
+                      projectId={projectId}
+                      US={focusedUS}
+                      rolUsuario={isScrumMaster ? "SM" : "dev"}
+                      isOpen={showEstimarModal}
+                      onClose={() => {
+                        setShowEstimarModal(false);
 
-                          api
-                            .getUserStories(projectId)
-                            .then(({ data }) => setUserStories(data));
-                        }}
-                      />
-                    )}
+                        api
+                          .getUserStories(projectId)
+                          .then(({ data }) => setUserStories(data));
+                      }}
+                    />
+                  )}
+                  {canAsign ?
                     <Button
                       onClick={() => {
                         setFocusedUS(us);
@@ -194,82 +206,90 @@ const USListUnset = ({
                     >
                       Asignar
                     </Button>
-                    {focusedUS && (
-                      <AsignarUsASprintModal
-                        projectId={projectId}
-                        US={focusedUS}
-                        isOpen={showAsignarModal}
-                        dispatchError={dispatchError}
-                        onClose={onCloseAsignarSprint}
-                      />
-                    )}
-                    <Modal
-                      initialFocusRef={initialRef}
-                      isOpen={isOpenModal}
-                      onClose={onCloseModalAssign}
-                    >
-                      <ModalOverlay />
-                      <ModalContent>
-                        <ModalHeader>Editar US</ModalHeader>
+                    :
+                    null
+                  }
+                  {focusedUS && (
+                    <AsignarUSModal
+                      projectId={projectId}
+                      US={focusedUS}
+                      rolUsuario={"SM"}
+                      isOpen={showAsignarModal}
+                      onClose={() => {
+                        setShowAsignarModal(false);
+                        api
+                          .getUserStories(projectId)
+                          .then(({ data }) => setUserStories(data));
+                      }}
+                    />
+                  )}
+                  <Modal
+                    initialFocusRef={initialRef}
+                    isOpen={isOpenModalAssign}
+                    onClose={onCloseModalAssign}
+                  >
+                    <ModalOverlay />
+                    <ModalContent>
+                      <ModalHeader>Editar US</ModalHeader>
 
-                        <ModalCloseButton />
-                        <form onSubmit={handleSubmit(onSubmit)}>
-                          <ModalBody pb={6}>
-                            <FormControl isInvalid={errors.name}>
-                              <FormLabel htmlFor="name">Nombre US</FormLabel>
-                              <Input
-                                id="name"
-                                ref={initialRef}
-                                defaultValue={us.nombre}
-                                {...register("usName", {
-                                  required: "This is required",
-                                  minLength: {
-                                    value: 4,
-                                    message: "Minimum length should be 4",
-                                  },
-                                })}
-                              />
-                              <FormErrorMessage>
-                                {errors.name && errors.name.message}
-                              </FormErrorMessage>
-                            </FormControl>
-                            <FormControl isInvalid={errors.description} mt={4}>
-                              <FormLabel htmlFor="description" mt={4}>
-                                Descripción
-                              </FormLabel>
-                              <Input
-                                id="description"
-                                defaultValue={us.contenido}
-                                {...register("description", {
-                                  required: "This is required",
-                                  minLength: {
-                                    value: 4,
-                                    message: "Minimum length should be 4",
-                                  },
-                                })}
-                              />
-                              <FormErrorMessage>
-                                {errors.description &&
-                                  errors.description.message}
-                              </FormErrorMessage>
-                            </FormControl>
-                          </ModalBody>
+                      <ModalCloseButton />
+                      <form onSubmit={handleSubmit(onSubmit)}>
+                        <ModalBody pb={6}>
+                          <FormControl isInvalid={errors.name}>
+                            <FormLabel htmlFor="name">Nombre US</FormLabel>
+                            <Input
+                              id="name"
+                              ref={initialRef}
+                              defaultValue={us.nombre}
+                              {...register("usName", {
+                                required: "This is required",
+                                minLength: {
+                                  value: 4,
+                                  message: "Minimum length should be 4",
+                                },
+                              })}
+                            />
+                            <FormErrorMessage>
+                              {errors.name && errors.name.message}
+                            </FormErrorMessage>
+                          </FormControl>
+                          <FormControl isInvalid={errors.description} mt={4}>
+                            <FormLabel htmlFor="description" mt={4}>
+                              Descripción
+                            </FormLabel>
+                            <Input
+                              id="description"
+                              defaultValue={us.contenido}
+                              {...register("description", {
+                                required: "This is required",
+                                minLength: {
+                                  value: 4,
+                                  message: "Minimum length should be 4",
+                                },
+                              })}
+                            />
+                            <FormErrorMessage>
+                              {errors.description &&
+                                errors.description.message}
+                            </FormErrorMessage>
+                          </FormControl>
+                        </ModalBody>
 
-                          <ModalFooter>
-                            <Button
-                              mr={4}
-                              colorScheme="blue"
-                              isLoading={isSubmitting}
-                              type="submit"
-                            >
-                              Guardar
-                            </Button>
-                            <Button onClick={onCloseModal}>Cancelar</Button>
-                          </ModalFooter>
-                        </form>
-                      </ModalContent>
-                    </Modal>
-
+                        <ModalFooter>
+                          <Button
+                            mr={4}
+                            colorScheme="blue"
+                            isLoading={isSubmitting}
+                            type="submit"
+                          >
+                            Guardar
+                          </Button>
+                          <Button onClick={onCloseModal}>Cancelar</Button>
+                        </ModalFooter>
+                      </form>
+                    </ModalContent>
+                  </Modal>
+                  {canDelete ?
                     <Button
                       onClick={() => setIsOpen(true)}
                       mt="2"
@@ -285,40 +305,43 @@ const USListUnset = ({
                     >
                       <DeleteIcon color={"#F5F4F5"} />
                     </Button>
-                    <AlertDialog
-                      isOpen={isOpen}
-                      leastDestructiveRef={cancelRef}
-                      onClose={onClose}
-                    >
-                      <AlertDialogOverlay>
-                        <AlertDialogContent>
-                          <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                            Eliminar US
-                          </AlertDialogHeader>
+                    :
+                    null
+                  }
+                  <AlertDialog
+                    isOpen={isOpen}
+                    leastDestructiveRef={cancelRef}
+                    onClose={onClose}
+                  >
+                    <AlertDialogOverlay>
+                      <AlertDialogContent>
+                        <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                          Eliminar US
+                        </AlertDialogHeader>
 
-                          <AlertDialogBody>
-                            ¿Está seguro que desea eliminar a esta US?
-                          </AlertDialogBody>
+                        <AlertDialogBody>
+                          ¿Está seguro que desea eliminar a esta US?
+                        </AlertDialogBody>
 
-                          <AlertDialogFooter>
-                            <Button ref={cancelRef} onClick={onClose}>
-                              Cancelar
-                            </Button>
-                            <Button
-                              colorScheme="red"
-                              onClick={() => onDelete(us.id)}
-                              ml={3}
-                            >
-                              Eliminar
-                            </Button>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialogOverlay>
-                    </AlertDialog>
-                  </Flex>
-                </Box>
-              );
-            })
+                        <AlertDialogFooter>
+                          <Button ref={cancelRef} onClick={onClose}>
+                            Cancelar
+                          </Button>
+                          <Button
+                            colorScheme="red"
+                            onClick={() => onDelete(us.id)}
+                            ml={3}
+                          >
+                            Eliminar
+                          </Button>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialogOverlay>
+                  </AlertDialog>
+                </Flex>
+              </Box>
+            );
+          })
           : null}
       </Grid>
 
@@ -327,4 +350,12 @@ const USListUnset = ({
   );
 };
 
-export default USListUnset;
+
+USList.defaultProps = {
+  canModify: false,
+  canEstimate: false,
+  canDelete: false,
+  canAsign: false,
+}
+
+export default USList;
