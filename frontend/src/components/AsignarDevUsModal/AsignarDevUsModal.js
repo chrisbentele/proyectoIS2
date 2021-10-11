@@ -1,6 +1,6 @@
 /**
  * @file AsignarDevUsModal.js
- * @brief Modal cuando se asigna un developer
+ * @brief Modal cuando se asigna un developer a una US
  */
 
 import { useRef, useEffect, useState } from "react";

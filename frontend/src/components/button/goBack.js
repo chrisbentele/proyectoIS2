@@ -1,3 +1,8 @@
+/**
+ * @file goBack.js
+ * @brief Botón de regresar
+ */
+
 import React, { useState } from "react";
 import { Button, Box } from "@chakra-ui/react";
 import { useHistory } from "react-router";

@@ -1,3 +1,8 @@
+/**
+ * @file AsignarUsASprintModal.js.js
+ * @brief Modal cuando se asigna un US a un sprint
+ */
+
 import { useRef, useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import {

@@ -1,3 +1,8 @@
+/**
+ * @file EditarSprintModal.js
+ * @brief Modal cuando se edita el sprint
+ */
+
 import { useRef } from "react";
 import {
   FormControl,

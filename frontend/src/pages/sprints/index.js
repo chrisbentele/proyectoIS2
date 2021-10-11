@@ -1,3 +1,8 @@
+/**
+ * @file index.js
+ * @brief Página de sprints
+ */
+
 import React, { useEffect, useState } from "react";
 //! API del frontend.
 import { api } from "../../api";

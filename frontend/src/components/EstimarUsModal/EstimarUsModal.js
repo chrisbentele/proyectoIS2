@@ -1,3 +1,8 @@
+/**
+ * @file EstimarUsModal.js
+ * @brief Modal cuando se está estimando una US
+ */
+
 import { useRef } from "react";
 import { useHistory } from "react-router";
 import {
