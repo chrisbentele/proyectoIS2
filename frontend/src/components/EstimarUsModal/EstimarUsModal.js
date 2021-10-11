@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { useHistory } from "react-router";
 import {
   FormControl,
   FormLabel,
@@ -30,15 +31,17 @@ const Editar = ({ projectId, US, rolUsuario, isOpen, onClose }) => {
     formState: { errors, isSubmitting },
     control,
   } = useForm();
+  const history = useHistory()
 
-  const onSubmit = (data) => {
-    api.userStories.estimarUs({
+  const onSubmit = async (data) => {
+    await api.userStories.estimarUs({
       projectId,
       userId: user.sub,
       usId: US.id,
       estimacion: data.estimacion,
     });
-
+        //TODO: quitar history y cambiar estado
+    history.go(0)
     onClose();
   };
 

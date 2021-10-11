@@ -18,15 +18,11 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import Select from "react-select";
 import { mapStateColor } from "../../styles/theme";
 import USListUnset from "../../components/userStoryListUnset/userStoryListUnset";
 import CrearSprintModal from "../../components/CrearSprintModal/CrearSprintModal";
-import EditarSprintModal from "../../components/EditarSprintModal/EditarSprintModal";
-import { IconButton } from "@chakra-ui/button";
-import { EditIcon } from "@chakra-ui/icons";
 import { useHistory } from "react-router-dom";
-import { MdBuild, MdTimer } from "react-icons/md";
+import { MdBuild } from "react-icons/md";
 import EliminarSprintModal from "../../components/EliminarSprintModal/EliminarSprintModal";
 
 import { useAuth0 } from "@auth0/auth0-react";
