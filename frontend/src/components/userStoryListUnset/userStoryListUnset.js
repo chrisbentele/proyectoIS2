@@ -164,224 +164,226 @@ const USListUnset = ({
                       us.estimacionesDev || "Sin estimar"
                     }`}</Text>
 
-                  <Text>{`${us.estimacionesDev && us.estimacionSM ?
-                    (us.estimacionesDev + us.estimacionSM) / 2 + ' horas' : ''}`}
-                  </Text>
-                </Box>
-                {(isScrumMaster || memberId === us.asignado?.id) ?
-                  <Flex>
-                    {canModify ?
-                      <Button
-                        onClick={() => {
-                          setIsOpenModal(true);
-                          setFocusedUS(us);
-                        }}
-                        mt="2"
-                      >
-                        <EditIcon color="black.500" />
-                      </Button>
-                      :
-                      null
-                    }
-                    {canEstimate ?
-                      <Button
-                        onClick={() => {
-                          setFocusedUS(us);
-                          setShowEstimarModal(true);
-                        }}
-                        mt="2"
-                        ml="1"
-                      >
-                        <MdTimer />
-                      </Button>
-                    ) : null}
-                    {focusedUS && (
-                      <EstimarUsModal
-                        projectId={projectId}
-                        US={focusedUS}
-                        rolUsuario={isScrumMaster ? "SM" : "dev"}
-                        isOpen={showEstimarModal}
-                        onClose={() => {
-                          setShowEstimarModal(false);
-
-                          api
-                            .getUserStories(projectId)
-                            .then(({ data }) => setUserStories(data));
-                        }}
-                      />
-                    )}
-                    {canAsign ? (
-                      <>
+                    <Text>
+                      {`${
+                        us.estimacionesDev && us.estimacionSM
+                          ? (us.estimacionesDev + us.estimacionSM) / 2 +
+                            " horas"
+                          : ""
+                      }`}
+                    </Text>
+                  </Box>
+                  {isScrumMaster || memberId === us.asignado?.id ? (
+                    <Flex>
+                      {canModify ? (
+                        <Button
+                          onClick={() => {
+                            setIsOpenModal(true);
+                            setFocusedUS(us);
+                          }}
+                          mt="2"
+                        >
+                          <EditIcon color="black.500" />
+                        </Button>
+                      ) : null}
+                      {canEstimate ? (
                         <Button
                           onClick={() => {
                             setFocusedUS(us);
-                            setShowAsignarDevModal(true);
+                            setShowEstimarModal(true);
                           }}
                           mt="2"
                           ml="1"
                         >
-                          <BsFillPeopleFill />
+                          <MdTimer />
                         </Button>
-                        {focusedUS && (
-                          <AsignarDevUsModal
-                            projectId={projectId}
-                            US={focusedUS}
-                            isOpen={showAsignarDevModal}
-                            dispatchError={dispatchError}
-                            onClose={async () => {
-                              setShowAsignarDevModal(false);
+                      ) : null}
+                      {focusedUS && (
+                        <EstimarUsModal
+                          projectId={projectId}
+                          US={focusedUS}
+                          rolUsuario={isScrumMaster ? "SM" : "dev"}
+                          isOpen={showEstimarModal}
+                          onClose={() => {
+                            setShowEstimarModal(false);
 
-                              await api.userStories
-                                .getUserStories(projectId)
-                                .then(({ data }) => setUserStories(data));
+                            api
+                              .getUserStories(projectId)
+                              .then(({ data }) => setUserStories(data));
+                          }}
+                        />
+                      )}
+                      {canAsign ? (
+                        <>
+                          <Button
+                            onClick={() => {
+                              setFocusedUS(us);
+                              setShowAsignarDevModal(true);
                             }}
-                          />
-                        )}
-                      </>
-                    ) : null}
-                    { isScrumMaster ?
-                      <Button
-                        onClick={() => {
-                          setFocusedUS(us);
-                          setShowAsignarModal(true);
-                        }}
-                        mt="2"
-                        ml="1"
-                      >
-                        Sprint{/* <GiSprint /> */}
-                      </Button>
-                      :
-                      null
-                    }
-                    {focusedUS && (
-                      <AsignarUsASprintModal
-                        projectId={projectId}
-                        US={focusedUS}
-                        isOpen={showAsignarModal}
-                        dispatchError={dispatchError}
-                        onClose={onCloseAsignarSprint}
-                      />
-                    )}
-                    <Modal
-                      initialFocusRef={initialRef}
-                      isOpen={isOpenModalAssignDev}
-                      onClose={onCloseModalAssignDev}
-                    >
-                      <ModalOverlay />
-                      <ModalContent>
-                        <ModalHeader>Editar US</ModalHeader>
+                            mt="2"
+                            ml="1"
+                          >
+                            <BsFillPeopleFill />
+                          </Button>
+                          {focusedUS && (
+                            <AsignarDevUsModal
+                              projectId={projectId}
+                              US={focusedUS}
+                              isOpen={showAsignarDevModal}
+                              dispatchError={dispatchError}
+                              onClose={async () => {
+                                setShowAsignarDevModal(false);
 
-                      <ModalCloseButton />
-                      <form onSubmit={handleSubmit(onSubmit)}>
-                        <ModalBody pb={6}>
-                          <FormControl isInvalid={errors.name}>
-                            <FormLabel htmlFor="name">Nombre US</FormLabel>
-                            <Input
-                              id="name"
-                              ref={initialRef}
-                              defaultValue={us.nombre}
-                              {...register("usName", {
-                                required: "This is required",
-                                minLength: {
-                                  value: 4,
-                                  message: "Minimum length should be 4",
-                                },
-                              })}
+                                await api.userStories
+                                  .getUserStories(projectId)
+                                  .then(({ data }) => setUserStories(data));
+                              }}
                             />
-                            <FormErrorMessage>
-                              {errors.name && errors.name.message}
-                            </FormErrorMessage>
-                          </FormControl>
-                          <FormControl isInvalid={errors.description} mt={4}>
-                            <FormLabel htmlFor="description" mt={4}>
-                              Descripción
-                            </FormLabel>
-                            <Input
-                              id="description"
-                              defaultValue={us.contenido}
-                              {...register("description", {
-                                required: "This is required",
-                                minLength: {
-                                  value: 4,
-                                  message: "Minimum length should be 4",
-                                },
-                              })}
-                            />
-                            <FormErrorMessage>
-                              {errors.description &&
-                                errors.description.message}
-                            </FormErrorMessage>
-                          </FormControl>
-                        </ModalBody>
-
-                          <ModalFooter>
-                            <Button
-                              mr={4}
-                              colorScheme="blue"
-                              isLoading={isSubmitting}
-                              type="submit"
-                            >
-                              Guardar
-                            </Button>
-                            <Button onClick={onCloseModal}>Cancelar</Button>
-                          </ModalFooter>
-                        </form>
-                      </ModalContent>
-                    </Modal>
-                    {canDelete ? (
-                      <Button
-                        onClick={() => setIsOpen(true)}
-                        mt="2"
-                        ml="auto"
-                        bg="red.500"
-                        _hover={{
-                          background: "red.600",
-                          color: "teal.500",
-                        }}
-                        _active={{
-                          background: "red.600",
-                        }}
+                          )}
+                        </>
+                      ) : null}
+                      {isScrumMaster ? (
+                        <Button
+                          onClick={() => {
+                            setFocusedUS(us);
+                            setShowAsignarModal(true);
+                          }}
+                          mt="2"
+                          ml="1"
+                        >
+                          Sprint{/* <GiSprint /> */}
+                        </Button>
+                      ) : null}
+                      {focusedUS && (
+                        <AsignarUsASprintModal
+                          projectId={projectId}
+                          US={focusedUS}
+                          isOpen={showAsignarModal}
+                          dispatchError={dispatchError}
+                          onClose={onCloseAsignarSprint}
+                        />
+                      )}
+                      <Modal
+                        initialFocusRef={initialRef}
+                        isOpen={isOpenModalAssignDev}
+                        onClose={onCloseModalAssignDev}
                       >
-                        <DeleteIcon color={"#F5F4F5"} />
-                      </Button>
-                    ) : null}
-                    <AlertDialog
-                      isOpen={isOpen}
-                      leastDestructiveRef={cancelRef}
-                      onClose={onClose}
-                    >
-                      <AlertDialogOverlay>
-                        <AlertDialogContent>
-                          <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                            Eliminar US
-                          </AlertDialogHeader>
+                        <ModalOverlay />
+                        <ModalContent>
+                          <ModalHeader>Editar US</ModalHeader>
 
-                          <AlertDialogBody>
-                            ¿Está seguro que desea eliminar a esta US?
-                          </AlertDialogBody>
+                          <ModalCloseButton />
+                          <form onSubmit={handleSubmit(onSubmit)}>
+                            <ModalBody pb={6}>
+                              <FormControl isInvalid={errors.name}>
+                                <FormLabel htmlFor="name">Nombre US</FormLabel>
+                                <Input
+                                  id="name"
+                                  ref={initialRef}
+                                  defaultValue={us.nombre}
+                                  {...register("usName", {
+                                    required: "This is required",
+                                    minLength: {
+                                      value: 4,
+                                      message: "Minimum length should be 4",
+                                    },
+                                  })}
+                                />
+                                <FormErrorMessage>
+                                  {errors.name && errors.name.message}
+                                </FormErrorMessage>
+                              </FormControl>
+                              <FormControl
+                                isInvalid={errors.description}
+                                mt={4}
+                              >
+                                <FormLabel htmlFor="description" mt={4}>
+                                  Descripción
+                                </FormLabel>
+                                <Input
+                                  id="description"
+                                  defaultValue={us.contenido}
+                                  {...register("description", {
+                                    required: "This is required",
+                                    minLength: {
+                                      value: 4,
+                                      message: "Minimum length should be 4",
+                                    },
+                                  })}
+                                />
+                                <FormErrorMessage>
+                                  {errors.description &&
+                                    errors.description.message}
+                                </FormErrorMessage>
+                              </FormControl>
+                            </ModalBody>
 
-                          <AlertDialogFooter>
-                            <Button ref={cancelRef} onClick={onClose}>
-                              Cancelar
-                            </Button>
-                            <Button
-                              colorScheme="red"
-                              onClick={() => onDelete(us.id)}
-                              ml={3}
-                            >
-                              Eliminar
-                            </Button>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialogOverlay>
-                    </AlertDialog>
-                  </Flex>
-                  :
-                  null
-                }
-              </Box>
-            );
-          })
+                            <ModalFooter>
+                              <Button
+                                mr={4}
+                                colorScheme="blue"
+                                isLoading={isSubmitting}
+                                type="submit"
+                              >
+                                Guardar
+                              </Button>
+                              <Button onClick={onCloseModal}>Cancelar</Button>
+                            </ModalFooter>
+                          </form>
+                        </ModalContent>
+                      </Modal>
+                      {canDelete ? (
+                        <Button
+                          onClick={() => setIsOpen(true)}
+                          mt="2"
+                          ml="auto"
+                          bg="red.500"
+                          _hover={{
+                            background: "red.600",
+                            color: "teal.500",
+                          }}
+                          _active={{
+                            background: "red.600",
+                          }}
+                        >
+                          <DeleteIcon color={"#F5F4F5"} />
+                        </Button>
+                      ) : null}
+                      <AlertDialog
+                        isOpen={isOpen}
+                        leastDestructiveRef={cancelRef}
+                        onClose={onClose}
+                      >
+                        <AlertDialogOverlay>
+                          <AlertDialogContent>
+                            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                              Eliminar US
+                            </AlertDialogHeader>
+
+                            <AlertDialogBody>
+                              ¿Está seguro que desea eliminar a esta US?
+                            </AlertDialogBody>
+
+                            <AlertDialogFooter>
+                              <Button ref={cancelRef} onClick={onClose}>
+                                Cancelar
+                              </Button>
+                              <Button
+                                colorScheme="red"
+                                onClick={() => onDelete(us.id)}
+                                ml={3}
+                              >
+                                Eliminar
+                              </Button>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialogOverlay>
+                      </AlertDialog>
+                    </Flex>
+                  ) : null}
+                </Box>
+              );
+            })
           : null}
       </Grid>
 

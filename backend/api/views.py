@@ -624,7 +624,7 @@ def sprints(request, proyect_id, sprint_id=None):
                 if us["estimacionSM"] != None and us["estimacionesDev"] != None:
                     if conteo == None:
                         conteo = 0
-                    conteo += (us["estimacionSM"]) + (us["estimacionesDev"])
+                    conteo += (us["estimacionSM"]) + (us["estimacionesDev"])/2
                 else:
                     conteo = None
                     break
@@ -759,7 +759,7 @@ def sprints_user_stories(request, proyect_id, sprint_id, us_id=None):
 
             if serializer.is_valid():
                 serializer.save()
-                return JsonResponse(serializer.data, status=200)
+                return JsonResponse(serializer.data, status=204)
             return JsonResponse(serializer.errors, status=400, safe=False)
 
         except US.DoesNotExist:
@@ -791,7 +791,7 @@ def sprints_activar(request, proyect_id, sprint_id):
                 if us["estimacionSM"] != None and us["estimacionesDev"] != None:
                     if conteo == None:
                         conteo = 0
-                    conteo += (us["estimacionSM"]) + (us["estimacionesDev"])
+                    conteo += (us["estimacionSM"]) + (us["estimacionesDev"]) / 2
                 else:
                     conteo = None
                     break
@@ -902,7 +902,7 @@ def user_stories_asignar(request, proyect_id, us_id, user_id=None):
 
 
 def usuarios_admin(request, user_id):
-
+    """Asigna el atributo proy_admin a un usuario este seria el que puede crear proyectos"""
     if request.method == "POST":
 
         rol = Usuario.objects.get(id=user_id)
@@ -920,5 +920,5 @@ def usuarios_admin(request, user_id):
 
         if serializer.is_valid():
             serializer.save()
-            return JsonResponse(serializer.data, status=200)
+            return JsonResponse(serializer.data, status=204)
         return JsonResponse(serializer.errors, status=400, safe=False)
