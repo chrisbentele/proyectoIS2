@@ -142,25 +142,28 @@ const USListUnset = ({
       <Grid templateColumns="repeat(3, 1fr)">
         {userStories
           ? userStories.map((us) => {
-            return (
-              <Box
-                borderRadius="8"
-                p="2"
-                m="2"
-                key={us.id}
-                bg="white"
-                boxShadow="md"
-                w="xs"
-              >
-                <Text fontSize="20px" fontWeight="semibold">
-                  {us.nombre}
-                </Text>
-                <Text fontSize="15px">{us.contenido}</Text>
-                <Box mt="2">
-                  <Text>{`Estimación SM: ${us.estimacionSM || "Sin estimar"
+              return (
+                <Box
+                  borderRadius="8"
+                  p="2"
+                  m="2"
+                  key={us.id}
+                  bg="white"
+                  boxShadow="md"
+                  w="xs"
+                >
+                  <Text fontSize="20px" fontWeight="semibold">
+                    {us.nombre}
+                  </Text>
+                  <Text fontSize="15px">{us.contenido}</Text>
+                  <Box mt="2">
+                    <Text>{`Estimación SM: ${
+                      us.estimacionSM || "Sin estimar"
                     }`}</Text>
-                  <Text>{`Estimación Dev: ${us.estimacionesDev || "Sin estimar"
+                    <Text>{`Estimación Dev: ${
+                      us.estimacionesDev || "Sin estimar"
                     }`}</Text>
+
                   <Text>{`${us.estimacionesDev && us.estimacionSM ?
                     (us.estimacionesDev + us.estimacionSM) / 2 + ' horas' : ''}`}
                   </Text>
@@ -191,9 +194,7 @@ const USListUnset = ({
                       >
                         <MdTimer />
                       </Button>
-                      :
-                      null
-                    }
+                    ) : null}
                     {focusedUS && (
                       <EstimarUsModal
                         projectId={projectId}
@@ -209,35 +210,35 @@ const USListUnset = ({
                         }}
                       />
                     )}
-                    {canAsign ?
-                      <Button
-                        onClick={() => {
-                          setFocusedUS(us);
-                          setShowAsignarDevModal(true);
-                        }}
-                        mt="2"
-                        ml="1"
-                      >
-                        <BsFillPeopleFill />
-                      </Button>
-                      :
-                      null
-                    }
-                    {focusedUS && (
-                      <AsignarDevUsModal
-                        projectId={projectId}
-                        US={focusedUS}
-                        isOpen={showAsignarDevModal}
-                        dispatchError={dispatchError}
-                        onClose={async () => {
-                          setShowAsignarDevModal(false);
+                    {canAsign ? (
+                      <>
+                        <Button
+                          onClick={() => {
+                            setFocusedUS(us);
+                            setShowAsignarDevModal(true);
+                          }}
+                          mt="2"
+                          ml="1"
+                        >
+                          <BsFillPeopleFill />
+                        </Button>
+                        {focusedUS && (
+                          <AsignarDevUsModal
+                            projectId={projectId}
+                            US={focusedUS}
+                            isOpen={showAsignarDevModal}
+                            dispatchError={dispatchError}
+                            onClose={async () => {
+                              setShowAsignarDevModal(false);
 
-                          await api.userStories
-                            .getUserStories(projectId)
-                            .then(({ data }) => setUserStories(data));
-                        }}
-                      />
-                    )}
+                              await api.userStories
+                                .getUserStories(projectId)
+                                .then(({ data }) => setUserStories(data));
+                            }}
+                          />
+                        )}
+                      </>
+                    ) : null}
                     { isScrumMaster ?
                       <Button
                         onClick={() => {
@@ -327,7 +328,7 @@ const USListUnset = ({
                         </form>
                       </ModalContent>
                     </Modal>
-                    {canDelete ?
+                    {canDelete ? (
                       <Button
                         onClick={() => setIsOpen(true)}
                         mt="2"
@@ -343,9 +344,7 @@ const USListUnset = ({
                       >
                         <DeleteIcon color={"#F5F4F5"} />
                       </Button>
-                      :
-                      null
-                    }
+                    ) : null}
                     <AlertDialog
                       isOpen={isOpen}
                       leastDestructiveRef={cancelRef}
@@ -391,12 +390,11 @@ const USListUnset = ({
   );
 };
 
-
 USListUnset.defaultProps = {
   canModify: false,
   canEstimate: false,
   canDelete: false,
   canAsign: false,
-}
+};
 
 export default USListUnset;
