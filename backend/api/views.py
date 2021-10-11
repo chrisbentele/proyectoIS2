@@ -3,7 +3,7 @@ from functools import partial
 from django.utils.translation import activate
 from rest_framework.exceptions import ValidationError
 
-from backend.api.utils.misc import get_asigned_user, get_us_count
+from .utils.misc import get_asigned_user, get_us_count
 from .serializers import (
     ProyectoSerializer,
     RolAsignadoSerializer,
@@ -623,7 +623,9 @@ def sprints(request, proyect_id, sprint_id=None):
                 spr = Sprint.objects.get(id=sprint_id)
                 serializer = SprintSerializer(spr)
                 spr_data = serializer.data
-                conteo_estimaciones, us_list_length, activable = get_us_count(sprint_id)
+                conteo_estimaciones, us_list_length, activable = get_us_count(
+                    proyect_id, sprint_id
+                )
                 spr_data.update(
                     {
                         "sumaHorasAsignadas": conteo_estimaciones,
@@ -641,7 +643,7 @@ def sprints(request, proyect_id, sprint_id=None):
             spr_list = serializer.data
             for sprint in spr_list:
                 conteo_estimaciones, us_list_length, activable = get_us_count(
-                    sprint["id"]
+                    proyect_id, sprint["id"]
                 )
 
                 sprint.update(
@@ -764,7 +766,7 @@ def sprints_activar(request, proyect_id, sprint_id):
     if request.method == "POST":
         sp = Sprint.objects.get(id=sprint_id)
 
-        if not get_us_count(sprint_id)[0]:
+        if not get_us_count(proyect_id, sprint_id)[0]:
             return HttpResponseBadRequest("Se deben estimar todos los US primero")
 
         serializer = SprintSerializer(

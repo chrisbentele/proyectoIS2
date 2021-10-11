@@ -1,5 +1,5 @@
-from backend.api.models import US, USAsignada
-from backend.api.serializers import USAsignadaSerializer, USSerializer
+from ..models import US, USAsignada
+from ..serializers import USAsignadaSerializer, USSerializer
 
 
 def get_asigned_user(us_id):
@@ -11,15 +11,15 @@ def get_asigned_user(us_id):
     return asigned[0]["usuario"] if len(asigned) > 0 else None
 
 
-def get_us_count(proyecto_id, sprint_id):
+def get_us_count(proyect_id, sprint_id):
     """Health check de los US en un sprint"""
-    uss = US.objects.filter(proyecto=proyecto_id, sprint=sprint_id)
+    uss = US.objects.filter(proyecto=proyect_id, sprint=sprint_id)
     serializer = USSerializer(uss, many=True)
     us_list = serializer.data
     conteo = 0
     activable = True
     for us in us_list:
-        us_asig = get_asigned_user(us["asignado"]["id"])
+        us_asig = get_asigned_user(us["id"])
 
         if not us_asig:
             activable = False
