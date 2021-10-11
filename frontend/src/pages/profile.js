@@ -21,13 +21,15 @@ import { api } from "../api";
 import { projectStateToString } from "../util";
 import { mapStateColor } from "../styles/theme";
 import LogoutButton from "../components/auth/logoutButton/logoutButton";
+import { tienePermiso } from "../util";
+import { PERMISOS_MACRO } from "../pages/roles/permisos";
 
 
 //! Componente principal de esta página
-const Profile = ({ dispatchError }) => {
-
+const Profile = ({ props, dispatchError }) => {
   const { user, isLoading } = useAuth0();
   const [userProjects, setUserProjects] = useState([]);
+  const [thisMember, setThisMember] = useState();
 
   useEffect(() => {
     if (!isLoading) {
@@ -38,7 +40,6 @@ const Profile = ({ dispatchError }) => {
         .catch((err) =>
           dispatchError(null, "Error cargando proyectos del usuario")
         );
-
 
     }
   }, [user, isLoading, dispatchError]);
@@ -121,21 +122,21 @@ const Profile = ({ dispatchError }) => {
                 );
               })
               : null}
-            <LinkBox
-              display="flex"
-              w="xs"
-              height="200px"
-              borderWidth="1px"
-              borderRadius="lg"
-              overflow="hidden"
-              fontSize="3xl"
-              fontWeight="bold"
-              bg="white"
-              justifyContent="center"
-              alignItems="center"
-            >
-              <LinkOverlay href="/createProject/">Crear Proyecto</LinkOverlay>
-            </LinkBox>
+              <LinkBox
+                display="flex"
+                w="xs"
+                height="200px"
+                borderWidth="1px"
+                borderRadius="lg"
+                overflow="hidden"
+                fontSize="3xl"
+                fontWeight="bold"
+                bg="white"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <LinkOverlay href="/createProject/">Crear Proyecto</LinkOverlay>
+              </LinkBox>
           </Grid>
         </Flex>
       </Box>

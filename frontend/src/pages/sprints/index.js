@@ -19,6 +19,10 @@ import { mapStateColor } from "../../styles/theme";
 import { MdBuild } from "react-icons/md";
 import { useHistory } from "react-router-dom";
 
+import { tienePermiso } from "../../util";
+import { PERMISOS_MACRO } from "../roles/permisos";
+import { useAuth0 } from "@auth0/auth0-react";
+
 /**
  * Función que contiene el código de la vista
  * @param { props } param0
@@ -34,6 +38,9 @@ export default function Index({ props, dispatchError }) {
 
   const history = useHistory();
 
+  const { user } = useAuth0();
+  const [thisMember, setThisMember] = useState();
+
   //Al cargarse la pagina se busca el proyecto con el id del URL y se lo asigna a projectId
   useEffect(() => {
     api
@@ -48,6 +55,11 @@ export default function Index({ props, dispatchError }) {
     api.sprints
       .getSprint(projectId, sprintId)
       .then(({ data }) => setSprint(data))
+      .catch((err) => console.log(err));
+
+    api
+      .getMember(projectId, user.sub)
+      .then(({ data: member }) => setThisMember(member))
       .catch((err) => console.log(err));
   }, [projectId, sprintId]);
 
@@ -84,31 +96,43 @@ export default function Index({ props, dispatchError }) {
 
               <Box fontWeight="thin">|</Box>
 
-              <Button
-                colorScheme="yellow"
-                variant="solid"
-                // opacity="30%"
-                onClick={() => history.push(`/projects/${projectId}/members`)}
-              >
-                Miembros
-              </Button>
-              <Button
-                colorScheme="yellow"
-                variant="solid"
-                // opacity="30%"
-                onClick={() => history.push(`/projects/${projectId}/roles`)}
-              >
-                Configurar Roles
-              </Button>
-              <Button
-                leftIcon={<MdBuild />}
-                colorScheme="yellow"
-                variant="solid"
-                // opacity="30%"
-                onClick={() => setIsOpenEditSp(true)}
-              >
-                Configurar Sprint
-              </Button>
+              {tienePermiso(thisMember, PERMISOS_MACRO.EDITAR_MIEMBROS_A_PROYECTO) ?
+                <Button
+                  colorScheme="yellow"
+                  variant="solid"
+                  // opacity="30%"
+                  onClick={() => history.push(`/projects/${projectId}/members`)}
+                >
+                  Miembros
+                </Button>
+                :
+                null
+              }
+              {tienePermiso(thisMember, PERMISOS_MACRO.EDITAR_ROL_DEL_USUARIO) ?
+                <Button
+                  colorScheme="yellow"
+                  variant="solid"
+                  // opacity="30%"
+                  onClick={() => history.push(`/projects/${projectId}/roles`)}
+                >
+                  Configurar Roles
+                </Button>
+                :
+                null
+              }
+              {tienePermiso(thisMember, PERMISOS_MACRO.MODIFICAR_SPRINT) ?
+                <Button
+                  leftIcon={<MdBuild />}
+                  colorScheme="yellow"
+                  variant="solid"
+                  // opacity="30%"
+                  onClick={() => setIsOpenEditSp(true)}
+                >
+                  Configurar Sprint
+                </Button>
+                :
+                null
+              }
             </HStack>
           </Box>
           <Box mt="50px">
@@ -123,12 +147,12 @@ export default function Index({ props, dispatchError }) {
                   //Es un array?
                   Array.isArray(userStories)
                     ? //Si es un array, qué elementos pertenecen a esta lista?
-                      userStories?.filter((us) => us.estado === 0)
+                    userStories?.filter((us) => us.estado === 0)
                     : //Si es un solo elemento, pertenece a esta lista?
                     userStories?.estado === 0
-                    ? //Si pertenece retorno
+                      ? //Si pertenece retorno
                       userStories
-                    : //Si no pertenece, null
+                      : //Si no pertenece, null
                       null
                 }
               ></USList>
@@ -142,12 +166,12 @@ export default function Index({ props, dispatchError }) {
                   //Es un array?
                   Array.isArray(userStories)
                     ? //Si es un array, qué elementos pertenecen a esta lista?
-                      userStories?.filter((us) => us.estado === 1)
+                    userStories?.filter((us) => us.estado === 1)
                     : //Si es un solo elemento, pertenece a esta lista?
                     userStories?.estado === 1
-                    ? //Si pertenece retorno
+                      ? //Si pertenece retorno
                       userStories
-                    : //Si no pertenece, null
+                      : //Si no pertenece, null
                       null
                 }
               ></USList>
@@ -161,12 +185,12 @@ export default function Index({ props, dispatchError }) {
                   //Es un array?
                   Array.isArray(userStories)
                     ? //Si es un array, qué elementos pertenecen a esta lista?
-                      userStories?.filter((us) => us.estado === 2)
+                    userStories?.filter((us) => us.estado === 2)
                     : //Si es un solo elemento, pertenece a esta lista?
                     userStories?.estado === 2
-                    ? //Si pertenece retorno
+                      ? //Si pertenece retorno
                       userStories
-                    : //Si no pertenece, null
+                      : //Si no pertenece, null
                       null
                 }
               ></USList>

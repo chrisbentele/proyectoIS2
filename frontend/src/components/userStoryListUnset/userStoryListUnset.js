@@ -33,7 +33,7 @@ import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { api } from "../../api";
 import EstimarUsModal from "../../components/EstimarUsModal/EstimarUsModal";
 
-import AsignarUSModal from "../AsignarUsASprintModal/AsignarUsASprintModal";
+import AsignarUsASprintModal from "../AsignarUsASprintModal/AsignarUsASprintModal";
 import AsignarDevUsModal from "../../components/AsignarDevUsModal/AsignarDevUsModal";
 import { MdTimer } from "react-icons/md";
 import { BsFillPersonPlusFill, BsFillPeopleFill } from "react-icons/bs";
@@ -51,6 +51,7 @@ const USListUnset = ({
   canDelete,
   canAsign,
   isScrumMaster,
+  memberId,
   ...props
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -164,51 +165,51 @@ const USListUnset = ({
                     (us.estimacionesDev + us.estimacionSM) / 2 + ' horas' : ''}`}
                   </Text>
                 </Box>
-                <Flex>
-                  {canModify ?
-                    <Button
-                      onClick={() => {
-                        setIsOpenModal(true);
-                        setFocusedUS(us);
-                      }}
-                      mt="2"
-                    >
-                      <EditIcon color="black.500" />
-                    </Button>
-                    :
-                    null
-                  }
-                  {canEstimate ?
-                    <Button
-                      onClick={() => {
-                        setFocusedUS(us);
-                        setShowEstimarModal(true);
-                      }}
-                      mt="2"
-                      ml="1"
-                    >
-                      <MdTimer />
-                    </Button>
-                    :
-                    null
-                  }
-                  {focusedUS && (
-                    <EstimarUsModal
-                      projectId={projectId}
-                      US={focusedUS}
-                      rolUsuario={isScrumMaster ? "SM" : "dev"}
-                      isOpen={showEstimarModal}
-                      onClose={() => {
-                        setShowEstimarModal(false);
+                {(isScrumMaster || memberId === us.asignado?.id) ?
+                  <Flex>
+                    {canModify ?
+                      <Button
+                        onClick={() => {
+                          setIsOpenModal(true);
+                          setFocusedUS(us);
+                        }}
+                        mt="2"
+                      >
+                        <EditIcon color="black.500" />
+                      </Button>
+                      :
+                      null
+                    }
+                    {canEstimate ?
+                      <Button
+                        onClick={() => {
+                          setFocusedUS(us);
+                          setShowEstimarModal(true);
+                        }}
+                        mt="2"
+                        ml="1"
+                      >
+                        <MdTimer />
+                      </Button>
+                      :
+                      null
+                    }
+                    {focusedUS && (
+                      <EstimarUsModal
+                        projectId={projectId}
+                        US={focusedUS}
+                        rolUsuario={isScrumMaster ? "SM" : "dev"}
+                        isOpen={showEstimarModal}
+                        onClose={() => {
+                          setShowEstimarModal(false);
 
-                        api
-                          .getUserStories(projectId)
-                          .then(({ data }) => setUserStories(data));
-                      }}
-                    />
-                  )}
-                  {canAsign ?
-                    <>
+                          api
+                            .getUserStories(projectId)
+                            .then(({ data }) => setUserStories(data));
+                        }}
+                      />
+                    )}
+                    {canAsign ?
                       <Button
                         onClick={() => {
                           setFocusedUS(us);
@@ -219,21 +220,25 @@ const USListUnset = ({
                       >
                         <BsFillPeopleFill />
                       </Button>
-                      {focusedUS && (
-                        <AsignarDevUsModal
-                          projectId={projectId}
-                          US={focusedUS}
-                          isOpen={showAsignarDevModal}
-                          dispatchError={dispatchError}
-                          onClose={async () => {
-                            setShowAsignarDevModal(false);
+                      :
+                      null
+                    }
+                    {focusedUS && (
+                      <AsignarDevUsModal
+                        projectId={projectId}
+                        US={focusedUS}
+                        isOpen={showAsignarDevModal}
+                        dispatchError={dispatchError}
+                        onClose={async () => {
+                          setShowAsignarDevModal(false);
 
-                            await api.userStories
-                              .getUserStories(projectId)
-                              .then(({ data }) => setUserStories(data));
-                          }}
-                        />
-                      )}
+                          await api.userStories
+                            .getUserStories(projectId)
+                            .then(({ data }) => setUserStories(data));
+                        }}
+                      />
+                    )}
+                    { isScrumMaster ?
                       <Button
                         onClick={() => {
                           setFocusedUS(us);
@@ -244,27 +249,26 @@ const USListUnset = ({
                       >
                         Sprint{/* <GiSprint /> */}
                       </Button>
-                    </>
-                    :
-                    null
-                  }
-                  {focusedUS && (
-                    <AsignarUSModal
-                      projectId={projectId}
-                      US={focusedUS}
-                      isOpen={showAsignarModal}
-                      dispatchError={dispatchError}
-                      onClose={onCloseAsignarSprint}
-                    />
-                  )}
-                  <Modal
-                    initialFocusRef={initialRef}
-                    isOpen={isOpenModalAssignDev}
-                    onClose={onCloseModalAssignDev}
-                  >
-                    <ModalOverlay />
-                    <ModalContent>
-                      <ModalHeader>Editar US</ModalHeader>
+                      :
+                      null
+                    }
+                    {focusedUS && (
+                      <AsignarUsASprintModal
+                        projectId={projectId}
+                        US={focusedUS}
+                        isOpen={showAsignarModal}
+                        dispatchError={dispatchError}
+                        onClose={onCloseAsignarSprint}
+                      />
+                    )}
+                    <Modal
+                      initialFocusRef={initialRef}
+                      isOpen={isOpenModalAssignDev}
+                      onClose={onCloseModalAssignDev}
+                    >
+                      <ModalOverlay />
+                      <ModalContent>
+                        <ModalHeader>Editar US</ModalHeader>
 
                       <ModalCloseButton />
                       <form onSubmit={handleSubmit(onSubmit)}>
@@ -309,70 +313,73 @@ const USListUnset = ({
                           </FormControl>
                         </ModalBody>
 
-                        <ModalFooter>
-                          <Button
-                            mr={4}
-                            colorScheme="blue"
-                            isLoading={isSubmitting}
-                            type="submit"
-                          >
-                            Guardar
-                          </Button>
-                          <Button onClick={onCloseModal}>Cancelar</Button>
-                        </ModalFooter>
-                      </form>
-                    </ModalContent>
-                  </Modal>
-                  {canDelete ?
-                    <Button
-                      onClick={() => setIsOpen(true)}
-                      mt="2"
-                      ml="auto"
-                      bg="red.500"
-                      _hover={{
-                        background: "red.600",
-                        color: "teal.500",
-                      }}
-                      _active={{
-                        background: "red.600",
-                      }}
+                          <ModalFooter>
+                            <Button
+                              mr={4}
+                              colorScheme="blue"
+                              isLoading={isSubmitting}
+                              type="submit"
+                            >
+                              Guardar
+                            </Button>
+                            <Button onClick={onCloseModal}>Cancelar</Button>
+                          </ModalFooter>
+                        </form>
+                      </ModalContent>
+                    </Modal>
+                    {canDelete ?
+                      <Button
+                        onClick={() => setIsOpen(true)}
+                        mt="2"
+                        ml="auto"
+                        bg="red.500"
+                        _hover={{
+                          background: "red.600",
+                          color: "teal.500",
+                        }}
+                        _active={{
+                          background: "red.600",
+                        }}
+                      >
+                        <DeleteIcon color={"#F5F4F5"} />
+                      </Button>
+                      :
+                      null
+                    }
+                    <AlertDialog
+                      isOpen={isOpen}
+                      leastDestructiveRef={cancelRef}
+                      onClose={onClose}
                     >
-                      <DeleteIcon color={"#F5F4F5"} />
-                    </Button>
-                    :
-                    null
-                  }
-                  <AlertDialog
-                    isOpen={isOpen}
-                    leastDestructiveRef={cancelRef}
-                    onClose={onClose}
-                  >
-                    <AlertDialogOverlay>
-                      <AlertDialogContent>
-                        <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                          Eliminar US
-                        </AlertDialogHeader>
+                      <AlertDialogOverlay>
+                        <AlertDialogContent>
+                          <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                            Eliminar US
+                          </AlertDialogHeader>
 
-                        <AlertDialogBody>
-                          ¿Está seguro que desea eliminar a esta US?
-                        </AlertDialogBody>
+                          <AlertDialogBody>
+                            ¿Está seguro que desea eliminar a esta US?
+                          </AlertDialogBody>
 
-                        <AlertDialogFooter>
-                          <Button ref={cancelRef} onClick={onClose}>
-                            Cancelar
-                          </Button>
-                          <Button
-                            colorScheme="red"
-                            onClick={() => onDelete(us.id)}
-                            ml={3}
-                          >
-                            Eliminar
-                          </Button>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialogOverlay>
-                  </AlertDialog>
-                </Flex>
+                          <AlertDialogFooter>
+                            <Button ref={cancelRef} onClick={onClose}>
+                              Cancelar
+                            </Button>
+                            <Button
+                              colorScheme="red"
+                              onClick={() => onDelete(us.id)}
+                              ml={3}
+                            >
+                              Eliminar
+                            </Button>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialogOverlay>
+                    </AlertDialog>
+                  </Flex>
+                  :
+                  null
+                }
               </Box>
             );
           })

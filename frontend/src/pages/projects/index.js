@@ -160,6 +160,7 @@ export default function Index({ dispatchError, props }) {
                   canDelete={tienePermiso(thisMember, PERMISOS_MACRO.ELIMINAR_US)}
                   canAsign={tienePermiso(thisMember, PERMISOS_MACRO.ASIGNAR_MIEMBROS_A_US)}
                   isScrumMaster={thisMember?.rol.nombre === "Scrum Master"}
+                  memberId={thisMember?.id}
                 >
                   <Flex justify="center">
                     <LinkBox
@@ -259,14 +260,18 @@ export default function Index({ dispatchError, props }) {
                             {sprint.activo ? "Activo" : "No activado"}
                           </Text>
                         </Box>
-                        <Button
-                          onClick={() => {
-                            setFocusedSprint(sprint);
-                            setShowEliminarModal(true);
-                          }}
-                        >
-                          Eliminar :o
-                        </Button>
+                        {tienePermiso(thisMember, PERMISOS_MACRO.ELIMINAR_SPRINT) ?
+                          <Button
+                            onClick={() => {
+                              setFocusedSprint(sprint);
+                              setShowEliminarModal(true);
+                            }}
+                          >
+                            Eliminar :o
+                          </Button>
+                          :
+                          null
+                        }
                         {focusedSprint && (
                           <EliminarSprintModal
                             projectId={projectId}
@@ -291,24 +296,6 @@ export default function Index({ dispatchError, props }) {
           <Spinner size="xl" />
         </Flex>
       )}
-
-      {/* <VStack>
-        <LinkBox
-          display="flex"
-          w="xs"
-          height="200px"
-          borderWidth="1px"
-          borderRadius="lg"
-          overflow="hidden"
-          fontSize="3xl"
-          fontWeight="bold"
-          bg="white"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <LinkOverlay href={`/sprints/${sprint}`}>Crear sprint</LinkOverlay>
-        </LinkBox>
-      </VStack> */}
     </Box>
   );
 }
