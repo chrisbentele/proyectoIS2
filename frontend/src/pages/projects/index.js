@@ -9,30 +9,31 @@ import { api } from "../../api";
 import { Spinner } from "@chakra-ui/spinner";
 import {
   Box,
-  Heading,
   Flex,
   HStack,
   Text,
   VStack,
   LinkBox,
   LinkOverlay,
-  Grid,
-} from "@chakra-ui/layout";
+  Button,
+} from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import Select from "react-select";
-import USList from "../../components/userStoryListUnset/userStoryListUnset";
+import { mapStateColor } from "../../styles/theme";
+import USListUnset from "../../components/userStoryListUnset/userStoryListUnset";
 import CrearSprintModal from "../../components/CrearSprintModal/CrearSprintModal";
 import EditarSprintModal from "../../components/EditarSprintModal/EditarSprintModal";
 import { IconButton } from "@chakra-ui/button";
 import { EditIcon } from "@chakra-ui/icons";
+import { useHistory } from "react-router-dom";
+import { MdBuild } from "react-icons/md";
 
-import { useHistory } from "react-router";
 /**
  * Función que contiene el código de la vista
  * @param { props } param0
  * @returns React Component
  */
-export default function Index({ props }) {
+export default function Index({ dispatchError, props }) {
   const projectId = props.computedMatch.params.id; //id del proyecto, se extrae del URL
   const [project, setProject] = useState(); //estado del proyecto
   const [userStories, setUserStories] = useState([]); //estado del proyecto
@@ -40,6 +41,7 @@ export default function Index({ props }) {
   const [isOpenCrearSp, setIsOpenCrearSp] = useState(false); //estado del proyecto
   const [isOpenEditSp, setIsOpenEditSp] = useState(false); //estado del proyecto
   const history = useHistory();
+
   //Al cargarse la pagina se busca el proyecto con el id del URL y se lo asigna a projectId
   useEffect(() => {
     api
@@ -47,7 +49,7 @@ export default function Index({ props }) {
       .then((res) => setProject(res.data))
       .catch((err) => console.log(err));
 
-    api
+    api.userStories
       .getUserStories(projectId)
       .then((US) => setUserStories(US.data))
       .catch((err) => console.log(err));
@@ -58,7 +60,7 @@ export default function Index({ props }) {
     <Box
       minHeight="100vh"
       minWidth="full"
-      bg={"#F5F4F5"}
+      bg={mapStateColor(project?.estado)}
       color="#2b2d42"
       d="flex"
       // justifyContent="left"
@@ -71,7 +73,7 @@ export default function Index({ props }) {
             pos="fixed"
             top="55px"
             zIndex="100"
-            bg={"#FFE047"}
+            bg={mapStateColor(project.estado) - 40}
             left="0"
             right="0"
             // boxShadow="md"
@@ -79,26 +81,49 @@ export default function Index({ props }) {
             pl="3"
             mb="3rem"
           >
-            <HStack spacing="24px" fontSize="2xl">
-              <Box>
+            <HStack spacing="24px" fontSize="2xl" p="2">
+              <Link to={`/projects/${projectId}`}>
                 {/* <Link to="/projects">Projects</Link> */}
                 <Text fontWeight="medium">{project.nombre}</Text>
-              </Box>
-              <Text fontWeight="medium">
-                <Link to={`${projectId}/members`}>Miembros</Link>
-              </Text>
-              <Text fontWeight="medium">
-                <Link to={`${projectId}/roles`}>Configurar roles</Link>
-              </Text>
+              </Link>
+
+              <Box fontWeight="thin">|</Box>
+
+              <Button
+                colorScheme="yellow"
+                variant="solid"
+                // opacity="30%"
+                onClick={() => history.push(`/projects/${projectId}/members`)}
+              >
+                Miembros
+              </Button>
+              <Button
+                colorScheme="yellow"
+                variant="solid"
+                // opacity="30%"
+                onClick={() => history.push(`/projects/${projectId}/roles`)}
+              >
+                Configurar Roles
+              </Button>
+              <Button
+                leftIcon={<MdBuild />}
+                colorScheme="yellow"
+                variant="solid"
+                // opacity="30%"
+                onClick={() => history.push(`/projects/${projectId}/config`)}
+              >
+                Configurar Proyecto
+              </Button>
             </HStack>
           </Box>
           <Box as="main" mt="50px" w="100vw">
-            <HStack>
-              <HStack p="5" w="fit-content">
-                <USList
+            <HStack p="5">
+              <HStack w="fit-content">
+                <USListUnset
                   projectId={projectId}
                   setUserStories={setUserStories}
                   nombreLista="Backlog"
+                  dispatchError={dispatchError}
                   userStories={userStories?.filter((us) => us.estado === 4)}
                 >
                   <Flex justify="center">
@@ -124,7 +149,7 @@ export default function Index({ props }) {
                       </LinkOverlay>
                     </LinkBox>
                   </Flex>
-                </USList>
+                </USListUnset>
               </HStack>
               {/* sprints */}
               <Box>
@@ -149,11 +174,11 @@ export default function Index({ props }) {
                   <CrearSprintModal
                     projectId={projectId}
                     isOpen={isOpenCrearSp}
-                    onClose={() => {
-                      setIsOpenCrearSp(false);
-                      api.sprints
+                    onClose={async () => {
+                      await api.sprints
                         .getSprints(projectId)
                         .then(({ data }) => setSprints(data));
+                      setIsOpenCrearSp(false);
                     }}
                   />
 
@@ -190,17 +215,7 @@ export default function Index({ props }) {
                             {sprint.activo ? "Activo" : "No activado"}
                           </Text>
                         </Box>
-                        <IconButton
-                          icon={<EditIcon />}
-                          onClick={() => setIsOpenEditSp(true)}
-                        />
                       </VStack>
-                      <EditarSprintModal
-                        projectId={projectId}
-                        sprint={sprint}
-                        isOpen={isOpenEditSp}
-                        onClose={() => setIsOpenEditSp(false)}
-                      />
                     </>
                   ))}
                 </VStack>

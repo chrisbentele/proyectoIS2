@@ -21,7 +21,7 @@ class RolSerializer(serializers.ModelSerializer):
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
-        fields = ["id", "nombre", "email"]
+        fields = ["id", "nombre", "email", "proy_admin"]
 
 
 class RetrospectivaSerializer(serializers.ModelSerializer):

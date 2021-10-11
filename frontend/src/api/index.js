@@ -5,14 +5,19 @@
 
 import axios from "axios";
 
-import {
+import projects, {
   createProject,
   deleteProject,
   getProjectById,
   editProject,
   getProjects,
 } from "./projects";
-import { getUsers,getUser, deleteUser, searchUsersByName } from "./users";
+import users, {
+  getUsers,
+  getUser,
+  deleteUser,
+  searchUsersByName,
+} from "./users";
 import {
   addRole,
   editRole,
@@ -28,7 +33,7 @@ import {
   editMembersRole,
   getMembers,
 } from "./members";
-import {
+import userStories, {
   createUserStory,
   getUserStories,
   editUS,
@@ -45,12 +50,14 @@ export const axiosInstance = axios.create({
 //Exportar todas las apis, para solo tener que importar un objeto
 export const api = {
   //Projects
+  projects,
   createProject,
   deleteProject,
   getProjectById,
   editProject,
   getProjects,
   //Users
+  users,
   getUser,
   getUsers,
   deleteUser,
@@ -73,6 +80,7 @@ export const api = {
   getUserStories,
   editUS,
   eliminarUS,
+  userStories,
   //Sprints
   sprints,
 };

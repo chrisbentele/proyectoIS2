@@ -28,26 +28,31 @@ import {
   FormErrorMessage,
   toast,
   Grid,
+  useToast,
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { api } from "../../api";
 import EstimarUsModal from "../../components/EstimarUsModal/EstimarUsModal";
-const USList = ({
+import AsignarUsASprintModal from "../AsignarUsASprintModal/AsignarUsASprintModal";
+const USListUnset = ({
   projectId,
   setUserStories,
   userStories,
   nombreLista,
   children,
+  dispatchError,
   ...props
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showEstimarModal, setShowEstimarModal] = useState(false);
+  const [showAsignarModal, setShowAsignarModal] = useState(false);
   const onClose = () => setIsOpen(false);
   const onDelete = (id) => {
     console.log(id);
     eliminarUS(id);
     setIsOpen(false);
   };
+  const toast = useToast();
   const cancelRef = React.useRef();
 
   const eliminarUS = async (id) => {
@@ -58,6 +63,8 @@ const USList = ({
 
   const [isOpenModal, setIsOpenModal] = React.useState(false);
   const onCloseModal = () => setIsOpenModal(false);
+  const [isOpenModalAssign, setIsOpenModalAssign] = React.useState(false);
+  const onCloseModalAssign = () => setIsOpenModalAssign(false);
 
   const initialRef = React.useRef();
 
@@ -74,7 +81,8 @@ const USList = ({
     await api
       .editUS({ ...values, projectId, usId: focusedUS?.id })
       .then((res) => {
-        if (res.id) {
+        console.log(res.statusText);
+        if (res.statusText == "OK") {
           toast({
             description: "US cambiada.",
             status: "success",
@@ -91,9 +99,18 @@ const USList = ({
         }
       })
       .catch((err) => console.log(err));
-    api.getUserStories(projectId).then(({ data }) => setUserStories(data));
+    await api.userStories
+      .getUserStories(projectId)
+      .then(({ data }) => setUserStories(data));
     setIsOpenModal(false);
   }
+
+  const onCloseAsignarSprint = async () => {
+    setShowAsignarModal(false);
+    await api
+      .getUserStories(projectId)
+      .then(({ data }) => setUserStories(data));
+  };
 
   return (
     <Box
@@ -120,6 +137,7 @@ const USList = ({
                   bg="white"
                   boxShadow="md"
                   w="xs"
+                  key={us.id}
                 >
                   <Text fontSize="20px" fontWeight="semibold">
                     {us.nombre}
@@ -167,11 +185,28 @@ const USList = ({
                         }}
                       />
                     )}
-
+                    <Button
+                      onClick={() => {
+                        setFocusedUS(us);
+                        setShowAsignarModal(true);
+                      }}
+                      mt="2"
+                    >
+                      Asignar
+                    </Button>
+                    {focusedUS && (
+                      <AsignarUsASprintModal
+                        projectId={projectId}
+                        US={focusedUS}
+                        isOpen={showAsignarModal}
+                        dispatchError={dispatchError}
+                        onClose={onCloseAsignarSprint}
+                      />
+                    )}
                     <Modal
                       initialFocusRef={initialRef}
                       isOpen={isOpenModal}
-                      onClose={onCloseModal}
+                      onClose={onCloseModalAssign}
                     >
                       <ModalOverlay />
                       <ModalContent>
@@ -292,4 +327,4 @@ const USList = ({
   );
 };
 
-export default USList;
+export default USListUnset;

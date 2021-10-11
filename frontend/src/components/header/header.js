@@ -39,9 +39,6 @@ const Header = () => {
     >
       {isAuthenticated ? (
         <Flex justifyContent="center">
-          <Box>
-            <LogoutButton />
-          </Box>
           <Spacer />
           {location.pathname !== "/" ? (
             <Box>

@@ -14,7 +14,7 @@ import {
   Flex,
   Heading,
   Text,
-  useDisclosure,
+  //useDisclosure,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -31,16 +31,19 @@ import {
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { api } from "../../api";
 import Select from "react-select";
-
+import AsignarDevUsModal from "../../components/AsignarDevUsModal/AsignarDevUsModal";
 const USList = ({
   projectId,
+  sprintId,
   setUserStories,
   userStories,
   nombreLista,
   children,
+  dispatchError,
   ...props
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [showAsignarModal, setShowAsignarModal] = useState(false);
   const onClose = () => setIsOpen(false);
   const onDelete = (id) => {
     console.log(id);
@@ -53,30 +56,34 @@ const USList = ({
     console.log(estado);
     console.log(usId);
     await api.editUS({ projectId, estado, usId });
-    api.getUserStories(projectId).then(({ data }) => setUserStories(data));
+    api
+      .getUserStories(projectId, sprintId)
+      .then(({ data }) => setUserStories(data));
   };
 
-  const editarUS = async (usName, description, usId) => {
-    console.log(usName);
-    console.log(usId);
-    await api.editUS({ projectId, usName, description, usId });
-    api.getUserStories(projectId).then(({ data }) => setUserStories(data));
-  };
+  // const editarUS = async (usName, description, usId) => {
+  //   console.log(usName);
+  //   console.log(usId);
+  //   await api.editUS({ projectId, usName, description, usId });
+  //   api.getUserStories(projectId).then(({ data }) => setUserStories(data));
+  // };
 
   const eliminarUS = async (id) => {
     console.log(id);
     await api.eliminarUS(projectId, id);
-    api.getUserStories(projectId).then(({ data }) => setUserStories(data));
+    api
+      .getUserStories(projectId, sprintId)
+      .then(({ data }) => setUserStories(data));
   };
 
-  const { onOpen } = useDisclosure();
+  //const { onOpen } = useDisclosure();
   const [isOpenModal, setIsOpenModal] = React.useState(false);
   const onCloseModal = () => setIsOpenModal(false);
-  const onEdit = (nombre, contenido, id) => {
-    console.log(id);
-    editarUS(nombre, contenido, id);
-    setIsOpenModal(false);
-  };
+  // const onEdit = (nombre, contenido, id) => {
+  //   console.log(id);
+  //   editarUS(nombre, contenido, id);
+  //   setIsOpenModal(false);
+  // };
 
   const initialRef = React.useRef();
 
@@ -110,7 +117,9 @@ const USList = ({
         }
       })
       .catch((err) => console.log(err));
-    api.getUserStories(projectId).then(({ data }) => setUserStories(data));
+    await api.userStories
+      .getUserStories(projectId, sprintId)
+      .then(({ data }) => setUserStories(data));
     setIsOpenModal(false);
   }
 
@@ -130,10 +139,6 @@ const USList = ({
       </Flex>
       {userStories
         ? userStories.map((us) => {
-            console.log("hola");
-            console.log(us.id);
-            console.log(us.estado);
-            console.log(us.estado === 0);
             return (
               <Box
                 borderRadius="8"
@@ -142,6 +147,7 @@ const USList = ({
                 key={us.id}
                 bg="white"
                 boxShadow="md"
+                key={us.id}
               >
                 <Text fontSize="20px" fontWeight="semibold">
                   {us.nombre}
@@ -169,11 +175,6 @@ const USList = ({
                       label: "Hecho",
                       isDisabled: us.estado === 2,
                     },
-                    {
-                      value: "4",
-                      label: "Backlog",
-                      isDisabled: us.estado === 4,
-                    },
                   ]}
                 />
                 <Flex>
@@ -186,6 +187,32 @@ const USList = ({
                   >
                     <EditIcon color="black.500" />
                   </Button>
+
+                  <Button
+                    onClick={() => {
+                      setFocusedUS(us);
+                      setShowAsignarModal(true);
+                    }}
+                    mt="2"
+                  >
+                    Asignar
+                  </Button>
+                  {focusedUS && (
+                    <AsignarDevUsModal
+                      projectId={projectId}
+                      US={focusedUS}
+                      sprintId={sprintId}
+                      isOpen={showAsignarModal}
+                      dispatchError={dispatchError}
+                      onClose={async () => {
+                        setShowAsignarModal(false);
+
+                        await api.userStories
+                          .getUserStories(projectId, sprintId)
+                          .then(({ data }) => setUserStories(data));
+                      }}
+                    />
+                  )}
 
                   <Modal
                     initialFocusRef={initialRef}

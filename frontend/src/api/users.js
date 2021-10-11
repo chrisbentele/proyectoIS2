@@ -6,8 +6,10 @@ import { axiosInstance } from ".";
  * @brief Endpoints de usuarios
  */
 
-//! Listar todos los usuarios
-export const getUsers = async () => await axiosInstance.get("/usuarios");
+//! Listar todos los usuarios de un proyecto
+export const getUsers = () => {
+  return axiosInstance.get(`/usuarios`);
+};
 
 /**
  * Obtener usuario \n
@@ -71,3 +73,19 @@ export const deleteUser = async (userId) =>
 export const searchUsersByName = async (string) =>
   await axiosInstance.get(`/usuarios?searchTerm=string`);
 
+export const setAdmin = async (userId) =>
+  axiosInstance.post(`/usuarios/${userId}/setAdmin`);
+
+export const removeAdmin = async (userId) =>
+  axiosInstance.delete(`/usuarios/${userId}/setAdmin`);
+
+const users = {
+  getUsers,
+  getUser,
+  deleteUser,
+  searchUsersByName,
+  setAdmin,
+  removeAdmin,
+};
+
+export default users;
