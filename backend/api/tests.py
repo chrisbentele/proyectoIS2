@@ -288,7 +288,7 @@ class Proyectos_Usuarios_Roles_Tests(TestCase):
         self.assertEqual(res.status_code, 204)
 
 
-class user_stories(TestCase):
+class User_Stories_Tests(TestCase):
     def test_user_stories_crear(self):
         u = crear_user()
         p = crear_proyecto(self, [u["id"]])
@@ -334,7 +334,7 @@ class user_stories(TestCase):
         self.assertEqual(res.json()["nombre"], "testeado")
 
 
-class sprints_Tests(TestCase):
+class Sprints_Tests(TestCase):
     def test_sprints_crear(self):
         u = crear_user()
         p = crear_proyecto(self, [u["id"]])
@@ -558,8 +558,6 @@ class Sprint_Activar_Test(TestCase):
         self.assertEqual(res.status_code, 200)
 
 
-# sprint activar test
-# sprint desactivar test
 # sprint asignar
 # sprint desasignar
 # us asignar / desasignar usuario/sprint
