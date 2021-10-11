@@ -158,6 +158,7 @@ const USListUnset = ({
                         setFocusedUS(us);
                       }}
                       mt="2"
+                      mr="2"
                     >
                       <EditIcon color="black.500" />
                     </Button>
@@ -191,6 +192,7 @@ const USListUnset = ({
                         setShowAsignarModal(true);
                       }}
                       mt="2"
+                      ml="2"
                     >
                       Asignar
                     </Button>

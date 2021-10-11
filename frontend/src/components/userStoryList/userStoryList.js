@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { useForm } from "react-hook-form";
 
@@ -27,6 +27,7 @@ import {
   Input,
   FormErrorMessage,
   toast,
+  Image,
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { api } from "../../api";
@@ -44,17 +45,26 @@ const USList = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showAsignarModal, setShowAsignarModal] = useState(false);
+  const [picture, setPicture] = useState([]);
+  const [nombre, setNombre] = useState([]);
   const onClose = () => setIsOpen(false);
   const onDelete = (id) => {
-    console.log(id);
     eliminarUS(id);
     setIsOpen(false);
   };
   const cancelRef = React.useRef();
 
+  useEffect(() => {
+    userStories?.forEach((us) => {
+      api.userStories
+        .getUsuariosAsignados(projectId, us.id)
+        .then(({ data: asignado }) => {
+          setNombre(nombre, asignado.nombre);
+        });
+    });
+  }, [picture, projectId, userStories]);
+
   const moverUS = async (estado, usId) => {
-    console.log(estado);
-    console.log(usId);
     await api.editUS({ projectId, estado, usId });
     api
       .getUserStories(projectId, sprintId)
@@ -62,14 +72,11 @@ const USList = ({
   };
 
   // const editarUS = async (usName, description, usId) => {
-  //   console.log(usName);
-  //   console.log(usId);
   //   await api.editUS({ projectId, usName, description, usId });
   //   api.getUserStories(projectId).then(({ data }) => setUserStories(data));
   // };
 
   const eliminarUS = async (id) => {
-    console.log(id);
     await api.eliminarUS(projectId, id);
     api
       .getUserStories(projectId, sprintId)
@@ -80,7 +87,6 @@ const USList = ({
   const [isOpenModal, setIsOpenModal] = React.useState(false);
   const onCloseModal = () => setIsOpenModal(false);
   // const onEdit = (nombre, contenido, id) => {
-  //   console.log(id);
   //   editarUS(nombre, contenido, id);
   //   setIsOpenModal(false);
   // };
@@ -147,11 +153,11 @@ const USList = ({
                 key={us.id}
                 bg="white"
                 boxShadow="md"
-                key={us.id}
               >
                 <Text fontSize="20px" fontWeight="semibold">
                   {us.nombre}
                 </Text>
+                <Image borderRadius="100" src={"a"} />
                 <Text fontSize="15px">{us.contenido}</Text>
                 <Select
                   placeholder="cambiar estado"
@@ -184,6 +190,7 @@ const USList = ({
                       setFocusedUS(us);
                     }}
                     mt="2"
+                    mr="2"
                   >
                     <EditIcon color="black.500" />
                   </Button>
@@ -195,7 +202,7 @@ const USList = ({
                     }}
                     mt="2"
                   >
-                    Asignar
+                    Asignar a Dev
                   </Button>
                   {focusedUS && (
                     <AsignarDevUsModal

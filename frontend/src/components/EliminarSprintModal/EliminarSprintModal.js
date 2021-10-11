@@ -1,12 +1,22 @@
 import { useRef } from "react";
 import { api } from "../../api";
+import {
+  AlertDialog,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogBody,
+  AlertDialogFooter,
+  Button,
+} from "@chakra-ui/react";
 
-const eliminarSprint = ({ projectId, spId, isOpen, onClose }) => {
+const EliminarSprint = ({ projectId, spId, isOpen, onClose, setSprints }) => {
   const cancelRef = useRef();
 
   const onDeleteSprint = () => {
-    console.log(data);
     api.sprints.deleteSprint({ projectId, spId });
+    api.sprints.getSprints(projectId).then(({ data }) => setSprints(data)); //actualizar que se elimino
+    onClose(true);
   };
 
   return (
@@ -29,7 +39,7 @@ const eliminarSprint = ({ projectId, spId, isOpen, onClose }) => {
             <Button ref={cancelRef} onClick={onClose}>
               Cancelar
             </Button>
-            <Button colorScheme="green" onClick={onDeleteSprint} ml={3}>
+            <Button colorScheme="red" onClick={onDeleteSprint} ml={3}>
               Eliminar Sprint
             </Button>
           </AlertDialogFooter>
@@ -39,4 +49,4 @@ const eliminarSprint = ({ projectId, spId, isOpen, onClose }) => {
   );
 };
 
-export default eliminarSprint;
+export default EliminarSprint;

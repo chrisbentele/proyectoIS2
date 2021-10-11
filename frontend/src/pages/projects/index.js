@@ -27,6 +27,7 @@ import { IconButton } from "@chakra-ui/button";
 import { EditIcon } from "@chakra-ui/icons";
 import { useHistory } from "react-router-dom";
 import { MdBuild } from "react-icons/md";
+import EliminarSprintModal from "../../components/EliminarSprintModal/EliminarSprintModal";
 
 /**
  * Función que contiene el código de la vista
@@ -40,8 +41,10 @@ export default function Index({ dispatchError, props }) {
   const [sprints, setSprints] = useState([]); //estado del proyecto
   const [isOpenCrearSp, setIsOpenCrearSp] = useState(false); //estado del proyecto
   const [isOpenEditSp, setIsOpenEditSp] = useState(false); //estado del proyecto
+  const [showEliminarModal, setShowEliminarModal] = useState(false);
   const history = useHistory();
 
+  const [focusedSprint, setFocusedSprint] = useState();
   //Al cargarse la pagina se busca el proyecto con el id del URL y se lo asigna a projectId
   useEffect(() => {
     api
@@ -198,13 +201,14 @@ export default function Index({ dispatchError, props }) {
                         alignItems="center"
                         key={index}
                         cursor="pointer"
-                        onClick={() =>
-                          history.push(
-                            `/projects/${projectId}/sprints/${sprint.id}`
-                          )
-                        }
                       >
-                        <Box>
+                        <Box
+                          onClick={() =>
+                            history.push(
+                              `/projects/${projectId}/sprints/${sprint.id}`
+                            )
+                          }
+                        >
                           <Text>{sprint.nombre}</Text>
                         </Box>
                         <Box fontSize="18px">
@@ -215,6 +219,25 @@ export default function Index({ dispatchError, props }) {
                             {sprint.activo ? "Activo" : "No activado"}
                           </Text>
                         </Box>
+                        <Button
+                          onClick={() => {
+                            setFocusedSprint(sprint);
+                            setShowEliminarModal(true);
+                          }}
+                        >
+                          Eliminar :o
+                        </Button>
+                        {focusedSprint && (
+                          <EliminarSprintModal
+                            projectId={projectId}
+                            spId={focusedSprint.id}
+                            isOpen={showEliminarModal}
+                            onClose={() => {
+                              setShowEliminarModal(false);
+                            }}
+                            setSprints={setSprints}
+                          />
+                        )}
                       </VStack>
                     </>
                   ))}
