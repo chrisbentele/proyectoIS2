@@ -61,18 +61,17 @@ export const getProjects = async (userId) => {
   }
   return await axiosInstance.get("proyectos");
 };
-//! Editar proyeto
 
+//! Editar proyeto
 export const editProject = async (projectData) => {
   const { projectId, projectName, estimation, status } = projectData;
   const res = await axiosInstance.put(`proyectos/${projectId}`, {
     duracionEstimada: estimation,
     nombre: projectName,
-    estado: status
+    estado: status,
   });
   return res;
 };
-
 
 /** Listar proyecto por id
  * La funcion recibe como parametro el id del proyecto y luego retorna la informacion del mismo
@@ -87,3 +86,28 @@ export const getProjectById = async (projectId) =>
  */
 export const deleteProject = async (projectId) =>
   await axiosInstance.delete(`proyectos/${projectId}`);
+
+/**
+ * Listar miembros de un proyecto \n
+ * Si no se provee el id de usuario la funcion solicita al servidor todos los proyectos. \n
+ * Si se provee el id de usuario la funcion solicita todos los proyectos de un usuario en especifico. \n
+ * @param {*} userId
+ * @returns Resultado de la operación
+ */
+export const getProjectMembers = (projectId, userId) => {
+  if (userId) {
+    return axiosInstance.get(`/proyectos/${projectId}/miembros/${userId}`);
+  }
+  return axiosInstance.get(`/proyectos/${projectId}/miembros`);
+};
+
+const projects = {
+  createProject,
+  getProjects,
+  editProject,
+  getProjectById,
+  deleteProject,
+  getProjectMembers,
+};
+
+export default projects;

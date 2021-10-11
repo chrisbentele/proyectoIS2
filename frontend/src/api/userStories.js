@@ -10,20 +10,21 @@ export const createUserStory = async (usData) => {
   });
 };
 
-//Endpoint para obtener todas las user stories de un proyecto
-//recibe como parametro el id del proyeto
-export const getUserStories = async (idProyecto) =>
-  await axiosInstance.get(`/proyectos/${idProyecto}/user_stories`);
-
-//! Obtiene US de un sprint
-export const getUserStoriesSprint = async (idProyecto, sprintId = null) => {
+//! Obtiene US de un sprint o proyecto
+export const getUserStories = async (idProyecto, sprintId = null) => {
   if (sprintId == null) {
     return axiosInstance
       .get(`/proyectos/${idProyecto}/user_stories`)
-      .then((uss) => uss.filter((us) => us.sprint == null));
+      .then((res) => {
+        let data = res.data?.filter((us) => us.sprint == null);
+        console.log(data);
+        res.data = data;
+        console.log(res);
+        return res;
+      });
   } else {
     return axiosInstance.get(
-      `/proyectos/${idProyecto}/user_stories/${sprintId}`
+      `/proyectos/${idProyecto}/sprints/${sprintId}/user_stories`
     );
   }
 };
@@ -51,11 +52,11 @@ export const editUS = async ({
 export const asignarUsAUsuario = ({ projectId, sprintId, usId, userId }) => {
   if (userId) {
     return axiosInstance.post(
-      `/proyectos/${projectId}/sprints/${sprintId}/user_stories/${usId}/asignar/${userId}`
+      `/proyectos/${projectId}/user_stories/${usId}/asignar/${userId}`
     );
   } else {
     return axiosInstance.delete(
-      `/proyectos/${projectId}/sprints/${sprintId}/user_stories/${usId}/asignar`
+      `/proyectos/${projectId}/user_stories/${usId}/asignar`
     );
   }
 };
@@ -85,9 +86,8 @@ export const eliminarUS = async (projectId, us_id) =>
 
 const userStories = {
   createUserStory,
-  getUserStories,
   editUS,
-  getUserStoriesSprint,
+  getUserStories,
   asignarUsAUsuario,
   asignarUsASprint,
   desasignarUsASprint,

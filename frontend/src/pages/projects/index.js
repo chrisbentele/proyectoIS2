@@ -20,7 +20,7 @@ import {
 import { Link } from "react-router-dom";
 import Select from "react-select";
 import { mapStateColor } from "../../styles/theme";
-import USList from "../../components/userStoryListUnset/userStoryListUnset";
+import USListUnset from "../../components/userStoryListUnset/userStoryListUnset";
 import CrearSprintModal from "../../components/CrearSprintModal/CrearSprintModal";
 import EditarSprintModal from "../../components/EditarSprintModal/EditarSprintModal";
 import { IconButton } from "@chakra-ui/button";
@@ -37,7 +37,7 @@ import { PERMISOS_MACRO } from "../roles/permisos";
  * @param { props } param0
  * @returns React Component
  */
-export default function Index({ props }) {
+export default function Index({ dispatchError, props }) {
   const projectId = props.computedMatch.params.id; //id del proyecto, se extrae del URL
   const [project, setProject] = useState(); //estado del proyecto
   const [userStories, setUserStories] = useState([]); //estado del proyecto
@@ -55,7 +55,7 @@ export default function Index({ props }) {
       .then((res) => setProject(res.data))
       .catch((err) => console.log(err));
 
-    api
+    api.userStories
       .getUserStories(projectId)
       .then((US) => setUserStories(US.data))
       .catch((err) => console.log(err));
@@ -144,10 +144,11 @@ export default function Index({ props }) {
           <Box as="main" mt="50px" w="100vw">
             <HStack p="5">
               <HStack w="fit-content">
-                <USList
+                <USListUnset
                   projectId={projectId}
                   setUserStories={setUserStories}
                   nombreLista="Backlog"
+                  dispatchError={dispatchError}
                   userStories={userStories?.filter((us) => us.estado === 4)}
                   canModify={tienePermiso(thisMember, PERMISOS_MACRO.MODIFICAR_US)}
                   canEstimate={tienePermiso(thisMember, PERMISOS_MACRO.ESTIMAR_US)}
@@ -182,7 +183,7 @@ export default function Index({ props }) {
                       }
                     </LinkBox>
                   </Flex>
-                </USList>
+                </USListUnset>
               </HStack>
               {/* sprints */}
               <Box>
@@ -211,11 +212,11 @@ export default function Index({ props }) {
                   <CrearSprintModal
                     projectId={projectId}
                     isOpen={isOpenCrearSp}
-                    onClose={() => {
-                      setIsOpenCrearSp(false);
-                      api.sprints
+                    onClose={async () => {
+                      await api.sprints
                         .getSprints(projectId)
                         .then(({ data }) => setSprints(data));
+                      setIsOpenCrearSp(false);
                     }}
                   />
 

@@ -653,7 +653,19 @@ def sprints_user_stories(request, proyect_id, sprint_id, us_id=None):
     if request.method == "GET":
         us = US.objects.filter(proyecto=proyecto, sprint=sprint_id)
         serializer = USSerializer(us, many=True)
-        return JsonResponse(serializer.data, safe=False)
+        us_list = serializer.data
+
+        def get_asigned_user(us_id):
+            asigned_query = USAsignada.objects.filter(
+                us=us_id,
+            )
+            asigned = USAsignadaSerializer(asigned_query, many=True).data
+            return asigned[0]["usuario"] if len(asigned) > 0 else None
+
+        for us in us_list:
+            us.update({"asignado": get_asigned_user(us["id"])})
+
+        return JsonResponse(us_list, safe=False)
 
     elif request.method == "POST":
         # Agregar US al sprint
@@ -662,7 +674,7 @@ def sprints_user_stories(request, proyect_id, sprint_id, us_id=None):
 
         try:
             us = US.objects.get(id=us_id)
-            serializer = USSerializer(us, sprint=sprint_id, partial=True)
+            serializer = USSerializer(us, data={"sprint": sprint_id}, partial=True)
             if serializer.is_valid():
                 serializer.save()
                 return JsonResponse(serializer.data, status=200)
@@ -678,7 +690,7 @@ def sprints_user_stories(request, proyect_id, sprint_id, us_id=None):
 
         try:
             us = US.objects.get(id=us_id)
-            serializer = USSerializer(us, sprint=None, partial=True)
+            serializer = USSerializer(us, data={"sprint": None}, partial=True)
 
             if serializer.is_valid():
                 serializer.save()
@@ -739,7 +751,7 @@ def sprints_desactivar(request, proyect_id, sprint_id):
     return HttpResponseBadRequest("Falta sprint_id")
 
 
-def user_stories_asignar(request, proyect_id, us_id, user_id):
+def user_stories_asignar(request, proyect_id, us_id, user_id=None):
     """Metodos p/ asignar un miembro a una US del proyecto"""
 
     if request.method == "POST":

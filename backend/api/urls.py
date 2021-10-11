@@ -55,6 +55,10 @@ apiPaths = [
         "proyectos/<str:proyect_id>/sprints/<str:sprint_id>/user_stories",
         sprints_user_stories,
     ),
+    path(
+        "proyectos/<str:proyect_id>/sprints/<str:sprint_id>/user_stories/<str:us_id>",
+        sprints_user_stories,
+    ),
     path("usuarios", usuarios),
     path("usuarios/<str:user_id>", usuarios),
     path("usuarios/<str:user_id>/setAdmin", usuarios_admin),
