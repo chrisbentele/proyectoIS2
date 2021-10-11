@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { useForm } from "react-hook-form";
 
@@ -32,6 +32,11 @@ import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { api } from "../../api";
 import Select from "react-select";
 import AsignarDevUsModal from "../../components/AsignarDevUsModal/AsignarDevUsModal";
+import { tienePermiso } from "../../util";
+import { PERMISOS_MACRO } from "../../pages/roles/permisos";
+import { useAuth0 } from "@auth0/auth0-react";
+
+
 const USList = ({
   projectId,
   sprintId,
@@ -42,6 +47,7 @@ const USList = ({
   dispatchError,
   ...props
 }) => {
+
   const [isOpen, setIsOpen] = useState(false);
   const [showAsignarModal, setShowAsignarModal] = useState(false);
   const onClose = () => setIsOpen(false);
@@ -51,6 +57,16 @@ const USList = ({
     setIsOpen(false);
   };
   const cancelRef = React.useRef();
+
+  const { user } = useAuth0();
+  const [thisMember, setThisMember] = useState();
+
+  useEffect(() => {
+    api
+      .getMember(projectId, user.sub)
+      .then(({ data: member }) => setThisMember(member))
+      .catch((err) => console.log(err));
+  }, [])
 
   const moverUS = async (estado, usId) => {
     console.log(estado);
@@ -139,196 +155,210 @@ const USList = ({
       </Flex>
       {userStories
         ? userStories.map((us) => {
-            return (
-              <Box
-                borderRadius="8"
-                p="2"
-                m="2"
-                key={us.id}
-                bg="white"
-                boxShadow="md"
-                key={us.id}
-              >
-                <Text fontSize="20px" fontWeight="semibold">
-                  {us.nombre}
-                </Text>
-                <Text fontSize="15px">{us.contenido}</Text>
-                <Select
-                  placeholder="cambiar estado"
-                  size="sm"
-                  onChange={(e) => {
-                    moverUS(e.value, us.id);
-                  }}
-                  options={[
-                    {
-                      value: "0",
-                      label: "Pendiente",
-                      isDisabled: us.estado === 0,
-                    },
-                    {
-                      value: "1",
-                      label: "En curso",
-                      isDisabled: us.estado === 1,
-                    },
-                    {
-                      value: "2",
-                      label: "Hecho",
-                      isDisabled: us.estado === 2,
-                    },
-                  ]}
-                />
-                <Flex>
-                  <Button
-                    onClick={() => {
-                      setIsOpenModal(true);
-                      setFocusedUS(us);
+          return (
+            <Box
+              borderRadius="8"
+              p="2"
+              m="2"
+              key={us.id}
+              bg="white"
+              boxShadow="md"
+              key={us.id}
+            >
+              <Text fontSize="20px" fontWeight="semibold">
+                {us.nombre}
+              </Text>
+              <Text fontSize="15px">{us.contenido}</Text>
+              {thisMember?.rol.nombre === "Scrum Master" || thisMember?.id === us.asignado?.id ?
+                <>
+                  <Select
+                    placeholder="cambiar estado"
+                    size="sm"
+                    onChange={(e) => {
+                      moverUS(e.value, us.id);
                     }}
-                    mt="2"
-                  >
-                    <EditIcon color="black.500" />
-                  </Button>
+                    options={[
+                      {
+                        value: "0",
+                        label: "Pendiente",
+                        isDisabled: us.estado === 0,
+                      },
+                      {
+                        value: "1",
+                        label: "En curso",
+                        isDisabled: us.estado === 1,
+                      },
+                      {
+                        value: "2",
+                        label: "Hecho",
+                        isDisabled: us.estado === 2,
+                      },
+                    ]}
+                  />
+                  <Flex>
+                    {tienePermiso(thisMember, PERMISOS_MACRO.MODIFICAR_US) ?
+                      <Button
+                        onClick={() => {
+                          setIsOpenModal(true);
+                          setFocusedUS(us);
+                        }}
+                        mt="2"
+                      >
+                        <EditIcon color="black.500" />
+                      </Button>
+                      :
+                      null
+                    }
 
-                  <Button
-                    onClick={() => {
-                      setFocusedUS(us);
-                      setShowAsignarModal(true);
-                    }}
-                    mt="2"
-                  >
-                    Asignar
-                  </Button>
-                  {focusedUS && (
-                    <AsignarDevUsModal
-                      projectId={projectId}
-                      US={focusedUS}
-                      sprintId={sprintId}
-                      isOpen={showAsignarModal}
-                      dispatchError={dispatchError}
-                      onClose={async () => {
-                        setShowAsignarModal(false);
-
-                        await api.userStories
-                          .getUserStories(projectId, sprintId)
-                          .then(({ data }) => setUserStories(data));
+                    <Button
+                      onClick={() => {
+                        setFocusedUS(us);
+                        setShowAsignarModal(true);
                       }}
-                    />
-                  )}
+                      mt="2"
+                    >
+                      Asignar
+                    </Button>
+                    {focusedUS && (
+                      <AsignarDevUsModal
+                        projectId={projectId}
+                        US={focusedUS}
+                        sprintId={sprintId}
+                        isOpen={showAsignarModal}
+                        dispatchError={dispatchError}
+                        onClose={async () => {
+                          setShowAsignarModal(false);
 
-                  <Modal
-                    initialFocusRef={initialRef}
-                    isOpen={isOpenModal}
-                    onClose={onCloseModal}
-                  >
-                    <ModalOverlay />
-                    <ModalContent>
-                      <ModalHeader>Editar US</ModalHeader>
+                          await api.userStories
+                            .getUserStories(projectId, sprintId)
+                            .then(({ data }) => setUserStories(data));
+                        }}
+                      />
+                    )}
 
-                      <ModalCloseButton />
-                      <form onSubmit={handleSubmit(onSubmit)}>
-                        <ModalBody pb={6}>
-                          <FormControl isInvalid={errors.name}>
-                            <FormLabel htmlFor="name">Nombre US</FormLabel>
-                            <Input
-                              id="name"
-                              ref={initialRef}
-                              defaultValue={us.nombre}
-                              {...register("usName", {
-                                required: "This is required",
-                                minLength: {
-                                  value: 4,
-                                  message: "Minimum length should be 4",
-                                },
-                              })}
-                            />
-                            <FormErrorMessage>
-                              {errors.name && errors.name.message}
-                            </FormErrorMessage>
-                          </FormControl>
-                          <FormControl isInvalid={errors.description} mt={4}>
-                            <FormLabel htmlFor="description" mt={4}>
-                              Descripción
-                            </FormLabel>
-                            <Input
-                              id="description"
-                              defaultValue={us.contenido}
-                              {...register("description", {
-                                required: "This is required",
-                                minLength: {
-                                  value: 4,
-                                  message: "Minimum length should be 4",
-                                },
-                              })}
-                            />
-                            <FormErrorMessage>
-                              {errors.description && errors.description.message}
-                            </FormErrorMessage>
-                          </FormControl>
-                        </ModalBody>
+                    <Modal
+                      initialFocusRef={initialRef}
+                      isOpen={isOpenModal}
+                      onClose={onCloseModal}
+                    >
+                      <ModalOverlay />
+                      <ModalContent>
+                        <ModalHeader>Editar US</ModalHeader>
 
-                        <ModalFooter>
-                          <Button
-                            mr={4}
-                            colorScheme="blue"
-                            isLoading={isSubmitting}
-                            type="submit"
-                          >
-                            Guardar
-                          </Button>
-                          <Button onClick={onCloseModal}>Cancelar</Button>
-                        </ModalFooter>
-                      </form>
-                    </ModalContent>
-                  </Modal>
+                        <ModalCloseButton />
+                        <form onSubmit={handleSubmit(onSubmit)}>
+                          <ModalBody pb={6}>
+                            <FormControl isInvalid={errors.name}>
+                              <FormLabel htmlFor="name">Nombre US</FormLabel>
+                              <Input
+                                id="name"
+                                ref={initialRef}
+                                defaultValue={us.nombre}
+                                {...register("usName", {
+                                  required: "This is required",
+                                  minLength: {
+                                    value: 4,
+                                    message: "Minimum length should be 4",
+                                  },
+                                })}
+                              />
+                              <FormErrorMessage>
+                                {errors.name && errors.name.message}
+                              </FormErrorMessage>
+                            </FormControl>
+                            <FormControl isInvalid={errors.description} mt={4}>
+                              <FormLabel htmlFor="description" mt={4}>
+                                Descripción
+                              </FormLabel>
+                              <Input
+                                id="description"
+                                defaultValue={us.contenido}
+                                {...register("description", {
+                                  required: "This is required",
+                                  minLength: {
+                                    value: 4,
+                                    message: "Minimum length should be 4",
+                                  },
+                                })}
+                              />
+                              <FormErrorMessage>
+                                {errors.description && errors.description.message}
+                              </FormErrorMessage>
+                            </FormControl>
+                          </ModalBody>
 
-                  <Button
-                    onClick={() => setIsOpen(true)}
-                    mt="2"
-                    ml="auto"
-                    bg="red.500"
-                    _hover={{
-                      background: "red.600",
-                      color: "teal.500",
-                    }}
-                    _active={{
-                      background: "red.600",
-                    }}
-                  >
-                    <DeleteIcon color={"#F5F4F5"} />
-                  </Button>
-                  <AlertDialog
-                    isOpen={isOpen}
-                    leastDestructiveRef={cancelRef}
-                    onClose={onClose}
-                  >
-                    <AlertDialogOverlay>
-                      <AlertDialogContent>
-                        <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                          Eliminar US
-                        </AlertDialogHeader>
+                          <ModalFooter>
+                            <Button
+                              mr={4}
+                              colorScheme="blue"
+                              isLoading={isSubmitting}
+                              type="submit"
+                            >
+                              Guardar
+                            </Button>
+                            <Button onClick={onCloseModal}>Cancelar</Button>
+                          </ModalFooter>
+                        </form>
+                      </ModalContent>
+                    </Modal>
 
-                        <AlertDialogBody>
-                          ¿Está seguro que desea eliminar a esta US?
-                        </AlertDialogBody>
+                    {tienePermiso(thisMember, PERMISOS_MACRO.ELIMINAR_US) ?
+                      <Button
+                        onClick={() => setIsOpen(true)}
+                        mt="2"
+                        ml="auto"
+                        bg="red.500"
+                        _hover={{
+                          background: "red.600",
+                          color: "teal.500",
+                        }}
+                        _active={{
+                          background: "red.600",
+                        }}
+                      >
+                        <DeleteIcon color={"#F5F4F5"} />
+                      </Button>
+                      :
+                      null
+                    }
+                    <AlertDialog
+                      isOpen={isOpen}
+                      leastDestructiveRef={cancelRef}
+                      onClose={onClose}
+                    >
+                      <AlertDialogOverlay>
+                        <AlertDialogContent>
+                          <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                            Eliminar US
+                          </AlertDialogHeader>
 
-                        <AlertDialogFooter>
-                          <Button ref={cancelRef} onClick={onClose}>
-                            Cancelar
-                          </Button>
-                          <Button
-                            colorScheme="red"
-                            onClick={() => onDelete(us.id)}
-                            ml={3}
-                          >
-                            Eliminar
-                          </Button>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialogOverlay>
-                  </AlertDialog>
-                </Flex>
-              </Box>
-            );
-          })
+                          <AlertDialogBody>
+                            ¿Está seguro que desea eliminar a esta US?
+                          </AlertDialogBody>
+
+                          <AlertDialogFooter>
+                            <Button ref={cancelRef} onClick={onClose}>
+                              Cancelar
+                            </Button>
+                            <Button
+                              colorScheme="red"
+                              onClick={() => onDelete(us.id)}
+                              ml={3}
+                            >
+                              Eliminar
+                            </Button>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialogOverlay>
+                    </AlertDialog>
+                  </Flex>
+                </>
+                :
+                null
+              }
+            </Box>
+          );
+        })
         : null}
       {children}
     </Box>
