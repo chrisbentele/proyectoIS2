@@ -755,7 +755,7 @@ def sprints_user_stories(request, proyect_id, sprint_id, us_id=None):
 
             if serializer.is_valid():
                 serializer.save()
-                return JsonResponse(serializer.data, status=200)
+                return JsonResponse(serializer.data, status=204)
             return JsonResponse(serializer.errors, status=400, safe=False)
 
         except US.DoesNotExist:
@@ -916,5 +916,5 @@ def usuarios_admin(request, user_id):
 
         if serializer.is_valid():
             serializer.save()
-            return JsonResponse(serializer.data, status=200)
+            return JsonResponse(serializer.data, status=204)
         return JsonResponse(serializer.errors, status=400, safe=False)

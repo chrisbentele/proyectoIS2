@@ -603,8 +603,61 @@ class User_Stories_Asignar_Test(TestCase):
         self.assertEqual(res.json()["asignado"], None)
 
 
-# sprint asignar
-# sprint desasignar
+class Sprints_User_Stories_Test(TestCase):
+    def test_asignar_user_stories_a_sprint(self):
+        u = crear_user()
+        p = crear_proyecto(self, [u["id"]])
+        sp = crear_sprint(self, p)
+
+        us = crear_US(p["id"], u["id"])
+
+        res = self.client.post(
+            f"/api/proyectos/{p['id']}/sprints/{sp['id']}/user_stories/{us['id']}"
+        )
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(res.json()["sprint"], sp["id"])
+
+    def test_get_user_stories_asignadas(self):
+        u = crear_user()
+        p = crear_proyecto(self, [u["id"]])
+        sp = crear_sprint(self, p)
+
+        us = crear_US(p["id"], u["id"])
+
+        res = self.client.post(
+            f"/api/proyectos/{p['id']}/sprints/{sp['id']}/user_stories/{us['id']}"
+        )
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(res.json()["sprint"], sp["id"])
+
+        res = self.client.get(
+            f"/api/proyectos/{p['id']}/sprints/{sp['id']}/user_stories"
+        )
+        self.assertEqual(res.status_code, 200)
+
+        self.assertEqual(res.json()[0]["sprint"], sp["id"])
+
+    def test_desasignar_sprint_de_user_stories(self):
+        u = crear_user()
+        p = crear_proyecto(self, [u["id"]])
+        sp = crear_sprint(self, p)
+
+        us = crear_US(p["id"], u["id"])
+
+        res = self.client.post(
+            f"/api/proyectos/{p['id']}/sprints/{sp['id']}/user_stories/{us['id']}"
+        )
+        self.assertEqual(res.status_code, 200)
+
+        self.assertEqual(res.json()["sprint"], sp["id"])
+
+        res = self.client.delete(
+            f"/api/proyectos/{p['id']}/sprints/{sp['id']}/user_stories/{us['id']}"
+        )
+
+        self.assertEqual(res.status_code, 204)
+
+
 # us asignar / desasignar usuario/sprint
 
 # nuevos casos para us
