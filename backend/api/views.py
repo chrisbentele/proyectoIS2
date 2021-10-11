@@ -621,7 +621,7 @@ def sprints(request, proyect_id, sprint_id=None):
                 if us["estimacionSM"] != None and us["estimacionesDev"] != None:
                     if conteo == None:
                         conteo = 0
-                    conteo += (us["estimacionSM"]) + (us["estimacionesDev"])
+                    conteo += (us["estimacionSM"]) + (us["estimacionesDev"])/2
                 else:
                     conteo = None
                     break
@@ -787,7 +787,7 @@ def sprints_activar(request, proyect_id, sprint_id):
                 if us["estimacionSM"] != None and us["estimacionesDev"] != None:
                     if conteo == None:
                         conteo = 0
-                    conteo += (us["estimacionSM"]) + (us["estimacionesDev"])
+                    conteo += (us["estimacionSM"]) + (us["estimacionesDev"]) / 2
                 else:
                     conteo = None
                     break
