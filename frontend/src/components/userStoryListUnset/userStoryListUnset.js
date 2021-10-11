@@ -270,48 +270,48 @@ const USListUnset = ({
                       <ModalContent>
                         <ModalHeader>Editar US</ModalHeader>
 
-                        <ModalCloseButton />
-                        <form onSubmit={handleSubmit(onSubmit)}>
-                          <ModalBody pb={6}>
-                            <FormControl isInvalid={errors.name}>
-                              <FormLabel htmlFor="name">Nombre US</FormLabel>
-                              <Input
-                                id="name"
-                                ref={initialRef}
-                                defaultValue={us.nombre}
-                                {...register("usName", {
-                                  required: "This is required",
-                                  minLength: {
-                                    value: 4,
-                                    message: "Minimum length should be 4",
-                                  },
-                                })}
-                              />
-                              <FormErrorMessage>
-                                {errors.name && errors.name.message}
-                              </FormErrorMessage>
-                            </FormControl>
-                            <FormControl isInvalid={errors.description} mt={4}>
-                              <FormLabel htmlFor="description" mt={4}>
-                                Descripción
-                              </FormLabel>
-                              <Input
-                                id="description"
-                                defaultValue={us.contenido}
-                                {...register("description", {
-                                  required: "This is required",
-                                  minLength: {
-                                    value: 4,
-                                    message: "Minimum length should be 4",
-                                  },
-                                })}
-                              />
-                              <FormErrorMessage>
-                                {errors.description &&
-                                  errors.description.message}
-                              </FormErrorMessage>
-                            </FormControl>
-                          </ModalBody>
+                      <ModalCloseButton />
+                      <form onSubmit={handleSubmit(onSubmit)}>
+                        <ModalBody pb={6}>
+                          <FormControl isInvalid={errors.name}>
+                            <FormLabel htmlFor="name">Nombre US</FormLabel>
+                            <Input
+                              id="name"
+                              ref={initialRef}
+                              defaultValue={us.nombre}
+                              {...register("usName", {
+                                required: "This is required",
+                                minLength: {
+                                  value: 4,
+                                  message: "Minimum length should be 4",
+                                },
+                              })}
+                            />
+                            <FormErrorMessage>
+                              {errors.name && errors.name.message}
+                            </FormErrorMessage>
+                          </FormControl>
+                          <FormControl isInvalid={errors.description} mt={4}>
+                            <FormLabel htmlFor="description" mt={4}>
+                              Descripción
+                            </FormLabel>
+                            <Input
+                              id="description"
+                              defaultValue={us.contenido}
+                              {...register("description", {
+                                required: "This is required",
+                                minLength: {
+                                  value: 4,
+                                  message: "Minimum length should be 4",
+                                },
+                              })}
+                            />
+                            <FormErrorMessage>
+                              {errors.description &&
+                                errors.description.message}
+                            </FormErrorMessage>
+                          </FormControl>
+                        </ModalBody>
 
                           <ModalFooter>
                             <Button

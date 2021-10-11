@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 
 import { useForm } from "react-hook-form";
 
+import { BsFillPersonPlusFill, BsFillPeopleFill } from "react-icons/bs";
+
 import {
   AlertDialog,
   AlertDialogBody,
@@ -27,6 +29,7 @@ import {
   Input,
   FormErrorMessage,
   toast,
+  Image,
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { api } from "../../api";
@@ -75,8 +78,6 @@ const USList = ({
   }, [])
 
   const moverUS = async (estado, usId) => {
-    console.log(estado);
-    console.log(usId);
     await api.editUS({ projectId, estado, usId });
     api
       .getUserStories(projectId, sprintId)
@@ -84,14 +85,11 @@ const USList = ({
   };
 
   // const editarUS = async (usName, description, usId) => {
-  //   console.log(usName);
-  //   console.log(usId);
   //   await api.editUS({ projectId, usName, description, usId });
   //   api.getUserStories(projectId).then(({ data }) => setUserStories(data));
   // };
 
   const eliminarUS = async (id) => {
-    console.log(id);
     await api.eliminarUS(projectId, id);
     api
       .getUserStories(projectId, sprintId)
@@ -102,7 +100,6 @@ const USList = ({
   const [isOpenModal, setIsOpenModal] = React.useState(false);
   const onCloseModal = () => setIsOpenModal(false);
   // const onEdit = (nombre, contenido, id) => {
-  //   console.log(id);
   //   editarUS(nombre, contenido, id);
   //   setIsOpenModal(false);
   // };
@@ -317,6 +314,7 @@ const USList = ({
                           <AlertDialogHeader fontSize="lg" fontWeight="bold">
                             Remover US del Sprint
                           </AlertDialogHeader>
+
 
                           <AlertDialogBody>
                             ¿Está seguro que desea remover esta US del sprint?

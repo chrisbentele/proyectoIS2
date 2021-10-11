@@ -7,6 +7,7 @@ import {
   Box,
   Flex,
   Center,
+  Text,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -14,6 +15,7 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
+  FormHelperText,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { api } from "../../api";
@@ -21,7 +23,7 @@ import Select from "react-select";
 const Editar = ({
   projectId,
   US,
-  sprintId,
+  //sprintId,
   isOpen,
   onClose,
   dispatchError,
@@ -69,12 +71,16 @@ const Editar = ({
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalBody pb={6}>
             <FormLabel fontSize="25px">Seleccionar un desarrollador</FormLabel>
+            <Text></Text>
             <Select
               onChange={(e) => setValue("developer", e.value)}
               options={users.map((user) => {
                 return { value: user.id, label: user.nombre };
               })}
             />
+            <FormHelperText>
+              Holaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+            </FormHelperText>
           </ModalBody>
 
           <ModalFooter>

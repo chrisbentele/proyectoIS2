@@ -71,8 +71,6 @@ class Sprint(Model):
     fechaInicio = DateField(blank=True, null=True)
     fechaFinalizacion = DateField(blank=True, null=True)
     estimacion = IntegerField(null=True)
-    horasAsignadas = IntegerField(null=True)
-    cuentaUs = IntegerField(default=0)
     creadoPor = ForeignKey(Usuario, on_delete=CASCADE)
     terminado = BooleanField(default=False)
     retro = OneToOneField(Retrospectiva, blank=True, null=True, on_delete=CASCADE)
