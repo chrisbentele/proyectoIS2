@@ -898,7 +898,7 @@ def user_stories_asignar(request, proyect_id, us_id, user_id=None):
 
 
 def usuarios_admin(request, user_id):
-
+    """Asigna el atributo proy_admin a un usuario este seria el que puede crear proyectos"""
     if request.method == "POST":
 
         rol = Usuario.objects.get(id=user_id)

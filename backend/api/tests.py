@@ -463,7 +463,7 @@ class User_Stories_Estimar_Tests(TestCase):
         self.assertEqual(res.json()["estimacionesDev"], 1)
 
 
-class Sprint_Activar_Test(TestCase):
+class Sprint_Activar_Tests(TestCase):
     def test_sprint_activar(self):
         u = crear_user()
         u_dev = crear_user()
@@ -558,7 +558,7 @@ class Sprint_Activar_Test(TestCase):
         self.assertEqual(res.status_code, 200)
 
 
-class User_Stories_Asignar_Test(TestCase):
+class User_Stories_Asignar_Tests(TestCase):
     def test_asignar_user(self):
         u = crear_user()
         p = crear_proyecto(self, [u["id"]])
@@ -603,7 +603,7 @@ class User_Stories_Asignar_Test(TestCase):
         self.assertEqual(res.json()["asignado"], None)
 
 
-class Sprints_User_Stories_Test(TestCase):
+class Sprints_User_Stories_Tests(TestCase):
     def test_asignar_user_stories_a_sprint(self):
         u = crear_user()
         p = crear_proyecto(self, [u["id"]])
