@@ -20,7 +20,7 @@ import {
 import { Link } from "react-router-dom";
 import Select from "react-select";
 import { mapStateColor } from "../../styles/theme";
-import USList from "../../components/userStoryListUnset/userStoryListUnset";
+import USListUnset from "../../components/userStoryListUnset/userStoryListUnset";
 import CrearSprintModal from "../../components/CrearSprintModal/CrearSprintModal";
 import EditarSprintModal from "../../components/EditarSprintModal/EditarSprintModal";
 import { IconButton } from "@chakra-ui/button";
@@ -50,7 +50,7 @@ export default function Index({ dispatchError, props }) {
       .catch((err) => console.log(err));
 
     api.userStories
-      .getUserStoriesSprint(projectId)
+      .getUserStories(projectId)
       .then((US) => setUserStories(US.data))
       .catch((err) => console.log(err));
     api.sprints.getSprints(projectId).then(({ data }) => setSprints(data));
@@ -119,7 +119,7 @@ export default function Index({ dispatchError, props }) {
           <Box as="main" mt="50px" w="100vw">
             <HStack p="5">
               <HStack w="fit-content">
-                <USList
+                <USListUnset
                   projectId={projectId}
                   setUserStories={setUserStories}
                   nombreLista="Backlog"
@@ -149,7 +149,7 @@ export default function Index({ dispatchError, props }) {
                       </LinkOverlay>
                     </LinkBox>
                   </Flex>
-                </USList>
+                </USListUnset>
               </HStack>
               {/* sprints */}
               <Box>
@@ -174,11 +174,11 @@ export default function Index({ dispatchError, props }) {
                   <CrearSprintModal
                     projectId={projectId}
                     isOpen={isOpenCrearSp}
-                    onClose={() => {
-                      setIsOpenCrearSp(false);
-                      api.sprints
+                    onClose={async () => {
+                      await api.sprints
                         .getSprints(projectId)
                         .then(({ data }) => setSprints(data));
+                      setIsOpenCrearSp(false);
                     }}
                   />
 
