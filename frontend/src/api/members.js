@@ -1,5 +1,5 @@
 //! Import la instancia de axios
-import { axiosInstance }  from ".";
+import { axiosInstance } from ".";
 
 /**
  * @file members.js
@@ -21,3 +21,7 @@ export const addMemberToProject = async (projectId, userId) =>
 //! Eliminar los roles de un miembro
 export const removeMemberFromProject = async (projectId, userId) =>
   await axiosInstance.delete(`/proyectos/${projectId}/miembros/${userId}`);
+
+//! Consige los datos un miembro de un proyecto
+export const getMember = async (projectId, userId) =>
+  await axiosInstance.get(`proyectos/${projectId}/miembros/${userId}`);

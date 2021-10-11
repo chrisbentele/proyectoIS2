@@ -19,11 +19,16 @@ from .views import (
     proyectos,
     roles,
     sprints,
+    sprints_activar,
+    sprints_desactivar,
     sprints_user_stories,
     user_stories,
     proyectos_miembros_roles,
+    user_stories_asignar,
+    user_stories_estimar,
     usuarios,
     proyectos_miembros,
+    usuarios_admin,
     usuarios_proyectos,
 )
 
@@ -34,14 +39,36 @@ apiPaths = [
     path("proyectos/<str:proyect_id>/miembros/<str:user_id>", proyectos_miembros),
     path("proyectos/<str:proyect_id>/user_stories", user_stories),
     path("proyectos/<str:proyect_id>/user_stories/<str:us_id>", user_stories),
+    path(
+        "proyectos/<str:proyect_id>/user_stories/<str:us_id>/asignar/<str:user_id>",
+        user_stories_asignar,
+    ),
+    path(
+        "proyectos/<str:proyect_id>/user_stories/<str:us_id>/asignar",
+        user_stories_asignar,
+    ),
+    path(
+        "proyectos/<str:proyect_id>/user_stories/<str:us_id>/estimar",
+        user_stories_estimar,
+    ),
     path("proyectos/<str:proyect_id>/sprints", sprints),
     path("proyectos/<str:proyect_id>/sprints/<str:sprint_id>", sprints),
     path(
         "proyectos/<str:proyect_id>/sprints/<str:sprint_id>/user_stories",
         sprints_user_stories,
     ),
+    path(
+        "proyectos/<str:proyect_id>/sprints/<str:sprint_id>/user_stories/<str:us_id>",
+        sprints_user_stories,
+    ),
+    path("proyectos/<str:proyect_id>/sprints/<str:sprint_id>/activar", sprints_activar),
+    path(
+        "proyectos/<str:proyect_id>/sprints/<str:sprint_id>/desactivar",
+        sprints_desactivar,
+    ),
     path("usuarios", usuarios),
     path("usuarios/<str:user_id>", usuarios),
+    path("usuarios/<str:user_id>/setAdmin", usuarios_admin),
     path("usuarios/<str:user_id>/proyectos", usuarios_proyectos),
     path("proyectos/<str:proyect_id>/roles", roles),
     path("proyectos/<str:proyect_id>/roles/<str:rol_id>", roles),

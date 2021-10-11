@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import { useForm } from "react-hook-form";
-
-import { BsFillPersonPlusFill, BsFillPeopleFill } from "react-icons/bs";
 
 import {
   AlertDialog,
@@ -16,7 +14,6 @@ import {
   Flex,
   Heading,
   Text,
-  //useDisclosure,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -29,79 +26,56 @@ import {
   Input,
   FormErrorMessage,
   toast,
-  Image,
+  Grid,
+  useToast,
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { api } from "../../api";
-import Select from "react-select";
+import EstimarUsModal from "../../components/EstimarUsModal/EstimarUsModal";
+
+import AsignarUsASprintModal from "../AsignarUsASprintModal/AsignarUsASprintModal";
 import AsignarDevUsModal from "../../components/AsignarDevUsModal/AsignarDevUsModal";
+import { MdTimer } from "react-icons/md";
+import { BsFillPersonPlusFill, BsFillPeopleFill } from "react-icons/bs";
+import { GiSprint } from "react-icons/gi";
 import { tienePermiso } from "../../util";
 import { PERMISOS_MACRO } from "../../pages/roles/permisos";
-import { useAuth0 } from "@auth0/auth0-react";
 
-import { getUsers } from "../../api/users";
-import { desasignarUsASprint } from "../../api/userStories";
-const USList = ({
+const USListUnset = ({
   projectId,
-  sprintId,
   setUserStories,
   userStories,
   nombreLista,
   children,
   dispatchError,
+  thisMember,
   ...props
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isOpenAlertSp, setIsOpenAlertSp] = useState(false);
+  const [showEstimarModal, setShowEstimarModal] = useState(false);
+  const [showAsignarModal, setShowAsignarModal] = useState(false);
+  const [showAsignarDevModal, setShowAsignarDevModal] = useState(false);
   const onClose = () => setIsOpen(false);
-  const onCloseAlertSp = () => setIsOpenAlertSp(false);
   const onDelete = (id) => {
+    console.log(id);
     eliminarUS(id);
     setIsOpen(false);
   };
-  const onRemove = (id) => {
-    console.log(id);
-    desasignarUsASprint({ projectId, sprintId, usId: id });
-    setIsOpen(false);
-  };
+  const toast = useToast();
   const cancelRef = React.useRef();
 
-  const { user } = useAuth0();
-  const [thisMember, setThisMember] = useState();
-
-  useEffect(() => {
-    api
-      .getMember(projectId, user.sub)
-      .then(({ data: member }) => setThisMember(member))
-      .catch((err) => console.log(err));
-  }, []);
-
-  const moverUS = async (estado, usId) => {
-    await api.editUS({ projectId, estado, usId });
-    api
-      .getUserStories(projectId, sprintId)
-      .then(({ data }) => setUserStories(data));
-  };
-
-  // const editarUS = async (usName, description, usId) => {
-  //   await api.editUS({ projectId, usName, description, usId });
-  //   api.getUserStories(projectId).then(({ data }) => setUserStories(data));
-  // };
-
   const eliminarUS = async (id) => {
+    console.log(id);
     await api.eliminarUS(projectId, id);
-    api
-      .getUserStories(projectId, sprintId)
-      .then(({ data }) => setUserStories(data));
+    api.getUserStories(projectId).then(({ data }) => setUserStories(data));
   };
 
-  //const { onOpen } = useDisclosure();
   const [isOpenModal, setIsOpenModal] = React.useState(false);
   const onCloseModal = () => setIsOpenModal(false);
-  // const onEdit = (nombre, contenido, id) => {
-  //   editarUS(nombre, contenido, id);
-  //   setIsOpenModal(false);
-  // };
+  const [isOpenModalAssign, setIsOpenModalAssign] = React.useState(false);
+  const onCloseModalAssign = () => setIsOpenModalAssign(false);
+  const [isOpenModalAssignDev, setIsOpenModalAssignDev] = React.useState(false);
+  const onCloseModalAssignDev = () => setIsOpenModalAssignDev(false);
 
   const initialRef = React.useRef();
 
@@ -118,7 +92,8 @@ const USList = ({
     await api
       .editUS({ ...values, projectId, usId: focusedUS?.id })
       .then((res) => {
-        if (res.id) {
+        console.log(res.statusText);
+        if (res.statusText == "OK") {
           toast({
             description: "US cambiada.",
             status: "success",
@@ -136,14 +111,20 @@ const USList = ({
       })
       .catch((err) => console.log(err));
     await api.userStories
-      .getUserStories(projectId, sprintId)
+      .getUserStories(projectId)
       .then(({ data }) => setUserStories(data));
     setIsOpenModal(false);
   }
 
+  const onCloseAsignarSprint = async () => {
+    setShowAsignarModal(false);
+    await api
+      .getUserStories(projectId)
+      .then(({ data }) => setUserStories(data));
+  };
+
   return (
     <Box
-      w="xs"
       minHeight="100px"
       maxHeight="80%"
       borderWidth="1px"
@@ -155,54 +136,49 @@ const USList = ({
       <Flex justify="center">
         <Heading fontSize="2xl">{nombreLista}</Heading>
       </Flex>
-      {userStories
-        ? userStories.map((us) => {
-            return (
-              <Box
-                borderRadius="8"
-                p="2"
-                m="2"
-                key={us.id}
-                bg="white"
-                boxShadow="md"
-              >
-                <Flex>
-                  <Text fontSize="20px" fontWeight="semibold">
-                    {us.nombre}
-                  </Text>
-                  <Text ml="auto" fontSize="xs">
-                    Asignado a: <br />
-                    {us.asignado?.nombre || "nadie"}
-                  </Text>
-                </Flex>
-                <Text fontSize="15px">{us.contenido}</Text>
-                {thisMember?.rol.nombre === "Scrum Master" ||
-                thisMember?.id === us.asignado?.id ? (
-                  <>
-                    <Select
-                      placeholder="cambiar estado"
-                      size="sm"
-                      onChange={(e) => {
-                        moverUS(e.value, us.id);
-                      }}
-                      options={[
-                        {
-                          value: "0",
-                          label: "Pendiente",
-                          isDisabled: us.estado === 0,
-                        },
-                        {
-                          value: "1",
-                          label: "En curso",
-                          isDisabled: us.estado === 1,
-                        },
-                        {
-                          value: "2",
-                          label: "Hecho",
-                          isDisabled: us.estado === 2,
-                        },
-                      ]}
-                    />
+      <Grid templateColumns="repeat(3, 1fr)">
+        {userStories
+          ? userStories.map((us) => {
+              return (
+                <Box
+                  borderRadius="8"
+                  p="2"
+                  m="2"
+                  key={us.id}
+                  bg="white"
+                  boxShadow="md"
+                  w="xs"
+                >
+                  <Flex>
+                    <Text fontSize="20px" fontWeight="semibold">
+                      {us.nombre}
+                    </Text>
+                    <Text ml="auto" fontSize="xs">
+                      Asignado a: <br />
+                      {us.asignado?.nombre || "nadie"}
+                    </Text>
+                  </Flex>
+                  <Text fontSize="15px">{us.contenido}</Text>
+                  <Box mt="2">
+                    <Text>{`Estimación SM: ${
+                      us.estimacionSM || "Sin estimar"
+                    }`}</Text>
+                    <Text>{`Estimación Dev: ${
+                      us.estimacionesDev || "Sin estimar"
+                    }`}</Text>
+
+                    <Text>
+                      {`${
+                        us.estimacionesDev && us.estimacionSM
+                          ? (us.estimacionesDev + us.estimacionSM) / 2 +
+                            " horas"
+                          : ""
+                      }`}
+                    </Text>
+                  </Box>
+
+                  {thisMember?.rol.nombre === "Scrum Master" ||
+                  thisMember?.id === us.asignado?.id ? (
                     <Flex>
                       {tienePermiso(thisMember, PERMISOS_MACRO.MODIFICAR_US) ? (
                         <Button
@@ -211,11 +187,97 @@ const USList = ({
                             setFocusedUS(us);
                           }}
                           mt="2"
-                          mr="2"
                         >
                           <EditIcon color="black.500" />
                         </Button>
                       ) : null}
+
+                      {tienePermiso(thisMember, PERMISOS_MACRO.ESTIMAR_US) ? (
+                        <Button
+                          onClick={() => {
+                            setFocusedUS(us);
+                            setShowEstimarModal(true);
+                          }}
+                          mt="2"
+                          ml="1"
+                        >
+                          <MdTimer />
+                        </Button>
+                      ) : null}
+                      {focusedUS && (
+                        <EstimarUsModal
+                          projectId={projectId}
+                          US={focusedUS}
+                          rolUsuario={
+                            thisMember?.rol.nombre === "Scrum Master"
+                              ? "SM"
+                              : "dev"
+                          }
+                          isOpen={showEstimarModal}
+                          onClose={() => {
+                            setShowEstimarModal(false);
+
+                            api
+                              .getUserStories(projectId)
+                              .then(({ data }) => setUserStories(data));
+                          }}
+                        />
+                      )}
+
+                      {tienePermiso(
+                        thisMember,
+                        PERMISOS_MACRO.ASIGNAR_MIEMBROS_A_US
+                      ) ? (
+                        <>
+                          <Button
+                            onClick={() => {
+                              setFocusedUS(us);
+                              setShowAsignarDevModal(true);
+                            }}
+                            mt="2"
+                            ml="1"
+                          >
+                            <BsFillPeopleFill />
+                          </Button>
+                          {focusedUS && (
+                            <AsignarDevUsModal
+                              projectId={projectId}
+                              US={focusedUS}
+                              isOpen={showAsignarDevModal}
+                              dispatchError={dispatchError}
+                              onClose={async () => {
+                                setShowAsignarDevModal(false);
+
+                                await api.userStories
+                                  .getUserStories(projectId)
+                                  .then(({ data }) => setUserStories(data));
+                              }}
+                            />
+                          )}
+                        </>
+                      ) : null}
+
+                      {thisMember?.rol.nombre === "Scrum Master" ? (
+                        <Button
+                          onClick={() => {
+                            setFocusedUS(us);
+                            setShowAsignarModal(true);
+                          }}
+                          mt="2"
+                          ml="1"
+                        >
+                          Sprint{/* <GiSprint /> */}
+                        </Button>
+                      ) : null}
+                      {focusedUS && (
+                        <AsignarUsASprintModal
+                          projectId={projectId}
+                          US={focusedUS}
+                          isOpen={showAsignarModal}
+                          dispatchError={dispatchError}
+                          onClose={onCloseAsignarSprint}
+                        />
+                      )}
 
                       <Modal
                         initialFocusRef={initialRef}
@@ -275,7 +337,7 @@ const USList = ({
                             <ModalFooter>
                               <Button
                                 mr={4}
-                                colorScheme="green"
+                                colorScheme="blue"
                                 isLoading={isSubmitting}
                                 type="submit"
                               >
@@ -286,71 +348,6 @@ const USList = ({
                           </form>
                         </ModalContent>
                       </Modal>
-
-                      {tienePermiso(
-                        thisMember,
-                        PERMISOS_MACRO.MODIFICAR_SPRINT
-                      ) ? (
-                        <>
-                          <Button
-                            mt="2"
-                            onClick={() => setIsOpenAlertSp(true)}
-                            ml="1"
-                            bg=""
-                            color="red.500"
-                            borderWidth="1px"
-                            borderColor="red.500"
-                            _hover={{
-                              background: "grey.200",
-                            }}
-                            _active={{
-                              background: "white.200",
-                            }}
-                          >
-                            Remover del Sprint
-                          </Button>
-                          <AlertDialog
-                            isOpen={isOpenAlertSp}
-                            leastDestructiveRef={cancelRef}
-                            onClose={onCloseAlertSp}
-                          >
-                            <AlertDialogOverlay>
-                              <AlertDialogContent>
-                                <AlertDialogHeader
-                                  fontSize="lg"
-                                  fontWeight="bold"
-                                >
-                                  Remover US del Sprint
-                                </AlertDialogHeader>
-
-                                <AlertDialogBody>
-                                  ¿Está seguro que desea remover esta US del
-                                  sprint?
-                                </AlertDialogBody>
-
-                                <AlertDialogFooter>
-                                  <Button
-                                    ref={cancelRef}
-                                    onClick={onCloseAlertSp}
-                                  >
-                                    Cancelar
-                                  </Button>
-                                  <Button
-                                    colorScheme="red"
-                                    onClick={() => {
-                                      moverUS(4, us.id);
-                                      onRemove(us.id);
-                                    }}
-                                    ml={3}
-                                  >
-                                    Remover
-                                  </Button>
-                                </AlertDialogFooter>
-                              </AlertDialogContent>
-                            </AlertDialogOverlay>
-                          </AlertDialog>
-                        </>
-                      ) : null}
 
                       {tienePermiso(thisMember, PERMISOS_MACRO.ELIMINAR_US) ? (
                         <Button
@@ -400,15 +397,16 @@ const USList = ({
                         </AlertDialogOverlay>
                       </AlertDialog>
                     </Flex>
-                  </>
-                ) : null}
-              </Box>
-            );
-          })
-        : null}
+                  ) : null}
+                </Box>
+              );
+            })
+          : null}
+      </Grid>
+
       {children}
     </Box>
   );
 };
 
-export default USList;
+export default USListUnset;

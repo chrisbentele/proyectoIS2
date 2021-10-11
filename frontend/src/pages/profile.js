@@ -20,20 +20,27 @@ import { Grid } from "@chakra-ui/react";
 import { api } from "../api";
 import { projectStateToString } from "../util";
 import { mapStateColor } from "../styles/theme";
+import LogoutButton from "../components/auth/logoutButton/logoutButton";
+import { tienePermiso } from "../util";
+import { PERMISOS_MACRO } from "../pages/roles/permisos";
+
 
 //! Componente principal de esta página
-const Profile = ({ dispatchError }) => {
+const Profile = ({ props, dispatchError }) => {
   const { user, isLoading } = useAuth0();
   const [userProjects, setUserProjects] = useState([]);
+  const [thisMember, setThisMember] = useState();
+
   useEffect(() => {
     if (!isLoading) {
       console.log(user);
       api
         .getProjects(user.sub)
-        .then(({data: projects}) => setUserProjects(projects))
+        .then(({ data: projects }) => setUserProjects(projects))
         .catch((err) =>
           dispatchError(null, "Error cargando proyectos del usuario")
         );
+
     }
   }, [user, isLoading, dispatchError]);
   if (isLoading) {
@@ -49,7 +56,7 @@ const Profile = ({ dispatchError }) => {
       d="flex"
       justifyContent="left"
 
-      // mt="0 !important"
+    // mt="0 !important"
     >
       <Box minWidth="260px" width="30%" p="10" mt="3rem">
         <Image borderRadius="100" src={user.picture} alt={user.name} />
@@ -66,6 +73,9 @@ const Profile = ({ dispatchError }) => {
         >
           <Link to="/roles">Configurar Roles</Link>
         </Box> */}
+        <Box mt="2">
+          <LogoutButton />
+        </Box>
       </Box>
       <Box width="70%" p="10" pl="16" mt="3rem">
         <Box>
@@ -75,58 +85,58 @@ const Profile = ({ dispatchError }) => {
           <Grid templateColumns="repeat(2, 1fr)" gap={4} autoFlow>
             {Array.isArray(userProjects)
               ? userProjects.map((project, i) => {
-                  return (
-                    <LinkBox
-                      d="flex"
-                      flexDirection="column"
-                      w="xs"
-                      height="200px"
-                      borderWidth="1px"
-                      borderRadius="lg"
-                      overflow="hidden"
-                      fontSize="3xl"
-                      bg={mapStateColor(project.estado)}
-                      justifyContent="left"
-                      pl="5"
-                      pt="2"
-                      key={i}
+                return (
+                  <LinkBox
+                    d="flex"
+                    flexDirection="column"
+                    w="xs"
+                    height="200px"
+                    borderWidth="1px"
+                    borderRadius="lg"
+                    overflow="hidden"
+                    fontSize="3xl"
+                    bg={mapStateColor(project.estado)}
+                    justifyContent="left"
+                    pl="5"
+                    pt="2"
+                    key={i}
+                  >
+                    <LinkOverlay
+                      href={`projects/${project.id}`}
+                      style={{
+                        fontWeight: "bold",
+                        width: "100%",
+                        height: "100%",
+                      }}
                     >
-                      <LinkOverlay
-                        href={`projects/${project.id}`}
-                        style={{
-                          fontWeight: "bold",
-                          width: "100%",
-                          height: "100%",
-                        }}
-                      >
-                        {project.nombre}
-                      </LinkOverlay>
-                      <Box pb="2" fontSize="lg">
-                        <Text>{projectStateToString(project.estado)}</Text>
-                        <Text>
-                          Duracion estimada: {project.duracionEstimada} semanas
-                        </Text>
-                        <Text>Iniciado: {project.fechaInicio}</Text>
-                      </Box>
-                    </LinkBox>
-                  );
-                })
+                      {project.nombre}
+                    </LinkOverlay>
+                    <Box pb="2" fontSize="lg">
+                      <Text>{projectStateToString(project.estado)}</Text>
+                      <Text>
+                        Duracion estimada: {project.duracionEstimada} semanas
+                      </Text>
+                      <Text>Iniciado: {project.fechaInicio}</Text>
+                    </Box>
+                  </LinkBox>
+                );
+              })
               : null}
-            <LinkBox
-              display="flex"
-              w="xs"
-              height="200px"
-              borderWidth="1px"
-              borderRadius="lg"
-              overflow="hidden"
-              fontSize="3xl"
-              fontWeight="bold"
-              bg="white"
-              justifyContent="center"
-              alignItems="center"
-            >
-              <LinkOverlay href="/createProject/">Crear Proyecto</LinkOverlay>
-            </LinkBox>
+              <LinkBox
+                display="flex"
+                w="xs"
+                height="200px"
+                borderWidth="1px"
+                borderRadius="lg"
+                overflow="hidden"
+                fontSize="3xl"
+                fontWeight="bold"
+                bg="white"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <LinkOverlay href="/createProject/">Crear Proyecto</LinkOverlay>
+              </LinkBox>
           </Grid>
         </Flex>
       </Box>

@@ -21,7 +21,7 @@ class RolSerializer(serializers.ModelSerializer):
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
-        fields = ["id", "nombre", "email"]
+        fields = ["id", "nombre", "email", "proy_admin"]
 
 
 class RetrospectivaSerializer(serializers.ModelSerializer):
@@ -39,9 +39,12 @@ class SprintSerializer(serializers.ModelSerializer):
         model = Sprint
         fields = [
             "id",
+            "nombre",
             "activo",
+            "fechaCreacion",
             "fechaInicio",
             "fechaFinalizacion",
+            "estimacion",
             "creadoPor",
             "terminado",
             "retro",
