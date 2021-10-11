@@ -21,7 +21,6 @@ export const getUsers = () => {
  */
 export const getUser = async (id = null, email = null, nombre = null) => {
   try {
-    console.log(email);
     let res;
     if (id) {
       res = await axiosInstance.get(`usuarios/${id}`).catch((e) => {
@@ -37,12 +36,10 @@ export const getUser = async (id = null, email = null, nombre = null) => {
           },
         })
         .catch((e) => {
-          console.log(e.response.status);
           if (e.response.status === 404) return false;
           else throw e;
         });
     }
-    console.log(res);
 
     if (!res) {
       // Si no existe el usuario crear
@@ -52,7 +49,6 @@ export const getUser = async (id = null, email = null, nombre = null) => {
         nombre,
       });
     }
-    console.log(res);
     return res.data;
   } catch (error) {
     return error;
