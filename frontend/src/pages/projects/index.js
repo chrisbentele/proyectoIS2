@@ -155,22 +155,8 @@ export default function Index({ dispatchError, props }) {
                   setUserStories={setUserStories}
                   nombreLista="Backlog"
                   dispatchError={dispatchError}
+                  thisMember={thisMember}
                   userStories={userStories?.filter((us) => us.estado === 4)}
-                  canModify={tienePermiso(
-                    thisMember,
-                    PERMISOS_MACRO.MODIFICAR_US
-                  )}
-                  canEstimate={true}
-                  canDelete={tienePermiso(
-                    thisMember,
-                    PERMISOS_MACRO.ELIMINAR_US
-                  )}
-                  canAsign={tienePermiso(
-                    thisMember,
-                    PERMISOS_MACRO.ASIGNAR_MIEMBROS_A_US
-                  )}
-                  isScrumMaster={thisMember?.rol.nombre === "Scrum Master"}
-                  memberId={thisMember?.id}
                 >
                   <Flex justify="center">
                     <LinkBox
