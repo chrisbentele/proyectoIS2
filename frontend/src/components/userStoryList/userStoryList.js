@@ -185,7 +185,7 @@ const USList = ({
                       onChange={(e) => {
                         moverUS(e.value, us.id);
                       }}
-                      isDisabled={sprint}
+                      isDisabled={!sprint?.activo}
                       options={[
                         {
                           value: "0",
