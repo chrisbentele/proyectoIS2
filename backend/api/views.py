@@ -618,7 +618,7 @@ def sprints(request, proyect_id, sprint_id=None):
             us_list = serializer.data
             conteo = None
             for us in us_list:
-                if us["estimacionSM"] != None or us["estimacionesDev"] != None:
+                if us["estimacionSM"] != None and us["estimacionesDev"] != None:
                     if conteo == None:
                         conteo = 0
                     conteo += (us["estimacionSM"]) + (us["estimacionesDev"])
@@ -650,7 +650,7 @@ def sprints(request, proyect_id, sprint_id=None):
             serializer = SprintSerializer(spr, many=True)
             spr_list = serializer.data
             for sprint in spr_list:
-                conteo_estimaciones, us_list_length = get_us_count(sprint_id)
+                conteo_estimaciones, us_list_length = get_us_count(sprint["id"])
 
                 sprint.update(
                     {
@@ -775,7 +775,7 @@ def sprints_activar(request, proyect_id, sprint_id):
             us_list = serializer.data
             conteo = None
             for us in us_list:
-                if us["estimacionSM"] != None or us["estimacionesDev"] != None:
+                if us["estimacionSM"] != None and us["estimacionesDev"] != None:
                     if conteo == None:
                         conteo = 0
                     conteo += (us["estimacionSM"]) + (us["estimacionesDev"])
