@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState } from "react";
+import { useHistory } from "react-router";
 import {
   FormControl,
   FormLabel,
@@ -20,6 +21,7 @@ import {
 import { useForm } from "react-hook-form";
 import { api } from "../../api";
 import Select from "react-select";
+
 const Editar = ({
   projectId,
   US,
@@ -42,6 +44,9 @@ const Editar = ({
       );
   }, [projectId, isOpen]);
 
+    //TODO: quitar history y cambiar estado
+  const history = useHistory()
+
   const {
     handleSubmit,
     register,
@@ -49,14 +54,15 @@ const Editar = ({
     setValue,
   } = useForm();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log(data);
-    api.userStories.asignarUsAUsuario({
+    await api.userStories.asignarUsAUsuario({
       projectId,
       usId: US.id,
       userId: data.developer,
     });
-
+    //TODO: quitar history y cambiar estado
+    history.go(0)
     onClose();
   };
   console.log(users);
