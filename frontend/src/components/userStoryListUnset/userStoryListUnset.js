@@ -38,6 +38,8 @@ import AsignarDevUsModal from "../../components/AsignarDevUsModal/AsignarDevUsMo
 import { MdTimer } from "react-icons/md";
 import { BsFillPersonPlusFill, BsFillPeopleFill } from "react-icons/bs";
 import { GiSprint } from "react-icons/gi";
+import { tienePermiso } from "../../util";
+import { PERMISOS_MACRO } from "../../pages/roles/permisos";
 
 const USListUnset = ({
   projectId,
@@ -46,12 +48,7 @@ const USListUnset = ({
   nombreLista,
   children,
   dispatchError,
-  canModify,
-  canEstimate,
-  canDelete,
-  canAsign,
-  isScrumMaster,
-  memberId,
+  thisMember,
   ...props
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -173,9 +170,9 @@ const USListUnset = ({
                       }`}
                     </Text>
                   </Box>
-                  {isScrumMaster || memberId === us.asignado?.id ? (
+                  {thisMember?.rol.nombre === "Scrum Master" || thisMember?.id === us.asignado ? (
                     <Flex>
-                      {canModify ? (
+                      {tienePermiso(thisMember, PERMISOS_MACRO.MODIFICAR_US) ? (
                         <Button
                           onClick={() => {
                             setIsOpenModal(true);
@@ -186,7 +183,7 @@ const USListUnset = ({
                           <EditIcon color="black.500" />
                         </Button>
                       ) : null}
-                      {canEstimate ? (
+                      {tienePermiso(thisMember, PERMISOS_MACRO.ESTIMAR_US) ? (
                         <Button
                           onClick={() => {
                             setFocusedUS(us);
@@ -202,7 +199,7 @@ const USListUnset = ({
                         <EstimarUsModal
                           projectId={projectId}
                           US={focusedUS}
-                          rolUsuario={isScrumMaster ? "SM" : "dev"}
+                          rolUsuario={thisMember?.rol.nombre === "Scrum Master" ? "SM" : "dev"}
                           isOpen={showEstimarModal}
                           onClose={() => {
                             setShowEstimarModal(false);
@@ -213,7 +210,7 @@ const USListUnset = ({
                           }}
                         />
                       )}
-                      {canAsign ? (
+                      {tienePermiso(thisMember, PERMISOS_MACRO.ASIGNAR_MIEMBROS_A_US) ? (
                         <>
                           <Button
                             onClick={() => {
@@ -242,7 +239,7 @@ const USListUnset = ({
                           )}
                         </>
                       ) : null}
-                      {isScrumMaster ? (
+                      {thisMember?.rol.nombre === "Scrum Master" ? (
                         <Button
                           onClick={() => {
                             setFocusedUS(us);
@@ -265,8 +262,8 @@ const USListUnset = ({
                       )}
                       <Modal
                         initialFocusRef={initialRef}
-                        isOpen={isOpenModalAssignDev}
-                        onClose={onCloseModalAssignDev}
+                        isOpen={isOpenModal}
+                        onClose={onCloseModal}
                       >
                         <ModalOverlay />
                         <ModalContent>
@@ -332,7 +329,7 @@ const USListUnset = ({
                           </form>
                         </ModalContent>
                       </Modal>
-                      {canDelete ? (
+                      {tienePermiso(thisMember, PERMISOS_MACRO.ELIMINAR_US) ? (
                         <Button
                           onClick={() => setIsOpen(true)}
                           mt="2"
@@ -390,13 +387,6 @@ const USListUnset = ({
       {children}
     </Box>
   );
-};
-
-USListUnset.defaultProps = {
-  canModify: false,
-  canEstimate: false,
-  canDelete: false,
-  canAsign: false,
 };
 
 export default USListUnset;
