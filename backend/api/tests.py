@@ -10,7 +10,7 @@ from api.serializers import (
 )
 from django.test import TestCase
 
-from api.models import RolAsignado
+from api.models import US, RolAsignado
 
 
 def crear_user():
@@ -74,6 +74,16 @@ def crear_sprint(self, proyecto=None):
         json.dumps({"creadoPor": str(proyecto["miembros"][0]), "nombre": "Sprint 1"}),
         content_type="application/json",
     )
+    return res.json()
+
+
+def asignar_us_sprint(self, proyect_id, sp_id, us_id):
+    res = self.client.put(
+        f"/api/proyectos/{proyect_id}/user_stories/{us_id}",
+        json.dumps({"sprint": sp_id}),
+        content_type="application/json",
+    )
+
     return res.json()
 
 
@@ -451,3 +461,109 @@ class User_Stories_Estimar_Tests(TestCase):
         )
         self.assertEqual(res.status_code, 200)
         self.assertEqual(res.json()["estimacionesDev"], 1)
+
+
+class Sprint_Activar_Test(TestCase):
+    def test_sprint_activar(self):
+        u = crear_user()
+        u_dev = crear_user()
+        p = crear_proyecto(self, [u["id"]])
+        sp = crear_sprint(self, p)
+
+        us = crear_US(p["id"], u["id"])
+
+        # estima el Scrum master
+        res = self.client.post(
+            f"/api/proyectos/{p['id']}/user_stories/{us['id']}/estimar",
+            json.dumps({"user_id": u["id"], "estimacion": 1}),
+            content_type="application/json",
+        )
+        self.assertEqual(res.status_code, 200)
+
+        # Asignar user el rol dev
+        roles = self.client.get(f"/api/proyectos/{p['id']}/roles").json()
+        dev_rol = [i for i in roles if i["nombre"] == "Developer"][0]
+        res = self.client.post(
+            f"/api/proyectos/{p['id']}/miembros/{u_dev['id']}/roles/{dev_rol['id']}",
+        )
+        self.assertEqual(res.status_code, 201)
+
+        # Estima el dev
+        res = self.client.post(
+            f"/api/proyectos/{p['id']}/user_stories/{us['id']}/estimar",
+            json.dumps({"user_id": u_dev["id"], "estimacion": 1}),
+            content_type="application/json",
+        )
+        self.assertEqual(res.status_code, 200)
+
+        asignar_us_sprint(self, p["id"], sp["id"], us["id"])
+
+        us_data = USSerializer(US.objects.get(id=us["id"])).data
+
+        self.assertEqual(us_data["estado"], 4)
+
+        res = self.client.post(f"/api/proyectos/{p['id']}/sprints/{sp['id']}/activar")
+        us_data = USSerializer(US.objects.get(id=us["id"])).data
+
+        self.assertEqual(us_data["estado"], 0)
+        self.assertEqual(res.status_code, 200)
+
+    def test_sprint_desactivar(self):
+        u = crear_user()
+        u_dev = crear_user()
+        p = crear_proyecto(self, [u["id"]])
+        sp = crear_sprint(self, p)
+
+        us = crear_US(p["id"], u["id"])
+
+        # estima el Scrum master
+        res = self.client.post(
+            f"/api/proyectos/{p['id']}/user_stories/{us['id']}/estimar",
+            json.dumps({"user_id": u["id"], "estimacion": 1}),
+            content_type="application/json",
+        )
+        self.assertEqual(res.status_code, 200)
+
+        # Asignar user el rol dev
+        roles = self.client.get(f"/api/proyectos/{p['id']}/roles").json()
+        dev_rol = [i for i in roles if i["nombre"] == "Developer"][0]
+        res = self.client.post(
+            f"/api/proyectos/{p['id']}/miembros/{u_dev['id']}/roles/{dev_rol['id']}",
+        )
+        self.assertEqual(res.status_code, 201)
+
+        # Estima el dev
+        res = self.client.post(
+            f"/api/proyectos/{p['id']}/user_stories/{us['id']}/estimar",
+            json.dumps({"user_id": u_dev["id"], "estimacion": 1}),
+            content_type="application/json",
+        )
+        self.assertEqual(res.status_code, 200)
+
+        asignar_us_sprint(self, p["id"], sp["id"], us["id"])
+
+        res = self.client.post(f"/api/proyectos/{p['id']}/sprints/{sp['id']}/activar")
+
+        us_data = USSerializer(US.objects.get(id=us["id"])).data
+
+        self.assertEqual(us_data["estado"], 0)
+
+        self.assertEqual(res.status_code, 200)
+        res = self.client.post(
+            f"/api/proyectos/{p['id']}/sprints/{sp['id']}/desactivar"
+        )
+        # Check actualiza US
+        us_data = USSerializer(US.objects.get(id=us["id"])).data
+        self.assertEqual(us_data["estado"], 4)
+        self.assertEqual(res.status_code, 200)
+
+
+# sprint activar test
+# sprint desactivar test
+# sprint asignar
+# sprint desasignar
+# us asignar / desasignar usuario/sprint
+
+# nuevos casos para us
+
+# usuario admin
