@@ -522,8 +522,15 @@ def user_stories(request, proyect_id, us_id=None):
             serializer = USSerializer(us, many=True)
             us_list = serializer.data
             for us in us_list:
-                asigned_user = get_asigned_user(us["id"])
-                us.update({"asignado": asigned_user})
+                asigned_user_id = get_asigned_user(us["id"])
+                if asigned_user_id:
+                    asigned_user = UsuarioSerializer(
+                        Usuario.objects.get(id=asigned_user_id)
+                    ).data
+                    us.update({"asignado": asigned_user})
+
+                else:
+                    us.update({"asignado": None})
             return JsonResponse(us_list, safe=False)
 
     elif request.method == "DELETE":
@@ -624,7 +631,7 @@ def sprints(request, proyect_id, sprint_id=None):
                 if us["estimacionSM"] != None and us["estimacionesDev"] != None:
                     if conteo == None:
                         conteo = 0
-                    conteo += (us["estimacionSM"]) + (us["estimacionesDev"])/2
+                    conteo += (us["estimacionSM"]) + (us["estimacionesDev"]) / 2
                 else:
                     conteo = None
                     break
@@ -728,7 +735,6 @@ def sprints_user_stories(request, proyect_id, sprint_id, us_id=None):
 
             else:
                 us.update({"asignado": None})
-
 
         return JsonResponse(us_list, safe=False)
 
