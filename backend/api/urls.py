@@ -19,6 +19,8 @@ from .views import (
     proyectos,
     roles,
     sprints,
+    sprints_activar,
+    sprints_desactivar,
     sprints_user_stories,
     user_stories,
     proyectos_miembros_roles,
@@ -58,6 +60,11 @@ apiPaths = [
     path(
         "proyectos/<str:proyect_id>/sprints/<str:sprint_id>/user_stories/<str:us_id>",
         sprints_user_stories,
+    ),
+    path("proyectos/<str:proyect_id>/sprints/<str:sprint_id>/activar", sprints_activar),
+    path(
+        "proyectos/<str:proyect_id>/sprints/<str:sprint_id>/desactivar",
+        sprints_desactivar,
     ),
     path("usuarios", usuarios),
     path("usuarios/<str:user_id>", usuarios),
