@@ -1,3 +1,4 @@
+from datetime import datetime
 from functools import partial
 from rest_framework.exceptions import ValidationError
 from .serializers import (
@@ -647,15 +648,17 @@ def sprints(request, proyect_id, sprint_id=None):
             # Retorna los sprints de un proyecto
             spr = Sprint.objects.filter(proyecto=proyecto)
             serializer = SprintSerializer(spr, many=True)
-            spr_data = serializer.data
-            conteo_estimaciones, us_list_length = get_us_count(sprint_id)
-            spr_data.update(
-                {
-                    "sumaHorasAsignadas": conteo_estimaciones,
-                    "numeroDeUs": us_list_length,
-                }
-            )
-            return JsonResponse(spr_data, safe=False)
+            spr_list = serializer.data
+            for sprint in spr_list:
+                conteo_estimaciones, us_list_length = get_us_count(sprint_id)
+
+                sprint.update(
+                    {
+                        "sumaHorasAsignadas": conteo_estimaciones,
+                        "numeroDeUs": us_list_length,
+                    }
+                )
+            return JsonResponse(spr_list, safe=False)
 
     elif request.method == "DELETE":
         spr = Sprint.objects.get(id=sprint_id)
@@ -785,7 +788,11 @@ def sprints_activar(request, proyect_id, sprint_id):
         if not get_us_count(sprint_id)[0]:
             return HttpResponseBadRequest("No posible")
 
-        serializer = SprintSerializer(sp, data={"activo": True}, partial=True)
+        serializer = SprintSerializer(
+            sp,
+            data={"activo": True, "fechaInicio": datetime.now().strftime("%Y-%m-%d")},
+            partial=True,
+        )
         # pasar todos los us a pendiente
 
         us_list = US.objects.filter(sprint=sprint_id)
