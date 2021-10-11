@@ -1,3 +1,4 @@
+from datetime import datetime
 from functools import partial
 from rest_framework.exceptions import ValidationError
 from .serializers import (
@@ -620,7 +621,7 @@ def sprints(request, proyect_id, sprint_id=None):
             us_list = serializer.data
             conteo = None
             for us in us_list:
-                if us["estimacionSM"] != None or us["estimacionesDev"] != None:
+                if us["estimacionSM"] != None and us["estimacionesDev"] != None:
                     if conteo == None:
                         conteo = 0
                     conteo += (us["estimacionSM"]) + (us["estimacionesDev"])
@@ -650,19 +651,30 @@ def sprints(request, proyect_id, sprint_id=None):
             # Retorna los sprints de un proyecto
             spr = Sprint.objects.filter(proyecto=proyecto)
             serializer = SprintSerializer(spr, many=True)
-            spr_data = serializer.data
-            conteo_estimaciones, us_list_length = get_us_count(sprint_id)
-            spr_data.update(
-                {
-                    "sumaHorasAsignadas": conteo_estimaciones,
-                    "numeroDeUs": us_list_length,
-                }
-            )
-            return JsonResponse(spr_data, safe=False)
+            spr_list = serializer.data
+            for sprint in spr_list:
+                conteo_estimaciones, us_list_length = get_us_count(sprint["id"])
+
+                sprint.update(
+                    {
+                        "sumaHorasAsignadas": conteo_estimaciones,
+                        "numeroDeUs": us_list_length,
+                    }
+                )
+            return JsonResponse(spr_list, safe=False)
 
     elif request.method == "DELETE":
         spr = Sprint.objects.get(id=sprint_id)
         spr.delete()
+        us_list = US.objects.filter(proyecto=proyecto, sprint=sprint_id)
+
+        for us in us_list:
+
+            serializer = USSerializer(us, data={"sprint": None}, partial=True)
+
+            if serializer.is_valid():
+                serializer.save()
+
         return JsonResponse(True, status=204, safe=False)
 
     elif request.method == "PUT":
@@ -716,6 +728,7 @@ def sprints_user_stories(request, proyect_id, sprint_id, us_id=None):
 
             else:
                 us.update({"asignado": None})
+
 
         return JsonResponse(us_list, safe=False)
 
@@ -775,7 +788,7 @@ def sprints_activar(request, proyect_id, sprint_id):
             us_list = serializer.data
             conteo = None
             for us in us_list:
-                if us["estimacionSM"] != None or us["estimacionesDev"] != None:
+                if us["estimacionSM"] != None and us["estimacionesDev"] != None:
                     if conteo == None:
                         conteo = 0
                     conteo += (us["estimacionSM"]) + (us["estimacionesDev"])
@@ -786,9 +799,13 @@ def sprints_activar(request, proyect_id, sprint_id):
             return conteo, len(us_list)
 
         if not get_us_count(sprint_id)[0]:
-            return HttpResponseBadRequest("No posible")
+            return HttpResponseBadRequest("Se deben estimar todos los US primero")
 
-        serializer = SprintSerializer(sp, data={"activo": True}, partial=True)
+        serializer = SprintSerializer(
+            sp,
+            data={"activo": True, "fechaInicio": datetime.now().strftime("%Y-%m-%d")},
+            partial=True,
+        )
         # pasar todos los us a pendiente
 
         us_list = US.objects.filter(sprint=sprint_id)
@@ -800,7 +817,7 @@ def sprints_activar(request, proyect_id, sprint_id):
                 us_seri.save()
         except Exception as e:
             print(e)
-            return JsonResponse("Falta", status=400, safe=False)
+            return JsonResponse("Error actualizando US", status=400, safe=False)
 
         # estimacion de horas
         if serializer.is_valid():
@@ -827,6 +844,17 @@ def sprints_desactivar(request, proyect_id, sprint_id):
     if request.method == "POST":
         us = Sprint.objects.get(id=sprint_id)
         serializer = SprintSerializer(us, data={"activo": False}, partial=True)
+
+        us_list = US.objects.filter(sprint=sprint_id)
+
+        try:
+            for us in us_list:
+                us_seri = USSerializer(us, data={"estado": 4}, partial=True)
+                us_seri.is_valid(raise_exception=True)
+                us_seri.save()
+        except Exception as e:
+            print(e)
+            return JsonResponse("Error cambiando estado", status=400, safe=False)
 
         if serializer.is_valid():
             serializer.save()
