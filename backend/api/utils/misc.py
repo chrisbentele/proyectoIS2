@@ -29,6 +29,6 @@ def get_us_count(proyect_id, sprint_id):
         else:
             activable = False
 
-    if len(us_list):
+    if len(us_list) == 0:
         activable = False
     return conteo, len(us_list), activable
