@@ -45,8 +45,6 @@ class SprintSerializer(serializers.ModelSerializer):
             "fechaInicio",
             "fechaFinalizacion",
             "estimacion",
-            "horasAsignadas",
-            "cuentaUs",
             "creadoPor",
             "terminado",
             "retro",

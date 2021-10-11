@@ -33,7 +33,7 @@ import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { api } from "../../api";
 import EstimarUsModal from "../../components/EstimarUsModal/EstimarUsModal";
 
-import AsignarUSModal from "../AsignarUsASprintModal/AsignarUsASprintModal";
+import AsignarUsASprintModal from "../AsignarUsASprintModal/AsignarUsASprintModal";
 import AsignarDevUsModal from "../../components/AsignarDevUsModal/AsignarDevUsModal";
 import { MdTimer } from "react-icons/md";
 import { BsFillPersonPlusFill, BsFillPeopleFill } from "react-icons/bs";
@@ -51,6 +51,7 @@ const USListUnset = ({
   canDelete,
   canAsign,
   isScrumMaster,
+  memberId,
   ...props
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -162,17 +163,14 @@ const USListUnset = ({
                     <Text>{`Estimación Dev: ${
                       us.estimacionesDev || "Sin estimar"
                     }`}</Text>
-                    <Text>
-                      {`${
-                        us.estimacionesDev && us.estimacionSM
-                          ? (us.estimacionesDev + us.estimacionSM) / 2 +
-                            " horas"
-                          : ""
-                      }`}
-                    </Text>
-                  </Box>
+
+                  <Text>{`${us.estimacionesDev && us.estimacionSM ?
+                    (us.estimacionesDev + us.estimacionSM) / 2 + ' horas' : ''}`}
+                  </Text>
+                </Box>
+                {(isScrumMaster || memberId === us.asignado?.id) ?
                   <Flex>
-                    {canModify ? (
+                    {canModify ?
                       <Button
                         onClick={() => {
                           setIsOpenModal(true);
@@ -182,8 +180,10 @@ const USListUnset = ({
                       >
                         <EditIcon color="black.500" />
                       </Button>
-                    ) : null}
-                    {canEstimate ? (
+                      :
+                      null
+                    }
+                    {canEstimate ?
                       <Button
                         onClick={() => {
                           setFocusedUS(us);
@@ -237,20 +237,24 @@ const USListUnset = ({
                             }}
                           />
                         )}
-                        <Button
-                          onClick={() => {
-                            setFocusedUS(us);
-                            setShowAsignarModal(true);
-                          }}
-                          mt="2"
-                          ml="1"
-                        >
-                          Sprint{/* <GiSprint /> */}
-                        </Button>
                       </>
                     ) : null}
+                    { isScrumMaster ?
+                      <Button
+                        onClick={() => {
+                          setFocusedUS(us);
+                          setShowAsignarModal(true);
+                        }}
+                        mt="2"
+                        ml="1"
+                      >
+                        Sprint{/* <GiSprint /> */}
+                      </Button>
+                      :
+                      null
+                    }
                     {focusedUS && (
-                      <AsignarUSModal
+                      <AsignarUsASprintModal
                         projectId={projectId}
                         US={focusedUS}
                         isOpen={showAsignarModal}
@@ -267,48 +271,48 @@ const USListUnset = ({
                       <ModalContent>
                         <ModalHeader>Editar US</ModalHeader>
 
-                        <ModalCloseButton />
-                        <form onSubmit={handleSubmit(onSubmit)}>
-                          <ModalBody pb={6}>
-                            <FormControl isInvalid={errors.name}>
-                              <FormLabel htmlFor="name">Nombre US</FormLabel>
-                              <Input
-                                id="name"
-                                ref={initialRef}
-                                defaultValue={us.nombre}
-                                {...register("usName", {
-                                  required: "This is required",
-                                  minLength: {
-                                    value: 4,
-                                    message: "Minimum length should be 4",
-                                  },
-                                })}
-                              />
-                              <FormErrorMessage>
-                                {errors.name && errors.name.message}
-                              </FormErrorMessage>
-                            </FormControl>
-                            <FormControl isInvalid={errors.description} mt={4}>
-                              <FormLabel htmlFor="description" mt={4}>
-                                Descripción
-                              </FormLabel>
-                              <Input
-                                id="description"
-                                defaultValue={us.contenido}
-                                {...register("description", {
-                                  required: "This is required",
-                                  minLength: {
-                                    value: 4,
-                                    message: "Minimum length should be 4",
-                                  },
-                                })}
-                              />
-                              <FormErrorMessage>
-                                {errors.description &&
-                                  errors.description.message}
-                              </FormErrorMessage>
-                            </FormControl>
-                          </ModalBody>
+                      <ModalCloseButton />
+                      <form onSubmit={handleSubmit(onSubmit)}>
+                        <ModalBody pb={6}>
+                          <FormControl isInvalid={errors.name}>
+                            <FormLabel htmlFor="name">Nombre US</FormLabel>
+                            <Input
+                              id="name"
+                              ref={initialRef}
+                              defaultValue={us.nombre}
+                              {...register("usName", {
+                                required: "This is required",
+                                minLength: {
+                                  value: 4,
+                                  message: "Minimum length should be 4",
+                                },
+                              })}
+                            />
+                            <FormErrorMessage>
+                              {errors.name && errors.name.message}
+                            </FormErrorMessage>
+                          </FormControl>
+                          <FormControl isInvalid={errors.description} mt={4}>
+                            <FormLabel htmlFor="description" mt={4}>
+                              Descripción
+                            </FormLabel>
+                            <Input
+                              id="description"
+                              defaultValue={us.contenido}
+                              {...register("description", {
+                                required: "This is required",
+                                minLength: {
+                                  value: 4,
+                                  message: "Minimum length should be 4",
+                                },
+                              })}
+                            />
+                            <FormErrorMessage>
+                              {errors.description &&
+                                errors.description.message}
+                            </FormErrorMessage>
+                          </FormControl>
+                        </ModalBody>
 
                           <ModalFooter>
                             <Button
@@ -372,9 +376,12 @@ const USListUnset = ({
                       </AlertDialogOverlay>
                     </AlertDialog>
                   </Flex>
-                </Box>
-              );
-            })
+                  :
+                  null
+                }
+              </Box>
+            );
+          })
           : null}
       </Grid>
 
