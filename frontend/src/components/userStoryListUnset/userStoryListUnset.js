@@ -32,7 +32,13 @@ import {
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { api } from "../../api";
 import EstimarUsModal from "../../components/EstimarUsModal/EstimarUsModal";
-import AsignarUSModal from "../AsignarUsASprintModal/AsignarUsASprintModal";
+
+import AsignarUsASprintModal from "../AsignarUsASprintModal/AsignarUsASprintModal";
+import AsignarDevUsModal from "../../components/AsignarDevUsModal/AsignarDevUsModal";
+import { MdTimer } from "react-icons/md";
+import { BsFillPersonPlusFill, BsFillPeopleFill } from "react-icons/bs";
+import { GiSprint } from "react-icons/gi";
+
 const USListUnset = ({
   projectId,
   setUserStories,
@@ -51,6 +57,7 @@ const USListUnset = ({
   const [isOpen, setIsOpen] = useState(false);
   const [showEstimarModal, setShowEstimarModal] = useState(false);
   const [showAsignarModal, setShowAsignarModal] = useState(false);
+  const [showAsignarDevModal, setShowAsignarDevModal] = useState(false);
   const onClose = () => setIsOpen(false);
   const onDelete = (id) => {
     console.log(id);
@@ -70,6 +77,8 @@ const USListUnset = ({
   const onCloseModal = () => setIsOpenModal(false);
   const [isOpenModalAssign, setIsOpenModalAssign] = React.useState(false);
   const onCloseModalAssign = () => setIsOpenModalAssign(false);
+  const [isOpenModalAssignDev, setIsOpenModalAssignDev] = React.useState(false);
+  const onCloseModalAssignDev = () => setIsOpenModalAssignDev(false);
 
   const initialRef = React.useRef();
 
@@ -178,8 +187,9 @@ const USListUnset = ({
                           setShowEstimarModal(true);
                         }}
                         mt="2"
+                        ml="1"
                       >
-                        Estimar
+                        <MdTimer />
                       </Button>
                       :
                       null
@@ -203,17 +213,47 @@ const USListUnset = ({
                       <Button
                         onClick={() => {
                           setFocusedUS(us);
-                          setShowAsignarModal(true);
+                          setShowAsignarDevModal(true);
                         }}
                         mt="2"
+                        ml="1"
                       >
-                        Asignar
+                        <BsFillPeopleFill />
                       </Button>
                       :
                       null
                     }
                     {focusedUS && (
-                      <AsignarUSModal
+                      <AsignarDevUsModal
+                        projectId={projectId}
+                        US={focusedUS}
+                        isOpen={showAsignarDevModal}
+                        dispatchError={dispatchError}
+                        onClose={async () => {
+                          setShowAsignarDevModal(false);
+
+                          await api.userStories
+                            .getUserStories(projectId)
+                            .then(({ data }) => setUserStories(data));
+                        }}
+                      />
+                    )}
+                    { isScrumMaster ?
+                      <Button
+                        onClick={() => {
+                          setFocusedUS(us);
+                          setShowAsignarModal(true);
+                        }}
+                        mt="2"
+                        ml="1"
+                      >
+                        Sprint{/* <GiSprint /> */}
+                      </Button>
+                      :
+                      null
+                    }
+                    {focusedUS && (
+                      <AsignarUsASprintModal
                         projectId={projectId}
                         US={focusedUS}
                         isOpen={showAsignarModal}
@@ -223,8 +263,8 @@ const USListUnset = ({
                     )}
                     <Modal
                       initialFocusRef={initialRef}
-                      isOpen={isOpenModal}
-                      onClose={onCloseModalAssign}
+                      isOpen={isOpenModalAssignDev}
+                      onClose={onCloseModalAssignDev}
                     >
                       <ModalOverlay />
                       <ModalContent>
