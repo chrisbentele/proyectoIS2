@@ -32,6 +32,7 @@ import {
   removeMemberFromProject,
   editMembersRole,
   getMembers,
+  getMember,
 } from "./members";
 import userStories, {
   createUserStory,
@@ -75,6 +76,7 @@ export const api = {
   removeMemberFromProject,
   editMembersRole,
   getMembers,
+  getMember,
   //User Stories
   createUserStory,
   getUserStories,
