@@ -26,7 +26,12 @@ import EditarSprintModal from "../../components/EditarSprintModal/EditarSprintMo
 import { IconButton } from "@chakra-ui/button";
 import { EditIcon } from "@chakra-ui/icons";
 import { useHistory } from "react-router-dom";
-import { MdBuild } from "react-icons/md";
+import { MdBuild, MdTimer } from "react-icons/md";
+import EliminarSprintModal from "../../components/EliminarSprintModal/EliminarSprintModal";
+
+import { useAuth0 } from "@auth0/auth0-react";
+import { tienePermiso } from "../../util";
+import { PERMISOS_MACRO } from "../roles/permisos";
 
 /**
  * Función que contiene el código de la vista
@@ -40,8 +45,12 @@ export default function Index({ dispatchError, props }) {
   const [sprints, setSprints] = useState([]); //estado del proyecto
   const [isOpenCrearSp, setIsOpenCrearSp] = useState(false); //estado del proyecto
   const [isOpenEditSp, setIsOpenEditSp] = useState(false); //estado del proyecto
+  const [showEliminarModal, setShowEliminarModal] = useState(false);
   const history = useHistory();
+  const { user } = useAuth0();
+  const [thisMember, setThisMember] = useState();
 
+  const [focusedSprint, setFocusedSprint] = useState();
   //Al cargarse la pagina se busca el proyecto con el id del URL y se lo asigna a projectId
   useEffect(() => {
     api
@@ -53,8 +62,19 @@ export default function Index({ dispatchError, props }) {
       .getUserStories(projectId)
       .then((US) => setUserStories(US.data))
       .catch((err) => console.log(err));
-    api.sprints.getSprints(projectId).then(({ data }) => setSprints(data));
+ 
+
+    api.sprints
+      .getSprints(projectId)
+      .then(({ data }) => setSprints(data))
+      .catch((err) => console.log(err));
+
+    api
+      .getMember(projectId, user.sub)
+      .then(({ data: member }) => setThisMember(member))
+      .catch((err) => console.log(err));
   }, []);
+
 
   return (
     <Box
@@ -76,7 +96,6 @@ export default function Index({ dispatchError, props }) {
             bg={mapStateColor(project.estado) - 40}
             left="0"
             right="0"
-            // boxShadow="md"
             width="full"
             pl="3"
             mb="3rem"
@@ -88,32 +107,43 @@ export default function Index({ dispatchError, props }) {
               </Link>
 
               <Box fontWeight="thin">|</Box>
-
-              <Button
-                colorScheme="yellow"
-                variant="solid"
-                // opacity="30%"
-                onClick={() => history.push(`/projects/${projectId}/members`)}
-              >
-                Miembros
-              </Button>
-              <Button
-                colorScheme="yellow"
-                variant="solid"
-                // opacity="30%"
-                onClick={() => history.push(`/projects/${projectId}/roles`)}
-              >
-                Configurar Roles
-              </Button>
-              <Button
-                leftIcon={<MdBuild />}
-                colorScheme="yellow"
-                variant="solid"
-                // opacity="30%"
-                onClick={() => history.push(`/projects/${projectId}/config`)}
-              >
-                Configurar Proyecto
-              </Button>
+              {tienePermiso(thisMember, PERMISOS_MACRO.EDITAR_MIEMBROS_A_PROYECTO) ?
+                <Button
+                  colorScheme="yellow"
+                  variant="solid"
+                  // opacity="30%"
+                  onClick={() => history.push(`/projects/${projectId}/members`)}
+                >
+                  Miembros
+                </Button>
+                :
+                null
+              }
+              {tienePermiso(thisMember, PERMISOS_MACRO.EDITAR_ROL_DEL_USUARIO) ?
+                <Button
+                  colorScheme="yellow"
+                  variant="solid"
+                  // opacity="30%"
+                  onClick={() => history.push(`/projects/${projectId}/roles`)}
+                >
+                  Configurar Roles
+                </Button>
+                :
+                null
+              }
+              {tienePermiso(thisMember, PERMISOS_MACRO.EDITAR_CONFIGURACIÓN_DEL_PROYECTO) ?
+                <Button
+                  leftIcon={<MdBuild />}
+                  colorScheme="yellow"
+                  variant="solid"
+                  // opacity="30%"
+                  onClick={() => history.push(`/projects/${projectId}/config`)}
+                >
+                  Configurar Proyecto
+                </Button>
+                :
+                null
+              }
             </HStack>
           </Box>
           <Box as="main" mt="50px" w="100vw">
@@ -125,6 +155,12 @@ export default function Index({ dispatchError, props }) {
                   nombreLista="Backlog"
                   dispatchError={dispatchError}
                   userStories={userStories?.filter((us) => us.estado === 4)}
+                  canModify={tienePermiso(thisMember, PERMISOS_MACRO.MODIFICAR_US)}
+                  canEstimate={tienePermiso(thisMember, PERMISOS_MACRO.ESTIMAR_US)}
+                  canDelete={tienePermiso(thisMember, PERMISOS_MACRO.ELIMINAR_US)}
+                  canAsign={tienePermiso(thisMember, PERMISOS_MACRO.ASIGNAR_MIEMBROS_A_US)}
+                  isScrumMaster={thisMember?.rol.nombre === "Scrum Master"}
+                  memberId={thisMember?.id}
                 >
                   <Flex justify="center">
                     <LinkBox
@@ -141,12 +177,16 @@ export default function Index({ dispatchError, props }) {
                         color: "teal.500",
                       }}
                     >
-                      <LinkOverlay
-                        href={`/projects/${projectId}/createUS`}
-                        fontSize="lg"
-                      >
-                        + agregar nueva tarjeta
-                      </LinkOverlay>
+                      {tienePermiso(thisMember, PERMISOS_MACRO.CREAR_ROL) ?
+                        <LinkOverlay
+                          href={`/projects/${projectId}/createUS`}
+                          fontSize="lg"
+                        >
+                          + agregar nueva tarjeta
+                        </LinkOverlay>
+                        :
+                        null
+                      }
                     </LinkBox>
                   </Flex>
                 </USListUnset>
@@ -154,23 +194,27 @@ export default function Index({ dispatchError, props }) {
               {/* sprints */}
               <Box>
                 <VStack>
-                  <Box
-                    display="flex"
-                    w="lg"
-                    height="180px"
-                    borderWidth="1px"
-                    borderRadius="lg"
-                    overflow="hidden"
-                    fontSize="3xl"
-                    fontWeight="bold"
-                    bg="white"
-                    justifyContent="center"
-                    alignItems="center"
-                    onClick={() => setIsOpenCrearSp(true)}
-                    cursor="pointer"
-                  >
-                    <Text>Crear sprint</Text>
-                  </Box>
+                  {tienePermiso(thisMember, PERMISOS_MACRO.CREAR_SPRINT) ?
+                    <Box
+                      display="flex"
+                      w="lg"
+                      height="180px"
+                      borderWidth="1px"
+                      borderRadius="lg"
+                      overflow="hidden"
+                      fontSize="3xl"
+                      fontWeight="bold"
+                      bg="white"
+                      justifyContent="center"
+                      alignItems="center"
+                      onClick={() => setIsOpenCrearSp(true)}
+                      cursor="pointer"
+                    >
+                      <Text>Crear sprint</Text>
+                    </Box>
+                    :
+                    null
+                  }
                   <CrearSprintModal
                     projectId={projectId}
                     isOpen={isOpenCrearSp}
@@ -198,13 +242,14 @@ export default function Index({ dispatchError, props }) {
                         alignItems="center"
                         key={index}
                         cursor="pointer"
-                        onClick={() =>
-                          history.push(
-                            `/projects/${projectId}/sprints/${sprint.id}`
-                          )
-                        }
                       >
-                        <Box>
+                        <Box
+                          onClick={() =>
+                            history.push(
+                              `/projects/${projectId}/sprints/${sprint.id}`
+                            )
+                          }
+                        >
                           <Text>{sprint.nombre}</Text>
                         </Box>
                         <Box fontSize="18px">
@@ -215,6 +260,29 @@ export default function Index({ dispatchError, props }) {
                             {sprint.activo ? "Activo" : "No activado"}
                           </Text>
                         </Box>
+                        {tienePermiso(thisMember, PERMISOS_MACRO.ELIMINAR_SPRINT) ?
+                          <Button
+                            onClick={() => {
+                              setFocusedSprint(sprint);
+                              setShowEliminarModal(true);
+                            }}
+                          >
+                            Eliminar :o
+                          </Button>
+                          :
+                          null
+                        }
+                        {focusedSprint && (
+                          <EliminarSprintModal
+                            projectId={projectId}
+                            spId={focusedSprint.id}
+                            isOpen={showEliminarModal}
+                            onClose={() => {
+                              setShowEliminarModal(false);
+                            }}
+                            setSprints={setSprints}
+                          />
+                        )}
                       </VStack>
                     </>
                   ))}
@@ -228,24 +296,6 @@ export default function Index({ dispatchError, props }) {
           <Spinner size="xl" />
         </Flex>
       )}
-
-      {/* <VStack>
-        <LinkBox
-          display="flex"
-          w="xs"
-          height="200px"
-          borderWidth="1px"
-          borderRadius="lg"
-          overflow="hidden"
-          fontSize="3xl"
-          fontWeight="bold"
-          bg="white"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <LinkOverlay href={`/sprints/${sprint}`}>Crear sprint</LinkOverlay>
-        </LinkBox>
-      </VStack> */}
     </Box>
   );
 }
