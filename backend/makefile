@@ -3,7 +3,8 @@ build: build-db wait build-api
 build-api:
 	docker-compose up -d --build web
 	docker exec -it backend-api python manage.py migrate --run-syncdb
-
+	docker exec -it backend-api python manage.py loaddata populate.json
+	
 build-db:
 	docker-compose up -d --build db
 
