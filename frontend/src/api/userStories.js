@@ -10,13 +10,8 @@ export const createUserStory = async (usData) => {
   });
 };
 
-//Endpoint para obtener todas las user stories de un proyecto
-//recibe como parametro el id del proyeto
-export const getUserStories = async (idProyecto) =>
-  await axiosInstance.get(`/proyectos/${idProyecto}/user_stories`);
-
-//! Obtiene US de un sprint
-export const getUserStoriesSprint = async (idProyecto, sprintId = null) => {
+//! Obtiene US de un sprint o proyecto
+export const getUserStories = async (idProyecto, sprintId = null) => {
   if (sprintId == null) {
     return axiosInstance
       .get(`/proyectos/${idProyecto}/user_stories`)
@@ -91,9 +86,8 @@ export const eliminarUS = async (projectId, us_id) =>
 
 const userStories = {
   createUserStory,
-  getUserStories,
   editUS,
-  getUserStoriesSprint,
+  getUserStories,
   asignarUsAUsuario,
   asignarUsASprint,
   desasignarUsASprint,
