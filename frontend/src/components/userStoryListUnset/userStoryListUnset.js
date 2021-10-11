@@ -141,121 +141,124 @@ const USListUnset = ({
       <Grid templateColumns="repeat(3, 1fr)">
         {userStories
           ? userStories.map((us) => {
-            return (
-              <Box
-                borderRadius="8"
-                p="2"
-                m="2"
-                key={us.id}
-                bg="white"
-                boxShadow="md"
-                w="xs"
-              >
-                <Text fontSize="20px" fontWeight="semibold">
-                  {us.nombre}
-                </Text>
-                <Text fontSize="15px">{us.contenido}</Text>
-                <Box mt="2">
-                  <Text>{`Estimación SM: ${us.estimacionSM || "Sin estimar"
-                    }`}</Text>
-                  <Text>{`Estimación Dev: ${us.estimacionesDev || "Sin estimar"
-                    }`}</Text>
-                  <Text>{`${us.estimacionesDev && us.estimacionSM ?
-                    (us.estimacionesDev + us.estimacionSM) / 2 + ' horas' : ''}`}
+              return (
+                <Box
+                  borderRadius="8"
+                  p="2"
+                  m="2"
+                  key={us.id}
+                  bg="white"
+                  boxShadow="md"
+                  w="xs"
+                >
+                  <Text fontSize="20px" fontWeight="semibold">
+                    {us.nombre}
                   </Text>
-                </Box>
-                <Flex>
-                  {canModify ?
-                    <Button
-                      onClick={() => {
-                        setIsOpenModal(true);
-                        setFocusedUS(us);
-                      }}
-                      mt="2"
-                    >
-                      <EditIcon color="black.500" />
-                    </Button>
-                    :
-                    null
-                  }
-                  {canEstimate ?
-                    <Button
-                      onClick={() => {
-                        setFocusedUS(us);
-                        setShowEstimarModal(true);
-                      }}
-                      mt="2"
-                      ml="1"
-                    >
-                      <MdTimer />
-                    </Button>
-                    :
-                    null
-                  }
-                  {focusedUS && (
-                    <EstimarUsModal
-                      projectId={projectId}
-                      US={focusedUS}
-                      rolUsuario={isScrumMaster ? "SM" : "dev"}
-                      isOpen={showEstimarModal}
-                      onClose={() => {
-                        setShowEstimarModal(false);
-
-                        api
-                          .getUserStories(projectId)
-                          .then(({ data }) => setUserStories(data));
-                      }}
-                    />
-                  )}
-                  {canAsign ?
-                    <Button
-                      onClick={() => {
-                        setFocusedUS(us);
-                        setShowAsignarDevModal(true);
-                      }}
-                      mt="2"
-                      ml="1"
-                    >
-                      <BsFillPeopleFill />
-                    </Button>
+                  <Text fontSize="15px">{us.contenido}</Text>
+                  <Box mt="2">
+                    <Text>{`Estimación SM: ${
+                      us.estimacionSM || "Sin estimar"
+                    }`}</Text>
+                    <Text>{`Estimación Dev: ${
+                      us.estimacionesDev || "Sin estimar"
+                    }`}</Text>
+                    <Text>
+                      {`${
+                        us.estimacionesDev && us.estimacionSM
+                          ? (us.estimacionesDev + us.estimacionSM) / 2 +
+                            " horas"
+                          : ""
+                      }`}
+                    </Text>
+                  </Box>
+                  <Flex>
+                    {canModify ? (
+                      <Button
+                        onClick={() => {
+                          setIsOpenModal(true);
+                          setFocusedUS(us);
+                        }}
+                        mt="2"
+                      >
+                        <EditIcon color="black.500" />
+                      </Button>
+                    ) : null}
+                    {canEstimate ? (
+                      <Button
+                        onClick={() => {
+                          setFocusedUS(us);
+                          setShowEstimarModal(true);
+                        }}
+                        mt="2"
+                        ml="1"
+                      >
+                        <MdTimer />
+                      </Button>
+                    ) : null}
                     {focusedUS && (
-                      <AsignarDevUsModal
+                      <EstimarUsModal
                         projectId={projectId}
                         US={focusedUS}
-                        isOpen={showAsignarDevModal}
-                        dispatchError={dispatchError}
-                        onClose={async () => {
-                          setShowAsignarDevModal(false);
+                        rolUsuario={isScrumMaster ? "SM" : "dev"}
+                        isOpen={showEstimarModal}
+                        onClose={() => {
+                          setShowEstimarModal(false);
 
-                          await api.userStories
+                          api
                             .getUserStories(projectId)
                             .then(({ data }) => setUserStories(data));
                         }}
                       />
                     )}
-                    <Button
-                      onClick={() => {
-                        setFocusedUS(us);
-                        setShowAsignarModal(true);
-                      }}
-                      mt="2"
-                      ml="1"
-                    >
-                      Sprint{/* <GiSprint /> */}
-                    </Button>
-                    :
-                    null
-                  }
-                  {focusedUS && (
-                    <AsignarUSModal
-                      projectId={projectId}
-                      US={focusedUS}
-                      isOpen={showAsignarModal}
-                      dispatchError={dispatchError}
-                      onClose={onCloseAsignarSprint}
-                    />
-                  )}
-                  <Modal
+                    {canAsign ? (
+                      <>
+                        <Button
+                          onClick={() => {
+                            setFocusedUS(us);
+                            setShowAsignarDevModal(true);
+                          }}
+                          mt="2"
+                          ml="1"
+                        >
+                          <BsFillPeopleFill />
+                        </Button>
+                        {focusedUS && (
+                          <AsignarDevUsModal
+                            projectId={projectId}
+                            US={focusedUS}
+                            isOpen={showAsignarDevModal}
+                            dispatchError={dispatchError}
+                            onClose={async () => {
+                              setShowAsignarDevModal(false);
+
+                              await api.userStories
+                                .getUserStories(projectId)
+                                .then(({ data }) => setUserStories(data));
+                            }}
+                          />
+                        )}
+                        <Button
+                          onClick={() => {
+                            setFocusedUS(us);
+                            setShowAsignarModal(true);
+                          }}
+                          mt="2"
+                          ml="1"
+                        >
+                          Sprint{/* <GiSprint /> */}
+                        </Button>
+                      </>
+                    ) : null}
+                    {focusedUS && (
+                      <AsignarUSModal
+                        projectId={projectId}
+                        US={focusedUS}
+                        isOpen={showAsignarModal}
+                        dispatchError={dispatchError}
+                        onClose={onCloseAsignarSprint}
+                      />
+                    )}
+                    <Modal
                       initialFocusRef={initialRef}
                       isOpen={isOpenModalAssignDev}
                       onClose={onCloseModalAssignDev}
@@ -321,59 +324,57 @@ const USListUnset = ({
                         </form>
                       </ModalContent>
                     </Modal>
-                  {canDelete ?
-                    <Button
-                      onClick={() => setIsOpen(true)}
-                      mt="2"
-                      ml="auto"
-                      bg="red.500"
-                      _hover={{
-                        background: "red.600",
-                        color: "teal.500",
-                      }}
-                      _active={{
-                        background: "red.600",
-                      }}
+                    {canDelete ? (
+                      <Button
+                        onClick={() => setIsOpen(true)}
+                        mt="2"
+                        ml="auto"
+                        bg="red.500"
+                        _hover={{
+                          background: "red.600",
+                          color: "teal.500",
+                        }}
+                        _active={{
+                          background: "red.600",
+                        }}
+                      >
+                        <DeleteIcon color={"#F5F4F5"} />
+                      </Button>
+                    ) : null}
+                    <AlertDialog
+                      isOpen={isOpen}
+                      leastDestructiveRef={cancelRef}
+                      onClose={onClose}
                     >
-                      <DeleteIcon color={"#F5F4F5"} />
-                    </Button>
-                    :
-                    null
-                  }
-                  <AlertDialog
-                    isOpen={isOpen}
-                    leastDestructiveRef={cancelRef}
-                    onClose={onClose}
-                  >
-                    <AlertDialogOverlay>
-                      <AlertDialogContent>
-                        <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                          Eliminar US
-                        </AlertDialogHeader>
+                      <AlertDialogOverlay>
+                        <AlertDialogContent>
+                          <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                            Eliminar US
+                          </AlertDialogHeader>
 
-                        <AlertDialogBody>
-                          ¿Está seguro que desea eliminar a esta US?
-                        </AlertDialogBody>
+                          <AlertDialogBody>
+                            ¿Está seguro que desea eliminar a esta US?
+                          </AlertDialogBody>
 
-                        <AlertDialogFooter>
-                          <Button ref={cancelRef} onClick={onClose}>
-                            Cancelar
-                          </Button>
-                          <Button
-                            colorScheme="red"
-                            onClick={() => onDelete(us.id)}
-                            ml={3}
-                          >
-                            Eliminar
-                          </Button>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialogOverlay>
-                  </AlertDialog>
-                </Flex>
-              </Box>
-            );
-          })
+                          <AlertDialogFooter>
+                            <Button ref={cancelRef} onClick={onClose}>
+                              Cancelar
+                            </Button>
+                            <Button
+                              colorScheme="red"
+                              onClick={() => onDelete(us.id)}
+                              ml={3}
+                            >
+                              Eliminar
+                            </Button>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialogOverlay>
+                    </AlertDialog>
+                  </Flex>
+                </Box>
+              );
+            })
           : null}
       </Grid>
 
@@ -382,12 +383,11 @@ const USListUnset = ({
   );
 };
 
-
 USListUnset.defaultProps = {
   canModify: false,
   canEstimate: false,
   canDelete: false,
   canAsign: false,
-}
+};
 
 export default USListUnset;
