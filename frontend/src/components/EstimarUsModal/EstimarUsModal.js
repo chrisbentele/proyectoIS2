@@ -19,9 +19,11 @@ import {
 } from "@chakra-ui/react";
 import { useForm, Controller } from "react-hook-form";
 import { api } from "../../api";
+import { useAuth0 } from "@auth0/auth0-react";
+
 const Editar = ({ projectId, US, rolUsuario, isOpen, onClose }) => {
   const initialRef = useRef();
-
+  const { user } = useAuth0();
   const {
     handleSubmit,
     register,
@@ -30,11 +32,13 @@ const Editar = ({ projectId, US, rolUsuario, isOpen, onClose }) => {
   } = useForm();
 
   const onSubmit = (data) => {
-    if (rolUsuario == "SM") {
-      api.editUS({ projectId, usId: US.id, estimacionSM: data.estimacion });
-    } else if (rolUsuario == "dev") {
-      api.editUS({ projectId, usId: US.id, estimacionesDev: data.estimacion });
-    }
+    api.userStories.estimarUs({
+      projectId,
+      userId: user.sub,
+      usId: US.id,
+      estimacion: data.estimacion,
+    });
+
     onClose();
   };
 

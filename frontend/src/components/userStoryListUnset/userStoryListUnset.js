@@ -32,13 +32,14 @@ import {
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { api } from "../../api";
 import EstimarUsModal from "../../components/EstimarUsModal/EstimarUsModal";
-import AsignarUSModal from "../../components/AsignarUsModal/AsignarUsModal";
+import AsignarUsASprintModal from "../AsignarUsASprintModal/AsignarUsASprintModal";
 const USList = ({
   projectId,
   setUserStories,
   userStories,
   nombreLista,
   children,
+  dispatchError,
   ...props
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -95,7 +96,9 @@ const USList = ({
         }
       })
       .catch((err) => console.log(err));
-    api.getUserStories(projectId).then(({ data }) => setUserStories(data));
+    await api
+      .getUserStories(projectId)
+      .then(({ data }) => setUserStories(data));
     setIsOpenModal(false);
   }
 
@@ -124,6 +127,7 @@ const USList = ({
                   bg="white"
                   boxShadow="md"
                   w="xs"
+                  key={us.id}
                 >
                   <Text fontSize="20px" fontWeight="semibold">
                     {us.nombre}
@@ -181,11 +185,11 @@ const USList = ({
                       Asignar
                     </Button>
                     {focusedUS && (
-                      <AsignarUSModal
+                      <AsignarUsASprintModal
                         projectId={projectId}
                         US={focusedUS}
-                        rolUsuario={"SM"}
                         isOpen={showAsignarModal}
+                        dispatchError={dispatchError}
                         onClose={() => {
                           setShowAsignarModal(false);
 
@@ -197,7 +201,7 @@ const USList = ({
                     )}
                     <Modal
                       initialFocusRef={initialRef}
-                      isOpen={isOpenModalAssign}
+                      isOpen={isOpenModal}
                       onClose={onCloseModalAssign}
                     >
                       <ModalOverlay />

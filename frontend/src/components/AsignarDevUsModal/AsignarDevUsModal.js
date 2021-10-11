@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState, setValue } from "react";
+import { useRef, useEffect, useState } from "react";
 import {
   FormControl,
   FormLabel,
@@ -7,7 +7,6 @@ import {
   Box,
   Flex,
   Center,
-  Select,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -18,6 +17,7 @@ import {
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { api } from "../../api";
+import Select from "react-select";
 const Editar = ({
   projectId,
   US,
@@ -30,29 +30,29 @@ const Editar = ({
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    api
-      .getUsers()
+    api.projects
+      .getProjectMembers(projectId)
       .then(({ data }) => {
-        if (!Array.isArray(data)) return;
         setUsers(data);
       })
       .catch((err) =>
-        dispatchError(null, "error cargando usuarios del sistema")
+        dispatchError(null, "error cargando usuarios del proyecto")
       );
-  }, [dispatchError]);
+  }, [projectId, isOpen]);
 
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
+    setValue,
   } = useForm();
 
   const onSubmit = (data) => {
+    console.log(data);
     api.userStories.asignarUsAUsuario({
       projectId,
       usId: US.id,
-      sprintId,
-      userId: data.id,
+      userId: data.developer,
     });
 
     onClose();

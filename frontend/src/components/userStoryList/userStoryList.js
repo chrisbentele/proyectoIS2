@@ -31,16 +31,19 @@ import {
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { api } from "../../api";
 import Select from "react-select";
-
+import AsignarDevUsModal from "../../components/AsignarDevUsModal/AsignarDevUsModal";
 const USList = ({
   projectId,
+  sprintId,
   setUserStories,
   userStories,
   nombreLista,
   children,
+  dispatchError,
   ...props
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [showAsignarModal, setShowAsignarModal] = useState(false);
   const onClose = () => setIsOpen(false);
   const onDelete = (id) => {
     console.log(id);
@@ -110,7 +113,9 @@ const USList = ({
         }
       })
       .catch((err) => console.log(err));
-    api.getUserStories(projectId).then(({ data }) => setUserStories(data));
+    await api.userStories
+      .getUserStoriesSprint(projectId, sprintId)
+      .then(({ data }) => setUserStories(data));
     setIsOpenModal(false);
   }
 
@@ -130,10 +135,6 @@ const USList = ({
       </Flex>
       {userStories
         ? userStories.map((us) => {
-            console.log("hola");
-            console.log(us.id);
-            console.log(us.estado);
-            console.log(us.estado === 0);
             return (
               <Box
                 borderRadius="8"
@@ -142,6 +143,7 @@ const USList = ({
                 key={us.id}
                 bg="white"
                 boxShadow="md"
+                key={us.id}
               >
                 <Text fontSize="20px" fontWeight="semibold">
                   {us.nombre}
@@ -181,6 +183,32 @@ const USList = ({
                   >
                     <EditIcon color="black.500" />
                   </Button>
+
+                  <Button
+                    onClick={() => {
+                      setFocusedUS(us);
+                      setShowAsignarModal(true);
+                    }}
+                    mt="2"
+                  >
+                    Asignar
+                  </Button>
+                  {focusedUS && (
+                    <AsignarDevUsModal
+                      projectId={projectId}
+                      US={focusedUS}
+                      sprintId={sprintId}
+                      isOpen={showAsignarModal}
+                      dispatchError={dispatchError}
+                      onClose={() => {
+                        setShowAsignarModal(false);
+
+                        api
+                          .getUserStories(projectId)
+                          .then(({ data }) => setUserStories(data));
+                      }}
+                    />
+                  )}
 
                   <Modal
                     initialFocusRef={initialRef}

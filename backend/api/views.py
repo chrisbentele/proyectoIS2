@@ -12,6 +12,7 @@ from .serializers import (
 from api.models import US, Proyecto, Rol, RolAsignado, Sprint, USAsignada, Usuario
 from django.http.response import (
     HttpResponseBadRequest,
+    HttpResponseForbidden,
     HttpResponseNotFound,
     HttpResponseNotModified,
     JsonResponse,
@@ -343,7 +344,11 @@ def roles(request, proyect_id, rol_id=None):
     elif request.method == "PUT":
         if rol_id:
             # Editar un Rol
-            if rol_id == proyect_id:
+            try:
+                rol = Rol.objects.get(id=rol_id)
+            except Rol.DoesNotExist:
+                return HttpResponseNotFound()
+            if rol.nombre == "Scrum Master" or rol.nombre == "Developer":
                 return JsonResponse(
                     "No se puede editar el Rol de Scrum Master", safe=False, status=400
                 )
@@ -377,7 +382,11 @@ def roles(request, proyect_id, rol_id=None):
         # En caso de DELETE elimina el rol  del proyecto
 
         if rol_id:
-            if rol_id == proyect_id:
+            try:
+                rol = Rol.objects.get(id=rol_id)
+            except Rol.DoesNotExist:
+                return HttpResponseNotFound()
+            if rol.nombre == "Scrum Master" or rol.nombre == "Developer":
                 return JsonResponse(
                     "No se puede eliminar el Rol", safe=False, status=400
                 )
@@ -523,6 +532,55 @@ def user_stories(request, proyect_id, us_id=None):
         return HttpResponseBadRequest("Falta us_id")
 
 
+def user_stories_estimar(request, proyect_id, us_id):
+    """Estimaciones de tiempo hechas por el scrum master o el dev
+
+    Detecta automaticamente si es un scrum master o un developer
+    """
+    try:
+        proyecto = Proyecto.objects.get(id=proyect_id)
+    except Proyecto.DoesNotExist:
+        return HttpResponseNotFound()
+
+    try:
+        us = US.objects.get(id=us_id)
+    except US.DoesNotExist:
+        return HttpResponseNotFound()
+
+    if request.method == "POST":
+        data = JSONParser().parse(request)
+
+        rol_asign = RolAsignado.objects.filter(
+            usuario=data["user_id"], proyecto=proyect_id
+        )
+
+        rol_asign = (
+            RolAsignadoSerializer(rol_asign[0]).data if len(rol_asign) > 0 else None
+        )
+
+        if not rol_asign:
+            return HttpResponseForbidden("No tiene permisos")
+
+        rol_user = Rol.objects.get(id=rol_asign["rol"])
+
+        rol_user = RolSerializer(rol_user).data
+
+        if rol_user["id"] == proyect_id:
+
+            serializer = USSerializer(
+                us, data={"estimacionSM": data["estimacion"]}, partial=True
+            )
+        else:
+            serializer = USSerializer(
+                us, data={"estimacionesDev": data["estimacion"]}, partial=True
+            )
+
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=200)
+        return JsonResponse(serializer.errors, status=400, safe=False)
+
+
 def sprints(request, proyect_id, sprint_id=None):
     """Metodos p/ admin de sprints de proyecto"""
 
@@ -601,7 +659,7 @@ def sprints_user_stories(request, proyect_id, sprint_id, us_id=None):
 
         try:
             us = US.objects.get(id=us_id)
-            serializer = USSerializer(us, sprint=sprint_id, partial=True)
+            serializer = USSerializer(us, data={"sprint": sprint_id}, partial=True)
             if serializer.is_valid():
                 serializer.save()
                 return JsonResponse(serializer.data, status=200)
@@ -617,7 +675,7 @@ def sprints_user_stories(request, proyect_id, sprint_id, us_id=None):
 
         try:
             us = US.objects.get(id=us_id)
-            serializer = USSerializer(us, sprint=None, partial=True)
+            serializer = USSerializer(us, data={"sprint": None}, partial=True)
 
             if serializer.is_valid():
                 serializer.save()
@@ -678,7 +736,7 @@ def sprints_desactivar(request, proyect_id, sprint_id):
     return HttpResponseBadRequest("Falta sprint_id")
 
 
-def user_stories_asignar(request, proyect_id, us_id, user_id):
+def user_stories_asignar(request, proyect_id, us_id, user_id=None):
     """Metodos p/ asignar un miembro a una US del proyecto"""
 
     if request.method == "POST":
@@ -713,3 +771,26 @@ def user_stories_asignar(request, proyect_id, us_id, user_id):
             return JsonResponse(True, status=204, safe=False)
         except:
             return JsonResponse(False, status=400, safe=False)
+
+
+def usuarios_admin(request, user_id):
+
+    if request.method == "POST":
+
+        rol = Usuario.objects.get(id=user_id)
+
+        serializer = UsuarioSerializer(rol, data={"proy_admin": True}, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=200)
+        return JsonResponse(serializer.errors, status=400, safe=False)
+    elif request.method == "DELETE":
+        rol = Usuario.objects.get(id=user_id)
+
+        serializer = UsuarioSerializer(rol, data={"proy_admin": False}, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=200)
+        return JsonResponse(serializer.errors, status=400, safe=False)

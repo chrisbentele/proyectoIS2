@@ -33,7 +33,7 @@ import { MdBuild } from "react-icons/md";
  * @param { props } param0
  * @returns React Component
  */
-export default function Index({ props }) {
+export default function Index({ dispatchError, props }) {
   const projectId = props.computedMatch.params.id; //id del proyecto, se extrae del URL
   const [project, setProject] = useState(); //estado del proyecto
   const [userStories, setUserStories] = useState([]); //estado del proyecto
@@ -49,8 +49,8 @@ export default function Index({ props }) {
       .then((res) => setProject(res.data))
       .catch((err) => console.log(err));
 
-    api
-      .getUserStories(projectId)
+    api.userStories
+      .getUserStoriesSprint(projectId)
       .then((US) => setUserStories(US.data))
       .catch((err) => console.log(err));
     api.sprints.getSprints(projectId).then(({ data }) => setSprints(data));
@@ -123,6 +123,7 @@ export default function Index({ props }) {
                   projectId={projectId}
                   setUserStories={setUserStories}
                   nombreLista="Backlog"
+                  dispatchError={dispatchError}
                   userStories={userStories?.filter((us) => us.estado === 4)}
                 >
                   <Flex justify="center">
