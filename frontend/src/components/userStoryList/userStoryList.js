@@ -43,7 +43,7 @@ import { getUsers } from "../../api/users";
 import { desasignarUsASprint } from "../../api/userStories";
 const USList = ({
   projectId,
-  sprintId,
+  sprint,
   setUserStories,
   userStories,
   nombreLista,
@@ -61,7 +61,7 @@ const USList = ({
   };
   const onRemove = (id) => {
     console.log(id);
-    desasignarUsASprint({ projectId, sprintId, usId: id });
+    desasignarUsASprint({ projectId, sprintId: sprint.id, usId: id });
     setIsOpen(false);
   };
   const cancelRef = React.useRef();
@@ -79,7 +79,7 @@ const USList = ({
   const moverUS = async (estado, usId) => {
     await api.editUS({ projectId, estado, usId });
     api
-      .getUserStories(projectId, sprintId)
+      .getUserStories(projectId, sprint.id)
       .then(({ data }) => setUserStories(data));
   };
 
@@ -91,7 +91,7 @@ const USList = ({
   const eliminarUS = async (id) => {
     await api.eliminarUS(projectId, id);
     api
-      .getUserStories(projectId, sprintId)
+      .getUserStories(projectId, sprint.id)
       .then(({ data }) => setUserStories(data));
   };
 
@@ -136,7 +136,7 @@ const USList = ({
       })
       .catch((err) => console.log(err));
     await api.userStories
-      .getUserStories(projectId, sprintId)
+      .getUserStories(projectId, sprint.id)
       .then(({ data }) => setUserStories(data));
     setIsOpenModal(false);
   }
@@ -185,6 +185,7 @@ const USList = ({
                       onChange={(e) => {
                         moverUS(e.value, us.id);
                       }}
+                      isDisabled={!sprint?.activo}
                       options={[
                         {
                           value: "0",
