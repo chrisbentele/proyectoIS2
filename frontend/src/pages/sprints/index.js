@@ -59,7 +59,7 @@ export default function Index({ props, dispatchError }) {
       .then(({ data }) => {
         setSprint(data);
         console.log(data);
-        if (data.sumaHorasAsignadas) {
+        if (data.activable) {
           setHayUs(true);
         }
       })
@@ -73,7 +73,7 @@ export default function Index({ props, dispatchError }) {
 
   const activateSprint = () => {
     if (!hayUs) return dispatchError("No se puedo activar el sprint", "");
-    sprint.api.sprints.activarSprint(projectId, sprintId);
+    api.sprints.activarSprint(projectId, sprintId);
     api.sprints.getSprint(projectId).then(({ data }) => setSprint(data)); //actualizar que se elimino
   };
 
