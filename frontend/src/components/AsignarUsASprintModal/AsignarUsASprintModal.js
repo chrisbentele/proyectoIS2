@@ -41,14 +41,25 @@ const Editar = ({ projectId, US, isOpen, onClose, dispatchError }) => {
   } = useForm();
 
   const onSubmit = (data) => {
-    api.userStories
-      .asignarUsASprint({
-        projectId,
-        usId: US.id,
-        sprintId: data.sprintId,
-      })
-      .catch((err) => dispatchError(null, "error asignando us a sprint"));
-
+    if (US.asignado && US.estimacionSM && US.estimacionesDev) {
+      api.userStories
+        .asignarUsASprint({
+          projectId,
+          usId: US.id,
+          sprintId: data.sprintId,
+        })
+        .catch((err) => dispatchError(null, "error asignando us a sprint"));
+    } else if (!US.asignado) {
+      return dispatchError(
+        "No se pudo asignar la US al sprint",
+        "Debe asignar a un desarrollador antes"
+      );
+    } else if (US.asignado && (!US.estimacionSM || US.estimacionesDev)) {
+      return dispatchError(
+        "No se pudo asignar la US al sprint",
+        "Deben estimar ambos desarrolladores antes"
+      );
+    } else return dispatchError();
     onClose();
   };
 

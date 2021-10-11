@@ -18,6 +18,7 @@ import USList from "../../components/userStoryList/userStoryList";
 import { mapStateColor } from "../../styles/theme";
 import { MdBuild } from "react-icons/md";
 import { useHistory } from "react-router-dom";
+import { BsFillPlayFill } from "react-icons/bs";
 
 import { tienePermiso } from "../../util";
 import { PERMISOS_MACRO } from "../roles/permisos";
@@ -35,6 +36,7 @@ export default function Index({ props, dispatchError }) {
   const [userStories, setUserStories] = useState([]); //estado del proyecto
   const [sprint, setSprint] = useState();
   const [isOpenEditSp, setIsOpenEditSp] = useState(false);
+  const [hayUs, setHayUs] = useState(false);
 
   const history = useHistory();
 
@@ -54,7 +56,13 @@ export default function Index({ props, dispatchError }) {
 
     api.sprints
       .getSprint(projectId, sprintId)
-      .then(({ data }) => setSprint(data))
+      .then(({ data }) => {
+        setSprint(data);
+        console.log(data);
+        if (data.activable) {
+          setHayUs(true);
+        }
+      })
       .catch((err) => console.log(err));
 
     api
@@ -63,6 +71,13 @@ export default function Index({ props, dispatchError }) {
       .catch((err) => console.log(err));
   }, [projectId, sprintId]);
 
+  const activateSprint = () => {
+    if (!hayUs) return dispatchError("No se puedo activar el sprint", "");
+    api.sprints.activarSprint(projectId, sprintId);
+    api.sprints.getSprint(projectId).then(({ data }) => setSprint(data)); //actualizar que se elimino
+  };
+
+  console.log(sprint);
   return (
     <Box
       minHeight="100vh"
@@ -96,7 +111,10 @@ export default function Index({ props, dispatchError }) {
 
               <Box fontWeight="thin">|</Box>
 
-              {tienePermiso(thisMember, PERMISOS_MACRO.EDITAR_MIEMBROS_A_PROYECTO) ?
+              {tienePermiso(
+                thisMember,
+                PERMISOS_MACRO.EDITAR_MIEMBROS_A_PROYECTO
+              ) ? (
                 <Button
                   colorScheme="yellow"
                   variant="solid"
@@ -105,10 +123,11 @@ export default function Index({ props, dispatchError }) {
                 >
                   Miembros
                 </Button>
-                :
-                null
-              }
-              {tienePermiso(thisMember, PERMISOS_MACRO.EDITAR_ROL_DEL_USUARIO) ?
+              ) : null}
+              {tienePermiso(
+                thisMember,
+                PERMISOS_MACRO.EDITAR_ROL_DEL_USUARIO
+              ) ? (
                 <Button
                   colorScheme="yellow"
                   variant="solid"
@@ -117,10 +136,8 @@ export default function Index({ props, dispatchError }) {
                 >
                   Configurar Roles
                 </Button>
-                :
-                null
-              }
-              {tienePermiso(thisMember, PERMISOS_MACRO.MODIFICAR_SPRINT) ?
+              ) : null}
+              {tienePermiso(thisMember, PERMISOS_MACRO.MODIFICAR_SPRINT) ? (
                 <Button
                   leftIcon={<MdBuild />}
                   colorScheme="yellow"
@@ -130,9 +147,20 @@ export default function Index({ props, dispatchError }) {
                 >
                   Configurar Sprint
                 </Button>
-                :
-                null
-              }
+              ) : null}
+              {tienePermiso(thisMember, PERMISOS_MACRO.MODIFICAR_SPRINT) ? (
+                <Button
+                  leftIcon={<BsFillPlayFill />}
+                  colorScheme="yellow"
+                  variant="solid"
+                  // opacity="30%"
+                  onClick={() => {
+                    activateSprint();
+                  }}
+                >
+                  Activar Sprint
+                </Button>
+              ) : null}
             </HStack>
           </Box>
           <Box mt="50px">
@@ -147,12 +175,12 @@ export default function Index({ props, dispatchError }) {
                   //Es un array?
                   Array.isArray(userStories)
                     ? //Si es un array, qué elementos pertenecen a esta lista?
-                    userStories?.filter((us) => us.estado === 0)
+                      userStories?.filter((us) => us.estado === 0)
                     : //Si es un solo elemento, pertenece a esta lista?
                     userStories?.estado === 0
-                      ? //Si pertenece retorno
+                    ? //Si pertenece retorno
                       userStories
-                      : //Si no pertenece, null
+                    : //Si no pertenece, null
                       null
                 }
               ></USList>
@@ -166,12 +194,12 @@ export default function Index({ props, dispatchError }) {
                   //Es un array?
                   Array.isArray(userStories)
                     ? //Si es un array, qué elementos pertenecen a esta lista?
-                    userStories?.filter((us) => us.estado === 1)
+                      userStories?.filter((us) => us.estado === 1)
                     : //Si es un solo elemento, pertenece a esta lista?
                     userStories?.estado === 1
-                      ? //Si pertenece retorno
+                    ? //Si pertenece retorno
                       userStories
-                      : //Si no pertenece, null
+                    : //Si no pertenece, null
                       null
                 }
               ></USList>
@@ -185,12 +213,12 @@ export default function Index({ props, dispatchError }) {
                   //Es un array?
                   Array.isArray(userStories)
                     ? //Si es un array, qué elementos pertenecen a esta lista?
-                    userStories?.filter((us) => us.estado === 2)
+                      userStories?.filter((us) => us.estado === 2)
                     : //Si es un solo elemento, pertenece a esta lista?
                     userStories?.estado === 2
-                      ? //Si pertenece retorno
+                    ? //Si pertenece retorno
                       userStories
-                      : //Si no pertenece, null
+                    : //Si no pertenece, null
                       null
                 }
               ></USList>
