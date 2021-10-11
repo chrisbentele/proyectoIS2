@@ -58,10 +58,6 @@ export default function Index({ props, dispatchError }) {
       .getSprint(projectId, sprintId)
       .then(({ data }) => {
         setSprint(data);
-        console.log(data);
-        if (data.activable) {
-          setHayUs(true);
-        }
       })
       .catch((err) => console.log(err));
 
@@ -72,8 +68,9 @@ export default function Index({ props, dispatchError }) {
   }, [projectId, sprintId]);
 
   const activateSprint = () => {
-    if (!hayUs) return dispatchError("No se puedo activar el sprint", "");
-    api.sprints.activarSprint(projectId, sprintId);
+    if (!sprint.activable)
+      return dispatchError("No se puedo activar el sprint", "");
+    api.sprints.activarSprint({ projectId, spId: sprintId });
     api.sprints.getSprint(projectId).then(({ data }) => setSprint(data)); //actualizar que se elimino
   };
 
@@ -154,6 +151,7 @@ export default function Index({ props, dispatchError }) {
                   colorScheme="yellow"
                   variant="solid"
                   // opacity="30%"
+                  disabled={!sprint.activable}
                   onClick={() => {
                     activateSprint();
                   }}
