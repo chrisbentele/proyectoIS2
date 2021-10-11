@@ -237,17 +237,19 @@ const USListUnset = ({
                             }}
                           />
                         )}
-                        <Button
-                          onClick={() => {
-                            setFocusedUS(us);
-                            setShowAsignarModal(true);
-                          }}
-                          mt="2"
-                          ml="1"
-                        >
-                          Sprint{/* <GiSprint /> */}
-                        </Button>
                       </>
+                    ) : null}
+                    {isScrumMaster ? (
+                      <Button
+                        onClick={() => {
+                          setFocusedUS(us);
+                          setShowAsignarModal(true);
+                        }}
+                        mt="2"
+                        ml="1"
+                      >
+                        Sprint{/* <GiSprint /> */}
+                      </Button>
                     ) : null}
                     {focusedUS && (
                       <AsignarUSModal

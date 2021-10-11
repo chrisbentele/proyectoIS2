@@ -18,6 +18,7 @@ import USList from "../../components/userStoryList/userStoryList";
 import { mapStateColor } from "../../styles/theme";
 import { MdBuild } from "react-icons/md";
 import { useHistory } from "react-router-dom";
+import { BsFillPlayFill } from "react-icons/bs";
 
 /**
  * Función que contiene el código de la vista
@@ -107,7 +108,16 @@ export default function Index({ props, dispatchError }) {
                 // opacity="30%"
                 onClick={() => setIsOpenEditSp(true)}
               >
-                Configurar Sprint
+                Editar Sprint
+              </Button>
+              <Button
+                leftIcon={<BsFillPlayFill />}
+                colorScheme="yellow"
+                variant="solid"
+                // opacity="30%"
+                onClick={() => setIsOpenEditSp(true)}
+              >
+                Activar Sprint
               </Button>
             </HStack>
           </Box>
