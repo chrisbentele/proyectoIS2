@@ -1,4 +1,10 @@
+/**
+ * @file AsignarUsASprintModal.js.js
+ * @brief Modal cuando se asigna un US a un sprint
+ */
+
 import { useRef, useEffect, useState } from "react";
+import { useHistory } from "react-router";
 import {
   FormControl,
   FormLabel,
@@ -40,15 +46,28 @@ const Editar = ({ projectId, US, isOpen, onClose, dispatchError }) => {
     setValue,
   } = useForm();
 
-  const onSubmit = (data) => {
-    api.userStories
-      .asignarUsASprint({
-        projectId,
-        usId: US.id,
-        sprintId: data.sprintId,
-      })
-      .catch((err) => dispatchError(null, "error asignando us a sprint"));
-
+  const history = useHistory()
+  const onSubmit = async (data) => {
+    if (US.asignado && US.estimacionSM && US.estimacionesDev) {
+      await api.userStories
+        .asignarUsASprint({
+          projectId,
+          usId: US.id,
+          sprintId: data.sprintId,
+        })
+        .catch((err) => dispatchError(null, "error asignando us a sprint"));
+        history.go(0)
+    } else if (!US.asignado) {
+      return dispatchError(
+        "No se pudo asignar la US al sprint",
+        "Debe asignar a un desarrollador antes"
+      );
+    } else if (US.asignado && (!US.estimacionSM || US.estimacionesDev)) {
+      return dispatchError(
+        "No se pudo asignar la US al sprint",
+        "Deben estimar ambos desarrolladores antes"
+      );
+    } else return dispatchError();
     onClose();
   };
 

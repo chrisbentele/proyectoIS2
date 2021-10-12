@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['index_2ejs_273',['index.js',['../api_2index_8js.html',1,'(Global Namespace)'],['../components_2addIcon_2index_8js.html',1,'(Global Namespace)'],['../components_2privateRoute_2index_8js.html',1,'(Global Namespace)'],['../index_8js.html',1,'(Global Namespace)'],['../pages_2createProject_2index_8js.html',1,'(Global Namespace)'],['../pages_2createUS_2index_8js.html',1,'(Global Namespace)'],['../pages_2editRole_2index_8js.html',1,'(Global Namespace)'],['../pages_2login_2index_8js.html',1,'(Global Namespace)'],['../pages_2notFound_2index_8js.html',1,'(Global Namespace)'],['../pages_2project_2index_8js.html',1,'(Global Namespace)'],['../pages_2projectConfig_2index_8js.html',1,'(Global Namespace)'],['../pages_2projectMembers_2index_8js.html',1,'(Global Namespace)'],['../pages_2projects_2index_8js.html',1,'(Global Namespace)'],['../pages_2roles_2index_8js.html',1,'(Global Namespace)'],['../pages_2user_2index_8js.html',1,'(Global Namespace)'],['../pages_2users_2index_8js.html',1,'(Global Namespace)'],['../util_2index_8js.html',1,'(Global Namespace)']]],
-  ['indexcopy_2ejs_274',['indexcopy.js',['../indexcopy_8js.html',1,'']]]
+  ['editarsprintmodal_2ejs_385',['EditarSprintModal.js',['../EditarSprintModal_8js.html',1,'']]],
+  ['eliminarsprintmodal_2ejs_386',['EliminarSprintModal.js',['../EliminarSprintModal_8js.html',1,'']]],
+  ['estimarusmodal_2ejs_387',['EstimarUsModal.js',['../EstimarUsModal_8js.html',1,'']]]
 ];

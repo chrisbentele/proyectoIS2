@@ -1,3 +1,8 @@
+/**
+ * @file index.js
+ * @brief Página de sprints
+ */
+
 import React, { useEffect, useState } from "react";
 //! API del frontend.
 import { api } from "../../api";
@@ -18,10 +23,12 @@ import USList from "../../components/userStoryList/userStoryList";
 import { mapStateColor } from "../../styles/theme";
 import { MdBuild } from "react-icons/md";
 import { useHistory } from "react-router-dom";
+import { BsFillPlayFill } from "react-icons/bs";
 
 import { tienePermiso } from "../../util";
 import { PERMISOS_MACRO } from "../roles/permisos";
 import { useAuth0 } from "@auth0/auth0-react";
+import { desactivarSprint } from "../../api/sprints";
 
 /**
  * Función que contiene el código de la vista
@@ -35,6 +42,7 @@ export default function Index({ props, dispatchError }) {
   const [userStories, setUserStories] = useState([]); //estado del proyecto
   const [sprint, setSprint] = useState();
   const [isOpenEditSp, setIsOpenEditSp] = useState(false);
+  const [hayUs, setHayUs] = useState(false);
 
   const history = useHistory();
 
@@ -54,7 +62,9 @@ export default function Index({ props, dispatchError }) {
 
     api.sprints
       .getSprint(projectId, sprintId)
-      .then(({ data }) => setSprint(data))
+      .then(({ data }) => {
+        setSprint(data);
+      })
       .catch((err) => console.log(err));
 
     api
@@ -63,6 +73,31 @@ export default function Index({ props, dispatchError }) {
       .catch((err) => console.log(err));
   }, [projectId, sprintId]);
 
+  const activateSprint = async () => {
+    if (!sprint.activable)
+      return dispatchError("No se puedo activar el sprint", "");
+    await api.sprints.activarSprint({ projectId, spId: sprintId });
+    api.sprints
+      .getSprint(projectId, sprintId)
+      .then(({ data }) => setSprint(data));
+    api.userStories
+      .getUserStories(projectId, sprintId)
+      .then(({ data }) => setUserStories(data));
+  };
+
+  const deactivateSprint = async () => {
+    if (!sprint.activable)
+      return dispatchError("No se puedo desactivar el sprint", "");
+    await api.sprints.desactivarSprint({ projectId, spId: sprintId });
+    api.sprints
+      .getSprint(projectId, sprintId)
+      .then(({ data }) => setSprint(data));
+    api.userStories
+      .getUserStories(projectId, sprintId)
+      .then(({ data }) => setUserStories(data));
+  };
+
+  console.log(sprint);
   return (
     <Box
       minHeight="100vh"
@@ -96,7 +131,10 @@ export default function Index({ props, dispatchError }) {
 
               <Box fontWeight="thin">|</Box>
 
-              {tienePermiso(thisMember, PERMISOS_MACRO.EDITAR_MIEMBROS_A_PROYECTO) ?
+              {tienePermiso(
+                thisMember,
+                PERMISOS_MACRO.EDITAR_MIEMBROS_A_PROYECTO
+              ) ? (
                 <Button
                   colorScheme="yellow"
                   variant="solid"
@@ -105,10 +143,11 @@ export default function Index({ props, dispatchError }) {
                 >
                   Miembros
                 </Button>
-                :
-                null
-              }
-              {tienePermiso(thisMember, PERMISOS_MACRO.EDITAR_ROL_DEL_USUARIO) ?
+              ) : null}
+              {tienePermiso(
+                thisMember,
+                PERMISOS_MACRO.EDITAR_ROL_DEL_USUARIO
+              ) ? (
                 <Button
                   colorScheme="yellow"
                   variant="solid"
@@ -117,10 +156,8 @@ export default function Index({ props, dispatchError }) {
                 >
                   Configurar Roles
                 </Button>
-                :
-                null
-              }
-              {tienePermiso(thisMember, PERMISOS_MACRO.MODIFICAR_SPRINT) ?
+              ) : null}
+              {tienePermiso(thisMember, PERMISOS_MACRO.MODIFICAR_SPRINT) ? (
                 <Button
                   leftIcon={<MdBuild />}
                   colorScheme="yellow"
@@ -130,16 +167,40 @@ export default function Index({ props, dispatchError }) {
                 >
                   Configurar Sprint
                 </Button>
-                :
-                null
-              }
+              ) : null}
+              {tienePermiso(thisMember, PERMISOS_MACRO.MODIFICAR_SPRINT) &&
+              !sprint?.activo ? (
+                <Button
+                  leftIcon={<BsFillPlayFill />}
+                  colorScheme="yellow"
+                  variant="solid"
+                  // opacity="30%"
+                  disabled={!sprint?.activable}
+                  onClick={activateSprint}
+                >
+                  Activar Sprint
+                </Button>
+              ) : null}
+              {tienePermiso(thisMember, PERMISOS_MACRO.MODIFICAR_SPRINT) &&
+              sprint?.activo ? (
+                <Button
+                  leftIcon={<BsFillPlayFill />}
+                  colorScheme="yellow"
+                  variant="solid"
+                  // opacity="30%"
+                  disabled={!sprint?.activable}
+                  onClick={deactivateSprint}
+                >
+                  Desactivar Sprint
+                </Button>
+              ) : null}
             </HStack>
           </Box>
           <Box mt="50px">
             <HStack p="5" alignItems="top" float="top">
               <USList
                 projectId={projectId}
-                sprintId={sprintId}
+                sprint={sprint}
                 dispatchError={dispatchError}
                 setUserStories={setUserStories}
                 nombreLista="Pendiente"
@@ -147,18 +208,18 @@ export default function Index({ props, dispatchError }) {
                   //Es un array?
                   Array.isArray(userStories)
                     ? //Si es un array, qué elementos pertenecen a esta lista?
-                    userStories?.filter((us) => us.estado === 0)
+                      userStories?.filter((us) => us.estado === 0)
                     : //Si es un solo elemento, pertenece a esta lista?
                     userStories?.estado === 0
-                      ? //Si pertenece retorno
+                    ? //Si pertenece retorno
                       userStories
-                      : //Si no pertenece, null
+                    : //Si no pertenece, null
                       null
                 }
               ></USList>
               <USList
                 projectId={projectId}
-                sprintId={sprintId}
+                sprint={sprint}
                 dispatchError={dispatchError}
                 setUserStories={setUserStories}
                 nombreLista="En curso"
@@ -166,18 +227,18 @@ export default function Index({ props, dispatchError }) {
                   //Es un array?
                   Array.isArray(userStories)
                     ? //Si es un array, qué elementos pertenecen a esta lista?
-                    userStories?.filter((us) => us.estado === 1)
+                      userStories?.filter((us) => us.estado === 1)
                     : //Si es un solo elemento, pertenece a esta lista?
                     userStories?.estado === 1
-                      ? //Si pertenece retorno
+                    ? //Si pertenece retorno
                       userStories
-                      : //Si no pertenece, null
+                    : //Si no pertenece, null
                       null
                 }
               ></USList>
               <USList
                 projectId={projectId}
-                sprintId={sprintId}
+                sprint={sprint}
                 dispatchError={dispatchError}
                 setUserStories={setUserStories}
                 nombreLista="Hecho"
@@ -185,18 +246,18 @@ export default function Index({ props, dispatchError }) {
                   //Es un array?
                   Array.isArray(userStories)
                     ? //Si es un array, qué elementos pertenecen a esta lista?
-                    userStories?.filter((us) => us.estado === 2)
+                      userStories?.filter((us) => us.estado === 2)
                     : //Si es un solo elemento, pertenece a esta lista?
                     userStories?.estado === 2
-                      ? //Si pertenece retorno
+                    ? //Si pertenece retorno
                       userStories
-                      : //Si no pertenece, null
+                    : //Si no pertenece, null
                       null
                 }
               ></USList>
               <USList
                 projectId={projectId}
-                sprintId={sprintId}
+                sprint={sprint}
                 dispatchError={dispatchError}
                 setUserStories={setUserStories}
                 nombreLista="Backlog"

@@ -1,3 +1,8 @@
+/**
+ * @file DesasignarUsModal.js
+ * @brief Modal cuando se elimina una US del Sprint
+ */
+
 import { useRef } from "react";
 import { api } from "../../api";
 import {
