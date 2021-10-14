@@ -19,18 +19,9 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-      - name: Installing dependencies
+      - name: Making backend
         run:
-          ./install.sh
+          cd backend/ && make build
         shell:
           bash
-      - name: Starting backend
-        run:
-          ./backend.sh
-        shell:
-          bash
-      - name: Running tests
-        run:
-          yarn test a
-        shell:
-          bash
+          
