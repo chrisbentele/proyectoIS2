@@ -23,8 +23,8 @@ jobs:
         env: 
           super_secret: ${{ secrets.env }}
         run:
-          ./install.sh
-          ./backend.sh
+          ./install.sh &&
+          ./backend.sh &&
           ./frontend.sh
         shell:
           bash
