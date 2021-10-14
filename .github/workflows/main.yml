@@ -19,12 +19,18 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-      - name: Testing script
-        env: 
-          super_secret: ${{ secrets.env }}
+      - name: Installing dependencies
         run:
-          ./install.sh &&
-          ./backend.sh &&
-          ./frontend.sh
+          ./install.sh
+        shell:
+          bash
+      - name: Starting backend
+        run:
+          ./backend.sh
+        shell:
+          bash
+      - name: Running tests
+        run:
+          yarn test a
         shell:
           bash
