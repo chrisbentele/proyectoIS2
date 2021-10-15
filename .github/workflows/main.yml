@@ -35,7 +35,7 @@ jobs:
           TOKEN: '${{ secrets.env }}'
       - name: Starting backend
         run:
-          ./backend.sh > /dev/null 2>&1 && echo Hello
+          ./backend.sh > /dev/null 2>&1 & 
         shell:
           bash
         env:
