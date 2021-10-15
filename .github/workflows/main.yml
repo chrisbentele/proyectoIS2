@@ -44,7 +44,7 @@ jobs:
         working-directory:
           ./frontend
         run:
-          ls
+          yarn run test --watchAll
         shell:
           bash
         env:
