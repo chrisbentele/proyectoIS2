@@ -42,12 +42,11 @@ jobs:
           TOKEN: '${{ secrets.env }}'
       - name: Testing frontend
         env:
-          CI: true
           TOKEN: '${{ secrets.env }}'
         working-directory:
           ./frontend
         run:
-          yarn run test --watchAll
+          CI=true npm run test --watchAll
         shell:
           bash
         
