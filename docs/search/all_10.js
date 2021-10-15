@@ -1,0 +1,25 @@
+var searchData=
+[
+  ['searchusersbyname_249',['searchUsersByName',['../users_8js.html#a71962c7679f79f28909c6f125564e347',1,'users.js']]],
+  ['secret_5fkey_250',['SECRET_KEY',['../namespacecontroller_1_1settings.html#a79d6b92f627e36b19ec478e6a93fda36',1,'controller::settings']]],
+  ['select_251',['select',['../pages_2createProject_2index_8js.html#a0b60f6987441df5c2fa6a256708c1855',1,'select():&#160;index.js'],['../userStoryList_8js.html#a0b60f6987441df5c2fa6a256708c1855',1,'select():&#160;userStoryList.js'],['../AsignarUsASprintModal_8js.html#a0b60f6987441df5c2fa6a256708c1855',1,'select():&#160;AsignarUsASprintModal.js'],['../AsignarDevUsModal_8js.html#a0b60f6987441df5c2fa6a256708c1855',1,'select():&#160;AsignarDevUsModal.js']]],
+  ['serializers_2epy_252',['serializers.py',['../serializers_8py.html',1,'']]],
+  ['setadmin_253',['setAdmin',['../users_8js.html#a1193845afce138b145578bf0a17b053a',1,'users.js']]],
+  ['settings_2epy_254',['settings.py',['../settings_8py.html',1,'']]],
+  ['setuptests_2ejs_255',['setupTests.js',['../setupTests_8js.html',1,'']]],
+  ['setuserrole_256',['setUserRole',['../roles_8js.html#a9bf4531d318396ad5103e5a0c71eccdd',1,'roles.js']]],
+  ['sprint_257',['Sprint',['../classapi_1_1models_1_1Sprint.html',1,'api::models']]],
+  ['sprint_258',['sprint',['../classapi_1_1models_1_1US.html#a37ddd053488887363869390a90f1e064',1,'api::models::US']]],
+  ['sprint_5factivar_5ftests_259',['Sprint_Activar_Tests',['../classapi_1_1tests_1_1Sprint__Activar__Tests.html',1,'api::tests']]],
+  ['sprintid_260',['sprintId',['../sprints_8test_8js.html#a367abbb6441003890161243b28b17ca4',1,'sprints.test.js']]],
+  ['sprints_261',['sprints',['../api_2index_8js.html#a1f18b9442096f9df5b6410772d14b713',1,'sprints():&#160;index.js'],['../sprints_8js.html#a1f18b9442096f9df5b6410772d14b713',1,'sprints():&#160;sprints.js'],['../App_8js.html#a84028cd643b641c81b85c0e32d8e21e1',1,'sprints():&#160;App.js'],['../namespaceapi_1_1views.html#a08bee8433c942b0cfcc38a7bc73d26b5',1,'api.views.sprints()']]],
+  ['sprints_2ejs_262',['sprints.js',['../sprints_8js.html',1,'']]],
+  ['sprints_2etest_2ejs_263',['sprints.test.js',['../sprints_8test_8js.html',1,'']]],
+  ['sprints_5factivar_264',['sprints_activar',['../namespaceapi_1_1views.html#a895cb0e63883c1aa0ad89bb17f4396f2',1,'api::views']]],
+  ['sprints_5fdesactivar_265',['sprints_desactivar',['../namespaceapi_1_1views.html#a135a24268e8ecaf4c59e302d00eff986',1,'api::views']]],
+  ['sprints_5ftests_266',['Sprints_Tests',['../classapi_1_1tests_1_1Sprints__Tests.html',1,'api::tests']]],
+  ['sprints_5fuser_5fstories_267',['sprints_user_stories',['../namespaceapi_1_1views.html#aabcbc1bf2ba827d6015a2a27af1bd45f',1,'api::views']]],
+  ['sprints_5fuser_5fstories_5ftests_268',['Sprints_User_Stories_Tests',['../classapi_1_1tests_1_1Sprints__User__Stories__Tests.html',1,'api::tests']]],
+  ['sprintserializer_269',['SprintSerializer',['../classapi_1_1serializers_1_1SprintSerializer.html',1,'api::serializers']]],
+  ['static_5furl_270',['STATIC_URL',['../namespacecontroller_1_1settings.html#a8f63029324d586661904877890523544',1,'controller::settings']]]
+];
