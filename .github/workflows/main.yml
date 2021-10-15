@@ -26,6 +26,13 @@ jobs:
          # bash
         #env:
          # TOKEN: '${{ secrets.env }}'
+      - name: Starting backend
+        run:
+          ./backend.sh
+        shell:
+          bash
+        env:
+          TOKEN: '${{ secrets.env }}'
       - name: Testing frontend
         run:
           ./frontend-test.sh
