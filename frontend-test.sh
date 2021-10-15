@@ -1,2 +1,2 @@
 # Backend test script
-cd frontend/ && ls
+cd frontend/ && yarn test a
