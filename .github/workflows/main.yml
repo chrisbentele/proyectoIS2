@@ -24,4 +24,5 @@ jobs:
           cd backend/ && make build
         shell:
           bash
-          
+        env:
+          TOKEN: '${{ secrets.env }}'
