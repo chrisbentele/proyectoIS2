@@ -41,8 +41,10 @@ jobs:
         env:
           TOKEN: '${{ secrets.env }}'
       - name: Testing frontend
+        working-directory:
+          ./frontend
         run:
-          ./frontend-test.sh
+          yarn test a
         shell:
           bash
         env:
