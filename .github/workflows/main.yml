@@ -28,7 +28,7 @@ jobs:
          # TOKEN: '${{ secrets.env }}'
       - name: Starting backend
         run:
-          ./backend.sh
+          ./install.sh && ./backend.sh
         shell:
           bash
         env:
