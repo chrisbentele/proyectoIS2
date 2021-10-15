@@ -1,2 +1,3 @@
 # Frontend
-yarn test
+cd frontend/ && \
+    yarn start
