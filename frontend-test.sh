@@ -1,2 +1,2 @@
 # Backend test script
-cd frontend/ && yarn test a
+cd frontend/ && yarn run test --watchAll
