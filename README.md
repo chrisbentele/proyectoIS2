@@ -11,7 +11,7 @@ El software ha sido probado en Ubuntu 20.04
 ## Instalación
 Primeramente se deben instalar las dependencias del proyecto, para ello primeramente clone con el comando:
 
-`$ git clone https://github.com/chrisbentele/proyectoIS2.git`
+`$ git clone https://github.com/grupoCannonIS2/proyectoIS2.git`
 
 Una vez clonado el repositorio, ejecute el siguiente comando para instalar las dependencias:
 
