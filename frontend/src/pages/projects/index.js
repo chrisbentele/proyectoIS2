@@ -31,7 +31,9 @@ import { PERMISOS_MACRO } from "../roles/permisos";
 
 /**
  * Función que contiene el código de la vista
- * @param { props } param0
+ * @param {Object} obj Un objeto.
+ * @param {function} obj.dispatchError Función que despliega el mensaje de error en la página.
+ * @param {props} obj.props Propiedades del entorno.
  * @returns React Component
  */
 export default function Index({ dispatchError, props }) {

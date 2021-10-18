@@ -1,4 +1,10 @@
+## @file middlewares.py
+# @brief - No funcional
 
+## @namespace api.middlewares
+# @brief - No funcional
+
+## No es funcional
 def auth_middlewares(get_request):
     from auth0.v3.authentication.token_verifier import (
         TokenVerifier,
@@ -22,4 +28,3 @@ def auth_middlewares(get_request):
         print("ok")
 
     return auth_verify
-
