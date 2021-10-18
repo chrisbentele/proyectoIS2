@@ -1,3 +1,8 @@
+/**
+ * @file EliminarSprintModal.js
+ * @brief Modal cuando se elimina un sprint
+ */
+
 import { useRef } from "react";
 import { api } from "../../api";
 import {

@@ -2,6 +2,5 @@
 *.pyc
 /backend/controller/.env
 .vscode/
-doc/html/
 backend/.venv/*
 backend/data

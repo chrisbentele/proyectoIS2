@@ -43,7 +43,7 @@ import { getUsers } from "../../api/users";
 import { desasignarUsASprint } from "../../api/userStories";
 const USList = ({
   projectId,
-  sprintId,
+  sprint,
   setUserStories,
   userStories,
   nombreLista,
@@ -52,17 +52,21 @@ const USList = ({
   ...props
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [focusedUS, setFocusedUS] = useState();
   const [isOpenAlertSp, setIsOpenAlertSp] = useState(false);
   const onClose = () => setIsOpen(false);
   const onCloseAlertSp = () => setIsOpenAlertSp(false);
-  const onDelete = (id) => {
-    eliminarUS(id);
+  const onDelete = () => {
+    eliminarUS(focusedUS);
     setIsOpen(false);
   };
-  const onRemove = (id) => {
-    console.log(id);
-    desasignarUsASprint({ projectId, sprintId, usId: id });
-    setIsOpen(false);
+  const onRemove = () => {
+    desasignarUsASprint({
+      projectId,
+      sprintId: sprint.id,
+      usId: focusedUS?.id,
+    });
+    setIsOpenAlertSp(false);
   };
   const cancelRef = React.useRef();
 
@@ -79,7 +83,7 @@ const USList = ({
   const moverUS = async (estado, usId) => {
     await api.editUS({ projectId, estado, usId });
     api
-      .getUserStories(projectId, sprintId)
+      .getUserStories(projectId, sprint.id)
       .then(({ data }) => setUserStories(data));
   };
 
@@ -91,7 +95,7 @@ const USList = ({
   const eliminarUS = async (id) => {
     await api.eliminarUS(projectId, id);
     api
-      .getUserStories(projectId, sprintId)
+      .getUserStories(projectId, sprint.id)
       .then(({ data }) => setUserStories(data));
   };
 
@@ -110,8 +114,6 @@ const USList = ({
     register,
     formState: { errors, isSubmitting },
   } = useForm();
-
-  const [focusedUS, setFocusedUS] = useState();
 
   async function onSubmit(values) {
     //funcion que define el comportamiento al confirmar el form
@@ -136,10 +138,15 @@ const USList = ({
       })
       .catch((err) => console.log(err));
     await api.userStories
-      .getUserStories(projectId, sprintId)
+      .getUserStories(projectId, sprint.id)
       .then(({ data }) => setUserStories(data));
     setIsOpenModal(false);
   }
+
+  const onRemoverUsDeSprint = async () => {
+    await moverUS(4, focusedUS?.id);
+    await onRemove(focusedUS?.id);
+  };
 
   return (
     <Box
@@ -185,6 +192,7 @@ const USList = ({
                       onChange={(e) => {
                         moverUS(e.value, us.id);
                       }}
+                      isDisabled={!sprint?.activo}
                       options={[
                         {
                           value: "0",
@@ -294,7 +302,10 @@ const USList = ({
                         <>
                           <Button
                             mt="2"
-                            onClick={() => setIsOpenAlertSp(true)}
+                            onClick={() => {
+                              setIsOpenAlertSp(true);
+                              setFocusedUS(us);
+                            }}
                             ml="1"
                             bg=""
                             color="red.500"
@@ -337,10 +348,7 @@ const USList = ({
                                   </Button>
                                   <Button
                                     colorScheme="red"
-                                    onClick={() => {
-                                      moverUS(4, us.id);
-                                      onRemove(us.id);
-                                    }}
+                                    onClick={onRemoverUsDeSprint}
                                     ml={3}
                                   >
                                     Remover
@@ -390,7 +398,7 @@ const USList = ({
                               </Button>
                               <Button
                                 colorScheme="red"
-                                onClick={() => onDelete(us.id)}
+                                onClick={onDelete}
                                 ml={3}
                               >
                                 Eliminar

@@ -1,3 +1,8 @@
+/**
+ * @file index.js
+ * @brief Página de sprints
+ */
+
 import React, { useEffect, useState } from "react";
 //! API del frontend.
 import { api } from "../../api";
@@ -23,6 +28,7 @@ import { BsFillPlayFill } from "react-icons/bs";
 import { tienePermiso } from "../../util";
 import { PERMISOS_MACRO } from "../roles/permisos";
 import { useAuth0 } from "@auth0/auth0-react";
+import { desactivarSprint } from "../../api/sprints";
 
 /**
  * Función que contiene el código de la vista
@@ -58,10 +64,6 @@ export default function Index({ props, dispatchError }) {
       .getSprint(projectId, sprintId)
       .then(({ data }) => {
         setSprint(data);
-        console.log(data);
-        if (data.sumaHorasAsignadas) {
-          setHayUs(true);
-        }
       })
       .catch((err) => console.log(err));
 
@@ -71,10 +73,28 @@ export default function Index({ props, dispatchError }) {
       .catch((err) => console.log(err));
   }, [projectId, sprintId]);
 
-  const activateSprint = () => {
-    if (!hayUs) return dispatchError("No se puedo activar el sprint", "");
-    sprint.api.sprints.activarSprint(projectId, sprintId);
-    api.sprints.getSprint(projectId).then(({ data }) => setSprint(data)); //actualizar que se elimino
+  const activateSprint = async () => {
+    if (!sprint.activable)
+      return dispatchError("No se puedo activar el sprint", "");
+    await api.sprints.activarSprint({ projectId, spId: sprintId });
+    api.sprints
+      .getSprint(projectId, sprintId)
+      .then(({ data }) => setSprint(data));
+    api.userStories
+      .getUserStories(projectId, sprintId)
+      .then(({ data }) => setUserStories(data));
+  };
+
+  const deactivateSprint = async () => {
+    if (!sprint.activable)
+      return dispatchError("No se puedo desactivar el sprint", "");
+    await api.sprints.desactivarSprint({ projectId, spId: sprintId });
+    api.sprints
+      .getSprint(projectId, sprintId)
+      .then(({ data }) => setSprint(data));
+    api.userStories
+      .getUserStories(projectId, sprintId)
+      .then(({ data }) => setUserStories(data));
   };
 
   console.log(sprint);
@@ -148,17 +168,30 @@ export default function Index({ props, dispatchError }) {
                   Configurar Sprint
                 </Button>
               ) : null}
-              {tienePermiso(thisMember, PERMISOS_MACRO.MODIFICAR_SPRINT) ? (
+              {tienePermiso(thisMember, PERMISOS_MACRO.MODIFICAR_SPRINT) &&
+              !sprint?.activo ? (
                 <Button
                   leftIcon={<BsFillPlayFill />}
                   colorScheme="yellow"
                   variant="solid"
                   // opacity="30%"
-                  onClick={() => {
-                    activateSprint();
-                  }}
+                  disabled={!sprint?.activable}
+                  onClick={activateSprint}
                 >
                   Activar Sprint
+                </Button>
+              ) : null}
+              {tienePermiso(thisMember, PERMISOS_MACRO.MODIFICAR_SPRINT) &&
+              sprint?.activo ? (
+                <Button
+                  leftIcon={<BsFillPlayFill />}
+                  colorScheme="yellow"
+                  variant="solid"
+                  // opacity="30%"
+                  disabled={!sprint?.activable}
+                  onClick={deactivateSprint}
+                >
+                  Desactivar Sprint
                 </Button>
               ) : null}
             </HStack>
@@ -167,7 +200,7 @@ export default function Index({ props, dispatchError }) {
             <HStack p="5" alignItems="top" float="top">
               <USList
                 projectId={projectId}
-                sprintId={sprintId}
+                sprint={sprint}
                 dispatchError={dispatchError}
                 setUserStories={setUserStories}
                 nombreLista="Pendiente"
@@ -186,7 +219,7 @@ export default function Index({ props, dispatchError }) {
               ></USList>
               <USList
                 projectId={projectId}
-                sprintId={sprintId}
+                sprint={sprint}
                 dispatchError={dispatchError}
                 setUserStories={setUserStories}
                 nombreLista="En curso"
@@ -205,7 +238,7 @@ export default function Index({ props, dispatchError }) {
               ></USList>
               <USList
                 projectId={projectId}
-                sprintId={sprintId}
+                sprint={sprint}
                 dispatchError={dispatchError}
                 setUserStories={setUserStories}
                 nombreLista="Hecho"
@@ -224,7 +257,7 @@ export default function Index({ props, dispatchError }) {
               ></USList>
               <USList
                 projectId={projectId}
-                sprintId={sprintId}
+                sprint={sprint}
                 dispatchError={dispatchError}
                 setUserStories={setUserStories}
                 nombreLista="Backlog"

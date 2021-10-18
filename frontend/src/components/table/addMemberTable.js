@@ -1,5 +1,10 @@
-import React, { useState } from 'react';
-import { useTable } from 'react-table'
+/**
+ * @file addMemberTable.js
+ * @brief Tabla para agregar miembros
+ */
+
+import React, { useState } from "react";
+import { useTable } from "react-table";
 //! API del frontend.
 import { api } from "../../api";
 import {
@@ -17,32 +22,30 @@ import {
   AlertDialogHeader,
   AlertDialogContent,
   AlertDialogOverlay,
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 
 export default function AddMemberTable(props) {
-
   const users = props.users;
   const setUsers = props.setUsers;
   const state = props.state;
   const projectId = props.projectId;
   const setMembers = props.setMembers;
 
-  const [isOpen, setIsOpen] = useState()
-  const onClose = () => setIsOpen(false)
-  const cancelRef = React.useRef()
-
-
+  const [isOpen, setIsOpen] = useState();
+  const [focusedMember, setFocusedMember] = useState();
+  const onClose = () => setIsOpen(false);
+  const cancelRef = React.useRef();
 
   const data = React.useMemo(() => {
-    const onAdd = (memberId) => {
+    const onAdd = async () => {
+      await addMemberById(focusedMember?.id);
       setIsOpen(false);
-      addMemberById(memberId);
-    }
+    };
 
-    /** 
-   * funcion que se encarga de agregar un usuario al proyecto mediante la tabla
-   */
+    /**
+     * funcion que se encarga de agregar un usuario al proyecto mediante la tabla
+     */
     const addMemberById = (userId) => {
       api.addMemberToProject(projectId, userId).then((res) => {
         api.getUsers().then(({ data: usersRes }) => {
@@ -54,57 +57,58 @@ export default function AddMemberTable(props) {
             setUsers([...filteredUsers]);
             setMembers(membersRes);
           });
-        }
-        )
-      }
+        });
+      });
+    }; //solicita la confirmacion al usuario
+
+    return users
+      .filter((user) =>
+        user.nombre.toLowerCase().includes(state.searchTerm.toLowerCase())
       )
-    };//solicita la confirmacion al usuario
+      .map((user) => {
+        return {
+          nombre: user.nombre,
+          add: (
+            <>
+              <Button
+                onClick={() => {
+                  setIsOpen(true);
+                  setFocusedMember(user);
+                }}
+              >
+                <AddIcon />
+              </Button>
+              <AlertDialog
+                isOpen={isOpen}
+                leastDestructiveRef={cancelRef}
+                onClose={onClose}
+              >
+                <AlertDialogOverlay>
+                  <AlertDialogContent>
+                    <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                      Agregar miembro
+                    </AlertDialogHeader>
 
-    return (
-      users
-        .filter((user) =>
-          user.nombre.toLowerCase().includes(state.searchTerm.toLowerCase())
-        )
-        .map((user) => {
-          return {
-            nombre: user.nombre,
-            add:
-              <>
-                <Button onClick={() => setIsOpen(true)} >
-                  <AddIcon />
-                </Button>
-                <AlertDialog
-                  isOpen={isOpen}
-                  leastDestructiveRef={cancelRef}
-                  onClose={onClose}
-                >
-                  <AlertDialogOverlay>
-                    <AlertDialogContent>
-                      <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                        Agregar miembro
-                      </AlertDialogHeader>
+                    <AlertDialogBody>
+                      ¿Está seguro que desea agregar a este miembro?
+                    </AlertDialogBody>
 
-                      <AlertDialogBody>
-                        ¿Está seguro que desea agregar a este miembro?
-                      </AlertDialogBody>
-
-                      <AlertDialogFooter>
-                        <Button ref={cancelRef} onClick={onClose}>
-                          Cancelar
-                        </Button>
-                        <Button colorScheme="green" onClick={() => onAdd(user.id)} ml={3}>
-                          Agregar
-                        </Button>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialogOverlay>
-                </AlertDialog>
-              </>,
-          };
-        })
-    )
+                    <AlertDialogFooter>
+                      <Button ref={cancelRef} onClick={onClose}>
+                        Cancelar
+                      </Button>
+                      <Button colorScheme="green" onClick={onAdd} ml={3}>
+                        Agregar
+                      </Button>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialogOverlay>
+              </AlertDialog>
+            </>
+          ),
+        };
+      });
   }, [state.searchTerm, users, isOpen, projectId, setMembers, setUsers]);
-
 
   const columns = React.useMemo(
     () => [
@@ -116,57 +120,41 @@ export default function AddMemberTable(props) {
         Header: "Agregar",
         accessor: "add",
       },
-    ]
-    , []);
+    ],
+    []
+  );
 
   const tablaAdd = useTable({ columns, data });
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = tablaAdd;
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    tablaAdd;
 
   return (
     <Box borderWidth="2px" borderRadius="lg">
-      <Table
-        {...getTableProps()}
-        variant="simple"
-      >
+      <Table {...getTableProps()} variant="simple">
         <Thead>
-          {headerGroups.map(headerGroup => (
+          {headerGroups.map((headerGroup) => (
             <Tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => (
-                <Th
-                  {...column.getHeaderProps()}
-                >
-                  {column.render('Header')}
-                </Th>
+              {headerGroup.headers.map((column) => (
+                <Th {...column.getHeaderProps()}>{column.render("Header")}</Th>
               ))}
             </Tr>
           ))}
         </Thead>
         <Tbody {...getTableBodyProps()}>
-          {rows.map(row => {
-            prepareRow(row)
+          {rows.map((row) => {
+            prepareRow(row);
             return (
               <Tr {...row.getRowProps()}>
-                {row.cells.map(cell => {
+                {row.cells.map((cell) => {
                   return (
-                    <Td
-                      {...cell.getCellProps()}
-                    >
-                      {cell.render('Cell')}
-                    </Td>
-                  )
+                    <Td {...cell.getCellProps()}>{cell.render("Cell")}</Td>
+                  );
                 })}
               </Tr>
-            )
+            );
           })}
         </Tbody>
       </Table>
     </Box>
   );
-
 }

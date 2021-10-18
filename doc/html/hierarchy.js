@@ -39,7 +39,12 @@ var hierarchy =
       [ "api.tests.Proyectos_Tests", "classapi_1_1tests_1_1Proyectos__Tests.html", null ],
       [ "api.tests.Proyectos_Usuarios_Roles_Tests", "classapi_1_1tests_1_1Proyectos__Usuarios__Roles__Tests.html", null ],
       [ "api.tests.Roles_Tests", "classapi_1_1tests_1_1Roles__Tests.html", null ],
-      [ "api.tests.user_stories", "classapi_1_1tests_1_1user__stories.html", null ],
+      [ "api.tests.Sprint_Activar_Tests", "classapi_1_1tests_1_1Sprint__Activar__Tests.html", null ],
+      [ "api.tests.Sprints_Tests", "classapi_1_1tests_1_1Sprints__Tests.html", null ],
+      [ "api.tests.Sprints_User_Stories_Tests", "classapi_1_1tests_1_1Sprints__User__Stories__Tests.html", null ],
+      [ "api.tests.User_Stories_Asignar_Tests", "classapi_1_1tests_1_1User__Stories__Asignar__Tests.html", null ],
+      [ "api.tests.User_Stories_Estimar_Tests", "classapi_1_1tests_1_1User__Stories__Estimar__Tests.html", null ],
+      [ "api.tests.User_Stories_Tests", "classapi_1_1tests_1_1User__Stories__Tests.html", null ],
       [ "api.tests.Usuarios_Tests", "classapi_1_1tests_1_1Usuarios__Tests.html", null ]
     ] ]
 ];
