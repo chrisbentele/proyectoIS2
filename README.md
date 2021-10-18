@@ -2,9 +2,9 @@
 
 ![Tests status](https://github.com/grupoCannonIS2/proyectoIS2/actions/workflows/main.yml/badge.svg)
 
-# Bienvenido a la documentación de System.A.
+# Bienvenido a System.A.
 
-Esta decumentación explicará los componentes del sistema para su futura referencia.
+Para poder utilizar el sistema, siga los siguientes pasos 👇
 
 ## Requerimientos
 El software ha sido probado en Ubuntu 20.04
@@ -20,7 +20,7 @@ Una vez clonado el repositorio, ejecute el siguiente comando para instalar las d
 `$ ./install.sh`
 
 ## Uso
-Una bez instaladas las dependencias proceda a ejecutar en dos terminales separadas los siguiente scripts
+Una vez instaladas las dependencias proceda a ejecutar en dos terminales separadas los siguiente scripts
 
 `$ ./backend.sh`
 
