@@ -241,7 +241,7 @@ export default function Index({ dispatchError, props }) {
                           <Text>{sprint.nombre}</Text>
                         </Box>
                         <Box fontSize="18px">
-                          <Text>Total US: {sprint.cuentaUs}</Text>
+                          <Text>Total US: {sprint.numeroDeUs}</Text>
                         </Box>
                         <Box fontSize="18px">
                           <Text>
