@@ -48,7 +48,6 @@ export default function Index({ props, dispatchError }) {
   const history = useHistory();
 
   const { user } = useAuth0();
-  console.log("user", user.sub);
   const [thisMember, setThisMember] = useState();
 
   //Al cargarse la pagina se busca el proyecto con el id del URL y se lo asigna a projectId
@@ -82,34 +81,47 @@ export default function Index({ props, dispatchError }) {
       );
   }, [projectId, sprintId]);
   const activateSprint = async () => {
-    if (!sprint.activable)
+    if (!sprint.activable) {
       return dispatchError("No se puedo activar el sprint", "");
-    await api.sprints.activarSprint({ projectId, spId: sprintId });
-    api.sprints
-      .getSprint(projectId, sprintId)
-      .then(({ data }) => setSprint(data));
-    api.userStories
-      .getUserStories(projectId, sprintId)
-      .then(({ data }) => setUserStories(data));
+    } else {
+      const { data: allSprints } = await api.sprints
+        .getSprints(projectId)
+        .catch((err) => dispatchError(null, "error activando sprint"));
+      for (var i = 0; i < allSprints.length; i++) {
+        if (allSprints[i].activo) {
+          dispatchError(
+            "Error activando sprint",
+            "Ya hay un sprint activo, no puede haber mas de un sprint activo",
+            4000
+          );
+          return;
+        }
+      }
+      await api.sprints.activarSprint({ projectId, spId: sprintId });
+      api.sprints
+        .getSprint(projectId, sprintId)
+        .then(({ data }) => setSprint(data));
+      api.userStories
+        .getUserStories(projectId, sprintId)
+        .then(({ data }) => setUserStories(data));
+    }
   };
 
   useEffect(() => {
-    let allowed = false;
-    if (sprint && userStories.length && thisMember) {
+    console.log("condicion", sprint && userStories && thisMember);
+    if (sprint && userStories && thisMember) {
+      console.log("this member rol", thisMember.rol.nombre);
       if (thisMember.rol.nombre === "Scrum Master") {
         toggleIsAllowed(true);
-        allowed = true;
         return;
       }
       for (let i = 0; i < userStories.length; i++) {
         if (userStories[i].asignado.id === user.sub) {
           toggleIsAllowed(true);
-          allowed = true;
           break;
         }
       }
-      if (!allowed) {
-        console.log("dispatched");
+      if (!isAllowed) {
         dispatchError(
           "No tienes acceso al sprint",
           "Debes tener asignado una de las US del sprint o ser Scrum Master para visualizar el sprint",
@@ -132,8 +144,7 @@ export default function Index({ props, dispatchError }) {
       .then(({ data }) => setUserStories(data));
   };
 
-  console.log(sprint);
-  return isAllowed && userStories.length && sprint ? (
+  return isAllowed && userStories && sprint ? (
     <Box
       minHeight="100vh"
       minWidth="full"
