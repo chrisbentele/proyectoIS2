@@ -1,8 +1,5 @@
 var NAVTREEINDEX2 =
 {
-"roles_8test_8js.html#a59be084da8908b7d77ff34b25cd84488":[4,0,2,0,5,3,3],
-"roles_8test_8js.html#a68bcc69d24e08e3a6e87518e37ae7a95":[4,0,2,0,5,3,1],
-"roles_8test_8js.html#aa82cb2fe7ee3e892f85a1aabe9c21248":[4,0,2,0,5,3,4],
 "roles_8test_8js.html#aeffc0dc91dff264e395ec5b69124e164":[4,0,2,0,5,3,2],
 "serializers_8py.html":[4,0,0,0,6],
 "settings_8py.html":[4,0,0,1,2],

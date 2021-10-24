@@ -95,7 +95,7 @@ $(document).ready(function(){initNavTree('userStories_8test_8js.html',''); initR
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a29354bb1a7268bba0f4e041620cd8399"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="userStories_8test_8js.html#a29354bb1a7268bba0f4e041620cd8399">test</a> ('edit <a class="el" href="App_8js.html#a50c944668b6bc96ba333ed87fe058a70">user</a> story', <a class="el" href="roles_8test_8js.html#a2bbea1ca302c158b8d9fccabd4fd82bf">async</a>()=&gt; { await <a class="el" href="userStories_8js.html#acc1a571f6a534166eea470b2c3da0782">editUS</a>({<a class="el" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>, usName:'editedUs', description:'edited desc', estado:1, usId }) <a class="el" href="userStories_8test_8js.html#a92b303b76a3f942ea819498907d5e83c">const</a> res=await <a class="el" href="userStories_8js.html#aa384107b1b4fc4a017be2579907ee303">getUserStories</a>(<a class="el" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>) expect(res.data).toEqual(expect.arrayContaining([expect.objectContaining({nombre:'editedUs', creadoPor:'usTest'})])) expect(res.data).not.toEqual(expect.arrayContaining([expect.objectContaining({nombre:'test us'})])) })</td></tr>
+<tr class="memitem:a29354bb1a7268bba0f4e041620cd8399"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="userStories_8test_8js.html#a29354bb1a7268bba0f4e041620cd8399">test</a> ('edit user story', <a class="el" href="roles_8test_8js.html#a2bbea1ca302c158b8d9fccabd4fd82bf">async</a>()=&gt; { await <a class="el" href="userStories_8js.html#acc1a571f6a534166eea470b2c3da0782">editUS</a>({<a class="el" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>, usName:'editedUs', description:'edited desc', estado:1, usId }) <a class="el" href="userStories_8test_8js.html#a92b303b76a3f942ea819498907d5e83c">const</a> res=await <a class="el" href="userStories_8js.html#aa384107b1b4fc4a017be2579907ee303">getUserStories</a>(<a class="el" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>) expect(res.data).toEqual(expect.arrayContaining([expect.objectContaining({nombre:'editedUs', creadoPor:'usTest'})])) expect(res.data).not.toEqual(expect.arrayContaining([expect.objectContaining({nombre:'test us'})])) })</td></tr>
 <tr class="separator:a29354bb1a7268bba0f4e041620cd8399"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
@@ -113,7 +113,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">test </td>
           <td>(</td>
-          <td class="paramtype">'edit <a class="el" href="App_8js.html#a50c944668b6bc96ba333ed87fe058a70">user</a> story'&#160;</td>
+          <td class="paramtype">'edit user story'&#160;</td>
           <td class="paramname">, </td>
         </tr>
         <tr>
@@ -163,13 +163,12 @@ Variables</h2></td></tr>
 <div class="line">  <a class="code" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a> = res.data.<span class="keywordtype">id</span></div>
 <div class="line">})</div>
 <div class="line"> </div>
-<div class="line"><a class="code" href="userStories_8test_8js.html#a29354bb1a7268bba0f4e041620cd8399">test</a>(&#39;create <a class="code" href="App_8js.html#a50c944668b6bc96ba333ed87fe058a70">user</a> story&#39;, <a class="code" href="projects_8test_8js.html#a2bbea1ca302c158b8d9fccabd4fd82bf">async</a> () =&gt; {</div>
+<div class="line"><a class="code" href="userStories_8test_8js.html#a29354bb1a7268bba0f4e041620cd8399">test</a>(&#39;create user story&#39;, <a class="code" href="projects_8test_8js.html#a2bbea1ca302c158b8d9fccabd4fd82bf">async</a> () =&gt; {</div>
 <div class="line">  <span class="keyword">const</span> usRes = await <a class="code" href="userStories_8js.html#acf4bc643c0219f004f7ca07097450669">createUserStory</a>({<a class="code" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>, usName:<span class="stringliteral">&#39;test us&#39;</span>, description:<span class="stringliteral">&#39;this is a test written in jest&#39;</span>, creadoPor:<span class="stringliteral">&#39;usTest&#39;</span>})</div>
 <div class="line">  usId = usRes.data.id</div>
 <div class="line">  <span class="keyword">const</span> res = await <a class="code" href="userStories_8js.html#aa384107b1b4fc4a017be2579907ee303">getUserStories</a>(<a class="code" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>)</div>
 <div class="line">  expect(res.data).toEqual(expect.arrayContaining([expect.objectContaining({nombre:<span class="stringliteral">&#39;test us&#39;</span>, creadoPor:<span class="stringliteral">&#39;usTest&#39;</span>})]))</div>
 <div class="line">})</div>
-<div class="ttc" id="aApp_8js_html_a50c944668b6bc96ba333ed87fe058a70"><div class="ttname"><a href="App_8js.html#a50c944668b6bc96ba333ed87fe058a70">user</a></div><div class="ttdeci">import User from pages user</div><div class="ttdoc">Componente de la página de usuario.</div><div class="ttdef"><b>Definition:</b> App.js:31</div></div>
 <div class="ttc" id="aprojects_8js_html_a2e9d2ad3fbbc8cf8fe5dc7f6f51cd596"><div class="ttname"><a href="projects_8js.html#a2e9d2ad3fbbc8cf8fe5dc7f6f51cd596">createProject</a></div><div class="ttdeci">export const createProject</div><div class="ttdoc">Crear proyecto, recibe como parametro un objeto con los siguientes atributos  estimation: la estimaci...</div><div class="ttdef"><b>Definition:</b> projects.js:28</div></div>
 <div class="ttc" id="aprojects_8js_html_a5eedf1969a2b3145f557abe7bb64f9af"><div class="ttname"><a href="projects_8js.html#a5eedf1969a2b3145f557abe7bb64f9af">deleteProject</a></div><div class="ttdeci">export const deleteProject</div><div class="ttdoc">Eliminar proyecto La funcion recibe como parametro el id del proyecto a eliminar, retorna true si se ...</div><div class="ttdef"><b>Definition:</b> projects.js:87</div></div>
 <div class="ttc" id="aprojects_8test_8js_html_a2bbea1ca302c158b8d9fccabd4fd82bf"><div class="ttname"><a href="projects_8test_8js.html#a2bbea1ca302c158b8d9fccabd4fd82bf">async</a></div><div class="ttdeci">async()</div></div>
