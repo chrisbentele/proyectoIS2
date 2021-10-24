@@ -40,13 +40,15 @@ export default function Index({ props, dispatchError }) {
   const sprintId = props.computedMatch.params.sp_id; //id del sprint, se extrae del URL
   const [project, setProject] = useState(); //estado del proyecto
   const [userStories, setUserStories] = useState([]); //estado del proyecto
-  const [sprint, setSprint] = useState();
+  const [sprint, setSprint] = useState(null);
+  const [isAllowed, toggleIsAllowed] = useState(false);
   const [isOpenEditSp, setIsOpenEditSp] = useState(false);
   const [hayUs, setHayUs] = useState(false);
 
   const history = useHistory();
 
   const { user } = useAuth0();
+  console.log("user", user.sub);
   const [thisMember, setThisMember] = useState();
 
   //Al cargarse la pagina se busca el proyecto con el id del URL y se lo asigna a projectId
@@ -70,9 +72,15 @@ export default function Index({ props, dispatchError }) {
     api
       .getMember(projectId, user.sub)
       .then(({ data: member }) => setThisMember(member))
-      .catch((err) => console.log(err));
+      .catch((err) =>
+        dispatchError(
+          "No autorizado",
+          "Debes formar parte del proyecto para visualizar el mismo o los sprints",
+          null,
+          false
+        )
+      );
   }, [projectId, sprintId]);
-
   const activateSprint = async () => {
     if (!sprint.activable)
       return dispatchError("No se puedo activar el sprint", "");
@@ -84,6 +92,33 @@ export default function Index({ props, dispatchError }) {
       .getUserStories(projectId, sprintId)
       .then(({ data }) => setUserStories(data));
   };
+
+  useEffect(() => {
+    let allowed = false;
+    if (sprint && userStories.length && thisMember) {
+      if (thisMember.rol.nombre === "Scrum Master") {
+        toggleIsAllowed(true);
+        allowed = true;
+        return;
+      }
+      for (let i = 0; i < userStories.length; i++) {
+        if (userStories[i].asignado.id === user.sub) {
+          toggleIsAllowed(true);
+          allowed = true;
+          break;
+        }
+      }
+      if (!allowed) {
+        console.log("dispatched");
+        dispatchError(
+          "No tienes acceso al sprint",
+          "Debes tener asignado una de las US del sprint o ser Scrum Master para visualizar el sprint",
+          null,
+          false
+        );
+      }
+    }
+  }, [sprint, userStories, thisMember]);
 
   const deactivateSprint = async () => {
     if (!sprint.activable)
@@ -98,7 +133,7 @@ export default function Index({ props, dispatchError }) {
   };
 
   console.log(sprint);
-  return (
+  return isAllowed && userStories.length && sprint ? (
     <Box
       minHeight="100vh"
       minWidth="full"
@@ -278,5 +313,16 @@ export default function Index({ props, dispatchError }) {
         </Flex>
       )}
     </Box>
+  ) : (
+    <Flex
+      justify="center"
+      align="center"
+      ml="auto"
+      height={"100vh"}
+      width={"100vw"}
+      position={"absolute"}
+    >
+      <Spinner size="xl" />
+    </Flex>
   );
 }
