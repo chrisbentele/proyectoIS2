@@ -563,8 +563,15 @@ def user_stories_estimar(request, proyect_id, us_id):
     except US.DoesNotExist:
         return HttpResponseNotFound()
 
+    try:
+        usa = USAsignada.objects.get(us=us_id)
+    except USAsignada.DoesNotExist:
+        return HttpResponseNotFound()
+
+
     if request.method == "POST":
         data = JSONParser().parse(request)
+        #print(data["user_id"] == usa.usuario.id)
 
         rol_asign = RolAsignado.objects.filter(
             usuario=data["user_id"], proyecto=proyect_id
@@ -582,19 +589,35 @@ def user_stories_estimar(request, proyect_id, us_id):
         rol_user = RolSerializer(rol_user).data
 
         if rol_user["id"] == proyect_id:
-
+            # Si es el SM
             serializer = USSerializer(
                 us, data={"estimacionSM": data["estimacion"]}, partial=True
             )
+            if serializer.is_valid():
+                serializer.save()
+                if data["user_id"] == usa.usuario.id:
+                    #El asignado es el mismo SM
+                    print('entro')
+                    serializer = USSerializer(
+                        us, data={"estimacionesDev": data["estimacion"]}, partial=True
+                    )
+                    if serializer.is_valid():
+                        serializer.save()
+                    else:
+                        return JsonResponse(serializer.errors, status=400, safe=False)
+                return JsonResponse(serializer.data, status=200)
+            else:
+                return JsonResponse(serializer.errors, status=400, safe=False)
         else:
+            # Si es Dev
             serializer = USSerializer(
                 us, data={"estimacionesDev": data["estimacion"]}, partial=True
             )
 
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=200)
-        return JsonResponse(serializer.errors, status=400, safe=False)
+            if serializer.is_valid():
+                serializer.save()
+                return JsonResponse(serializer.data, status=200)
+            return JsonResponse(serializer.errors, status=400, safe=False)
 
 
 def sprints(request, proyect_id, sprint_id=None):
