@@ -9,9 +9,6 @@ var hierarchy =
     [ "api.serializers.USAsignadaSerializer.Meta", "classapi_1_1serializers_1_1USAsignadaSerializer_1_1Meta.html", null ],
     [ "api.serializers.USSerializer.Meta", "classapi_1_1serializers_1_1USSerializer_1_1Meta.html", null ],
     [ "api.serializers.UsuarioSerializer.Meta", "classapi_1_1serializers_1_1UsuarioSerializer_1_1Meta.html", null ],
-    [ "admin.ModelAdmin", null, [
-      [ "api.admin.AuthorAdmin", "classapi_1_1admin_1_1AuthorAdmin.html", null ]
-    ] ],
     [ "serializers.ModelSerializer", null, [
       [ "api.serializers.ComentarioSerializer", "classapi_1_1serializers_1_1ComentarioSerializer.html", null ],
       [ "api.serializers.ProyectoSerializer", "classapi_1_1serializers_1_1ProyectoSerializer.html", null ],

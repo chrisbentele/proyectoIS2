@@ -1,9 +1,6 @@
 var annotated_dup =
 [
-    [ "api", "namespaceapi.html", [
-      [ "admin", "namespaceapi_1_1admin.html", [
-        [ "AuthorAdmin", "classapi_1_1admin_1_1AuthorAdmin.html", null ]
-      ] ],
+    [ "api", null, [
       [ "apps", "namespaceapi_1_1apps.html", [
         [ "ApiConfig", "classapi_1_1apps_1_1ApiConfig.html", null ]
       ] ],
