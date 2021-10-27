@@ -115,3 +115,14 @@ class RolAsignado(Model):
     rol = ForeignKey(Rol, on_delete=CASCADE)
     usuario = ForeignKey(Usuario, on_delete=CASCADE)
     proyecto = ForeignKey(Proyecto, on_delete=CASCADE)
+
+
+class RegistroHoras(Model):
+    # Registro de cantidad de horas usadas en un US
+    us = ForeignKey(US, on_delete=CASCADE, unique=True)
+    fechaCreacion = DateField(auto_now_add=True, editable=False)
+    fechaEdit = DateField(auto_now_add=True)
+    fecha = DateField(auto_now_add=True)
+    horas = IntegerField()
+    sprint = ForeignKey(Sprint, null=True, blank=True, on_delete=CASCADE, unique=True)
+    usuario = ForeignKey(Usuario, on_delete=CASCADE)
