@@ -1,9 +1,16 @@
+## @file misc.py
+# @brief Funciones misceláneas
+
 from ..models import US, USAsignada
 from ..serializers import USAsignadaSerializer, USSerializer
 
 
 def get_asigned_user(us_id):
-
+    """!
+    Adquiere el usuario que está asignado a cierta historia de usuario.
+    @param us_id ID de la historia de usuario
+    @returns 
+    """
     asigned_query = USAsignada.objects.filter(
         us=us_id,
     )
@@ -12,7 +19,11 @@ def get_asigned_user(us_id):
 
 
 def get_us_count(proyect_id, sprint_id):
-    """Health check de los US en un sprint"""
+    """!
+    Health check de los US en un sprint
+    @param project_id El ID del proyecto de donde se encuentra el sprint.
+    @param sprint_id El ID del sprint del cual se quiere la cantidad de US.
+    """
     uss = US.objects.filter(proyecto=proyect_id, sprint=sprint_id)
     serializer = USSerializer(uss, many=True)
     us_list = serializer.data

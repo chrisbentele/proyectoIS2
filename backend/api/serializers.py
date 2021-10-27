@@ -1,3 +1,6 @@
+## @file serializers.py
+# @brief Definición de los distintos serializadores.
+# @details 
 from rest_framework import serializers
 from .models import (
     Rol,
