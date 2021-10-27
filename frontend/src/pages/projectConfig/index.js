@@ -1,3 +1,8 @@
+/**
+ * @file index.js
+ * @brief Página de configuración de proyectos
+ */
+
 //! Componentes del Chakra UI
 import {
   FormControl,

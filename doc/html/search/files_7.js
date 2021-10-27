@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['permisos_2ejs_282',['permisos.js',['../permisos_8js.html',1,'']]],
-  ['profile_2ejs_283',['profile.js',['../profile_8js.html',1,'']]],
-  ['projects_2ejs_284',['projects.js',['../projects_8js.html',1,'']]],
-  ['proyecto_2ejs_285',['proyecto.js',['../proyecto_8js.html',1,'']]]
+  ['index_20copy_2ejs_391',['index copy.js',['../index_01copy_8js.html',1,'']]],
+  ['index_2ejs_392',['index.js',['../api_2index_8js.html',1,'(Global Namespace)'],['../components_2addIcon_2index_8js.html',1,'(Global Namespace)'],['../components_2errorBox_2index_8js.html',1,'(Global Namespace)'],['../components_2privateRoute_2index_8js.html',1,'(Global Namespace)'],['../index_8js.html',1,'(Global Namespace)'],['../pages_2createProject_2index_8js.html',1,'(Global Namespace)'],['../pages_2createUS_2index_8js.html',1,'(Global Namespace)'],['../pages_2editRole_2index_8js.html',1,'(Global Namespace)'],['../pages_2login_2index_8js.html',1,'(Global Namespace)'],['../pages_2notFound_2index_8js.html',1,'(Global Namespace)'],['../pages_2projectConfig_2index_8js.html',1,'(Global Namespace)'],['../pages_2projectMembers_2index_8js.html',1,'(Global Namespace)'],['../pages_2projects_2index_8js.html',1,'(Global Namespace)'],['../pages_2roles_2index_8js.html',1,'(Global Namespace)'],['../pages_2sprints_2index_8js.html',1,'(Global Namespace)'],['../pages_2user_2index_8js.html',1,'(Global Namespace)'],['../pages_2users_2index_8js.html',1,'(Global Namespace)'],['../tests_2index_8js.html',1,'(Global Namespace)'],['../util_2index_8js.html',1,'(Global Namespace)']]],
+  ['indexcopy_2ejs_393',['indexcopy.js',['../indexcopy_8js.html',1,'']]]
 ];

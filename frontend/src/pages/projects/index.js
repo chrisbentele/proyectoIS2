@@ -18,15 +18,11 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import Select from "react-select";
 import { mapStateColor } from "../../styles/theme";
 import USListUnset from "../../components/userStoryListUnset/userStoryListUnset";
 import CrearSprintModal from "../../components/CrearSprintModal/CrearSprintModal";
-import EditarSprintModal from "../../components/EditarSprintModal/EditarSprintModal";
-import { IconButton } from "@chakra-ui/button";
-import { EditIcon } from "@chakra-ui/icons";
 import { useHistory } from "react-router-dom";
-import { MdBuild, MdTimer } from "react-icons/md";
+import { MdBuild } from "react-icons/md";
 import EliminarSprintModal from "../../components/EliminarSprintModal/EliminarSprintModal";
 
 import { useAuth0 } from "@auth0/auth0-react";
@@ -73,6 +69,12 @@ export default function Index({ dispatchError, props }) {
       .then(({ data: member }) => setThisMember(member))
       .catch((err) => console.log(err));
   }, []);
+
+  function handleSprintBoxColor(sprint) {
+    if (sprint.terminado) return "#808080";
+    if (sprint.activo) return "#a0ff6d";
+    return "#ffe66d";
+  }
 
   return (
     <Box
@@ -193,7 +195,8 @@ export default function Index({ dispatchError, props }) {
                       display="flex"
                       w="lg"
                       height="180px"
-                      borderWidth="1px"
+                      borderWidth="3px"
+                      borderColor={"#40474a"}
                       borderRadius="lg"
                       overflow="hidden"
                       fontSize="3xl"
@@ -224,12 +227,13 @@ export default function Index({ dispatchError, props }) {
                         display="flex"
                         w="lg"
                         height="180px"
-                        borderWidth="1px"
+                        borderWidth="3px"
                         borderRadius="lg"
+                        borderColor={"#40474a"}
                         overflow="hidden"
                         fontSize="3xl"
                         fontWeight="bold"
-                        bg="white"
+                        bg={handleSprintBoxColor(sprint)}
                         justifyContent="center"
                         alignItems="center"
                         key={index}
@@ -245,7 +249,7 @@ export default function Index({ dispatchError, props }) {
                           <Text>{sprint.nombre}</Text>
                         </Box>
                         <Box fontSize="18px">
-                          <Text>Total US: {sprint.cuentaUs}</Text>
+                          <Text>Total US: {sprint.numeroDeUs}</Text>
                         </Box>
                         <Box fontSize="18px">
                           <Text>

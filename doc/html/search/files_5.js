@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['loginbutton_2ejs_275',['loginButton.js',['../loginButton_8js.html',1,'']]],
-  ['logoutbutton_2ejs_276',['logoutButton.js',['../logoutButton_8js.html',1,'']]]
+  ['goback_2ejs_388',['goBack.js',['../goBack_8js.html',1,'']]]
 ];

@@ -1,6 +1,6 @@
 var settings_8py =
 [
-    [ "ALLOWED_HOSTS", "settings_8py.html#a5bc1ac506b126a19ffb7ad119d49ab3f", null ],
+    [ "ALLOWED_HOSTS", "settings_8py.html#ae3b0b1febe7b5441745a381a415b9de3", null ],
     [ "AUTH_PASSWORD_VALIDATORS", "settings_8py.html#a5a1124173d0fea525e6a5443d14e0079", null ],
     [ "BASE_DIR", "settings_8py.html#a0d98e422fb9179b47357ae123e35f82a", null ],
     [ "CORS_ALLOW_HEADERS", "settings_8py.html#ad969f93baecdfdbebb1e39fb6d86fe3d", null ],

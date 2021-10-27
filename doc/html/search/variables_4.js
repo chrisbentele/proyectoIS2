@@ -1,13 +1,23 @@
 var searchData=
 [
-  ['editmembersrole_387',['editMembersRole',['../members_8js.html#a092b5da0d3ec68a4114cc95c29b22737',1,'members.js']]],
-  ['editproject_388',['editProject',['../projects_8js.html#a2bd9de50e9ff208dbdd6b7eaf3a7875a',1,'projects.js']]],
-  ['editrole_389',['editRole',['../roles_8js.html#a8da4546e409da8912e4e7b1599beffe6',1,'editRole():&#160;roles.js'],['../App_8js.html#a331569d28183270a191641f07b8314d5',1,'editRole():&#160;App.js']]],
-  ['email_390',['email',['../classapi_1_1models_1_1Usuario.html#a6df437e64b76c93e43d413bc37928240',1,'api::models::Usuario']]],
-  ['env_391',['env',['../namespacecontroller_1_1settings.html#a44b98e4dc73de15beb4e8b44423fe493',1,'controller::settings']]],
-  ['estado_392',['estado',['../classapi_1_1models_1_1Proyecto.html#ac0a3e0cf8cd26d0b8dd19b0135ac70f5',1,'api.models.Proyecto.estado()'],['../classapi_1_1models_1_1US.html#a1e67454dcab5f3d74496cd135bcc826b',1,'api.models.US.estado()']]],
-  ['estado_5fus_393',['ESTADO_US',['../namespaceapi_1_1models.html#ac915fe38cc810504d5d7e0e0ed170ec6',1,'api::models']]],
-  ['estadoproyecto_394',['estadoProyecto',['../namespaceapi_1_1models.html#aaae18c09e079ef71143fe550cdaf23a6',1,'api::models']]],
-  ['estimacionesdev_395',['estimacionesDev',['../classapi_1_1models_1_1US.html#af602a2498bf8fab10daaf22be86163bb',1,'api::models::US']]],
-  ['estimacionsm_396',['estimacionSM',['../classapi_1_1models_1_1US.html#ae71865f3c2411cccdc4e84d056477de4',1,'api::models::US']]]
+  ['editar_564',['Editar',['../AsignarDevUsModal_8js.html#a178eb8c7442dc57eab84506a2f33a298',1,'Editar():&#160;AsignarDevUsModal.js'],['../AsignarUsASprintModal_8js.html#a178eb8c7442dc57eab84506a2f33a298',1,'Editar():&#160;AsignarUsASprintModal.js'],['../EditarSprintModal_8js.html#a178eb8c7442dc57eab84506a2f33a298',1,'Editar():&#160;EditarSprintModal.js'],['../EstimarUsModal_8js.html#a178eb8c7442dc57eab84506a2f33a298',1,'Editar():&#160;EstimarUsModal.js']]],
+  ['editarsprintmodal_565',['EditarSprintModal',['../pages_2sprints_2index_8js.html#a8544784244c7da918e4eafb7f08e50ce',1,'index.js']]],
+  ['editmembersrole_566',['editMembersRole',['../members_8js.html#a092b5da0d3ec68a4114cc95c29b22737',1,'members.js']]],
+  ['editproject_567',['editProject',['../projects_8js.html#a2bd9de50e9ff208dbdd6b7eaf3a7875a',1,'projects.js']]],
+  ['editrole_568',['editRole',['../roles_8js.html#a8da4546e409da8912e4e7b1599beffe6',1,'editRole():&#160;roles.js'],['../App_8js.html#a331569d28183270a191641f07b8314d5',1,'editRole():&#160;App.js']]],
+  ['editsprint_569',['editSprint',['../sprints_8js.html#a04cf55267ccfa9543f656fa4e20522a9',1,'sprints.js']]],
+  ['editus_570',['editUS',['../userStories_8js.html#a98b83365149a25d27e64fddcc71adf30',1,'userStories.js']]],
+  ['eliminarsprint_571',['EliminarSprint',['../EliminarSprintModal_8js.html#a189541419acd1447f1128776ad90891c',1,'EliminarSprintModal.js']]],
+  ['eliminarsprintmodal_572',['EliminarSprintModal',['../pages_2projects_2index_8js.html#a8485a95d5bf158ae58945c5c5ed6a153',1,'index.js']]],
+  ['eliminarus_573',['eliminarUS',['../userStories_8js.html#a16bbc9aad36107a0106876ccc49d71f0',1,'userStories.js']]],
+  ['email_574',['email',['../classapi_1_1models_1_1Usuario.html#a6df437e64b76c93e43d413bc37928240',1,'api::models::Usuario']]],
+  ['env_575',['env',['../namespacecontroller_1_1settings.html#a44b98e4dc73de15beb4e8b44423fe493',1,'controller::settings']]],
+  ['estado_576',['estado',['../classapi_1_1models_1_1Proyecto.html#ac0a3e0cf8cd26d0b8dd19b0135ac70f5',1,'api.models.Proyecto.estado()'],['../classapi_1_1models_1_1US.html#a1e67454dcab5f3d74496cd135bcc826b',1,'api.models.US.estado()']]],
+  ['estado_5fus_577',['ESTADO_US',['../namespaceapi_1_1models.html#ac915fe38cc810504d5d7e0e0ed170ec6',1,'api::models']]],
+  ['estadoproyecto_578',['estadoProyecto',['../namespaceapi_1_1models.html#aaae18c09e079ef71143fe550cdaf23a6',1,'api::models']]],
+  ['estimacion_579',['estimacion',['../classapi_1_1models_1_1Sprint.html#af9537a7cf5854b9cc5aea85e960aa820',1,'api::models::Sprint']]],
+  ['estimacionesdev_580',['estimacionesDev',['../classapi_1_1models_1_1US.html#af602a2498bf8fab10daaf22be86163bb',1,'api::models::US']]],
+  ['estimacionsm_581',['estimacionSM',['../classapi_1_1models_1_1US.html#ae71865f3c2411cccdc4e84d056477de4',1,'api::models::US']]],
+  ['estimarus_582',['estimarUs',['../userStories_8js.html#ab55ecc7123eb6e07edb9424f89bcf6e1',1,'userStories.js']]],
+  ['estimarusmodal_583',['EstimarUsModal',['../userStoryListUnset_8js.html#a17461c6adcdd73a5a91a2e7a528f70ec',1,'userStoryListUnset.js']]]
 ];

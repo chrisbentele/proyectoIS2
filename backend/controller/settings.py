@@ -29,7 +29,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-aed0h2h-5zcesd$$o^5qt1-jr0n2&b9-ixq+5pqp4$##qraxbc"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if not os.path.exists("/.dockerenv") or "test" in sys.argv:
+    DEBUG = True
+else:
+    DEBUG = False
 
 ALLOWED_HOSTS = []
 

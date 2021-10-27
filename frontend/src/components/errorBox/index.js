@@ -1,3 +1,7 @@
+/**
+ * @file index.js
+ * @brief Pop up de error
+ */
 import {
   Alert,
   AlertIcon,

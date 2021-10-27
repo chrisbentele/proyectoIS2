@@ -48,21 +48,13 @@ export default function Home() {
               </Heading>
               <Text fontSize={["xl", "3xl"]} pt="3rem" textAlign="left">
                 Software diseñado para la organización y realización de
-                proyectos, ayudando a más de xxx empresas mundialmente.
+                proyectos, ayudando a más de 1250 empresas mundialmente.
               </Text>
               <Text fontSize={["xl", "3xl"]} pt="3rem" textAlign="left">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam ex
-                tellus, eleifend quis eros nec, fringilla pharetra elit. Nunc
-                vehicula arcu eu lacus aliquet, faucibus egestas metus interdum.
-                Donec vehicula suscipit lectus, ac varius lectus malesuada eu.
-                Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
-                posuere cubilia curae; Donec malesuada a lorem at iaculis. In id
-                nisl nec quam porttitor vehicula a eu magna. Cras at volutpat
-                lorem. Maecenas consequat pulvinar nisi ac lobortis. Duis a ex
-                eu nisi vestibulum pretium. Nunc elementum velit eu pulvinar
-                laoreet. Mauris laoreet nibh eu viverra laoreet. Sed nec massa
-                sodales, accumsan enim quis, auctor tortor. Duis vel accumsan
-                orci. Morbi mollis mi vitae tortor viverra varius.
+                Queremos ayudarte a llevar la eficiencia y eficacia de tu empresa al siguiente nivel. Con User stories, roles, Sprints, Burndown Charts y muchas otras features organizar proyectos agiles ya no tiene que ser dificil. 
+                <br/>
+                <br/>
+                Actualmente estamos en la version 5.0 y mejorando cada dia!
               </Text>
               <Box fontSize="xl" pt="8">
                 <LoginButton title="Empezar a crear proyectos" />

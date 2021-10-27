@@ -1,3 +1,8 @@
+/**
+ * @file projectMembersTable.js
+ * @brief Tabla para editar miembros
+ */
+
 import React, { useState } from 'react';
 import { useTable } from 'react-table'
 //! API del frontend.

@@ -27,8 +27,6 @@ import Roles from "./pages/roles";
 import EditRole from "./pages/editRole";
 //! Componente de la página de usuarios.
 import Users from "./pages/users";
-//! Componente de la página de usuario.
-import User from "./pages/user";
 
 import { Box } from "@chakra-ui/react";
 //! Componente de página de 404.
@@ -54,7 +52,6 @@ export default function App() {
           <Route path="/" component={Home} exact />
           <Route path="/login" component={Login} exact />
           <PrivateRoute path="/users" component={Users} exact />
-          <PrivateRoute path="/users/:id" component={User} exact />
           <PrivateRoute path="/profile" component={Profile} exact />
           <PrivateRoute path="/roles" component={Roles} exact />
           <PrivateRoute path="/roles/:id" component={EditRole} exact />
