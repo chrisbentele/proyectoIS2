@@ -40,7 +40,8 @@ export default function Index({ props, dispatchError }) {
   const sprintId = props.computedMatch.params.sp_id; //id del sprint, se extrae del URL
   const [project, setProject] = useState(); //estado del proyecto
   const [userStories, setUserStories] = useState([]); //estado del proyecto
-  const [sprint, setSprint] = useState();
+  const [sprint, setSprint] = useState(null);
+  const [isAllowed, toggleIsAllowed] = useState(false);
   const [isOpenEditSp, setIsOpenEditSp] = useState(false);
   const [hayUs, setHayUs] = useState(false);
 
@@ -70,20 +71,66 @@ export default function Index({ props, dispatchError }) {
     api
       .getMember(projectId, user.sub)
       .then(({ data: member }) => setThisMember(member))
-      .catch((err) => console.log(err));
+      .catch((err) =>
+        dispatchError(
+          "No autorizado",
+          "Debes formar parte del proyecto para visualizar el mismo o los sprints",
+          null,
+          false
+        )
+      );
   }, [projectId, sprintId]);
-
   const activateSprint = async () => {
-    if (!sprint.activable)
+    if (!sprint.activable) {
       return dispatchError("No se puedo activar el sprint", "");
-    await api.sprints.activarSprint({ projectId, spId: sprintId });
-    api.sprints
-      .getSprint(projectId, sprintId)
-      .then(({ data }) => setSprint(data));
-    api.userStories
-      .getUserStories(projectId, sprintId)
-      .then(({ data }) => setUserStories(data));
+    } else {
+      const { data: allSprints } = await api.sprints
+        .getSprints(projectId)
+        .catch((err) => dispatchError(null, "error activando sprint"));
+      for (var i = 0; i < allSprints.length; i++) {
+        if (allSprints[i].activo) {
+          dispatchError(
+            "Error activando sprint",
+            "Ya hay un sprint activo, no puede haber mas de un sprint activo",
+            4000
+          );
+          return;
+        }
+      }
+      await api.sprints.activarSprint({ projectId, spId: sprintId });
+      api.sprints
+        .getSprint(projectId, sprintId)
+        .then(({ data }) => setSprint(data));
+      api.userStories
+        .getUserStories(projectId, sprintId)
+        .then(({ data }) => setUserStories(data));
+    }
   };
+
+  useEffect(() => {
+    console.log("condicion", sprint && userStories && thisMember);
+    if (sprint && userStories && thisMember) {
+      console.log("this member rol", thisMember.rol.nombre);
+      if (thisMember.rol.nombre === "Scrum Master") {
+        toggleIsAllowed(true);
+        return;
+      }
+      for (let i = 0; i < userStories.length; i++) {
+        if (userStories[i].asignado.id === user.sub) {
+          toggleIsAllowed(true);
+          break;
+        }
+      }
+      if (!isAllowed) {
+        dispatchError(
+          "No tienes acceso al sprint",
+          "Debes tener asignado una de las US del sprint o ser Scrum Master para visualizar el sprint",
+          null,
+          false
+        );
+      }
+    }
+  }, [sprint, userStories, thisMember]);
 
   const deactivateSprint = async () => {
     if (!sprint.activable)
@@ -97,8 +144,7 @@ export default function Index({ props, dispatchError }) {
       .then(({ data }) => setUserStories(data));
   };
 
-  console.log(sprint);
-  return (
+  return isAllowed && userStories && sprint ? (
     <Box
       minHeight="100vh"
       minWidth="full"
@@ -278,5 +324,16 @@ export default function Index({ props, dispatchError }) {
         </Flex>
       )}
     </Box>
+  ) : (
+    <Flex
+      justify="center"
+      align="center"
+      ml="auto"
+      height={"100vh"}
+      width={"100vw"}
+      position={"absolute"}
+    >
+      <Spinner size="xl" />
+    </Flex>
   );
 }

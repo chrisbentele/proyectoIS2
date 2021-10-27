@@ -72,6 +72,12 @@ export default function Index({ dispatchError, props }) {
       .catch((err) => console.log(err));
   }, []);
 
+  function handleSprintBoxColor(sprint) {
+    if (sprint.terminado) return "#808080";
+    if (sprint.activo) return "#a0ff6d";
+    return "#ffe66d";
+  }
+
   return (
     <Box
       minHeight="100vh"
@@ -191,7 +197,8 @@ export default function Index({ dispatchError, props }) {
                       display="flex"
                       w="lg"
                       height="180px"
-                      borderWidth="1px"
+                      borderWidth="3px"
+                      borderColor={"#40474a"}
                       borderRadius="lg"
                       overflow="hidden"
                       fontSize="3xl"
@@ -222,12 +229,13 @@ export default function Index({ dispatchError, props }) {
                         display="flex"
                         w="lg"
                         height="180px"
-                        borderWidth="1px"
+                        borderWidth="3px"
                         borderRadius="lg"
+                        borderColor={"#40474a"}
                         overflow="hidden"
                         fontSize="3xl"
                         fontWeight="bold"
-                        bg="white"
+                        bg={handleSprintBoxColor(sprint)}
                         justifyContent="center"
                         alignItems="center"
                         key={index}
@@ -243,7 +251,7 @@ export default function Index({ dispatchError, props }) {
                           <Text>{sprint.nombre}</Text>
                         </Box>
                         <Box fontSize="18px">
-                          <Text>Total US: {sprint.cuentaUs}</Text>
+                          <Text>Total US: {sprint.numeroDeUs}</Text>
                         </Box>
                         <Box fontSize="18px">
                           <Text>
