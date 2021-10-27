@@ -42,7 +42,6 @@ export default function Index({ props, dispatchError }) {
   const [userStories, setUserStories] = useState([]); //estado del proyecto
   const [sprint, setSprint] = useState();
   const [isOpenEditSp, setIsOpenEditSp] = useState(false);
-  const [hayUs, setHayUs] = useState(false);
 
   const history = useHistory();
 

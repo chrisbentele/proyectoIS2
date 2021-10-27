@@ -220,6 +220,7 @@ const USList = ({
                           }}
                           mt="2"
                           mr="2"
+                          disabled={sprint?.activo}
                         >
                           <EditIcon color="black.500" />
                         </Button>
@@ -317,6 +318,7 @@ const USList = ({
                             _active={{
                               background: "white.200",
                             }}
+                            disabled={sprint?.activo}
                           >
                             Remover del Sprint
                           </Button>
@@ -373,6 +375,7 @@ const USList = ({
                           _active={{
                             background: "red.600",
                           }}
+                          disabled={sprint?.activo}
                         >
                           <DeleteIcon color={"#F5F4F5"} />
                         </Button>
