@@ -13,8 +13,7 @@ from django.test import TestCase
 from api.models import US, RolAsignado
 
 ## @file tests.py
-# 
-
+#
 
 
 def crear_user():

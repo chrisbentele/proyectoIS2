@@ -556,37 +556,27 @@ def user_stories_estimar(request, proyect_id, us_id):
     try:
         proyecto = Proyecto.objects.get(id=proyect_id)
     except Proyecto.DoesNotExist:
-        return HttpResponseNotFound()
+        return HttpResponseNotFound("proyecto")
 
     try:
         us = US.objects.get(id=us_id)
     except US.DoesNotExist:
-        return HttpResponseNotFound()
+        return HttpResponseNotFound("us")
 
-    try:
-        usa = USAsignada.objects.get(us=us_id)
-    except USAsignada.DoesNotExist:
-        return HttpResponseNotFound()
+    data = JSONParser().parse(request)
 
+    rol_asign = RolAsignado.objects.filter(usuario=data["user_id"], proyecto=proyect_id)
+
+    rol_asign = RolAsignadoSerializer(rol_asign[0]).data if len(rol_asign) > 0 else None
+
+    if not rol_asign:
+        return HttpResponseForbidden("No tiene permisos")
+
+    rol_user = Rol.objects.get(id=rol_asign["rol"])
+
+    rol_user = RolSerializer(rol_user).data
 
     if request.method == "POST":
-        data = JSONParser().parse(request)
-        #print(data["user_id"] == usa.usuario.id)
-
-        rol_asign = RolAsignado.objects.filter(
-            usuario=data["user_id"], proyecto=proyect_id
-        )
-
-        rol_asign = (
-            RolAsignadoSerializer(rol_asign[0]).data if len(rol_asign) > 0 else None
-        )
-
-        if not rol_asign:
-            return HttpResponseForbidden("No tiene permisos")
-
-        rol_user = Rol.objects.get(id=rol_asign["rol"])
-
-        rol_user = RolSerializer(rol_user).data
 
         if rol_user["id"] == proyect_id:
             # Si es el SM
@@ -595,14 +585,21 @@ def user_stories_estimar(request, proyect_id, us_id):
             )
             if serializer.is_valid():
                 serializer.save()
-                if data["user_id"] == usa.usuario.id:
-                    #El asignado es el mismo SM
-                    print('entro')
+                asignada = False
+                try:
+                    usa = USAsignada.objects.get(us=us_id)
+                    asignada = True
+                except USAsignada.DoesNotExist:
+                    asignada = False
+                if asignada and data["user_id"] == usa.usuario.id:
+                    # El asignado es el mismo SM
+                    print("entro")
                     serializer = USSerializer(
                         us, data={"estimacionesDev": data["estimacion"]}, partial=True
                     )
                     if serializer.is_valid():
                         serializer.save()
+                        return JsonResponse(serializer.data, status=200)
                     else:
                         return JsonResponse(serializer.errors, status=400, safe=False)
                 return JsonResponse(serializer.data, status=200)
