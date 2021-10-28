@@ -1,5 +1,7 @@
+from django.db.models import fields
 from rest_framework import serializers
 from .models import (
+    RegistroHoras,
     Rol,
     Usuario,
     Retrospectiva,
@@ -100,3 +102,19 @@ class RolAsignadoSerializer(serializers.ModelSerializer):
     class Meta:
         model = RolAsignado
         fields = ["id", "rol", "usuario", "proyecto"]
+
+
+class RegistroHorasSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RegistroHoras
+        fields = [
+            "id",
+            "us",
+            "fechaCreacion",
+            "fechaEdit",
+            "fecha",
+            "horas",
+            "sprint",
+            "usuario",
+            "proyecto",
+        ]
