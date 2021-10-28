@@ -41,6 +41,9 @@ export const deleteSprint = async ({ projectId, spId }) =>
 export const getSprint = async (idProyecto, spId) =>
   await axiosInstance.get(`/proyectos/${idProyecto}/sprints/${spId}`);
 
+export const getRegistrosHoras = async ({ spId }) =>
+  await axiosInstance.get(`/sprints/${spId}/registro_horas`);
+
 const sprints = {
   createSprint,
   getSprints,
@@ -52,5 +55,6 @@ const sprints = {
   getSprintMiembros,
   getSprint,
   getHoras,
+  getRegistrosHoras,
 };
 export default sprints;
