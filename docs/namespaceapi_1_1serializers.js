@@ -26,5 +26,8 @@ var namespaceapi_1_1serializers =
     ] ],
     [ "RolAsignadoSerializer", "classapi_1_1serializers_1_1RolAsignadoSerializer.html", [
       [ "Meta", "classapi_1_1serializers_1_1RolAsignadoSerializer_1_1Meta.html", null ]
+    ] ],
+    [ "RegistroHorasSerializer", "classapi_1_1serializers_1_1RegistroHorasSerializer.html", [
+      [ "Meta", "classapi_1_1serializers_1_1RegistroHorasSerializer_1_1Meta.html", null ]
     ] ]
 ];

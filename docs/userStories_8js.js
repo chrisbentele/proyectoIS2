@@ -7,8 +7,10 @@ var userStories_8js =
     [ "editUS", "userStories_8js.html#acc1a571f6a534166eea470b2c3da0782", null ],
     [ "eliminarUS", "userStories_8js.html#a6a58b9ecc1ee066fe170033ee8180dab", null ],
     [ "estimarUs", "userStories_8js.html#a05ffa6d6b5001c822a78e1490670ddfa", null ],
+    [ "getRegistrosHoras", "userStories_8js.html#ad943250468556213209aac94f7801390", null ],
     [ "getUserStories", "userStories_8js.html#aa384107b1b4fc4a017be2579907ee303", null ],
     [ "getUsuariosAsignados", "userStories_8js.html#a178863ae40c7b1251feab2497c87627b", null ],
     [ "import", "userStories_8js.html#a59be084da8908b7d77ff34b25cd84488", null ],
+    [ "registrarHoras", "userStories_8js.html#a14731c5afeed665b54e200be83ee9764", null ],
     [ "userStories", "userStories_8js.html#aaf5fc385fbe0fe628a43854be43b92b5", null ]
 ];
