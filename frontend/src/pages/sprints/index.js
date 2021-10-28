@@ -37,6 +37,8 @@ import { tienePermiso } from "../../util";
 import { PERMISOS_MACRO } from "../roles/permisos";
 import { useAuth0 } from "@auth0/auth0-react";
 import { desactivarSprint } from "../../api/sprints";
+import { ordenarRegistrosPorFecha } from "../../util";
+import BurnDown from "../../components/graficoBurnDown";
 
 /**
  * Función que contiene el código de la vista
@@ -374,33 +376,7 @@ export default function Index({ props, dispatchError }) {
               ></USList>
             </HStack>
           </Box>
-          <Box backgroundColor="#000000">
-            <LineChart
-              width={1000}
-              height={500}
-              data={burndownData}
-              margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
-            >
-              <XAxis dataKey="dia" />
-              <YAxis dataKey="esperado" />
-              <Tooltip />
-              <CartesianGrid stroke="#f5f5f5" />
-              <Line
-                type="monotone"
-                dataKey="restante"
-                stroke="#ff7300"
-                yAxisId={0}
-                strokeWidth={3}
-              />
-              <Line
-                type="monotone"
-                dataKey="esperado"
-                stroke="#4275f5"
-                yAxisId={0}
-                strokeWidth={3}
-              />
-            </LineChart>
-          </Box>
+          <BurnDown burndownData={[]} />
           <EditarSprintModal
             projectId={projectId}
             sprint={sprint}
