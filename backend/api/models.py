@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.db.models.base import Model
 from django.db.models.deletion import CASCADE
 from django.db.models.fields import (
@@ -115,3 +116,22 @@ class RolAsignado(Model):
     rol = ForeignKey(Rol, on_delete=CASCADE)
     usuario = ForeignKey(Usuario, on_delete=CASCADE)
     proyecto = ForeignKey(Proyecto, on_delete=CASCADE)
+
+
+class RegistroHoras(Model):
+    # Registro de cantidad de horas usadas en un US
+    us = ForeignKey(US, on_delete=CASCADE)
+    fecha = DateField()
+    horas = IntegerField()
+    proyecto = ForeignKey(Proyecto, on_delete=CASCADE)
+    sprint = ForeignKey(Sprint, on_delete=CASCADE)
+    usuario = ForeignKey(Usuario, on_delete=CASCADE)
+    fechaEdit = DateField(null=True)
+    fechaCreacion = DateField(editable=False)
+
+    def save(self, *args, **kwargs):
+        """On save, update timestamps"""
+        if not self.id:
+            self.fechaCreacion = timezone.now().strftime("%Y-%m-%d")
+        self.fechaEdit = timezone.now().strftime("%Y-%m-%d")
+        return super(RegistroHoras, self).save(*args, **kwargs)

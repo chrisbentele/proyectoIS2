@@ -51,7 +51,6 @@ export default function Index({ props, dispatchError }) {
   const [sprint, setSprint] = useState(null);
   const [isAllowed, toggleIsAllowed] = useState(false);
   const [isOpenEditSp, setIsOpenEditSp] = useState(false);
-  const [hayUs, setHayUs] = useState(false);
   const [burndownData, setBurndownData] = useState([
     {
       dia: 1,
