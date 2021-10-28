@@ -53,6 +53,7 @@ apiPaths = [
         "proyectos/<str:proyect_id>/user_stories/<str:us_id>/estimar",
         user_stories_estimar,
     ),
+    # Registro horas
     path(
         "sprints/<str:sp_id>/user_stories/<str:us_id>/registro_horas",
         registro_horas,

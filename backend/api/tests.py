@@ -97,7 +97,6 @@ def asignar_us_miembro(self, proyect_id, us_id, user_id):
 
 
 def registro_horas(self, sprint_id, us_id, fecha=None):
-    print(fecha)
     res = self.client.post(
         f"/api/sprints/{sprint_id}/user_stories/{us_id}/registro_horas",
         json.dumps({"horas": 1, "fecha": fecha}),
@@ -702,11 +701,23 @@ class US_Registro_horas(TestCase):
         )
         return res_data
 
-    def test_registro_horas_get(self):
+    def test_registro_horas_user_stories_get(self):
         rg_data = self.test_registro_horas_create()
 
         res = self.client.get(
             f"/api/sprints/{rg_data['sprint']}/user_stories/{rg_data['us']}/registro_horas",
+        )
+        self.assertEqual(res.status_code, 200)
+
+        # Comprar vs bd
+        self.assertJSONEqual(json.dumps(res.json()[0]), json.dumps(rg_data))
+
+    def test_registro_horas_user_stories_unico_get(self):
+        rg_data = self.test_registro_horas_create()
+
+        res = self.client.get(
+            f"/api/sprints/{rg_data['sprint']}/user_stories/{rg_data['us']}/registro_horas",
+            {"fecha": rg_data["fecha"]},
         )
         self.assertEqual(res.status_code, 200)
 
@@ -738,7 +749,6 @@ class US_Registro_horas(TestCase):
 
     def test_registro_horas_update(self):
         rg_data = self.test_registro_horas_create()
-        print(rg_data)
 
         res = self.client.put(
             f"/api/sprints/{rg_data['sprint']}/user_stories/{rg_data['us']}/registro_horas",
@@ -753,5 +763,20 @@ class US_Registro_horas(TestCase):
             res.content, json.dumps(RegistroHorasSerializer(new_rh).data)
         )
 
-    def test_registro_horas(self):
-        pass
+    def test_registro_horas_delete(self):
+        rg_data = self.test_registro_horas_create()
+
+        res = self.client.delete(
+            f"/api/sprints/{rg_data['sprint']}/user_stories/{rg_data['us']}/registro_horas",
+            json.dumps({"fecha": rg_data["fecha"]}),
+            content_type="application/json",
+        )
+
+        self.assertEqual(res.status_code, 204)
+
+        res = self.client.get(
+            f"/api/sprints/{rg_data['sprint']}/user_stories/{rg_data['us']}/registro_horas",
+            {"fecha": rg_data["fecha"]},
+        )
+
+        self.assertEqual(res.status_code, 404)

@@ -825,7 +825,6 @@ def sprints_activar(request, proyect_id, sprint_id):
                 us_seri.is_valid(raise_exception=True)
                 us_seri.save()
         except Exception as e:
-            print(e)
             return JsonResponse("Error actualizando US", status=400, safe=False)
 
         # estimacion de horas
@@ -862,7 +861,6 @@ def sprints_desactivar(request, proyect_id, sprint_id):
                 us_seri.is_valid(raise_exception=True)
                 us_seri.save()
         except Exception as e:
-            print(e)
             return JsonResponse("Error cambiando estado", status=400, safe=False)
 
         if serializer.is_valid():
@@ -981,11 +979,23 @@ def registro_horas(request, sp_id, us_id=None):
             rh_seri = RegistroHorasSerializer(rh, many=True)
             return JsonResponse(rh_seri.data, safe=False)
 
+        fecha = request.GET.get("fecha")
+        if not fecha:
+            rh = RegistroHoras.objects.filter(us=us_id)
+            rh_seri = RegistroHorasSerializer(rh, many=True)
+            return JsonResponse(rh_seri.data, safe=False)
+
         try:
-            u = RegistroHoras.objects.get(us=us_id)
+            timezone.datetime.strptime(fecha, "%Y-%m-%d")
+        except:
+            return HttpResponseBadRequest("La fecha debe estar en formato %Y-%m-%d")
+
+        try:
+            u = RegistroHoras.objects.get(us=us_id, fecha=fecha)
             return JsonResponse(RegistroHorasSerializer(u).data, safe=False)
-        except Usuario.DoesNotExist:
+        except RegistroHoras.DoesNotExist:
             return HttpResponseNotFound()
+
     elif request.method == "PUT":
         if not us_id:
             return HttpResponseBadRequest("Falta us_id")
@@ -995,7 +1005,7 @@ def registro_horas(request, sp_id, us_id=None):
             if not data["new_horas"]:
                 return HttpResponseBadRequest("faltan horas")
             if not data["fecha"]:
-                return HttpResponseBadRequest("faltan fecha")
+                return HttpResponseBadRequest("falta fecha")
 
         except Exception as e:
             return HttpResponseBadRequest(e)
@@ -1022,7 +1032,23 @@ def registro_horas(request, sp_id, us_id=None):
             serializer.save()
             return JsonResponse(serializer.data, status=200)
         return JsonResponse(serializer.errors, status=400, safe=False)
-    # elif request.method == "DELETE":
-    #     p = RegistroHoras.objects.get(id=proyect_id)
-    #     p.delete()
-    #     return JsonResponse(True, safe=False, status=204)
+    elif request.method == "DELETE":
+        if not us_id:
+            return HttpResponseBadRequest("Falta us_id")
+
+        try:
+            data = JSONParser().parse(request)
+            if not data["fecha"]:
+                return HttpResponseBadRequest("falta fecha")
+        except Exception as e:
+            return HttpResponseBadRequest(e)
+
+        try:
+            rh = RegistroHoras.objects.get(us=us_id, fecha=data["fecha"])
+            rh.delete()
+            return JsonResponse(True, safe=False, status=204)
+
+        except RegistroHoras.DoesNotExist:
+            return HttpResponseNotFound(
+                f"Sin registro de horas en {us_id} y fecha {data['fecha']}"
+            )
