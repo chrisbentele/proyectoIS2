@@ -122,8 +122,10 @@ Functions</h2></td></tr>
 <tr class="separator:a98f30daf609dc9a7c0374aece6d98e9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a4e6e1cba4a4b80ba78bd9ab9676c48"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceapi_1_1views.html#a3a4e6e1cba4a4b80ba78bd9ab9676c48">usuarios_admin</a> (request, user_id)</td></tr>
 <tr class="separator:a3a4e6e1cba4a4b80ba78bd9ab9676c48"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a44e0a345f94a445b9c621f19988241a2"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceapi_1_1views.html#a44e0a345f94a445b9c621f19988241a2">registro_horas</a> (request, sp_id, us_id=None)</td></tr>
-<tr class="separator:a44e0a345f94a445b9c621f19988241a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9045b78109e439077ea8bce76062837"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceapi_1_1views.html#ac9045b78109e439077ea8bce76062837">registro_horas</a> (request, sprint_id, us_id=None)</td></tr>
+<tr class="separator:ac9045b78109e439077ea8bce76062837"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a628f96082842bd9e6f24854f6fd1af85"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceapi_1_1views.html#a628f96082842bd9e6f24854f6fd1af85">sprints_miembros</a> (request, proyect_id, sprint_id)</td></tr>
+<tr class="separator:a628f96082842bd9e6f24854f6fd1af85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a308fb6ca7ed69b9aebed843b6786eff9"></a>
@@ -228,8 +230,8 @@ Functions</h2></td></tr>
 <pre class="fragment">Metodos p/ admin de roles de miembros de proyecto</pre> 
 </div>
 </div>
-<a id="a44e0a345f94a445b9c621f19988241a2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a44e0a345f94a445b9c621f19988241a2">&#9670;&nbsp;</a></span>registro_horas()</h2>
+<a id="ac9045b78109e439077ea8bce76062837"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac9045b78109e439077ea8bce76062837">&#9670;&nbsp;</a></span>registro_horas()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -244,7 +246,7 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>sp_id</em>, </td>
+          <td class="paramname"><em>sprint_id</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -396,6 +398,40 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Desactiva el sprint</pre> 
+</div>
+</div>
+<a id="a628f96082842bd9e6f24854f6fd1af85"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a628f96082842bd9e6f24854f6fd1af85">&#9670;&nbsp;</a></span>sprints_miembros()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def api.views.sprints_miembros </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>request</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>proyect_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>sprint_id</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
 </div>
 </div>
 <a id="aabcbc1bf2ba827d6015a2a27af1bd45f"></a>
