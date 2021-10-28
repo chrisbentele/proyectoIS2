@@ -91,6 +91,8 @@ def asignar_us_miembro(self, proyect_id, us_id, user_id):
     res = self.client.post(
         f"/api/proyectos/{proyect_id}/user_stories/{us_id}/asignar/{user_id}",
     )
+    if res.status_code == 400:
+        print(res.json())
     self.assertEqual(res.status_code, 201)
 
     return res.json()
@@ -400,13 +402,8 @@ class Sprints_Tests(TestCase):
 
         us = crear_US(p["id"], u["id"])
 
-        res = self.client.put(
-            f"/api/proyectos/{p['id']}/user_stories/{us['id']}",
-            json.dumps({"sprint": sp["id"]}),
-            content_type="application/json",
-        )
-        self.assertEqual(res.status_code, 200)
-        self.assertEqual(sp["id"], res.json()["sprint"])
+        res = asignar_us_sprint(self, p["id"], sp["id"], us["id"])
+        self.assertEqual(sp["id"], res["sprint"])
 
         res = self.client.get(
             f"/api/proyectos/{p['id']}/sprints/{sp['id']}/user_stories"
@@ -415,6 +412,16 @@ class Sprints_Tests(TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertJSONNotEqual(json.dumps(newUs), json.dumps(us))
         self.assertEqual(newUs["sprint"], sp["id"])
+        return newUs, u
+
+    def test_sprints_miembros(self):
+        us, usuario = self.test_sprints_user_stories()
+        asignar_us_miembro(self, us["proyecto"], us["id"], usuario["id"])
+        res = self.client.get(
+            f"/api/proyectos/{us['proyecto']}/sprints/{us['sprint']}/miembros"
+        )
+
+        self.assertJSONEqual(res.json()[0], usuario)
 
 
 class User_Stories_Estimar_Tests(TestCase):
