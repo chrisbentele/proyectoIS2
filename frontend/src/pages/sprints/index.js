@@ -129,8 +129,7 @@ export default function Index({ props, dispatchError }) {
   };
 
   useEffect(() => {
-    console.log("condicion", sprint && userStories.length && thisMember);
-    if (sprint && userStories && thisMember) {
+    if (sprint && userStories.length && thisMember) {
       console.log("this member rol", thisMember.rol.nombre);
       if (thisMember.rol.nombre === "Scrum Master") {
         toggleIsAllowed(true);
