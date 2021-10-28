@@ -123,9 +123,8 @@ export default function ProjectConfig({ props, dispatchError }) {
             <option value={project.estado} hidden>
               {projectStateToString(project.estado)}
             </option>
-            <option value="0">Pendiente</option>
-            <option value="1">Activo</option>
-            <option value="2">Terminado</option>
+            <option value="0">Activo</option>
+            <option value="1">Terminado</option>
           </Select>
           <FormControl isInvalid={errors["estimado"]}>
             <FormLabel fontSize="25px">Duración estimada(semanas)</FormLabel>

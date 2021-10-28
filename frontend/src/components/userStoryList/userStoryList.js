@@ -38,6 +38,7 @@ import AsignarDevUsModal from "../../components/AsignarDevUsModal/AsignarDevUsMo
 import { tienePermiso } from "../../util";
 import { PERMISOS_MACRO } from "../../pages/roles/permisos";
 import { useAuth0 } from "@auth0/auth0-react";
+import { MdTimer } from "react-icons/md";
 
 import { getUsers } from "../../api/users";
 import { desasignarUsASprint } from "../../api/userStories";
@@ -209,10 +210,16 @@ const USList = ({
                           label: "Hecho",
                           isDisabled: us.estado === 2,
                         },
+                        {
+                          value: "3",
+                          label: "QA",
+                          isDisabled: us.estado === 3,
+                        },
                       ]}
                     />
                     <Flex>
-                      {tienePermiso(thisMember, PERMISOS_MACRO.MODIFICAR_US) ? (
+                      {tienePermiso(thisMember, PERMISOS_MACRO.MODIFICAR_US) &&
+                      !sprint?.activo ? (
                         <Button
                           onClick={() => {
                             setIsOpenModal(true);
@@ -298,7 +305,7 @@ const USList = ({
                       {tienePermiso(
                         thisMember,
                         PERMISOS_MACRO.MODIFICAR_SPRINT
-                      ) ? (
+                      ) && !sprint?.activo ? (
                         <>
                           <Button
                             mt="2"
@@ -360,53 +367,23 @@ const USList = ({
                         </>
                       ) : null}
 
-                      {tienePermiso(thisMember, PERMISOS_MACRO.ELIMINAR_US) ? (
-                        <Button
-                          onClick={() => setIsOpen(true)}
-                          mt="2"
-                          ml="auto"
-                          bg="red.500"
-                          _hover={{
-                            background: "red.600",
-                            color: "teal.500",
-                          }}
-                          _active={{
-                            background: "red.600",
-                          }}
-                        >
-                          <DeleteIcon color={"#F5F4F5"} />
-                        </Button>
+                      {tienePermiso(
+                        thisMember,
+                        PERMISOS_MACRO.MODIFICAR_SPRINT
+                      ) && sprint?.activo ? (
+                        <>
+                          <Button
+                            onClick={() => {
+                              setFocusedUS(us);
+                              //setShowEstimarModal(true);
+                            }}
+                            mt="2"
+                            ml="1"
+                          >
+                            <MdTimer />
+                          </Button>
+                        </>
                       ) : null}
-                      <AlertDialog
-                        isOpen={isOpen}
-                        leastDestructiveRef={cancelRef}
-                        onClose={onClose}
-                      >
-                        <AlertDialogOverlay>
-                          <AlertDialogContent>
-                            <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                              Eliminar US
-                            </AlertDialogHeader>
-
-                            <AlertDialogBody>
-                              ¿Está seguro que desea eliminar a esta US?
-                            </AlertDialogBody>
-
-                            <AlertDialogFooter>
-                              <Button ref={cancelRef} onClick={onClose}>
-                                Cancelar
-                              </Button>
-                              <Button
-                                colorScheme="red"
-                                onClick={onDelete}
-                                ml={3}
-                              >
-                                Eliminar
-                              </Button>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                        </AlertDialogOverlay>
-                      </AlertDialog>
                     </Flex>
                   </>
                 ) : null}
