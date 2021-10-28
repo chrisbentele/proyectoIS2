@@ -12,6 +12,7 @@ var dir_e610548fe8318b6fb64260e3a37ed71a =
     [ "EliminarSprintModal", "dir_ab71110cf0f2df882072d8df78ec0b88.html", "dir_ab71110cf0f2df882072d8df78ec0b88" ],
     [ "errorBox", "dir_1e7e05981389da7d0d162148591dcdb4.html", "dir_1e7e05981389da7d0d162148591dcdb4" ],
     [ "EstimarUsModal", "dir_956ef5af420b2f9d78710729d6e5acb7.html", "dir_956ef5af420b2f9d78710729d6e5acb7" ],
+    [ "graficoBurnDown", "dir_efc9d7d744dc4e670fb06075e41a949b.html", "dir_efc9d7d744dc4e670fb06075e41a949b" ],
     [ "header", "dir_3f2e550d02e69221b148655fc00cb95d.html", "dir_3f2e550d02e69221b148655fc00cb95d" ],
     [ "privateRoute", "dir_d1c90574c4a5c029fa13d343c4e076b3.html", "dir_d1c90574c4a5c029fa13d343c4e076b3" ],
     [ "table", "dir_5d98a86c4aebb5f0fe60132afacd6c8c.html", "dir_5d98a86c4aebb5f0fe60132afacd6c8c" ],
