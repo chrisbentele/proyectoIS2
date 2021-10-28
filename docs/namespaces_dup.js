@@ -23,6 +23,7 @@ var namespaces_dup =
         [ "proyectos", "namespaceapi_1_1views.html#a308fb6ca7ed69b9aebed843b6786eff9", null ],
         [ "proyectos_miembros", "namespaceapi_1_1views.html#a25c497cc085e6d9efce65bd77c05304b", null ],
         [ "proyectos_miembros_roles", "namespaceapi_1_1views.html#a4706beb584a487d0cfa109e562e1ac3e", null ],
+        [ "registro_horas", "namespaceapi_1_1views.html#a44e0a345f94a445b9c621f19988241a2", null ],
         [ "roles", "namespaceapi_1_1views.html#a8ff787143d0f02c45e8c53ad077347b2", null ],
         [ "sprints", "namespaceapi_1_1views.html#a08bee8433c942b0cfcc38a7bc73d26b5", null ],
         [ "sprints_activar", "namespaceapi_1_1views.html#a895cb0e63883c1aa0ad89bb17f4396f2", null ],
