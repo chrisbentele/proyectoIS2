@@ -422,7 +422,6 @@ class Sprints_Tests(TestCase):
         res = self.client.get(
             f"/api/proyectos/{us['proyecto']}/sprints/{us['sprint']}/miembros"
         )
-        print(res.json())
         self.assertJSONEqual(json.dumps(res.json()[0]), usuario)
 
 
@@ -791,4 +790,3 @@ class US_Registro_horas(TestCase):
         )
 
         self.assertEqual(res.status_code, 404)
-

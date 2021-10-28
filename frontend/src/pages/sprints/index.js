@@ -309,6 +309,25 @@ export default function Index({ props, dispatchError }) {
                 sprint={sprint}
                 dispatchError={dispatchError}
                 setUserStories={setUserStories}
+                nombreLista="QA"
+                userStories={
+                  //Es un array?
+                  Array.isArray(userStories)
+                    ? //Si es un array, qué elementos pertenecen a esta lista?
+                      userStories?.filter((us) => us.estado === 3)
+                    : //Si es un solo elemento, pertenece a esta lista?
+                    userStories?.estado === 3
+                    ? //Si pertenece retorno
+                      userStories
+                    : //Si no pertenece, null
+                      null
+                }
+              ></USList>
+              <USList
+                projectId={projectId}
+                sprint={sprint}
+                dispatchError={dispatchError}
+                setUserStories={setUserStories}
                 nombreLista="Backlog"
                 userStories={userStories?.filter((us) => us.estado === 4)}
               ></USList>

@@ -10,13 +10,14 @@ var searchData=
   ['deleteicon_83',['DeleteIcon',['../deleteIcon_8js.html#aacc4a12cb66e501ef93cf644b46b79ad',1,'deleteIcon.js']]],
   ['deleteicon_2ejs_84',['deleteIcon.js',['../deleteIcon_8js.html',1,'']]],
   ['deleteproject_85',['deleteProject',['../projects_8js.html#a5eedf1969a2b3145f557abe7bb64f9af',1,'projects.js']]],
-  ['deleterole_86',['deleteRole',['../roles_8js.html#abad18bf9d5337af9281af0df6d33caa9',1,'roles.js']]],
-  ['deletesprint_87',['deleteSprint',['../sprints_8js.html#aecfb6f4fcb091b3ba5273364fdea5778',1,'sprints.js']]],
-  ['deleteuser_88',['deleteUser',['../users_8js.html#a7c7de8cf91deb0126053ec7ba3d17b0b',1,'deleteUser():&#160;users.js'],['../users_8test_8js.html#a2b3965a8b426cec936fe1fbb478e4018',1,'deleteUser(999).catch((err):&#160;users.test.js']]],
-  ['desactivarsprint_89',['desactivarSprint',['../sprints_8js.html#aeacbad1838d276b175c66633563c9ad0',1,'sprints.js']]],
-  ['desasignarusasprint_90',['desasignarUsASprint',['../userStories_8js.html#a07bb22561d41e124cc55ce02c225c310',1,'userStories.js']]],
-  ['desasignarusmodal_2ejs_91',['DesasignarUsModal.js',['../DesasignarUsModal_8js.html',1,'']]],
-  ['desasignarussprint_92',['DesasignarUsSprint',['../DesasignarUsModal_8js.html#a10ae6c41d5335e4c7cd2fa960765e449',1,'DesasignarUsModal.js']]],
-  ['dom_93',['dom',['../index_8js.html#aafeaf9e6629ed1563ffa6bb972a6bb66',1,'dom():&#160;index.js'],['../setupTests_8js.html#ace141dab1481fa1126bf476461d4ff32',1,'dom():&#160;setupTests.js']]],
-  ['duracionestimada_94',['duracionEstimada',['../classapi_1_1models_1_1US.html#ac701fd0f11ca05ab9365f1401b64c21c',1,'api.models.US.duracionEstimada()'],['../classapi_1_1models_1_1Proyecto.html#ab16299fd91c57c131232b6acf8220165',1,'api.models.Proyecto.duracionEstimada()']]]
+  ['deleteregistroshoras_86',['deleteRegistrosHoras',['../userStories_8js.html#a74253e0e8a2d2e7d9151ec71e35d001e',1,'userStories.js']]],
+  ['deleterole_87',['deleteRole',['../roles_8js.html#abad18bf9d5337af9281af0df6d33caa9',1,'roles.js']]],
+  ['deletesprint_88',['deleteSprint',['../sprints_8js.html#aecfb6f4fcb091b3ba5273364fdea5778',1,'sprints.js']]],
+  ['deleteuser_89',['deleteUser',['../users_8js.html#a7c7de8cf91deb0126053ec7ba3d17b0b',1,'deleteUser():&#160;users.js'],['../users_8test_8js.html#a2b3965a8b426cec936fe1fbb478e4018',1,'deleteUser(999).catch((err):&#160;users.test.js']]],
+  ['desactivarsprint_90',['desactivarSprint',['../sprints_8js.html#aeacbad1838d276b175c66633563c9ad0',1,'sprints.js']]],
+  ['desasignarusasprint_91',['desasignarUsASprint',['../userStories_8js.html#a07bb22561d41e124cc55ce02c225c310',1,'userStories.js']]],
+  ['desasignarusmodal_2ejs_92',['DesasignarUsModal.js',['../DesasignarUsModal_8js.html',1,'']]],
+  ['desasignarussprint_93',['DesasignarUsSprint',['../DesasignarUsModal_8js.html#a10ae6c41d5335e4c7cd2fa960765e449',1,'DesasignarUsModal.js']]],
+  ['dom_94',['dom',['../index_8js.html#aafeaf9e6629ed1563ffa6bb972a6bb66',1,'dom():&#160;index.js'],['../setupTests_8js.html#ace141dab1481fa1126bf476461d4ff32',1,'dom():&#160;setupTests.js']]],
+  ['duracionestimada_95',['duracionEstimada',['../classapi_1_1models_1_1US.html#ac701fd0f11ca05ab9365f1401b64c21c',1,'api.models.US.duracionEstimada()'],['../classapi_1_1models_1_1Proyecto.html#ab16299fd91c57c131232b6acf8220165',1,'api.models.Proyecto.duracionEstimada()']]]
 ];
