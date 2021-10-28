@@ -2,8 +2,8 @@ var searchData=
 [
   ['activarsprint_0',['activarSprint',['../sprints_8js.html#ad00654916423a05f6cad558b03d06894',1,'sprints.js']]],
   ['activo_1',['activo',['../classapi_1_1models_1_1Sprint.html#aae98af2627490a64dd1812533520c271',1,'api::models::Sprint']]],
-  ['addicon_2',['AddIcon',['../components_2addIcon_2index_8js.html#a3ca1ce2c50a30b78bd3c4f80854fdddd',1,'index.js']]],
-  ['addicon_3',['addIcon',['../index_01copy_8js.html#a68da76b341cfd30d514a7514249a3d2b',1,'index copy.js']]],
+  ['addicon_2',['addIcon',['../index_01copy_8js.html#a68da76b341cfd30d514a7514249a3d2b',1,'index copy.js']]],
+  ['addicon_3',['AddIcon',['../components_2addIcon_2index_8js.html#a3ca1ce2c50a30b78bd3c4f80854fdddd',1,'index.js']]],
   ['addmembertable_4',['AddMemberTable',['../addMemberTable_8js.html#ab6f4a905ea0b8cf05b527e8b13126134',1,'addMemberTable.js']]],
   ['addmembertable_5',['addMemberTable',['../pages_2projectMembers_2index_8js.html#a84353e5b7fb408a094a977eba92739d2',1,'index.js']]],
   ['addmembertable_2ejs_6',['addMemberTable.js',['../addMemberTable_8js.html',1,'']]],

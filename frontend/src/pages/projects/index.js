@@ -16,9 +16,10 @@ import {
   LinkBox,
   LinkOverlay,
   Button,
+  Heading,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import { mapStateColor } from "../../styles/theme";
+import { mapStateColor, handleSprintBoxColor } from "../../styles/theme";
 import USListUnset from "../../components/userStoryListUnset/userStoryListUnset";
 import CrearSprintModal from "../../components/CrearSprintModal/CrearSprintModal";
 import { useHistory } from "react-router-dom";
@@ -72,17 +73,11 @@ export default function Index({ dispatchError, props }) {
       .catch((err) => console.log(err));
   }, []);
 
-  function handleSprintBoxColor(sprint) {
-    if (sprint.terminado) return "#808080";
-    if (sprint.activo) return "#a0ff6d";
-    return "#ffe66d";
-  }
-
   return (
     <Box
       minHeight="100vh"
       minWidth="full"
-      bg={mapStateColor(project?.estado)}
+      bg={"#FAFAFA"}
       color="#2b2d42"
       d="flex"
       // justifyContent="left"
@@ -155,6 +150,7 @@ export default function Index({ dispatchError, props }) {
             <HStack p="5">
               <HStack w="fit-content">
                 <USListUnset
+                  minWidth="3"
                   projectId={projectId}
                   setUserStories={setUserStories}
                   nombreLista="Backlog"
@@ -174,7 +170,7 @@ export default function Index({ dispatchError, props }) {
                       d="flex"
                       _hover={{
                         background: "#F5F4F5",
-                        color: "teal.500",
+                        color: "blue.400",
                       }}
                     >
                       {tienePermiso(thisMember, PERMISOS_MACRO.CREAR_ROL) ? (
@@ -191,13 +187,21 @@ export default function Index({ dispatchError, props }) {
               </HStack>
               {/* sprints */}
               <Box>
-                <VStack>
+                <VStack
+                  p="3"
+                  bg="#F5F4F5"
+                  borderWidth="px"
+                  borderColor={"#40474a"}
+                  borderRadius="lg"
+                  boxShadow="lg"
+                >
+                  <Heading fontSize="3xl">Sprints</Heading>
                   {tienePermiso(thisMember, PERMISOS_MACRO.CREAR_SPRINT) ? (
                     <Box
                       display="flex"
                       w="lg"
                       height="180px"
-                      borderWidth="3px"
+                      borderWidth="4px"
                       borderColor={"#40474a"}
                       borderRadius="lg"
                       overflow="hidden"
@@ -229,7 +233,7 @@ export default function Index({ dispatchError, props }) {
                         display="flex"
                         w="lg"
                         height="180px"
-                        borderWidth="3px"
+                        borderWidth="2px"
                         borderRadius="lg"
                         borderColor={"#40474a"}
                         overflow="hidden"

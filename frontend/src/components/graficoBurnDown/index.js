@@ -74,7 +74,7 @@ export default function BurnDown({ registros, sprint }) {
           stroke="#4275f5"
           yAxisId={0}
           strokeWidth={3}
-          connectNuls={true}
+          connectNulls={true}
         />
       </LineChart>
     </Box>
