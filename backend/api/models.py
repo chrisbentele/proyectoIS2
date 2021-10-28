@@ -5,7 +5,7 @@
 # datos de todo el sistema. \n Entro ellos se encuentran los siguientes:\n
 # - Usuario: El modelo correspondiente a cualquier usuario del sistema.
 # - Proyecto: Modelo correspondiente a un proyecto.
-# - 
+# -
 from django.db.models.base import Model
 from django.db.models.deletion import CASCADE
 from django.db.models.fields import (
@@ -18,6 +18,7 @@ from django.db.models.fields import (
 from django.db.models.fields.related import ForeignKey, ManyToManyField, OneToOneField
 from django.contrib.postgres.fields import ArrayField
 import uuid
+from django.utils import timezone
 
 """!
 fasdfsa
@@ -75,7 +76,7 @@ class Retrospectiva(Model):
 
 
 class Sprint(Model):
-    ## 
+    ##
     # @brief Nombre del Sprint
     # @details Puede tener una longitud máxima de 100 caracteres.
     nombre = CharField(max_length=100)
