@@ -22,76 +22,46 @@
 
  @licend  The above is the entire license notice for the JavaScript code in this file
 */
-var NAVTREE = [
-  [
-    "System.A",
-    "index.html",
-    [
-      ["Bienvenido a la documentación de System.A.", "index.html", null],
-      [
-        "Getting Started with Create React App",
-        "md_frontend_README.html",
-        null,
-      ],
-      [
-        "Packages",
-        "namespaces.html",
-        [
-          ["Packages", "namespaces.html", "namespaces_dup"],
-          [
-            "Package Functions",
-            "namespacemembers.html",
-            [
-              ["All", "namespacemembers.html", null],
-              ["Functions", "namespacemembers_func.html", null],
-              ["Variables", "namespacemembers_vars.html", null],
-            ],
-          ],
-        ],
-      ],
-      [
-        "Classes",
-        "annotated.html",
-        [
-          ["Class List", "annotated.html", "annotated_dup"],
-          ["Class Index", "classes.html", null],
-          ["Class Hierarchy", "hierarchy.html", "hierarchy"],
-          [
-            "Class Members",
-            "functions.html",
-            [
-              ["All", "functions.html", null],
-              ["Functions", "functions_func.html", null],
-              ["Variables", "functions_vars.html", null],
-            ],
-          ],
-        ],
-      ],
-      [
-        "Files",
-        "files.html",
-        [
-          ["File List", "files.html", "files_dup"],
-          [
-            "File Members",
-            "globals.html",
-            [
-              ["All", "globals.html", "globals_dup"],
-              ["Functions", "globals_func.html", null],
-              ["Variables", "globals_vars.html", "globals_vars"],
-            ],
-          ],
-        ],
-      ],
-    ],
-  ],
+var NAVTREE =
+[
+  [ "System.A", "index.html", [
+    [ "Bienvenido a la documentación de System.A.", "index.html", null ],
+    [ "Getting Started with Create React App", "md_frontend_README.html", null ],
+    [ "Packages", "namespaces.html", [
+      [ "Packages", "namespaces.html", "namespaces_dup" ],
+      [ "Package Functions", "namespacemembers.html", [
+        [ "All", "namespacemembers.html", null ],
+        [ "Functions", "namespacemembers_func.html", null ],
+        [ "Variables", "namespacemembers_vars.html", null ]
+      ] ]
+    ] ],
+    [ "Classes", "annotated.html", [
+      [ "Class List", "annotated.html", "annotated_dup" ],
+      [ "Class Index", "classes.html", null ],
+      [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
+      [ "Class Members", "functions.html", [
+        [ "All", "functions.html", null ],
+        [ "Functions", "functions_func.html", null ],
+        [ "Variables", "functions_vars.html", null ]
+      ] ]
+    ] ],
+    [ "Files", "files.html", [
+      [ "File List", "files.html", "files_dup" ],
+      [ "File Members", "globals.html", [
+        [ "All", "globals.html", "globals_dup" ],
+        [ "Functions", "globals_func.html", null ],
+        [ "Variables", "globals_vars.html", "globals_vars" ]
+      ] ]
+    ] ]
+  ] ]
 ];
 
-var NAVTREEINDEX = [
-  "",
-  "globals_p.html",
-  "proyecto_8js.html#a953be46b94f595d839e88a6d3d270309",
+var NAVTREEINDEX =
+[
+"App_8js.html",
+"globals_t.html",
+"role_8js.html"
 ];
 
-var SYNCONMSG = "click to disable panel synchronisation";
-var SYNCOFFMSG = "click to enable panel synchronisation";
+var SYNCONMSG = 'click to disable panel synchronisation';
+var SYNCOFFMSG = 'click to enable panel synchronisation';
