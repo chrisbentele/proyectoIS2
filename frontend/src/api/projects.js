@@ -13,7 +13,7 @@ import { axiosInstance } from '.';
 
 
 /**
- * @file project.js
+ * @file projects.js
  * @brief Endpoints de Proyectos
  */
 

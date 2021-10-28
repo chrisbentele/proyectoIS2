@@ -17,10 +17,12 @@ Including another URLconf
 from django.urls import path, include
 from .views import (
     proyectos,
+    registro_horas,
     roles,
     sprints,
     sprints_activar,
     sprints_desactivar,
+    sprints_miembros,
     sprints_user_stories,
     user_stories,
     proyectos_miembros_roles,
@@ -37,6 +39,7 @@ apiPaths = [
     path("proyectos/<str:proyect_id>", proyectos),
     path("proyectos/<str:proyect_id>/miembros", proyectos_miembros),
     path("proyectos/<str:proyect_id>/miembros/<str:user_id>", proyectos_miembros),
+    # User Stories
     path("proyectos/<str:proyect_id>/user_stories", user_stories),
     path("proyectos/<str:proyect_id>/user_stories/<str:us_id>", user_stories),
     path(
@@ -51,7 +54,22 @@ apiPaths = [
         "proyectos/<str:proyect_id>/user_stories/<str:us_id>/estimar",
         user_stories_estimar,
     ),
+    # Registro horas
+    path(
+        "sprints/<str:sprint_id>/user_stories/<str:us_id>/registro_horas",
+        registro_horas,
+    ),
+    path(
+        "sprints/<str:sprint_id>/registro_horas",
+
+        registro_horas,
+    ),
+    # Sprints
     path("proyectos/<str:proyect_id>/sprints", sprints),
+    path(
+        "proyectos/<str:proyect_id>/sprints/<str:sprint_id>/miembros",
+        sprints_miembros,
+    ),
     path("proyectos/<str:proyect_id>/sprints/<str:sprint_id>", sprints),
     path(
         "proyectos/<str:proyect_id>/sprints/<str:sprint_id>/user_stories",
@@ -66,10 +84,12 @@ apiPaths = [
         "proyectos/<str:proyect_id>/sprints/<str:sprint_id>/desactivar",
         sprints_desactivar,
     ),
+    # Usuarios
     path("usuarios", usuarios),
     path("usuarios/<str:user_id>", usuarios),
     path("usuarios/<str:user_id>/setAdmin", usuarios_admin),
     path("usuarios/<str:user_id>/proyectos", usuarios_proyectos),
+    # Roles
     path("proyectos/<str:proyect_id>/roles", roles),
     path("proyectos/<str:proyect_id>/roles/<str:rol_id>", roles),
     path(

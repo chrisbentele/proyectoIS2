@@ -227,6 +227,7 @@ const USList = ({
                           }}
                           mt="2"
                           mr="2"
+                          disabled={sprint?.activo}
                         >
                           <EditIcon color="black.500" />
                         </Button>
@@ -324,6 +325,7 @@ const USList = ({
                             _active={{
                               background: "white.200",
                             }}
+                            disabled={sprint?.activo}
                           >
                             Remover del Sprint
                           </Button>
@@ -366,6 +368,7 @@ const USList = ({
                           </AlertDialog>
                         </>
                       ) : null}
+
 
                       {tienePermiso(
                         thisMember,

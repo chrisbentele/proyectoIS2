@@ -1,3 +1,11 @@
+##
+# @namespace api.models
+# @brief Registro de modelos de datos.
+# @details En este archivo se definirán los modelos correspondientes a los
+# datos de todo el sistema. \n Entro ellos se encuentran los siguientes:\n
+# - Usuario: El modelo correspondiente a cualquier usuario del sistema.
+# - Proyecto: Modelo correspondiente a un proyecto.
+# -
 from django.db.models.base import Model
 from django.db.models.deletion import CASCADE
 from django.db.models.fields import (
@@ -10,8 +18,11 @@ from django.db.models.fields import (
 from django.db.models.fields.related import ForeignKey, ManyToManyField, OneToOneField
 from django.contrib.postgres.fields import ArrayField
 import uuid
+from django.utils import timezone
 
-# Create your models here.
+"""!
+fasdfsa
+"""
 PERMISOS = (
     (0, "Crear proyecto"),
     (1, "Ver proyecto"),
@@ -65,6 +76,9 @@ class Retrospectiva(Model):
 
 
 class Sprint(Model):
+    ##
+    # @brief Nombre del Sprint
+    # @details Puede tener una longitud máxima de 100 caracteres.
     nombre = CharField(max_length=100)
     activo = BooleanField(default=False)
     fechaCreacion = DateField(auto_now_add=True)
@@ -83,6 +97,7 @@ class US(Model):
     creadoPor = ForeignKey(Usuario, on_delete=CASCADE)
     fechaCreacion = DateField(auto_now_add=True)
     estado = IntegerField(choices=ESTADO_US, default=4)
+    prioridad = IntegerField(default=0)
     estimacionSM = IntegerField(null=True)
     estimacionesDev = IntegerField(null=True)
     duracionEstimada = IntegerField(null=True)
@@ -115,3 +130,22 @@ class RolAsignado(Model):
     rol = ForeignKey(Rol, on_delete=CASCADE)
     usuario = ForeignKey(Usuario, on_delete=CASCADE)
     proyecto = ForeignKey(Proyecto, on_delete=CASCADE)
+
+
+class RegistroHoras(Model):
+    # Registro de cantidad de horas usadas en un US
+    us = ForeignKey(US, on_delete=CASCADE)
+    fecha = DateField()
+    horas = IntegerField()
+    proyecto = ForeignKey(Proyecto, on_delete=CASCADE)
+    sprint = ForeignKey(Sprint, on_delete=CASCADE)
+    usuario = ForeignKey(Usuario, on_delete=CASCADE)
+    fechaEdit = DateField(null=True)
+    fechaCreacion = DateField(editable=False)
+
+    def save(self, *args, **kwargs):
+        """On save, update timestamps"""
+        if not self.id:
+            self.fechaCreacion = timezone.now().strftime("%Y-%m-%d")
+        self.fechaEdit = timezone.now().strftime("%Y-%m-%d")
+        return super(RegistroHoras, self).save(*args, **kwargs)

@@ -2,11 +2,12 @@
 import { axiosInstance } from ".";
 
 export const createUserStory = async (usData) => {
-  const { projectId, usName, description, creadoPor } = usData;
+  const { projectId, usName, description, creadoPor, prioridad } = usData;
   return await axiosInstance.post(`/proyectos/${projectId}/user_stories`, {
     nombre: usName,
     contenido: description,
     creadoPor,
+    prioridad,
   });
 };
 
@@ -37,6 +38,7 @@ export const editUS = async ({
   description,
   estado,
   usId,
+  prioridad,
 }) => {
   return await axiosInstance.put(
     `/proyectos/${projectId}/user_stories/${usId}`,
@@ -44,6 +46,7 @@ export const editUS = async ({
       nombre: usName,
       contenido: description,
       estado,
+      prioridad,
     }
   );
 };
@@ -94,6 +97,18 @@ export const desasignarUsASprint = ({ projectId, sprintId, usId }) =>
 export const eliminarUS = async (projectId, us_id) =>
   await axiosInstance.delete(`/proyectos/${projectId}/user_stories/${us_id}`);
 
+export const registrarHoras = ({ projectId, sprintId, usId, horas, fecha }) =>
+  axiosInstance.post(
+    `/sprints/${sprintId}/user_stories/${usId}/registro_horas`,
+    { horas, fecha }
+  );
+
+export const getRegistrosHoras = ({ sprintId, usId, fecha }) =>
+  axiosInstance.get(
+    `/sprints/${sprintId}/user_stories/${usId}/registro_horas`,
+    { params: { fecha } }
+  );
+
 const userStories = {
   createUserStory,
   editUS,
@@ -104,6 +119,8 @@ const userStories = {
   eliminarUS,
   estimarUs,
   getUsuariosAsignados,
+  registrarHoras,
+  getRegistrosHoras,
 };
 
 export default userStories;
