@@ -142,7 +142,6 @@ export default function Index({ props, dispatchError }) {
           return;
         }
       }
-      debugger;
       toggleIsAllowed(false);
     }
   }, [sprint, userStories, thisMember]);
