@@ -11,7 +11,6 @@ var dir_bb526febf19f7f361440717bc528d950 =
     [ "projects", "dir_2e9a86073fd37e4148e77714da853e2f.html", "dir_2e9a86073fd37e4148e77714da853e2f" ],
     [ "roles", "dir_d4044a342a17afb23ffefc8addb8dea9.html", "dir_d4044a342a17afb23ffefc8addb8dea9" ],
     [ "sprints", "dir_c8d30f926b10a0c7a62bac117fa6b685.html", "dir_c8d30f926b10a0c7a62bac117fa6b685" ],
-    [ "user", "dir_00ec7fbd5cc1f66b725fc5384fa7b8ea.html", "dir_00ec7fbd5cc1f66b725fc5384fa7b8ea" ],
     [ "users", "dir_8ea57e6c825fbeec9ae85db27819c208.html", "dir_8ea57e6c825fbeec9ae85db27819c208" ],
     [ "profile.js", "profile_8js.html", "profile_8js" ],
     [ "proyecto.js", "proyecto_8js.html", "proyecto_8js" ]
