@@ -23,6 +23,9 @@ export const desactivarSprint = async ({ projectId, spId }) =>
     `/proyectos/${projectId}/sprints/${spId}/desactivar`
   );
 
+export const getSprintMiembros = async ({ projectId, spId }) =>
+  await axiosInstance.get(`/proyectos/${projectId}/sprints/${spId}/miembros`);
+
 export const getHoras = async ({ projectId, spId }) =>
   await axiosInstance.get(`/proyectos/${projectId}/sprints/${spId}`);
 
@@ -46,6 +49,7 @@ const sprints = {
   deleteSprint,
   activarSprint,
   desactivarSprint,
+  getSprintMiembros,
   getSprint,
   getHoras,
 };
