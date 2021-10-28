@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['sprint_395',['Sprint',['../classapi_1_1models_1_1Sprint.html',1,'api::models']]],
-  ['sprint_5factivar_5ftests_396',['Sprint_Activar_Tests',['../classapi_1_1tests_1_1Sprint__Activar__Tests.html',1,'api::tests']]],
-  ['sprints_5ftests_397',['Sprints_Tests',['../classapi_1_1tests_1_1Sprints__Tests.html',1,'api::tests']]],
-  ['sprints_5fuser_5fstories_5ftests_398',['Sprints_User_Stories_Tests',['../classapi_1_1tests_1_1Sprints__User__Stories__Tests.html',1,'api::tests']]],
-  ['sprintserializer_399',['SprintSerializer',['../classapi_1_1serializers_1_1SprintSerializer.html',1,'api::serializers']]]
+  ['sprint_397',['Sprint',['../classapi_1_1models_1_1Sprint.html',1,'api::models']]],
+  ['sprint_5factivar_5ftests_398',['Sprint_Activar_Tests',['../classapi_1_1tests_1_1Sprint__Activar__Tests.html',1,'api::tests']]],
+  ['sprints_5ftests_399',['Sprints_Tests',['../classapi_1_1tests_1_1Sprints__Tests.html',1,'api::tests']]],
+  ['sprints_5fuser_5fstories_5ftests_400',['Sprints_User_Stories_Tests',['../classapi_1_1tests_1_1Sprints__User__Stories__Tests.html',1,'api::tests']]],
+  ['sprintserializer_401',['SprintSerializer',['../classapi_1_1serializers_1_1SprintSerializer.html',1,'api::serializers']]]
 ];
