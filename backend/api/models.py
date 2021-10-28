@@ -47,9 +47,9 @@ PERMISOS = (
     (20, "Eliminar Sprint"),
     (21, "Estimar Sprint"),
 )
-ESTADO_US = ((0, "To do"), (1, "Doing"), (2, "Done"), (4, "Backlog"))
+ESTADO_US = ((0, "To do"), (1, "Doing"), (2, "Done"), (3, "QA"), (4, "Backlog"))
 
-estadoProyecto = ((0, "Pendiente"), (1, "Activo"), (2, "Terminado"))
+estadoProyecto = ((0, "Activo"), (1, "Terminado"))
 
 
 class Usuario(Model):
