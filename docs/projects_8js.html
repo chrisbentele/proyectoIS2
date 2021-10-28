@@ -30,7 +30,7 @@
    <div id="projectname">System.A
    &#160;<span id="projectnumber">0.1</span>
    </div>
-   <div id="projectbrief">Scrum + Kanban</div>
+   <div id="projectbrief">Scrum+Kanban</div>
   </td>
  </tr>
  </tbody>
@@ -91,6 +91,9 @@ $(document).ready(function(){initNavTree('projects_8js.html',''); initResizable(
 <div class="title">projects.js File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Endpoints de Proyectos.  
+<a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -123,7 +126,9 @@ Si no se provee el id de usuario la funcion solicita al servidor todos los proye
 <tr class="memitem:ac18c71bb06fff953aaa354f29a6f2b2a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="userStories_8test_8js.html#a92b303b76a3f942ea819498907d5e83c">const</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="projects_8js.html#ac18c71bb06fff953aaa354f29a6f2b2a">projects</a></td></tr>
 <tr class="separator:ac18c71bb06fff953aaa354f29a6f2b2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Variable Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Endpoints de Proyectos. </p>
+</div><h2 class="groupheader">Variable Documentation</h2>
 <a id="a2e9d2ad3fbbc8cf8fe5dc7f6f51cd596"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2e9d2ad3fbbc8cf8fe5dc7f6f51cd596">&#9670;&nbsp;</a></span>createProject</h2>
 
@@ -182,7 +187,7 @@ projectName: nombre del proyecto. </p>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= <a class="code" href="projects_8test_8js.html#a2bbea1ca302c158b8d9fccabd4fd82bf">async</a> (<a class="code" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>) =&gt;</div>
 <div class="line">  await <a class="code" href="api_2index_8js.html#a49de16393722038aeb1da8e9874d4d36">axiosInstance</a>.delete(`<a class="code" href="namespaceapi_1_1views.html#a308fb6ca7ed69b9aebed843b6786eff9">proyectos</a>/${<a class="code" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>}`)</div>
-<div class="ttc" id="anamespaceapi_1_1views_html_a308fb6ca7ed69b9aebed843b6786eff9"><div class="ttname"><a href="namespaceapi_1_1views.html#a308fb6ca7ed69b9aebed843b6786eff9">api.views.proyectos</a></div><div class="ttdeci">def proyectos(request, proyect_id=None)</div><div class="ttdef"><b>Definition:</b> views.py:27</div></div>
+<div class="ttc" id="anamespaceapi_1_1views_html_a308fb6ca7ed69b9aebed843b6786eff9"><div class="ttname"><a href="namespaceapi_1_1views.html#a308fb6ca7ed69b9aebed843b6786eff9">api.views.proyectos</a></div><div class="ttdeci">def proyectos(request, proyect_id=None)</div><div class="ttdef"><b>Definition:</b> views.py:35</div></div>
 <div class="ttc" id="asprints_8test_8js_html_a12106278ecd31c348b8adbcd316f562f"><div class="ttname"><a href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a></div><div class="ttdeci">let projectId</div><div class="ttdef"><b>Definition:</b> sprints.test.js:14</div></div>
 </div><!-- fragment -->
 <p>Eliminar proyecto La funcion recibe como parametro el id del proyecto a eliminar, retorna true si se pudo eliminar el proyecto. </p>
@@ -293,7 +298,7 @@ Si se provee el id de usuario la funcion solicita todos los proyectos de un usua
 <div class="line">  }</div>
 <div class="line">  <span class="keywordflow">return</span> await <a class="code" href="api_2index_8js.html#a49de16393722038aeb1da8e9874d4d36">axiosInstance</a>.get(<span class="stringliteral">&quot;proyectos&quot;</span>);</div>
 <div class="line">}</div>
-<div class="ttc" id="anamespaceapi_1_1views_html_a7cf2387f02ec05f86f8bb1498b22bf82"><div class="ttname"><a href="namespaceapi_1_1views.html#a7cf2387f02ec05f86f8bb1498b22bf82">api.views.usuarios</a></div><div class="ttdeci">def usuarios(request, user_id=None)</div><div class="ttdef"><b>Definition:</b> views.py:167</div></div>
+<div class="ttc" id="anamespaceapi_1_1views_html_a7cf2387f02ec05f86f8bb1498b22bf82"><div class="ttname"><a href="namespaceapi_1_1views.html#a7cf2387f02ec05f86f8bb1498b22bf82">api.views.usuarios</a></div><div class="ttdeci">def usuarios(request, user_id=None)</div><div class="ttdef"><b>Definition:</b> views.py:181</div></div>
 </div><!-- fragment -->
 <p>Listar proyectos <br  />
 Si no se provee el id de usuario la funcion solicita al servidor todos los proyectos. </p>

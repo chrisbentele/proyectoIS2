@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['goback_2ejs_421',['goBack.js',['../goBack_8js.html',1,'']]]
+  ['header_2ejs_434',['header.js',['../header_8js.html',1,'']]],
+  ['home_2ejs_435',['home.js',['../home_8js.html',1,'']]]
 ];

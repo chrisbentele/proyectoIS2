@@ -1,4 +1,5 @@
 import json
+
 from django.utils import timezone
 from rest_framework.exceptions import ValidationError
 
@@ -959,11 +960,13 @@ def registro_horas(request, sprint_id, us_id=None):
     except Sprint.DoesNotExist:
         return HttpResponseNotFound("sprint_id")
 
+
     if request.method == "POST":
         try:
             us = US.objects.get(id=us_id)
             if int(sprint_id) != us.sprint.id:
                 return HttpResponseForbidden("sprint_id != us.sprint")
+
         except US.DoesNotExist:
             return HttpResponseNotFound("us_id")
         try:
@@ -984,6 +987,7 @@ def registro_horas(request, sprint_id, us_id=None):
                 "us": us_id,
                 "proyecto": us.proyecto.id,
                 "sprint": sprint_id,
+
                 "usuario": usa.usuario.id,
                 "horas": data["horas"],
                 "fecha": data.get("fecha", timezone.now().strftime("%Y-%m-%d")),
@@ -1004,6 +1008,7 @@ def registro_horas(request, sprint_id, us_id=None):
         fecha = request.GET.get("fecha")
         if not fecha:
             rh = RegistroHoras.objects.filter(us=us_id)
+
             rh_seri = RegistroHorasSerializer(rh, many=True)
             return JsonResponse(rh_seri.data, safe=False)
 
@@ -1018,6 +1023,7 @@ def registro_horas(request, sprint_id, us_id=None):
         except RegistroHoras.DoesNotExist:
             return HttpResponseNotFound()
 
+
     elif request.method == "PUT":
         if not us_id:
             return HttpResponseBadRequest("Falta us_id")
@@ -1028,6 +1034,7 @@ def registro_horas(request, sprint_id, us_id=None):
                 return HttpResponseBadRequest("faltan horas")
             if not data["fecha"]:
                 return HttpResponseBadRequest("falta fecha")
+
 
         except Exception as e:
             return HttpResponseBadRequest(e)
@@ -1106,3 +1113,4 @@ def sprints_miembros(request, proyect_id, sprint_id):
         miembros_list = [json.loads(x) for x in list(miembros_set)]
 
         return JsonResponse(miembros_list, safe=False)
+

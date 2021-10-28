@@ -9,6 +9,7 @@ var namespaceapi_1_1models =
     [ "Comentario", "classapi_1_1models_1_1Comentario.html", null ],
     [ "Rol", "classapi_1_1models_1_1Rol.html", null ],
     [ "RolAsignado", "classapi_1_1models_1_1RolAsignado.html", null ],
+    [ "RegistroHoras", "classapi_1_1models_1_1RegistroHoras.html", "classapi_1_1models_1_1RegistroHoras" ],
     [ "ESTADO_US", "namespaceapi_1_1models.html#ac915fe38cc810504d5d7e0e0ed170ec6", null ],
     [ "estadoProyecto", "namespaceapi_1_1models.html#aaae18c09e079ef71143fe550cdaf23a6", null ],
     [ "PERMISOS", "namespaceapi_1_1models.html#a1a5be17a1da28faee7139b7da02db521", null ]

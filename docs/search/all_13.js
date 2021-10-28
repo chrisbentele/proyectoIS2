@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['v6_353',['v6',['../index_01copy_8js.html#a997562617fbc7bae63effeb7bbef557c',1,'index copy.js']]],
-  ['views_2epy_354',['views.py',['../views_8py.html',1,'']]]
+  ['wsgi_2epy_368',['wsgi.py',['../wsgi_8py.html',1,'']]],
+  ['wsgi_5fapplication_369',['WSGI_APPLICATION',['../namespacecontroller_1_1settings.html#afb1c9ad0090c911469824a42c250f27e',1,'controller::settings']]]
 ];

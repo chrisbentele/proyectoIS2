@@ -94,14 +94,13 @@ def asignar_us_miembro(self, proyect_id, us_id, user_id):
     res = self.client.post(
         f"/api/proyectos/{proyect_id}/user_stories/{us_id}/asignar/{user_id}",
     )
-    if res.status_code == 400:
-        print(res.json())
     self.assertEqual(res.status_code, 201)
 
     return res.json()
 
 
 def registro_horas(self, sprint_id, us_id, fecha=None):
+
     res = self.client.post(
         f"/api/sprints/{sprint_id}/user_stories/{us_id}/registro_horas",
         json.dumps({"horas": 1, "fecha": fecha}),
@@ -712,6 +711,7 @@ class US_Registro_horas(TestCase):
         return res_data
 
     def test_registro_horas_user_stories_get(self):
+
         rg_data = self.test_registro_horas_create()
 
         res = self.client.get(
@@ -732,6 +732,7 @@ class US_Registro_horas(TestCase):
         self.assertEqual(res.status_code, 200)
 
         # Comprar vs bd
+
         self.assertJSONEqual(res.content, json.dumps(rg_data))
 
     def test_sprints_horas_get(self):
@@ -790,3 +791,4 @@ class US_Registro_horas(TestCase):
         )
 
         self.assertEqual(res.status_code, 404)
+
