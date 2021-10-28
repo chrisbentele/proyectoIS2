@@ -97,6 +97,7 @@ class US(Model):
     creadoPor = ForeignKey(Usuario, on_delete=CASCADE)
     fechaCreacion = DateField(auto_now_add=True)
     estado = IntegerField(choices=ESTADO_US, default=4)
+    prioridad = IntegerField(default=0)
     estimacionSM = IntegerField(null=True)
     estimacionesDev = IntegerField(null=True)
     duracionEstimada = IntegerField(null=True)
