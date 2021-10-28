@@ -4,3 +4,4 @@
 .vscode/
 backend/.venv/*
 backend/data
+.venv
