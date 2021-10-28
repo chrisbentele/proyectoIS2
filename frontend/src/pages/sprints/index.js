@@ -51,7 +51,7 @@ export default function Index({ props, dispatchError }) {
   const [project, setProject] = useState(); //estado del proyecto
   const [userStories, setUserStories] = useState([]); //estado del proyecto
   const [sprint, setSprint] = useState(null);
-  const [isAllowed, toggleIsAllowed] = useState(false);
+  const [isAllowed, toggleIsAllowed] = useState(true);
   const [isOpenEditSp, setIsOpenEditSp] = useState(false);
   const [burndownData, setBurndownData] = useState([
     {
@@ -129,51 +129,7 @@ export default function Index({ props, dispatchError }) {
   };
 
   useEffect(() => {
-    if (burndownData.length === 1 && sprint) {
-      const progresoEstimadoPorDia = Math.floor(
-        sprint.sumaHorasAsignadas / sprint.estimacion
-      );
-      console.log(progresoEstimadoPorDia);
-      setBurndownData([
-        ...burndownData,
-        {
-          dia: 2,
-          esperado: sprint.sumaHorasAsignadas - progresoEstimadoPorDia * 2,
-          restante: sprint.sumaHorasAsignadas - progresoEstimadoPorDia * 2,
-        },
-        {
-          dia: 3,
-          esperado: sprint.sumaHorasAsignadas - progresoEstimadoPorDia * 3,
-          restante: sprint.sumaHorasAsignadas - progresoEstimadoPorDia * 3 - 2,
-        },
-        {
-          dia: 4,
-          esperado: sprint.sumaHorasAsignadas - progresoEstimadoPorDia * 4,
-          restante: sprint.sumaHorasAsignadas - progresoEstimadoPorDia * 4 - 2,
-        },
-        {
-          dia: 5,
-          esperado: sprint.sumaHorasAsignadas - progresoEstimadoPorDia * 5,
-          restante: sprint.sumaHorasAsignadas - progresoEstimadoPorDia * 5 - 2,
-        },
-      ]);
-    }
-  }, [burndownData]);
-
-  useEffect(() => {
-    if (sprint) {
-      setBurndownData([
-        {
-          dia: 1,
-          esperado: sprint.sumaHorasAsignadas,
-          restante: sprint.sumaHorasAsignadas - 5,
-        },
-      ]);
-    }
-  }, [sprint]);
-
-  useEffect(() => {
-    console.log("condicion", sprint && userStories && thisMember);
+    console.log("condicion", sprint && userStories.length && thisMember);
     if (sprint && userStories && thisMember) {
       console.log("this member rol", thisMember.rol.nombre);
       if (thisMember.rol.nombre === "Scrum Master") {
@@ -183,19 +139,23 @@ export default function Index({ props, dispatchError }) {
       for (let i = 0; i < userStories.length; i++) {
         if (userStories[i].asignado.id === user.sub) {
           toggleIsAllowed(true);
-          break;
+          return;
         }
       }
-      if (!isAllowed) {
-        dispatchError(
-          "No tienes acceso al sprint",
-          "Debes tener asignado una de las US del sprint o ser Scrum Master para visualizar el sprint",
-          null,
-          false
-        );
-      }
+      debugger;
+      toggleIsAllowed(false);
     }
   }, [sprint, userStories, thisMember]);
+
+  useEffect(() => {
+    if (!isAllowed) {
+      dispatchError(
+        "No tienes acceso al sprint",
+        "Debes tener asignado una de las US del sprint o ser Scrum Master para visualizar el sprint",
+        5000
+      );
+    }
+  }, [isAllowed]);
 
   const deactivateSprint = async () => {
     if (!sprint.activable)
@@ -376,7 +336,7 @@ export default function Index({ props, dispatchError }) {
               ></USList>
             </HStack>
           </Box>
-          <BurnDown burndownData={[]} />
+          <BurnDown registros={[]} sprint={sprint} />
           <EditarSprintModal
             projectId={projectId}
             sprint={sprint}
