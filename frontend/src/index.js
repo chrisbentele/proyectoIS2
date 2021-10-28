@@ -21,7 +21,6 @@ import { ProvideDbAuth } from "./providers/DbAuth";
 
 /**
  * Función de renderiza toda la página
- * @param ninguno
  */
 ReactDOM.render(
   <Auth0Provider

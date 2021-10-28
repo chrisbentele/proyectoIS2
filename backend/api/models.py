@@ -1,4 +1,11 @@
-from django.utils import timezone
+##
+# @namespace api.models
+# @brief Registro de modelos de datos.
+# @details En este archivo se definirán los modelos correspondientes a los
+# datos de todo el sistema. \n Entro ellos se encuentran los siguientes:\n
+# - Usuario: El modelo correspondiente a cualquier usuario del sistema.
+# - Proyecto: Modelo correspondiente a un proyecto.
+# - 
 from django.db.models.base import Model
 from django.db.models.deletion import CASCADE
 from django.db.models.fields import (
@@ -12,7 +19,9 @@ from django.db.models.fields.related import ForeignKey, ManyToManyField, OneToOn
 from django.contrib.postgres.fields import ArrayField
 import uuid
 
-# Create your models here.
+"""!
+fasdfsa
+"""
 PERMISOS = (
     (0, "Crear proyecto"),
     (1, "Ver proyecto"),
@@ -66,6 +75,9 @@ class Retrospectiva(Model):
 
 
 class Sprint(Model):
+    ## 
+    # @brief Nombre del Sprint
+    # @details Puede tener una longitud máxima de 100 caracteres.
     nombre = CharField(max_length=100)
     activo = BooleanField(default=False)
     fechaCreacion = DateField(auto_now_add=True)

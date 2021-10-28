@@ -589,12 +589,12 @@ def user_stories_estimar(request, proyect_id, us_id):
     try:
         proyecto = Proyecto.objects.get(id=proyect_id)
     except Proyecto.DoesNotExist:
-        return HttpResponseNotFound()
+        return HttpResponseNotFound("proyecto")
 
     try:
         us = US.objects.get(id=us_id)
     except US.DoesNotExist:
-        return HttpResponseNotFound()
+        return HttpResponseNotFound("us")
 
     if request.method == "POST":
         try:
@@ -602,35 +602,56 @@ def user_stories_estimar(request, proyect_id, us_id):
         except Exception as e:
             return HttpResponseBadRequest(e)
 
-        rol_asign = RolAsignado.objects.filter(
-            usuario=data["user_id"], proyecto=proyect_id
-        )
+    rol_asign = RolAsignado.objects.filter(usuario=data["user_id"], proyecto=proyect_id)
 
-        rol_asign = (
-            RolAsignadoSerializer(rol_asign[0]).data if len(rol_asign) > 0 else None
-        )
+    rol_asign = RolAsignadoSerializer(rol_asign[0]).data if len(rol_asign) > 0 else None
 
-        if not rol_asign:
-            return HttpResponseForbidden("No tiene permisos")
+    if not rol_asign:
+        return HttpResponseForbidden("No tiene permisos")
 
-        rol_user = Rol.objects.get(id=rol_asign["rol"])
+    rol_user = Rol.objects.get(id=rol_asign["rol"])
 
-        rol_user = RolSerializer(rol_user).data
+    rol_user = RolSerializer(rol_user).data
+
+    if request.method == "POST":
 
         if rol_user["id"] == proyect_id:
-
+            # Si es el SM
             serializer = USSerializer(
                 us, data={"estimacionSM": data["estimacion"]}, partial=True
             )
+            if serializer.is_valid():
+                serializer.save()
+                asignada = False
+                try:
+                    usa = USAsignada.objects.get(us=us_id)
+                    asignada = True
+                except USAsignada.DoesNotExist:
+                    asignada = False
+                if asignada and data["user_id"] == usa.usuario.id:
+                    # El asignado es el mismo SM
+                    print("entro")
+                    serializer = USSerializer(
+                        us, data={"estimacionesDev": data["estimacion"]}, partial=True
+                    )
+                    if serializer.is_valid():
+                        serializer.save()
+                        return JsonResponse(serializer.data, status=200)
+                    else:
+                        return JsonResponse(serializer.errors, status=400, safe=False)
+                return JsonResponse(serializer.data, status=200)
+            else:
+                return JsonResponse(serializer.errors, status=400, safe=False)
         else:
+            # Si es Dev
             serializer = USSerializer(
                 us, data={"estimacionesDev": data["estimacion"]}, partial=True
             )
 
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=200)
-        return JsonResponse(serializer.errors, status=400, safe=False)
+            if serializer.is_valid():
+                serializer.save()
+                return JsonResponse(serializer.data, status=200)
+            return JsonResponse(serializer.errors, status=400, safe=False)
 
 
 def sprints(request, proyect_id, sprint_id=None):

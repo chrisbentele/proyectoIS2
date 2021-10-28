@@ -1,0 +1,7 @@
+/*!
+\namespace api
+\brief Definición de la API en Django.
+\details Define las principales clases que serán utilizadas con Django, tanto
+los modelos de datos, los serializadores, las pruebas unitarias, URLs, vistas
+de datos, etc.
+*/

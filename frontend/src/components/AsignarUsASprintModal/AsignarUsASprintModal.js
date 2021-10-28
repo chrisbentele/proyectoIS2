@@ -1,5 +1,5 @@
 /**
- * @file AsignarUsASprintModal.js.js
+ * @file AsignarUsASprintModal.js
  * @brief Modal cuando se asigna un US a un sprint
  */
 

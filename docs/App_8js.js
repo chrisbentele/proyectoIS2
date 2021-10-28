@@ -16,6 +16,5 @@ var App_8js =
     [ "react", "App_8js.html#aaed10feaf2dda4314d93c83408affea1", null ],
     [ "roles", "App_8js.html#a306b7203b0f789a14ec081011d2760cf", null ],
     [ "sprints", "App_8js.html#a84028cd643b641c81b85c0e32d8e21e1", null ],
-    [ "user", "App_8js.html#a50c944668b6bc96ba333ed87fe058a70", null ],
     [ "users", "App_8js.html#a10a07c69d6e3c1d4255e6b5e7dd41638", null ]
 ];
