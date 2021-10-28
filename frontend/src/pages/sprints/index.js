@@ -24,6 +24,14 @@ import { mapStateColor } from "../../styles/theme";
 import { MdBuild } from "react-icons/md";
 import { useHistory } from "react-router-dom";
 import { BsFillPlayFill } from "react-icons/bs";
+import {
+  LineChart,
+  YAxis,
+  XAxis,
+  Tooltip,
+  CartesianGrid,
+  Line,
+} from "recharts";
 
 import { tienePermiso } from "../../util";
 import { PERMISOS_MACRO } from "../roles/permisos";
@@ -44,6 +52,18 @@ export default function Index({ props, dispatchError }) {
   const [isAllowed, toggleIsAllowed] = useState(false);
   const [isOpenEditSp, setIsOpenEditSp] = useState(false);
   const [hayUs, setHayUs] = useState(false);
+  const [burndownData, setBurndownData] = useState([
+    {
+      dia: 1,
+      esperado: 1000,
+      restante: 950,
+    },
+    {
+      dia: 2,
+      esperado: 900,
+      restante: 800,
+    },
+  ]);
 
   const history = useHistory();
 
@@ -106,6 +126,50 @@ export default function Index({ props, dispatchError }) {
         .then(({ data }) => setUserStories(data));
     }
   };
+
+  useEffect(() => {
+    if (burndownData.length === 1 && sprint) {
+      const progresoEstimadoPorDia = Math.floor(
+        sprint.sumaHorasAsignadas / sprint.estimacion
+      );
+      console.log(progresoEstimadoPorDia);
+      setBurndownData([
+        ...burndownData,
+        {
+          dia: 2,
+          esperado: sprint.sumaHorasAsignadas - progresoEstimadoPorDia * 2,
+          restante: sprint.sumaHorasAsignadas - progresoEstimadoPorDia * 2,
+        },
+        {
+          dia: 3,
+          esperado: sprint.sumaHorasAsignadas - progresoEstimadoPorDia * 3,
+          restante: sprint.sumaHorasAsignadas - progresoEstimadoPorDia * 3 - 2,
+        },
+        {
+          dia: 4,
+          esperado: sprint.sumaHorasAsignadas - progresoEstimadoPorDia * 4,
+          restante: sprint.sumaHorasAsignadas - progresoEstimadoPorDia * 4 - 2,
+        },
+        {
+          dia: 5,
+          esperado: sprint.sumaHorasAsignadas - progresoEstimadoPorDia * 5,
+          restante: sprint.sumaHorasAsignadas - progresoEstimadoPorDia * 5 - 2,
+        },
+      ]);
+    }
+  }, [burndownData]);
+
+  useEffect(() => {
+    if (sprint) {
+      setBurndownData([
+        {
+          dia: 1,
+          esperado: sprint.sumaHorasAsignadas,
+          restante: sprint.sumaHorasAsignadas - 5,
+        },
+      ]);
+    }
+  }, [sprint]);
 
   useEffect(() => {
     console.log("condicion", sprint && userStories && thisMember);
@@ -310,6 +374,33 @@ export default function Index({ props, dispatchError }) {
                 userStories={userStories?.filter((us) => us.estado === 4)}
               ></USList>
             </HStack>
+          </Box>
+          <Box backgroundColor="#000000">
+            <LineChart
+              width={1000}
+              height={500}
+              data={burndownData}
+              margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
+            >
+              <XAxis dataKey="dia" />
+              <YAxis dataKey="esperado" />
+              <Tooltip />
+              <CartesianGrid stroke="#f5f5f5" />
+              <Line
+                type="monotone"
+                dataKey="restante"
+                stroke="#ff7300"
+                yAxisId={0}
+                strokeWidth={3}
+              />
+              <Line
+                type="monotone"
+                dataKey="esperado"
+                stroke="#4275f5"
+                yAxisId={0}
+                strokeWidth={3}
+              />
+            </LineChart>
           </Box>
           <EditarSprintModal
             projectId={projectId}
