@@ -1101,4 +1101,8 @@ def sprints_miembros(request, proyect_id, sprint_id):
                 ).data
                 miembros_set.add(json.dumps(asigned_user))
 
-        return JsonResponse(list(miembros_set), safe=False)
+        miembros_list = list(miembros_set)
+
+        miembros_list = [json.loads(x) for x in list(miembros_set)]
+
+        return JsonResponse(miembros_list, safe=False)

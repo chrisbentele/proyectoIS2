@@ -423,8 +423,8 @@ class Sprints_Tests(TestCase):
         res = self.client.get(
             f"/api/proyectos/{us['proyecto']}/sprints/{us['sprint']}/miembros"
         )
-
-        self.assertJSONEqual(res.json()[0], usuario)
+        print(res.json())
+        self.assertJSONEqual(json.dumps(res.json()[0]), usuario)
 
 
 class User_Stories_Estimar_Tests(TestCase):
