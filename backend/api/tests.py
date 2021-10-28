@@ -1,8 +1,10 @@
-from datetime import datetime
+from datetime import datetime, timedelta
+
 import json
 import uuid
 from api.serializers import (
     ProyectoSerializer,
+    RegistroHorasSerializer,
     RolAsignadoSerializer,
     RolSerializer,
     USSerializer,
@@ -10,7 +12,7 @@ from api.serializers import (
 )
 from django.test import TestCase
 
-from api.models import US, RolAsignado
+from api.models import US, RegistroHoras, RolAsignado
 
 ## @file tests.py
 #
@@ -81,12 +83,31 @@ def crear_sprint(self, proyecto=None):
 
 
 def asignar_us_sprint(self, proyect_id, sp_id, us_id):
-    res = self.client.put(
-        f"/api/proyectos/{proyect_id}/user_stories/{us_id}",
-        json.dumps({"sprint": sp_id}),
-        content_type="application/json",
+    res = self.client.post(
+        f"/api/proyectos/{proyect_id}/sprints/{sp_id}/user_stories/{us_id}"
     )
 
+    return res.json()
+
+
+def asignar_us_miembro(self, proyect_id, us_id, user_id):
+    res = self.client.post(
+        f"/api/proyectos/{proyect_id}/user_stories/{us_id}/asignar/{user_id}",
+    )
+    if res.status_code == 400:
+        print(res.json())
+    self.assertEqual(res.status_code, 201)
+
+    return res.json()
+
+
+def registro_horas(self, sprint_id, us_id, fecha=None):
+    res = self.client.post(
+        f"/api/sprints/{sprint_id}/user_stories/{us_id}/registro_horas",
+        json.dumps({"horas": 1, "fecha": fecha}),
+        content_type="application/json",
+    )
+    self.assertEqual(res.status_code, 201)
     return res.json()
 
 
@@ -384,13 +405,8 @@ class Sprints_Tests(TestCase):
 
         us = crear_US(p["id"], u["id"])
 
-        res = self.client.put(
-            f"/api/proyectos/{p['id']}/user_stories/{us['id']}",
-            json.dumps({"sprint": sp["id"]}),
-            content_type="application/json",
-        )
-        self.assertEqual(res.status_code, 200)
-        self.assertEqual(sp["id"], res.json()["sprint"])
+        res = asignar_us_sprint(self, p["id"], sp["id"], us["id"])
+        self.assertEqual(sp["id"], res["sprint"])
 
         res = self.client.get(
             f"/api/proyectos/{p['id']}/sprints/{sp['id']}/user_stories"
@@ -399,6 +415,16 @@ class Sprints_Tests(TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertJSONNotEqual(json.dumps(newUs), json.dumps(us))
         self.assertEqual(newUs["sprint"], sp["id"])
+        return newUs, u
+
+    def test_sprints_miembros(self):
+        us, usuario = self.test_sprints_user_stories()
+        asignar_us_miembro(self, us["proyecto"], us["id"], usuario["id"])
+        res = self.client.get(
+            f"/api/proyectos/{us['proyecto']}/sprints/{us['sprint']}/miembros"
+        )
+
+        self.assertJSONEqual(res.json()[0], usuario)
 
 
 class User_Stories_Estimar_Tests(TestCase):
@@ -567,10 +593,7 @@ class User_Stories_Asignar_Tests(TestCase):
         p = crear_proyecto(self, [u["id"]])
 
         us = crear_US(p["id"], u["id"])
-        res = self.client.post(
-            f"/api/proyectos/{p['id']}/user_stories/{us['id']}/asignar/{u['id']}",
-        )
-        self.assertEqual(res.status_code, 201)
+        asignar_us_miembro(self, p["id"], us["id"], u["id"])
         res = self.client.get(
             f"/api/proyectos/{p['id']}/user_stories/{us['id']}",
         )
@@ -583,10 +606,7 @@ class User_Stories_Asignar_Tests(TestCase):
         us = crear_US(p["id"], u["id"])
 
         # asignar us a user
-        res = self.client.post(
-            f"/api/proyectos/{p['id']}/user_stories/{us['id']}/asignar/{u['id']}",
-        )
-        self.assertEqual(res.status_code, 201)
+        asignar_us_miembro(self, p["id"], us["id"], u["id"])
 
         # traer us p/ chequeo de cambios
         res = self.client.get(
@@ -661,8 +681,112 @@ class Sprints_User_Stories_Tests(TestCase):
         self.assertEqual(res.status_code, 204)
 
 
-# us asignar / desasignar usuario/sprint
+class US_Registro_horas(TestCase):
+    def test_registro_horas_create(self):
+        u = crear_user()
+        p = crear_proyecto(self, [u["id"]])
+        sp = crear_sprint(self, p)
+        us = crear_US(p["id"], u["id"])
 
-# nuevos casos para us
+        # Asignar usuario a la US
+        asignar_us_miembro(self, p["id"], us["id"], u["id"])
 
-# usuario admin
+        # Asignar US al Sprint
+        asignar_us_sprint(self, p["id"], sp["id"], us["id"])
+
+        # Crear Registro de horas
+        res = self.client.post(
+            f"/api/sprints/{sp['id']}/user_stories/{us['id']}/registro_horas",
+            json.dumps({"horas": 1}),
+            content_type="application/json",
+        )
+
+        self.assertEqual(res.status_code, 201)
+
+        # Comparar vs base de datos
+        res_data = res.json()
+        new_rh = RegistroHoras.objects.get(id=res_data["id"])
+        self.assertJSONEqual(
+            res.content, json.dumps(RegistroHorasSerializer(new_rh).data)
+        )
+        return res_data
+
+    def test_registro_horas_user_stories_get(self):
+        rg_data = self.test_registro_horas_create()
+
+        res = self.client.get(
+            f"/api/sprints/{rg_data['sprint']}/user_stories/{rg_data['us']}/registro_horas",
+        )
+        self.assertEqual(res.status_code, 200)
+
+        # Comprar vs bd
+        self.assertJSONEqual(json.dumps(res.json()[0]), json.dumps(rg_data))
+
+    def test_registro_horas_user_stories_unico_get(self):
+        rg_data = self.test_registro_horas_create()
+
+        res = self.client.get(
+            f"/api/sprints/{rg_data['sprint']}/user_stories/{rg_data['us']}/registro_horas",
+            {"fecha": rg_data["fecha"]},
+        )
+        self.assertEqual(res.status_code, 200)
+
+        # Comprar vs bd
+        self.assertJSONEqual(res.content, json.dumps(rg_data))
+
+    def test_sprints_horas_get(self):
+        rg_data_1 = self.test_registro_horas_create()
+
+        # Crear una segunda hora
+        td = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
+        rg_data_2 = registro_horas(
+            self,
+            rg_data_1["sprint"],
+            rg_data_1["us"],
+            td,
+        )
+
+        res = self.client.get(
+            f"/api/sprints/{rg_data_1['sprint']}/registro_horas",
+        )
+        self.assertEqual(res.status_code, 200)
+
+        res_data_1 = [r for r in res.json() if r["id"] == rg_data_1["id"]][0]
+        res_data_2 = [r for r in res.json() if r["id"] == rg_data_2["id"]][0]
+
+        self.assertJSONEqual(json.dumps(rg_data_1), res_data_1)
+        self.assertJSONEqual(json.dumps(rg_data_2), res_data_2)
+
+    def test_registro_horas_update(self):
+        rg_data = self.test_registro_horas_create()
+
+        res = self.client.put(
+            f"/api/sprints/{rg_data['sprint']}/user_stories/{rg_data['us']}/registro_horas",
+            json.dumps({"new_horas": 2, "fecha": rg_data["fecha"]}),
+            content_type="application/json",
+        )
+        self.assertEqual(res.status_code, 200)
+
+        res_data = res.json()
+        new_rh = RegistroHoras.objects.get(id=res_data["id"])
+        self.assertJSONEqual(
+            res.content, json.dumps(RegistroHorasSerializer(new_rh).data)
+        )
+
+    def test_registro_horas_delete(self):
+        rg_data = self.test_registro_horas_create()
+
+        res = self.client.delete(
+            f"/api/sprints/{rg_data['sprint']}/user_stories/{rg_data['us']}/registro_horas",
+            json.dumps({"fecha": rg_data["fecha"]}),
+            content_type="application/json",
+        )
+
+        self.assertEqual(res.status_code, 204)
+
+        res = self.client.get(
+            f"/api/sprints/{rg_data['sprint']}/user_stories/{rg_data['us']}/registro_horas",
+            {"fecha": rg_data["fecha"]},
+        )
+
+        self.assertEqual(res.status_code, 404)
