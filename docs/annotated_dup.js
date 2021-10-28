@@ -1,9 +1,6 @@
 var annotated_dup =
 [
-    [ "api", "namespaceapi.html", [
-      [ "admin", "namespaceapi_1_1admin.html", [
-        [ "AuthorAdmin", "classapi_1_1admin_1_1AuthorAdmin.html", null ]
-      ] ],
+    [ "api", null, [
       [ "apps", "namespaceapi_1_1apps.html", [
         [ "ApiConfig", "classapi_1_1apps_1_1ApiConfig.html", null ]
       ] ],
@@ -16,7 +13,8 @@ var annotated_dup =
         [ "USAsignada", "classapi_1_1models_1_1USAsignada.html", null ],
         [ "Comentario", "classapi_1_1models_1_1Comentario.html", null ],
         [ "Rol", "classapi_1_1models_1_1Rol.html", null ],
-        [ "RolAsignado", "classapi_1_1models_1_1RolAsignado.html", null ]
+        [ "RolAsignado", "classapi_1_1models_1_1RolAsignado.html", null ],
+        [ "RegistroHoras", "classapi_1_1models_1_1RegistroHoras.html", "classapi_1_1models_1_1RegistroHoras" ]
       ] ],
       [ "serializers", "namespaceapi_1_1serializers.html", [
         [ "RolSerializer", "classapi_1_1serializers_1_1RolSerializer.html", [
@@ -45,6 +43,9 @@ var annotated_dup =
         ] ],
         [ "RolAsignadoSerializer", "classapi_1_1serializers_1_1RolAsignadoSerializer.html", [
           [ "Meta", "classapi_1_1serializers_1_1RolAsignadoSerializer_1_1Meta.html", null ]
+        ] ],
+        [ "RegistroHorasSerializer", "classapi_1_1serializers_1_1RegistroHorasSerializer.html", [
+          [ "Meta", "classapi_1_1serializers_1_1RegistroHorasSerializer_1_1Meta.html", null ]
         ] ]
       ] ],
       [ "tests", "namespaceapi_1_1tests.html", [
@@ -58,7 +59,8 @@ var annotated_dup =
         [ "User_Stories_Estimar_Tests", "classapi_1_1tests_1_1User__Stories__Estimar__Tests.html", "classapi_1_1tests_1_1User__Stories__Estimar__Tests" ],
         [ "Sprint_Activar_Tests", "classapi_1_1tests_1_1Sprint__Activar__Tests.html", "classapi_1_1tests_1_1Sprint__Activar__Tests" ],
         [ "User_Stories_Asignar_Tests", "classapi_1_1tests_1_1User__Stories__Asignar__Tests.html", "classapi_1_1tests_1_1User__Stories__Asignar__Tests" ],
-        [ "Sprints_User_Stories_Tests", "classapi_1_1tests_1_1Sprints__User__Stories__Tests.html", "classapi_1_1tests_1_1Sprints__User__Stories__Tests" ]
+        [ "Sprints_User_Stories_Tests", "classapi_1_1tests_1_1Sprints__User__Stories__Tests.html", "classapi_1_1tests_1_1Sprints__User__Stories__Tests" ],
+        [ "US_Registro_horas", "classapi_1_1tests_1_1US__Registro__horas.html", "classapi_1_1tests_1_1US__Registro__horas" ]
       ] ]
     ] ]
 ];

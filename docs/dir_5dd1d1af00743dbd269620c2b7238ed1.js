@@ -1,10 +1,7 @@
 var dir_5dd1d1af00743dbd269620c2b7238ed1 =
 [
     [ "utils", "dir_01b7598cc105ee2beb84b28b23a042ba.html", "dir_01b7598cc105ee2beb84b28b23a042ba" ],
-    [ "__init__.py", "api_2____init_____8py.html", null ],
-    [ "admin.py", "admin_8py.html", [
-      [ "AuthorAdmin", "classapi_1_1admin_1_1AuthorAdmin.html", null ]
-    ] ],
+    [ "admin.py", "admin_8py.html", null ],
     [ "apps.py", "apps_8py.html", [
       [ "ApiConfig", "classapi_1_1apps_1_1ApiConfig.html", null ]
     ] ],
@@ -46,7 +43,11 @@ var dir_5dd1d1af00743dbd269620c2b7238ed1 =
       [ "RolAsignadoSerializer", "classapi_1_1serializers_1_1RolAsignadoSerializer.html", [
         [ "Meta", "classapi_1_1serializers_1_1RolAsignadoSerializer_1_1Meta.html", null ]
       ] ],
-      [ "Meta", "classapi_1_1serializers_1_1RolAsignadoSerializer_1_1Meta.html", null ]
+      [ "Meta", "classapi_1_1serializers_1_1RolAsignadoSerializer_1_1Meta.html", null ],
+      [ "RegistroHorasSerializer", "classapi_1_1serializers_1_1RegistroHorasSerializer.html", [
+        [ "Meta", "classapi_1_1serializers_1_1RegistroHorasSerializer_1_1Meta.html", null ]
+      ] ],
+      [ "Meta", "classapi_1_1serializers_1_1RegistroHorasSerializer_1_1Meta.html", null ]
     ] ],
     [ "tests.py", "tests_8py.html", "tests_8py" ],
     [ "urls.py", "api_2urls_8py.html", "api_2urls_8py" ],

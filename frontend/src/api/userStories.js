@@ -2,11 +2,12 @@
 import { axiosInstance } from ".";
 
 export const createUserStory = async (usData) => {
-  const { projectId, usName, description, creadoPor } = usData;
+  const { projectId, usName, description, creadoPor, prioridad } = usData;
   return await axiosInstance.post(`/proyectos/${projectId}/user_stories`, {
     nombre: usName,
     contenido: description,
     creadoPor,
+    prioridad,
   });
 };
 
@@ -37,6 +38,7 @@ export const editUS = async ({
   description,
   estado,
   usId,
+  prioridad,
 }) => {
   return await axiosInstance.put(
     `/proyectos/${projectId}/user_stories/${usId}`,
@@ -44,6 +46,7 @@ export const editUS = async ({
       nombre: usName,
       contenido: description,
       estado,
+      prioridad,
     }
   );
 };

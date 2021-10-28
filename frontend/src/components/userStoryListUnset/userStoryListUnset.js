@@ -132,6 +132,7 @@ const USListUnset = ({
       fontSize="sm"
       bg={"#F5F4F5"}
       justifyContent="center"
+      minW="xs"
     >
       <Flex justify="center">
         <Heading fontSize="2xl">{nombreLista}</Heading>

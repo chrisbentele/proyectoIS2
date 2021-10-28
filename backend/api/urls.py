@@ -61,6 +61,7 @@ apiPaths = [
     ),
     path(
         "sprints/<str:sprint_id>/registro_horas",
+
         registro_horas,
     ),
     # Sprints
