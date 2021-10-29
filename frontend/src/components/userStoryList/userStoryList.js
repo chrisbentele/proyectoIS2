@@ -199,6 +199,7 @@ const USList = ({
             duration: 5000,
             isClosable: true,
           });
+          setIsOpenRegHoras(false);
         } else {
           toast({
             description: "Horas no pudieron ser registradas.",
