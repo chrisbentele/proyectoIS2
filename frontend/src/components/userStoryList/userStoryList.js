@@ -36,7 +36,6 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
-
 } from "@chakra-ui/react";
 import { PlusSquareIcon, EditIcon, TimeIcon } from "@chakra-ui/icons";
 import { api } from "../../api";
@@ -67,7 +66,7 @@ const USList = ({
   const onCloseAlertSp = () => setIsOpenAlertSp(false);
   const onCloseRegHoras = () => setIsOpenRegHoras(false);
   const [valorDefault, setValorDefault] = useState(0);
-  const toast = useToast()
+  const toast = useToast();
   const onDelete = () => {
     eliminarUS(focusedUS);
     setIsOpen(false);
@@ -99,20 +98,24 @@ const USList = ({
   }, []);
 
   useEffect(() => {
-    if(focusedUS && isOpenRegHoras)
+    if (focusedUS && isOpenRegHoras)
       api.userStories
-        .getRegistrosHoras({projectId, sprintId: sprint?.id, usId: focusedUS?.id})
-        .then(res => {
-          let regHoras = 0
-          if(res.data.length > 0) {
-            res.data.forEach(reg => {
-              regHoras+=reg.horas
+        .getRegistrosHoras({
+          projectId,
+          sprintId: sprint?.id,
+          usId: focusedUS?.id,
+        })
+        .then((res) => {
+          let regHoras = 0;
+          if (res.data.length > 0) {
+            res.data.forEach((reg) => {
+              regHoras += reg.horas;
             });
             setValorDefault(regHoras);
           }
         })
-        .catch(err => err)
-  }, [isOpenRegHoras,focusedUS?.id])
+        .catch((err) => err);
+  }, [isOpenRegHoras, focusedUS?.id]);
 
   const moverUS = async (estado, usId) => {
     await api.editUS({ projectId, estado, usId });
@@ -152,10 +155,46 @@ const USList = ({
 
   const {
     handleSubmit: handleSubmitRegHoras,
-    register:registerRegHoras,
-    formState: { errors:errorsRegHoras, isSubmitting:isSubmittingRegHoras},
-    control:controlRegHoras,
+    register: registerRegHoras,
+    formState: { errors: errorsRegHoras, isSubmitting: isSubmittingRegHoras },
+    control: controlRegHoras,
   } = useForm();
+
+  const {
+    handleSubmit: handleSubmitPrio,
+    register: registerPrio,
+    formState: { errors: errorsPrio, isSubmitting: isSubmittingPrio },
+    control: controlPrio,
+  } = useForm();
+
+  async function onSubmitPrio(values) {
+    //funcion que define el comportamiento al confirmar el form
+    console.log(values);
+    await api
+      .editUS({ ...values, projectId, usId: values.id })
+      .then((res) => {
+        if (res.statusText == "OK") {
+          toast({
+            description: "US cambiada.",
+            status: "success",
+            duration: 5000,
+            isClosable: true,
+          });
+        } else {
+          toast({
+            description: "US no pudo ser cambiada.",
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+        }
+      })
+      .catch((err) => console.log(err));
+    await api.userStories
+      .getUserStories(projectId, sprint.id)
+      .then(({ data }) => setUserStories(data));
+    setIsOpenModal(false);
+  }
 
   async function onSubmit(values) {
     //funcion que define el comportamiento al confirmar el form
@@ -187,10 +226,19 @@ const USList = ({
 
   async function onSubmitRegHoras(values) {
     //funcion que define el comportamiento al confirmar el form
-    console.log({ ...values,sprintId:sprint.id, projectId, usId: focusedUS?.id })
-    await api
-      .userStories
-      .registrarHoras({ ...values,sprintId:sprint.id, projectId, usId: focusedUS?.id })
+    console.log({
+      ...values,
+      sprintId: sprint.id,
+      projectId,
+      usId: focusedUS?.id,
+    });
+    await api.userStories
+      .registrarHoras({
+        ...values,
+        sprintId: sprint.id,
+        projectId,
+        usId: focusedUS?.id,
+      })
       .then((res) => {
         if (res.data) {
           toast({
@@ -440,136 +488,158 @@ const USList = ({
                       ) : null}
 
                       {tienePermiso(
-                      thisMember,
-                      PERMISOS_MACRO.MODIFICAR_SPRINT
-                      ) && sprint?.activo ? (
-                      <>
-                        <Button
-                          onClick={() => {
-                            setFocusedUS(us);
-                            setIsOpenRegHoras(true);
-                          }}
-                          mt="2"
-                          ml="1"
-                        >
-                          <TimeIcon />
-                        </Button>
-                        <AlertDialog
-                          isOpen={isOpenRegHoras}
-                          onClose={onCloseRegHoras}
-                        >
-                          <AlertDialogOverlay>
-                            <AlertDialogContent>
-                              <AlertDialogHeader
-                                fontSize="lg"
-                                fontWeight="bold"
-                              >
-                                Registrar horas de '{focusedUS?.nombre}'
-                              </AlertDialogHeader>
-
-                              <form onSubmit={handleSubmitRegHoras(onSubmitRegHoras)}>
-                                <AlertDialogBody pb={6}>
-                                  <FormControl isInvalid={errorsRegHoras["horas"]}>
-                                    <FormLabel>
-                                      Agregue la s horas trabajadas en esta US en el sprint actual.
-                                    </FormLabel>
-                                    <FormLabel>
-                                      Horas totales ya registradas: {valorDefault}
-                                    </FormLabel>
-                                    <Controller
-                                      name="horas"
-                                      control={controlRegHoras}
-                                      rules={{ required: "Valor Requerido" }}
-                                      defaultValue={valorDefault}
-                                      render={(props) => (
-                                        <NumberInput
-                                          fontSize="lg"
-                                          value={props.field.value}
-                                          onChange={(n) => {
-                                            if (n > 0) {
-                                              props.field.onChange(n);
-                                            }
-                                          }}
-                                        >
-                                          <NumberInputField fontSize="lg" borderColor="grey.300" />
-                                          <NumberInputStepper>
-                                            <NumberIncrementStepper />
-                                            <NumberDecrementStepper />
-                                          </NumberInputStepper>
-                                        </NumberInput>
-                                      )}
-                                    />
-                                  </FormControl>
-                                  <FormControl  isInvalid={errorsRegHoras["mensaje"]}>
-                                    <FormLabel>Detalles</FormLabel>
-                                        <Textarea
-                                          {...registerRegHoras("mensaje", {
-                                            required: "Valor Requerido",
-                                            minLength: {
-                                              value: 4,
-                                              message: "Minimum length should be 4",
-                                            },
-                                          })}
-                                        />
-                                    <FormErrorMessage>{errorsRegHoras["mensaje"]?.message}</FormErrorMessage>
-                                  </FormControl>
-                                </AlertDialogBody>
-
-                                <AlertDialogFooter>
-                                  <Button
-                                    isLoading={isSubmittingRegHoras}
-                                    type="submit"
-                                  >
-                                    <PlusSquareIcon />
-                                  </Button>
-                                </AlertDialogFooter>
-                              </form>
-                            </AlertDialogContent>
-                          </AlertDialogOverlay>
-                        </AlertDialog>
-                      </>
-                      ) : null}
-
-                      {tienePermiso(
                         thisMember,
                         PERMISOS_MACRO.MODIFICAR_SPRINT
                       ) && sprint?.activo ? (
                         <>
-                          <Flex
+                          <Button
                             onClick={() => {
                               setFocusedUS(us);
-                              //setShowEstimarModal(true);
+                              setIsOpenRegHoras(true);
                             }}
                             mt="2"
                             ml="1"
-                            align="center"
-                            width="fit-content"
-                            bg="gray.100"
-                            borderRadius="5"
                           >
-                            <Text ml="2" mr="2">
-                              Prioridad
-                            </Text>
-                            <NumberInput
-                              max={10}
-                              min={1}
-                              defaultValue="5"
-                              width="100px"
-                              borderWidth="0"
-                              onChange={() => {
-                                setFocusedUS(us);
-                                //setPrioridad(value);
-                              }}
-                            >
-                              <NumberInputField />
-                              <NumberInputStepper>
-                                <NumberIncrementStepper />
-                                <NumberDecrementStepper />
-                              </NumberInputStepper>
-                            </NumberInput>
-                          </Flex>
+                            <TimeIcon />
+                          </Button>
+                          <AlertDialog
+                            isOpen={isOpenRegHoras}
+                            onClose={onCloseRegHoras}
+                          >
+                            <AlertDialogOverlay>
+                              <AlertDialogContent>
+                                <AlertDialogHeader
+                                  fontSize="lg"
+                                  fontWeight="bold"
+                                >
+                                  Registrar horas de '{focusedUS?.nombre}'
+                                </AlertDialogHeader>
+
+                                <form
+                                  onSubmit={handleSubmitRegHoras(
+                                    onSubmitRegHoras
+                                  )}
+                                >
+                                  <AlertDialogBody pb={6}>
+                                    <FormControl
+                                      isInvalid={errorsRegHoras["horas"]}
+                                    >
+                                      <FormLabel>
+                                        Agregue la s horas trabajadas en esta US
+                                        en el sprint actual.
+                                      </FormLabel>
+                                      <FormLabel>
+                                        Horas totales ya registradas:{" "}
+                                        {valorDefault}
+                                      </FormLabel>
+                                      <Controller
+                                        name="horas"
+                                        control={controlRegHoras}
+                                        rules={{ required: "Valor Requerido" }}
+                                        defaultValue={valorDefault}
+                                        render={(props) => (
+                                          <NumberInput
+                                            fontSize="lg"
+                                            value={props.field.value}
+                                            onChange={(n) => {
+                                              if (n > 0) {
+                                                props.field.onChange(n);
+                                              }
+                                            }}
+                                          >
+                                            <NumberInputField
+                                              fontSize="lg"
+                                              borderColor="grey.300"
+                                            />
+                                            <NumberInputStepper>
+                                              <NumberIncrementStepper />
+                                              <NumberDecrementStepper />
+                                            </NumberInputStepper>
+                                          </NumberInput>
+                                        )}
+                                      />
+                                    </FormControl>
+                                    <FormControl
+                                      isInvalid={errorsRegHoras["mensaje"]}
+                                    >
+                                      <FormLabel>Detalles</FormLabel>
+                                      <Textarea
+                                        {...registerRegHoras("mensaje", {
+                                          required: "Valor Requerido",
+                                          minLength: {
+                                            value: 4,
+                                            message:
+                                              "Minimum length should be 4",
+                                          },
+                                        })}
+                                      />
+                                      <FormErrorMessage>
+                                        {errorsRegHoras["mensaje"]?.message}
+                                      </FormErrorMessage>
+                                    </FormControl>
+                                  </AlertDialogBody>
+
+                                  <AlertDialogFooter>
+                                    <Button
+                                      isLoading={isSubmittingRegHoras}
+                                      type="submit"
+                                    >
+                                      <PlusSquareIcon />
+                                    </Button>
+                                  </AlertDialogFooter>
+                                </form>
+                              </AlertDialogContent>
+                            </AlertDialogOverlay>
+                          </AlertDialog>
                         </>
                       ) : null}
+                      <form onSubmit={handleSubmitPrio(onSubmitPrio)}>
+                        {tienePermiso(
+                          thisMember,
+                          PERMISOS_MACRO.MODIFICAR_SPRINT
+                        ) && sprint?.activo ? (
+                          <>
+                            <Flex
+                              mt="2"
+                              ml="1"
+                              align="center"
+                              width="fit-content"
+                              bg="gray.100"
+                              borderRadius="5"
+                            >
+                              <Text ml="2" mr="2">
+                                Prioridad
+                              </Text>
+                              <Controller
+                                name="prioridad"
+                                control={controlPrio}
+                                render={(props) => (
+                                  <NumberInput
+                                    max={10}
+                                    min={1}
+                                    defaultValue={us?.prioridad || 5}
+                                    width="100px"
+                                    borderWidth="0"
+                                    value={props.field.value}
+                                    onChange={(n) => {
+                                      if (n > 0) {
+                                        props.field.onChange(n);
+                                        onSubmitPrio({ ...us, prioridad: n });
+                                      }
+                                    }}
+                                  >
+                                    <NumberInputField />
+                                    <NumberInputStepper>
+                                      <NumberIncrementStepper />
+                                      <NumberDecrementStepper />
+                                    </NumberInputStepper>
+                                  </NumberInput>
+                                )}
+                              />
+                            </Flex>
+                          </>
+                        ) : null}
+                      </form>
                     </Flex>
                   </>
                 ) : null}
