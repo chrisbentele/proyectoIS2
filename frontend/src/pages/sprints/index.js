@@ -24,20 +24,11 @@ import { mapStateColor } from "../../styles/theme";
 import { MdBuild } from "react-icons/md";
 import { useHistory } from "react-router-dom";
 import { BsFillPlayFill } from "react-icons/bs";
-import {
-  LineChart,
-  YAxis,
-  XAxis,
-  Tooltip,
-  CartesianGrid,
-  Line,
-} from "recharts";
 
 import { tienePermiso } from "../../util";
 import { PERMISOS_MACRO } from "../roles/permisos";
 import { useAuth0 } from "@auth0/auth0-react";
 import { desactivarSprint } from "../../api/sprints";
-import { ordenarRegistrosPorFecha } from "../../util";
 import BurnDown from "../../components/graficoBurnDown";
 
 /**
@@ -53,19 +44,6 @@ export default function Index({ props, dispatchError }) {
   const [sprint, setSprint] = useState(null);
   const [isAllowed, toggleIsAllowed] = useState(true);
   const [isOpenEditSp, setIsOpenEditSp] = useState(false);
-
-  const [burndownData, setBurndownData] = useState([
-    {
-      dia: 1,
-      esperado: 1000,
-      restante: 950,
-    },
-    {
-      dia: 2,
-      esperado: 900,
-      restante: 800,
-    },
-  ]);
 
   const history = useHistory();
 
@@ -130,8 +108,7 @@ export default function Index({ props, dispatchError }) {
   };
 
   useEffect(() => {
-    console.log("condicion", sprint && userStories.length && thisMember);
-    if (sprint && userStories && thisMember) {
+    if (sprint && userStories.length && thisMember) {
       console.log("this member rol", thisMember.rol.nombre);
       if (thisMember.rol.nombre === "Scrum Master") {
         toggleIsAllowed(true);
@@ -321,6 +298,25 @@ export default function Index({ props, dispatchError }) {
                       userStories?.filter((us) => us.estado === 2)
                     : //Si es un solo elemento, pertenece a esta lista?
                     userStories?.estado === 2
+                    ? //Si pertenece retorno
+                      userStories
+                    : //Si no pertenece, null
+                      null
+                }
+              ></USList>
+              <USList
+                projectId={projectId}
+                sprint={sprint}
+                dispatchError={dispatchError}
+                setUserStories={setUserStories}
+                nombreLista="QA"
+                userStories={
+                  //Es un array?
+                  Array.isArray(userStories)
+                    ? //Si es un array, qué elementos pertenecen a esta lista?
+                      userStories?.filter((us) => us.estado === 3)
+                    : //Si es un solo elemento, pertenece a esta lista?
+                    userStories?.estado === 3
                     ? //Si pertenece retorno
                       userStories
                     : //Si no pertenece, null

@@ -32,7 +32,7 @@ test("usuario esta en array", async () => {
     id: "999",
     email: "userTest@test.com",
     nombre: "test test",
-    proy_admin: false,
+    proy_admin: true,
   };
   const res = await getUsers();
   expect(res.data).toEqual(expect.arrayContaining([user]));

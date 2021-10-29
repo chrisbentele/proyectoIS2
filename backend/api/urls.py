@@ -56,12 +56,11 @@ apiPaths = [
     ),
     # Registro horas
     path(
-        "sprints/<str:sprint_id>/user_stories/<str:us_id>/registro_horas",
+        "proyectos/<str:proyect_id>/sprints/<str:sprint_id>/user_stories/<str:us_id>/registro_horas",
         registro_horas,
     ),
     path(
-        "sprints/<str:sprint_id>/registro_horas",
-
+        "proyectos/<str:proyect_id>/sprints/<str:sprint_id>/registro_horas",
         registro_horas,
     ),
     # Sprints
