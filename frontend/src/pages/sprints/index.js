@@ -21,7 +21,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@chakra-ui/button";
 import EditarSprintModal from "../../components/EditarSprintModal/EditarSprintModal";
 import USList from "../../components/userStoryList/userStoryList";
-import { mapStateColor } from "../../styles/theme";
+import { mapStateColor, handleSprintBoxColor } from "../../styles/theme";
 import { MdBuild } from "react-icons/md";
 import { useHistory } from "react-router-dom";
 import { BsFillPlayFill, BsFillStopFill } from "react-icons/bs";
@@ -166,7 +166,7 @@ export default function Index({ props, dispatchError }) {
     <Box
       minHeight="100vh"
       minWidth="full"
-      bg={mapStateColor(project?.estado)}
+      bg={handleSprintBoxColor(sprint)}
       color="#2b2d42"
       d="flex"
       justifyContent="left"
@@ -352,13 +352,28 @@ export default function Index({ props, dispatchError }) {
               ></USList>
             </HStack>
           </Box>
-          <BurnDown registros={[]} sprint={sprint} />
+          <Flex
+            justify="center"
+            backgroundColor="#ffffff"
+            borderWidth={3}
+            borderColor={"#9c9c9c"}
+            display={"flex"}
+            justifyContent={"center"}
+            alignItems={"center"}
+            width="6xl"
+            p="5"
+            ml="5"
+          >
+            <BurnDown registros={[]} sprint={sprint} />
+          </Flex>
+
           <EditarSprintModal
             projectId={projectId}
             sprint={sprint}
             isOpen={isOpenEditSp}
             onClose={() => setIsOpenEditSp(false)}
           />
+
           <Flex
             bg="white"
             width="fit-content"
@@ -370,6 +385,7 @@ export default function Index({ props, dispatchError }) {
           >
 
             {/*Columna izquierda*/}
+
             <Box borderColor="black" borderRightWidth="3px">
               <Box borderBottomWidth="3px" borderColor="black">
                 <Heading p="2" size="lg">
@@ -404,7 +420,7 @@ export default function Index({ props, dispatchError }) {
               </List>
             </Box>
             {/*-------------------*/}
-            
+
           </Flex>
         </Box>
       ) : (

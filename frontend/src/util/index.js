@@ -12,7 +12,6 @@ export function projectStateToString(projectState) {
 export function tienePermiso(member, permiso) {
   if (!member?.rol) return false;
   return member.rol.permisos.includes(permiso);
-
 }
 
 export function agruparRegistrosPorFecha(registros) {
@@ -41,4 +40,20 @@ export function agruparRegistrosPorFecha(registros) {
   });
 
   return sumaHorasPorFecha;
+}
+
+export function getProxDias(fecha, prox_dias) {
+  Date.prototype.addDays = function (days) {
+    var date = new Date(this.valueOf());
+    date.setDate(date.getDate() + days);
+    return date;
+  };
+  let dateArray = [];
+  let actual = new Date(fecha);
+
+  for (let dia = 0; dia < prox_dias + 1; dia++) {
+    let newDate = actual.addDays(dia).toISOString().split("T")[0];
+    dateArray.push(newDate);
+  }
+  return dateArray;
 }

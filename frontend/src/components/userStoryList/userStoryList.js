@@ -36,6 +36,7 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
+
 } from "@chakra-ui/react";
 import { PlusSquareIcon, EditIcon, TimeIcon } from "@chakra-ui/icons";
 import { api } from "../../api";
@@ -44,7 +45,7 @@ import AsignarDevUsModal from "../../components/AsignarDevUsModal/AsignarDevUsMo
 import { tienePermiso } from "../../util";
 import { PERMISOS_MACRO } from "../../pages/roles/permisos";
 import { useAuth0 } from "@auth0/auth0-react";
-import { MdTimer } from "react-icons/md";
+import { MdPriorityHigh, MdTimer } from "react-icons/md";
 
 import { getUsers } from "../../api/users";
 import { desasignarUsASprint } from "../../api/userStories";
@@ -84,6 +85,7 @@ const USList = ({
   const { user } = useAuth0();
   const [thisMember, setThisMember] = useState();
   const [project, setProject] = useState();
+  let [contadorChange, setContadorChange] = useState();
 
   useEffect(() => {
     api
@@ -527,6 +529,47 @@ const USList = ({
                           </AlertDialogOverlay>
                         </AlertDialog>
                       </>
+                      ) : null}
+
+                      {tienePermiso(
+                        thisMember,
+                        PERMISOS_MACRO.MODIFICAR_SPRINT
+                      ) && sprint?.activo ? (
+                        <>
+                          <Flex
+                            onClick={() => {
+                              setFocusedUS(us);
+                              //setShowEstimarModal(true);
+                            }}
+                            mt="2"
+                            ml="1"
+                            align="center"
+                            width="fit-content"
+                            bg="gray.100"
+                            borderRadius="5"
+                          >
+                            <Text ml="2" mr="2">
+                              Prioridad
+                            </Text>
+                            <NumberInput
+                              max={10}
+                              min={1}
+                              defaultValue="5"
+                              width="100px"
+                              borderWidth="0"
+                              onChange={() => {
+                                setFocusedUS(us);
+                                //setPrioridad(value);
+                              }}
+                            >
+                              <NumberInputField />
+                              <NumberInputStepper>
+                                <NumberIncrementStepper />
+                                <NumberDecrementStepper />
+                              </NumberInputStepper>
+                            </NumberInput>
+                          </Flex>
+                        </>
                       ) : null}
                     </Flex>
                   </>
