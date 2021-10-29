@@ -13,7 +13,7 @@ var searchData=
   ['sprint_269',['sprint',['../classapi_1_1models_1_1US.html#a37ddd053488887363869390a90f1e064',1,'api.models.US.sprint()'],['../classapi_1_1models_1_1RegistroHoras.html#a836f27df294dced9289bbfe6de166000',1,'api.models.RegistroHoras.sprint()']]],
   ['sprint_5factivar_5ftests_270',['Sprint_Activar_Tests',['../classapi_1_1tests_1_1Sprint__Activar__Tests.html',1,'api::tests']]],
   ['sprintid_271',['sprintId',['../sprints_8test_8js.html#a367abbb6441003890161243b28b17ca4',1,'sprints.test.js']]],
-  ['sprints_272',['sprints',['../api_2index_8js.html#a1f18b9442096f9df5b6410772d14b713',1,'sprints():&#160;index.js'],['../sprints_8js.html#a1f18b9442096f9df5b6410772d14b713',1,'sprints():&#160;sprints.js'],['../App_8js.html#a84028cd643b641c81b85c0e32d8e21e1',1,'sprints():&#160;App.js'],['../namespaceapi_1_1views.html#a08bee8433c942b0cfcc38a7bc73d26b5',1,'api.views.sprints()']]],
+  ['sprints_272',['sprints',['../api_2index_8js.html#a1f18b9442096f9df5b6410772d14b713',1,'sprints():&#160;index.js'],['../sprints_8js.html#a1f18b9442096f9df5b6410772d14b713',1,'sprints():&#160;sprints.js'],['../App_8js.html#a84028cd643b641c81b85c0e32d8e21e1',1,'sprints():&#160;App.js'],['../userStories_8test_8js.html#ab93ac135ddbec8da8629120d14726407',1,'sprints():&#160;userStories.test.js'],['../namespaceapi_1_1views.html#a08bee8433c942b0cfcc38a7bc73d26b5',1,'api.views.sprints()']]],
   ['sprints_2ejs_273',['sprints.js',['../sprints_8js.html',1,'']]],
   ['sprints_2etest_2ejs_274',['sprints.test.js',['../sprints_8test_8js.html',1,'']]],
   ['sprints_5factivar_275',['sprints_activar',['../namespaceapi_1_1views.html#a895cb0e63883c1aa0ad89bb17f4396f2',1,'api::views']]],

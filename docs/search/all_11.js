@@ -21,7 +21,7 @@ var searchData=
   ['users_356',['users',['../api_2index_8js.html#ab120cd1cbcf9481b7e713c8e926cb26b',1,'users():&#160;index.js'],['../users_8js.html#ab120cd1cbcf9481b7e713c8e926cb26b',1,'users():&#160;users.js'],['../App_8js.html#a10a07c69d6e3c1d4255e6b5e7dd41638',1,'users():&#160;App.js']]],
   ['users_2ejs_357',['users.js',['../users_8js.html',1,'']]],
   ['users_2etest_2ejs_358',['users.test.js',['../users_8test_8js.html',1,'']]],
-  ['userstories_359',['userStories',['../api_2index_8js.html#aaf5fc385fbe0fe628a43854be43b92b5',1,'userStories():&#160;index.js'],['../userStories_8js.html#aaf5fc385fbe0fe628a43854be43b92b5',1,'userStories():&#160;userStories.js']]],
+  ['userstories_359',['userStories',['../api_2index_8js.html#aaf5fc385fbe0fe628a43854be43b92b5',1,'userStories():&#160;index.js'],['../userStories_8js.html#aaf5fc385fbe0fe628a43854be43b92b5',1,'userStories():&#160;userStories.js'],['../userStories_8test_8js.html#acd9bc3ed2613e52963531a104ebddd17',1,'userStories():&#160;userStories.test.js']]],
   ['userstories_2ejs_360',['userStories.js',['../userStories_8js.html',1,'']]],
   ['userstories_2etest_2ejs_361',['userStories.test.js',['../userStories_8test_8js.html',1,'']]],
   ['userstorylist_362',['userStoryList',['../pages_2sprints_2index_8js.html#add9c57a245ae3b95f31f8d5ae4423bce',1,'index.js']]],

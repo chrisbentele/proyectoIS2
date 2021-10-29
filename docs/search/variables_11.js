@@ -7,7 +7,7 @@ var searchData=
   ['use_5ftz_751',['USE_TZ',['../namespacecontroller_1_1settings.html#a65b6b46abd8cb3ed84377cacbb5154f1',1,'controller::settings']]],
   ['useauth_752',['useAuth',['../DbAuth_8js.html#a08276290a55215e58d2ce1803ffae8bf',1,'DbAuth.js']]],
   ['users_753',['users',['../api_2index_8js.html#ab120cd1cbcf9481b7e713c8e926cb26b',1,'users():&#160;index.js'],['../users_8js.html#ab120cd1cbcf9481b7e713c8e926cb26b',1,'users():&#160;users.js'],['../App_8js.html#a10a07c69d6e3c1d4255e6b5e7dd41638',1,'users():&#160;App.js']]],
-  ['userstories_754',['userStories',['../api_2index_8js.html#aaf5fc385fbe0fe628a43854be43b92b5',1,'userStories():&#160;index.js'],['../userStories_8js.html#aaf5fc385fbe0fe628a43854be43b92b5',1,'userStories():&#160;userStories.js']]],
+  ['userstories_754',['userStories',['../api_2index_8js.html#aaf5fc385fbe0fe628a43854be43b92b5',1,'userStories():&#160;index.js'],['../userStories_8js.html#aaf5fc385fbe0fe628a43854be43b92b5',1,'userStories():&#160;userStories.js'],['../userStories_8test_8js.html#acd9bc3ed2613e52963531a104ebddd17',1,'userStories():&#160;userStories.test.js']]],
   ['userstorylist_755',['userStoryList',['../pages_2sprints_2index_8js.html#add9c57a245ae3b95f31f8d5ae4423bce',1,'index.js']]],
   ['userstorylistunset_756',['userStoryListUnset',['../pages_2projects_2index_8js.html#a8fe8d80ecdce36dc59da0dbfdc991c3d',1,'index.js']]],
   ['usid_757',['usId',['../userStories_8test_8js.html#aa98acedbe3f6d77e2c821af0a06b344e',1,'userStories.test.js']]],
