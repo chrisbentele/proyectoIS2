@@ -19,5 +19,5 @@ var tests_8py =
     [ "crear_sprint", "tests_8py.html#ac74428d0479436118712593b301598cb", null ],
     [ "crear_US", "tests_8py.html#a0fa07d7d2aa6467e1a1ebefe1464df7d", null ],
     [ "crear_user", "tests_8py.html#aac818da70b9820e9387a3ec6bcdd585a", null ],
-    [ "registro_horas", "tests_8py.html#aa4bbdfcecd36815a2165114b1bf9fe33", null ]
+    [ "registro_horas", "tests_8py.html#a6bd1c9d6ba0520f787770ce6d720332a", null ]
 ];

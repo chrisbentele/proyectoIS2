@@ -19,5 +19,5 @@ var namespaceapi_1_1tests =
     [ "crear_sprint", "namespaceapi_1_1tests.html#ac74428d0479436118712593b301598cb", null ],
     [ "crear_US", "namespaceapi_1_1tests.html#a0fa07d7d2aa6467e1a1ebefe1464df7d", null ],
     [ "crear_user", "namespaceapi_1_1tests.html#aac818da70b9820e9387a3ec6bcdd585a", null ],
-    [ "registro_horas", "namespaceapi_1_1tests.html#aa4bbdfcecd36815a2165114b1bf9fe33", null ]
+    [ "registro_horas", "namespaceapi_1_1tests.html#a6bd1c9d6ba0520f787770ce6d720332a", null ]
 ];

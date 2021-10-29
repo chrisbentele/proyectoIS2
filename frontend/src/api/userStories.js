@@ -112,12 +112,13 @@ export const editRegistrosHoras = ({
 }) =>
   axiosInstance.put(
     `proyectos/${projectId}/sprints/${sprintId}/user_stories/${usId}/registro_horas`,
-    { horas, fecha }
+    { new_horas: horas, fecha }
   );
 
-export const deleteRegistrosHoras = ({ projectId, sprintId, usId }) =>
+export const deleteRegistrosHoras = ({ projectId, sprintId, usId, fecha }) =>
   axiosInstance.delete(
-    `proyectos/${projectId}/sprints/${sprintId}/user_stories/${usId}/registro_horas`
+    `proyectos/${projectId}/sprints/${sprintId}/user_stories/${usId}/registro_horas`,
+    { params: { fecha } }
   );
 
 export const getRegistrosHoras = ({ projectId, sprintId, usId, fecha }) =>
@@ -139,6 +140,7 @@ const userStories = {
   registrarHoras,
   getRegistrosHoras,
   editRegistrosHoras,
+  deleteRegistrosHoras,
 };
 
 export default userStories;

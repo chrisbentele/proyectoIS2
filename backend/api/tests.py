@@ -99,10 +99,10 @@ def asignar_us_miembro(self, proyect_id, us_id, user_id):
     return res.json()
 
 
-def registro_horas(self, sprint_id, us_id, fecha=None):
+def registro_horas(self, proyect_id, sprint_id, us_id, fecha=None):
 
     res = self.client.post(
-        f"/api/sprints/{sprint_id}/user_stories/{us_id}/registro_horas",
+        f"/api/proyectos/{proyect_id}/sprints/{sprint_id}/user_stories/{us_id}/registro_horas",
         json.dumps({"horas": 1, "fecha": fecha}),
         content_type="application/json",
     )
@@ -694,7 +694,7 @@ class US_Registro_horas(TestCase):
 
         # Crear Registro de horas
         res = self.client.post(
-            f"/api/sprints/{sp['id']}/user_stories/{us['id']}/registro_horas",
+            f"/api/proyectos/{p['id']}/sprints/{sp['id']}/user_stories/{us['id']}/registro_horas",
             json.dumps({"horas": 1}),
             content_type="application/json",
         )
@@ -714,7 +714,7 @@ class US_Registro_horas(TestCase):
         rg_data = self.test_registro_horas_create()
 
         res = self.client.get(
-            f"/api/sprints/{rg_data['sprint']}/user_stories/{rg_data['us']}/registro_horas",
+            f"/api/proyectos/{rg_data['proyecto']}/sprints/{rg_data['sprint']}/user_stories/{rg_data['us']}/registro_horas",
         )
         self.assertEqual(res.status_code, 200)
 
@@ -725,7 +725,7 @@ class US_Registro_horas(TestCase):
         rg_data = self.test_registro_horas_create()
 
         res = self.client.get(
-            f"/api/sprints/{rg_data['sprint']}/user_stories/{rg_data['us']}/registro_horas",
+            f"/api/proyectos/{rg_data['proyecto']}/sprints/{rg_data['sprint']}/user_stories/{rg_data['us']}/registro_horas",
             {"fecha": rg_data["fecha"]},
         )
         self.assertEqual(res.status_code, 200)
@@ -741,13 +741,14 @@ class US_Registro_horas(TestCase):
         td = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
         rg_data_2 = registro_horas(
             self,
+            rg_data_1["proyecto"],
             rg_data_1["sprint"],
             rg_data_1["us"],
             td,
         )
 
         res = self.client.get(
-            f"/api/sprints/{rg_data_1['sprint']}/registro_horas",
+            f"/api/proyectos/{rg_data_1['proyecto']}/sprints/{rg_data_1['sprint']}/registro_horas",
         )
         self.assertEqual(res.status_code, 200)
 
@@ -761,7 +762,7 @@ class US_Registro_horas(TestCase):
         rg_data = self.test_registro_horas_create()
 
         res = self.client.put(
-            f"/api/sprints/{rg_data['sprint']}/user_stories/{rg_data['us']}/registro_horas",
+            f"/api/proyectos/{rg_data['proyecto']}/sprints/{rg_data['sprint']}/user_stories/{rg_data['us']}/registro_horas",
             json.dumps({"new_horas": 2, "fecha": rg_data["fecha"]}),
             content_type="application/json",
         )
@@ -777,7 +778,7 @@ class US_Registro_horas(TestCase):
         rg_data = self.test_registro_horas_create()
 
         res = self.client.delete(
-            f"/api/sprints/{rg_data['sprint']}/user_stories/{rg_data['us']}/registro_horas",
+            f"/api/proyectos/{rg_data['proyecto']}/sprints/{rg_data['sprint']}/user_stories/{rg_data['us']}/registro_horas",
             json.dumps({"fecha": rg_data["fecha"]}),
             content_type="application/json",
         )
@@ -785,7 +786,7 @@ class US_Registro_horas(TestCase):
         self.assertEqual(res.status_code, 204)
 
         res = self.client.get(
-            f"/api/sprints/{rg_data['sprint']}/user_stories/{rg_data['us']}/registro_horas",
+            f"/api/proyectos/{rg_data['proyecto']}/sprints/{rg_data['sprint']}/user_stories/{rg_data['us']}/registro_horas",
             {"fecha": rg_data["fecha"]},
         )
 
