@@ -95,55 +95,42 @@ $(document).ready(function(){initNavTree('roles_8test_8js.html',''); initResizab
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a68bcc69d24e08e3a6e87518e37ae7a95"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="roles_8test_8js.html#a68bcc69d24e08e3a6e87518e37ae7a95">beforeAll</a> (<a class="el" href="roles_8test_8js.html#a2bbea1ca302c158b8d9fccabd4fd82bf">async</a>()=&gt; { await <a class="el" href="users_8js.html#a3100b23c7ba75c95f3bf3d1ba9fc82d8">getUser</a>('<a class="el" href="userStories_8test_8js.html#a7aa28142349c79e44dbc4315894be058">test</a>', 'test1 @test.com', '<a class="el" href="userStories_8test_8js.html#a7aa28142349c79e44dbc4315894be058">test</a> uno').catch(err=&gt; console.log('error al crear usuario')) await <a class="el" href="users_8js.html#a3100b23c7ba75c95f3bf3d1ba9fc82d8">getUser</a>('test2', 'test2 @test.com', '<a class="el" href="userStories_8test_8js.html#a7aa28142349c79e44dbc4315894be058">test</a> dos').catch(err=&gt; console.log('error al crear usuario')) <a class="el" href="userStories_8test_8js.html#a92b303b76a3f942ea819498907d5e83c">const</a> res=await <a class="el" href="projects_8js.html#a2e9d2ad3fbbc8cf8fe5dc7f6f51cd596">createProject</a>({projectName:'roleTest', estimation:&quot;10&quot;, scrumMasterId:&quot;test&quot;}).catch(err=&gt; console.log('error al crear proyecto')) <a class="el" href="userStories_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>=res.data.id await <a class="el" href="members_8js.html#a519e1aa907607fb070812e803dc9b032">addMemberToProject</a>(<a class="el" href="userStories_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>, 'test2') }) <a class="el" href="userStories_8test_8js.html#a7aa28142349c79e44dbc4315894be058">test</a>('tiene <a class="el" href="App_8js.html#a306b7203b0f789a14ec081011d2760cf">roles</a> default'</td></tr>
-<tr class="separator:a68bcc69d24e08e3a6e87518e37ae7a95"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2bbea1ca302c158b8d9fccabd4fd82bf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="roles_8test_8js.html#a2bbea1ca302c158b8d9fccabd4fd82bf">async</a> ()</td></tr>
-<tr class="separator:a2bbea1ca302c158b8d9fccabd4fd82bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeffc0dc91dff264e395ec5b69124e164"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="roles_8test_8js.html#aeffc0dc91dff264e395ec5b69124e164">test</a> ('crear rol', <a class="el" href="roles_8test_8js.html#a2bbea1ca302c158b8d9fccabd4fd82bf">async</a>()=&gt; { <a class="el" href="userStories_8test_8js.html#a92b303b76a3f942ea819498907d5e83c">const</a> addRoleRes=await <a class="el" href="roles_8js.html#aee7217c1d7b64ae182c2c60d52b0b1d3">addRole</a>(<a class="el" href="userStories_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>, 'testRole',[1, 2]) <a class="el" href="roles_8test_8js.html#aa82cb2fe7ee3e892f85a1aabe9c21248">roleId</a>=addRoleRes.data.id <a class="el" href="userStories_8test_8js.html#a92b303b76a3f942ea819498907d5e83c">const</a> res=await <a class="el" href="roles_8js.html#a6b2678cb9ef217909366979ab7c865a4">getRoles</a>(<a class="el" href="userStories_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>) expect(res.data).toEqual(expect.arrayContaining([expect.objectContaining({nombre:'testRole', permisos:[1, 2]})])) })</td></tr>
-<tr class="separator:aeffc0dc91dff264e395ec5b69124e164"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0a2a5e420ffd652a745616b34d86a40"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="roles_8test_8js.html#aa0a2a5e420ffd652a745616b34d86a40">beforeAll</a> (async()=&gt; { await <a class="el" href="users_8js.html#a3100b23c7ba75c95f3bf3d1ba9fc82d8">getUser</a>(&quot;test&quot;, &quot;test1@test.com&quot;, &quot;<a class="el" href="userStories_8test_8js.html#a7aa28142349c79e44dbc4315894be058">test</a> uno&quot;).catch((err)=&gt; console.log(&quot;error al crear usuario&quot;));await <a class="el" href="users_8js.html#a3100b23c7ba75c95f3bf3d1ba9fc82d8">getUser</a>(&quot;test2&quot;, &quot;test2@test.com&quot;, &quot;<a class="el" href="userStories_8test_8js.html#a7aa28142349c79e44dbc4315894be058">test</a> dos&quot;).catch((err)=&gt; console.log(&quot;error al crear usuario&quot;));const res=await <a class="el" href="projects_8js.html#a2e9d2ad3fbbc8cf8fe5dc7f6f51cd596">createProject</a>({ projectName:&quot;roleTest&quot;, estimation:&quot;10&quot;, scrumMasterId:&quot;test&quot;, }).catch((err)=&gt; console.log(&quot;error al crear proyecto&quot;));projectId=res.data.id;await <a class="el" href="members_8js.html#a519e1aa907607fb070812e803dc9b032">addMemberToProject</a>(<a class="el" href="userStories_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>, &quot;test2&quot;);})</td></tr>
+<tr class="separator:aa0a2a5e420ffd652a745616b34d86a40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5515f4394540da087d91029e9ad8a77f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="roles_8test_8js.html#a5515f4394540da087d91029e9ad8a77f">test</a> (&quot;tiene <a class="el" href="App_8js.html#a306b7203b0f789a14ec081011d2760cf">roles</a> default&quot;, async()=&gt; { <a class="el" href="userStories_8test_8js.html#a92b303b76a3f942ea819498907d5e83c">const</a> res=await <a class="el" href="roles_8js.html#a6b2678cb9ef217909366979ab7c865a4">getRoles</a>(<a class="el" href="userStories_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>);expect(res.data).toEqual(expect.arrayContaining([expect.objectContaining({ nombre:&quot;Scrum Master&quot; }), expect.objectContaining({ nombre:&quot;Product Owner&quot; }), expect.objectContaining({ nombre:&quot;Developer&quot; }),]));})</td></tr>
+<tr class="separator:a5515f4394540da087d91029e9ad8a77f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f45efd5ba499df75cca5e59dbae51ee"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="roles_8test_8js.html#a2f45efd5ba499df75cca5e59dbae51ee">afterAll</a> (async()=&gt; { await <a class="el" href="projects_8js.html#a5eedf1969a2b3145f557abe7bb64f9af">deleteProject</a>(<a class="el" href="userStories_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>);<a class="el" href="users_8test_8js.html#a2b3965a8b426cec936fe1fbb478e4018">deleteUser</a>(&quot;member1&quot;);deleteUser(&quot;member2&quot;);})</td></tr>
+<tr class="separator:a2f45efd5ba499df75cca5e59dbae51ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:a59be084da8908b7d77ff34b25cd84488"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="roles_8test_8js.html#a59be084da8908b7d77ff34b25cd84488">import</a></td></tr>
 <tr class="separator:a59be084da8908b7d77ff34b25cd84488"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92b303b76a3f942ea819498907d5e83c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="roles_8test_8js.html#a92b303b76a3f942ea819498907d5e83c">const</a> { <a class="el" href="members_8js.html#a8ecbd24ba2e390513c20902c595fba92">getMembers</a>, <a class="el" href="members_8js.html#a519e1aa907607fb070812e803dc9b032">addMemberToProject</a> } = require(&quot;../api/members&quot;)</td></tr>
+<tr class="separator:a92b303b76a3f942ea819498907d5e83c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12106278ecd31c348b8adbcd316f562f"><td class="memItemLeft" align="right" valign="top">let&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="roles_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a></td></tr>
+<tr class="separator:a12106278ecd31c348b8adbcd316f562f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa82cb2fe7ee3e892f85a1aabe9c21248"><td class="memItemLeft" align="right" valign="top">let&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="roles_8test_8js.html#aa82cb2fe7ee3e892f85a1aabe9c21248">roleId</a></td></tr>
 <tr class="separator:aa82cb2fe7ee3e892f85a1aabe9c21248"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a2bbea1ca302c158b8d9fccabd4fd82bf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2bbea1ca302c158b8d9fccabd4fd82bf">&#9670;&nbsp;</a></span>async()</h2>
+<a id="a2f45efd5ba499df75cca5e59dbae51ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f45efd5ba499df75cca5e59dbae51ee">&#9670;&nbsp;</a></span>afterAll()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">async </td>
+          <td class="memname">afterAll </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a68bcc69d24e08e3a6e87518e37ae7a95"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a68bcc69d24e08e3a6e87518e37ae7a95">&#9670;&nbsp;</a></span>beforeAll()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">beforeAll </td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>async()</em>, </td>
+          <td class="paramtype">async()&#160;</td>
+          <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>{ await getUser('test', 'test1 @test.com', 'test uno').catch(err=&gt; console.log('error al crear usuario')) await getUser('test2', 'test2 @test.com', 'test dos').catch(err=&gt; console.log('error al crear usuario')) const res=await createProject({projectName:'roleTest', estimation:&quot;10&quot;, scrumMasterId:&quot;test&quot;}).catch(err=&gt; console.log('error al crear proyecto')) projectId=res.data.id await addMemberToProject(projectId, 'test2') }</em>&#160;</td>
+          <td class="paramtype">{ await <a class="el" href="projects_8js.html#a5eedf1969a2b3145f557abe7bb64f9af">deleteProject</a>(<a class="el" href="userStories_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>);<a class="el" href="users_8test_8js.html#a2b3965a8b426cec936fe1fbb478e4018">deleteUser</a>(&quot;member1&quot;);deleteUser(&quot;member2&quot;);}&#160;</td>
+          <td class="paramname">&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -155,8 +142,36 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="aeffc0dc91dff264e395ec5b69124e164"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeffc0dc91dff264e395ec5b69124e164">&#9670;&nbsp;</a></span>test()</h2>
+<a id="aa0a2a5e420ffd652a745616b34d86a40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0a2a5e420ffd652a745616b34d86a40">&#9670;&nbsp;</a></span>beforeAll()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">beforeAll </td>
+          <td>(</td>
+          <td class="paramtype">async()&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">{ await <a class="el" href="users_8js.html#a3100b23c7ba75c95f3bf3d1ba9fc82d8">getUser</a>(&quot;test&quot;, &quot;test1@test.com&quot;, &quot;<a class="el" href="userStories_8test_8js.html#a7aa28142349c79e44dbc4315894be058">test</a> uno&quot;).catch((err)=&gt; console.log(&quot;error al crear usuario&quot;));await <a class="el" href="users_8js.html#a3100b23c7ba75c95f3bf3d1ba9fc82d8">getUser</a>(&quot;test2&quot;, &quot;test2@test.com&quot;, &quot;<a class="el" href="userStories_8test_8js.html#a7aa28142349c79e44dbc4315894be058">test</a> dos&quot;).catch((err)=&gt; console.log(&quot;error al crear usuario&quot;));const res=await <a class="el" href="projects_8js.html#a2e9d2ad3fbbc8cf8fe5dc7f6f51cd596">createProject</a>({ projectName:&quot;roleTest&quot;, estimation:&quot;10&quot;, scrumMasterId:&quot;test&quot;, }).catch((err)=&gt; console.log(&quot;error al crear proyecto&quot;));projectId=res.data.id;await <a class="el" href="members_8js.html#a519e1aa907607fb070812e803dc9b032">addMemberToProject</a>(<a class="el" href="userStories_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>, &quot;test2&quot;);}&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5515f4394540da087d91029e9ad8a77f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5515f4394540da087d91029e9ad8a77f">&#9670;&nbsp;</a></span>test()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -164,19 +179,19 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">test </td>
           <td>(</td>
-          <td class="paramtype">'crear rol'&#160;</td>
+          <td class="paramtype">&quot;tiene <a class="el" href="App_8js.html#a306b7203b0f789a14ec081011d2760cf">roles</a> default&quot;&#160;</td>
           <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="roles_8test_8js.html#a2bbea1ca302c158b8d9fccabd4fd82bf">async</a>()&#160;</td>
+          <td class="paramtype">async()&#160;</td>
           <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">{ <a class="el" href="userStories_8test_8js.html#a92b303b76a3f942ea819498907d5e83c">const</a> addRoleRes=await <a class="el" href="roles_8js.html#aee7217c1d7b64ae182c2c60d52b0b1d3">addRole</a>(<a class="el" href="userStories_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>, 'testRole',[1, 2]) <a class="el" href="roles_8test_8js.html#aa82cb2fe7ee3e892f85a1aabe9c21248">roleId</a>=addRoleRes.data.id <a class="el" href="userStories_8test_8js.html#a92b303b76a3f942ea819498907d5e83c">const</a> res=await <a class="el" href="roles_8js.html#a6b2678cb9ef217909366979ab7c865a4">getRoles</a>(<a class="el" href="userStories_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>) expect(res.data).toEqual(expect.arrayContaining([expect.objectContaining({nombre:'testRole', permisos:[1, 2]})])) }&#160;</td>
+          <td class="paramtype">{ <a class="el" href="userStories_8test_8js.html#a92b303b76a3f942ea819498907d5e83c">const</a> res=await <a class="el" href="roles_8js.html#a6b2678cb9ef217909366979ab7c865a4">getRoles</a>(<a class="el" href="userStories_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>);expect(res.data).toEqual(expect.arrayContaining([expect.objectContaining({ nombre:&quot;Scrum Master&quot; }), expect.objectContaining({ nombre:&quot;Product Owner&quot; }), expect.objectContaining({ nombre:&quot;Developer&quot; }),]));}&#160;</td>
           <td class="paramname">&#160;</td>
         </tr>
         <tr>
@@ -190,6 +205,20 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
+<a id="a92b303b76a3f942ea819498907d5e83c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92b303b76a3f942ea819498907d5e83c">&#9670;&nbsp;</a></span>const</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const { <a class="el" href="members_8js.html#a8ecbd24ba2e390513c20902c595fba92">getMembers</a>, <a class="el" href="members_8js.html#a519e1aa907607fb070812e803dc9b032">addMemberToProject</a> } = require(&quot;../api/members&quot;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a59be084da8908b7d77ff34b25cd84488"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a59be084da8908b7d77ff34b25cd84488">&#9670;&nbsp;</a></span>import</h2>
 
@@ -201,26 +230,35 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">{<a class="code" href="roles_8js.html#aee7217c1d7b64ae182c2c60d52b0b1d3">addRole</a>, <a class="code" href="roles_8js.html#abad18bf9d5337af9281af0df6d33caa9">deleteRole</a>,<a class="code" href="roles_8js.html#a98b2b78c510c37a7ea82e170b34b5502">editRole</a>,<a class="code" href="roles_8js.html#a0cf87cee4712da2945ae7d56b2bc3daa">getRole</a>,<a class="code" href="roles_8js.html#a6b2678cb9ef217909366979ab7c865a4">getRoles</a>,<a class="code" href="roles_8js.html#a9bf4531d318396ad5103e5a0c71eccdd">setUserRole</a>} from <span class="stringliteral">&#39;../api/roles&#39;</span></div>
-<div class="line"><span class="keyword">const</span> { <a class="code" href="members_8js.html#a8ecbd24ba2e390513c20902c595fba92">getMembers</a>, <a class="code" href="members_8js.html#a519e1aa907607fb070812e803dc9b032">addMemberToProject</a>} = require(<span class="stringliteral">&#39;../api/members&#39;</span>)<span class="keyword"></span></div>
-<div class="line"><span class="keyword">const </span>{<a class="code" href="users_8js.html#a3100b23c7ba75c95f3bf3d1ba9fc82d8">getUser</a>, <a class="code" href="users_8js.html#a7c7de8cf91deb0126053ec7ba3d17b0b">deleteUser</a>} = require(<span class="stringliteral">&#39;../api/users&#39;</span>)<span class="keyword"></span></div>
-<div class="line"><span class="keyword">const </span>{<a class="code" href="projects_8js.html#a2e9d2ad3fbbc8cf8fe5dc7f6f51cd596">createProject</a>, <a class="code" href="projects_8js.html#a5eedf1969a2b3145f557abe7bb64f9af">deleteProject</a>} = require(<span class="stringliteral">&#39;../api/projects&#39;</span>)</div>
-<div class="line"> </div>
-<div class="line">let <a class="code" href="members_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a></div>
-<div class="ttc" id="amembers_8js_html_a519e1aa907607fb070812e803dc9b032"><div class="ttname"><a href="members_8js.html#a519e1aa907607fb070812e803dc9b032">addMemberToProject</a></div><div class="ttdeci">export const addMemberToProject</div><div class="ttdoc">Agregar los roles de un miembro.</div><div class="ttdef"><b>Definition:</b> members.js:18</div></div>
-<div class="ttc" id="amembers_8js_html_a8ecbd24ba2e390513c20902c595fba92"><div class="ttname"><a href="members_8js.html#a8ecbd24ba2e390513c20902c595fba92">getMembers</a></div><div class="ttdeci">export const getMembers</div><div class="ttdoc">Listar todos los miembros.</div><div class="ttdef"><b>Definition:</b> members.js:10</div></div>
-<div class="ttc" id="amembers_8test_8js_html_a12106278ecd31c348b8adbcd316f562f"><div class="ttname"><a href="members_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a></div><div class="ttdeci">let projectId</div><div class="ttdef"><b>Definition:</b> members.test.js:15</div></div>
-<div class="ttc" id="aprojects_8js_html_a2e9d2ad3fbbc8cf8fe5dc7f6f51cd596"><div class="ttname"><a href="projects_8js.html#a2e9d2ad3fbbc8cf8fe5dc7f6f51cd596">createProject</a></div><div class="ttdeci">export const createProject</div><div class="ttdoc">Crear proyecto, recibe como parametro un objeto con los siguientes atributos  estimation: la estimaci...</div><div class="ttdef"><b>Definition:</b> projects.js:28</div></div>
-<div class="ttc" id="aprojects_8js_html_a5eedf1969a2b3145f557abe7bb64f9af"><div class="ttname"><a href="projects_8js.html#a5eedf1969a2b3145f557abe7bb64f9af">deleteProject</a></div><div class="ttdeci">export const deleteProject</div><div class="ttdoc">Eliminar proyecto La funcion recibe como parametro el id del proyecto a eliminar, retorna true si se ...</div><div class="ttdef"><b>Definition:</b> projects.js:87</div></div>
+<b>Initial value:</b><div class="fragment"><div class="line">{</div>
+<div class="line">  <a class="code" href="roles_8js.html#aee7217c1d7b64ae182c2c60d52b0b1d3">addRole</a>,</div>
+<div class="line">  <a class="code" href="roles_8js.html#abad18bf9d5337af9281af0df6d33caa9">deleteRole</a>,</div>
+<div class="line">  <a class="code" href="roles_8js.html#a98b2b78c510c37a7ea82e170b34b5502">editRole</a>,</div>
+<div class="line">  <a class="code" href="roles_8js.html#a0cf87cee4712da2945ae7d56b2bc3daa">getRole</a>,</div>
+<div class="line">  <a class="code" href="roles_8js.html#a6b2678cb9ef217909366979ab7c865a4">getRoles</a>,</div>
+<div class="line">  <a class="code" href="roles_8js.html#a9bf4531d318396ad5103e5a0c71eccdd">setUserRole</a>,</div>
+<div class="line">} from <span class="stringliteral">&quot;../api/roles&quot;</span></div>
 <div class="ttc" id="aroles_8js_html_a0cf87cee4712da2945ae7d56b2bc3daa"><div class="ttname"><a href="roles_8js.html#a0cf87cee4712da2945ae7d56b2bc3daa">getRole</a></div><div class="ttdeci">export const getRole</div><div class="ttdoc">Conseguir un rol.</div><div class="ttdef"><b>Definition:</b> roles.js:33</div></div>
 <div class="ttc" id="aroles_8js_html_a6b2678cb9ef217909366979ab7c865a4"><div class="ttname"><a href="roles_8js.html#a6b2678cb9ef217909366979ab7c865a4">getRoles</a></div><div class="ttdeci">export const getRoles</div><div class="ttdoc">Conseguir un roles.</div><div class="ttdef"><b>Definition:</b> roles.js:40</div></div>
 <div class="ttc" id="aroles_8js_html_a98b2b78c510c37a7ea82e170b34b5502"><div class="ttname"><a href="roles_8js.html#a98b2b78c510c37a7ea82e170b34b5502">editRole</a></div><div class="ttdeci">export const editRole</div><div class="ttdoc">Editar un rol.</div><div class="ttdef"><b>Definition:</b> roles.js:50</div></div>
 <div class="ttc" id="aroles_8js_html_a9bf4531d318396ad5103e5a0c71eccdd"><div class="ttname"><a href="roles_8js.html#a9bf4531d318396ad5103e5a0c71eccdd">setUserRole</a></div><div class="ttdeci">export const setUserRole</div><div class="ttdoc">Asignar un rol.</div><div class="ttdef"><b>Definition:</b> roles.js:70</div></div>
 <div class="ttc" id="aroles_8js_html_abad18bf9d5337af9281af0df6d33caa9"><div class="ttname"><a href="roles_8js.html#abad18bf9d5337af9281af0df6d33caa9">deleteRole</a></div><div class="ttdeci">export const deleteRole</div><div class="ttdoc">Eliminar role.</div><div class="ttdef"><b>Definition:</b> roles.js:26</div></div>
 <div class="ttc" id="aroles_8js_html_aee7217c1d7b64ae182c2c60d52b0b1d3"><div class="ttname"><a href="roles_8js.html#aee7217c1d7b64ae182c2c60d52b0b1d3">addRole</a></div><div class="ttdeci">export const addRole</div><div class="ttdoc">Agregar role.</div><div class="ttdef"><b>Definition:</b> roles.js:15</div></div>
-<div class="ttc" id="ausers_8js_html_a3100b23c7ba75c95f3bf3d1ba9fc82d8"><div class="ttname"><a href="users_8js.html#a3100b23c7ba75c95f3bf3d1ba9fc82d8">getUser</a></div><div class="ttdeci">export const getUser</div><div class="ttdoc">Obtener usuario  La funcion sirve para que al iniciar sesion con el SSO, se busque al usuario en la b...</div><div class="ttdef"><b>Definition:</b> users.js:22</div></div>
-<div class="ttc" id="ausers_8js_html_a7c7de8cf91deb0126053ec7ba3d17b0b"><div class="ttname"><a href="users_8js.html#a7c7de8cf91deb0126053ec7ba3d17b0b">deleteUser</a></div><div class="ttdeci">export const deleteUser</div><div class="ttdoc">Eliminar usuario  La funcion recibe como parametro el id del usuario a eliminar.</div><div class="ttdef"><b>Definition:</b> users.js:64</div></div>
 </div><!-- fragment -->
+</div>
+</div>
+<a id="a12106278ecd31c348b8adbcd316f562f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a12106278ecd31c348b8adbcd316f562f">&#9670;&nbsp;</a></span>projectId</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">let projectId</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
 </div>
 </div>
 <a id="aa82cb2fe7ee3e892f85a1aabe9c21248"></a>
