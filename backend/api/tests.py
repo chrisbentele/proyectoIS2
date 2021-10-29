@@ -778,9 +778,7 @@ class US_Registro_horas(TestCase):
         rg_data = self.test_registro_horas_create()
 
         res = self.client.delete(
-            f"/api/proyectos/{rg_data['proyecto']}/sprints/{rg_data['sprint']}/user_stories/{rg_data['us']}/registro_horas",
-            json.dumps({"fecha": rg_data["fecha"]}),
-            content_type="application/json",
+            f"/api/proyectos/{rg_data['proyecto']}/sprints/{rg_data['sprint']}/user_stories/{rg_data['us']}/registro_horas?fecha={rg_data['fecha']}",
         )
 
         self.assertEqual(res.status_code, 204)
