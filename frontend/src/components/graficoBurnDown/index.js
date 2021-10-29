@@ -17,40 +17,62 @@ export default function BurnDown({ registros, sprint }) {
       console.log("sprint", sprint);
       const progresoEstimadoPorDia =
         sprint.sumaHorasAsignadas / sprint.estimacion;
-      console.log(progresoEstimadoPorDia);
-      setBurndownData([
-        {
-          dia: 1,
-          esperado: sprint.sumaHorasAsignadas - progresoEstimadoPorDia * 1,
-          restante: sprint.sumaHorasAsignadas - progresoEstimadoPorDia * 1,
-        },
-        {
-          dia: 2,
-          esperado: sprint.sumaHorasAsignadas - progresoEstimadoPorDia * 2,
-          restante:
-            sprint.sumaHorasAsignadas - progresoEstimadoPorDia * 2 - 0.1,
-        },
-        {
-          dia: 3,
-          esperado: sprint.sumaHorasAsignadas - progresoEstimadoPorDia * 3,
-          //   restante: sprint.sumaHorasAsignadas - progresoEstimadoPorDia * 3 - 2,
-        },
-        {
-          dia: 4,
-          esperado: sprint.sumaHorasAsignadas - progresoEstimadoPorDia * 4,
-          //   restante: sprint.sumaHorasAsignadas - progresoEstimadoPorDia * 3 - 2,
-        },
-        {
-          dia: 5,
-          esperado: sprint.sumaHorasAsignadas - progresoEstimadoPorDia * 5,
-          //   restante: sprint.sumaHorasAsignadas - progresoEstimadoPorDia * 5 - 2,
-        },
-      ]);
+      console.log("progresoEstimadoPorDia", progresoEstimadoPorDia);
+      console.log("sprint suma horas", sprint.sumaHorasAsignadas);
+      setBurndownData(
+        [
+          {
+            dia: "2021-10-28",
+            esperado: sprint.sumaHorasAsignadas - progresoEstimadoPorDia * 1,
+            restante: sprint.sumaHorasAsignadas - progresoEstimadoPorDia * 1,
+          },
+          {
+            dia: "2021-10-27",
+            esperado: sprint.sumaHorasAsignadas - progresoEstimadoPorDia * 2,
+            restante:
+              sprint.sumaHorasAsignadas - progresoEstimadoPorDia * 2 - 4,
+          },
+          {
+            dia: "2021-10-24",
+            esperado: sprint.sumaHorasAsignadas - progresoEstimadoPorDia * 3,
+            //   restante: sprint.sumaHorasAsignadas - progresoEstimadoPorDia * 3 - 2,
+          },
+          {
+            dia: "2021-10-23",
+            esperado: sprint.sumaHorasAsignadas - progresoEstimadoPorDia * 4,
+            //   restante: sprint.sumaHorasAsignadas - progresoEstimadoPorDia * 3 - 2,
+          },
+          {
+            dia: "2021-10-22",
+            esperado: sprint.sumaHorasAsignadas - progresoEstimadoPorDia * 5,
+            //   restante: sprint.sumaHorasAsignadas - progresoEstimadoPorDia * 5 - 2,
+          },
+        ].sort(compare)
+      );
     }
   }, [sprint]);
 
+  function compare(a, b) {
+    if (a.fecha < b.fecha) {
+      return -1;
+    }
+    if (a.fecha > b.fecha) {
+      return 1;
+    }
+    return 0;
+  }
+
   return (
-    <Box backgroundColor="#000000">
+    <Box
+      backgroundColor="#ffffff"
+      borderWidth={3}
+      borderColor={"#9c9c9c"}
+      display={"flex"}
+      justifyContent={"center"}
+      alignItems={"center"}
+      width={"fit-content"}
+      marginLeft={"auto"}
+    >
       <LineChart
         width={1000}
         height={500}
@@ -67,6 +89,7 @@ export default function BurnDown({ registros, sprint }) {
           stroke="#ff7300"
           yAxisId={0}
           strokeWidth={3}
+          connectNulls={true}
         />
         <Line
           type="monotone"

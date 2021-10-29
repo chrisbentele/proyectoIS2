@@ -240,9 +240,12 @@ def usuarios(request, user_id=None):
         return HttpResponseBadRequest("Falta user_id")
     elif request.method == "DELETE":
         # Elimina un usuario
-        u = Usuario.objects.get(id=user_id)
-        u.delete()
-        return JsonResponse(True, safe=False, status=204)
+        try:
+            u = Usuario.objects.get(id=user_id)
+            u.delete()
+            return JsonResponse(True, safe=False, status=204)
+        except Usuario.DoesNotExist:
+            return HttpResponseNotFound()
 
 
 def usuarios_proyectos(request, user_id):
@@ -631,7 +634,6 @@ def user_stories_estimar(request, proyect_id, us_id):
                     asignada = False
                 if asignada and data["user_id"] == usa.usuario.id:
                     # El asignado es el mismo SM
-                    print("entro")
                     serializer = USSerializer(
                         us, data={"estimacionesDev": data["estimacion"]}, partial=True
                     )
@@ -954,12 +956,17 @@ def usuarios_admin(request, user_id):
         return JsonResponse(serializer.errors, status=400, safe=False)
 
 
-def registro_horas(request, sprint_id, us_id=None):
+def registro_horas(request, proyect_id, sprint_id, us_id=None):
+
+    try:
+        proyecto = Proyecto.objects.get(id=proyect_id)
+    except Proyecto.DoesNotExist:
+        return HttpResponseNotFound("proyect_id")
+
     try:
         sprint = Sprint.objects.get(id=sprint_id)
     except Sprint.DoesNotExist:
         return HttpResponseNotFound("sprint_id")
-
 
     if request.method == "POST":
         try:
@@ -987,7 +994,6 @@ def registro_horas(request, sprint_id, us_id=None):
                 "us": us_id,
                 "proyecto": us.proyecto.id,
                 "sprint": sprint_id,
-
                 "usuario": usa.usuario.id,
                 "horas": data["horas"],
                 "fecha": data.get("fecha", timezone.now().strftime("%Y-%m-%d")),
@@ -1023,7 +1029,6 @@ def registro_horas(request, sprint_id, us_id=None):
         except RegistroHoras.DoesNotExist:
             return HttpResponseNotFound()
 
-
     elif request.method == "PUT":
         if not us_id:
             return HttpResponseBadRequest("Falta us_id")
@@ -1034,7 +1039,6 @@ def registro_horas(request, sprint_id, us_id=None):
                 return HttpResponseBadRequest("faltan horas")
             if not data["fecha"]:
                 return HttpResponseBadRequest("falta fecha")
-
 
         except Exception as e:
             return HttpResponseBadRequest(e)
@@ -1066,20 +1070,20 @@ def registro_horas(request, sprint_id, us_id=None):
             return HttpResponseBadRequest("Falta us_id")
 
         try:
-            data = JSONParser().parse(request)
-            if not data["fecha"]:
+            fecha = request.GET.get("fecha")
+            if not fecha:
                 return HttpResponseBadRequest("falta fecha")
         except Exception as e:
             return HttpResponseBadRequest(e)
 
         try:
-            rh = RegistroHoras.objects.get(us=us_id, fecha=data["fecha"])
+            rh = RegistroHoras.objects.get(us=us_id, fecha=fecha)
             rh.delete()
             return JsonResponse(True, safe=False, status=204)
 
         except RegistroHoras.DoesNotExist:
             return HttpResponseNotFound(
-                f"Sin registro de horas en {us_id} y fecha {data['fecha']}"
+                f"Sin registro de horas en {us_id} y fecha {fecha}"
             )
 
 
@@ -1113,4 +1117,3 @@ def sprints_miembros(request, proyect_id, sprint_id):
         miembros_list = [json.loads(x) for x in list(miembros_set)]
 
         return JsonResponse(miembros_list, safe=False)
-

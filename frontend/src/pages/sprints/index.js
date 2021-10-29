@@ -34,11 +34,11 @@ import {
   Line,
 } from "recharts";
 
+
 import { tienePermiso } from "../../util";
 import { PERMISOS_MACRO } from "../roles/permisos";
 import { useAuth0 } from "@auth0/auth0-react";
 import { desactivarSprint } from "../../api/sprints";
-import { ordenarRegistrosPorFecha } from "../../util";
 import BurnDown from "../../components/graficoBurnDown";
 
 /**
@@ -54,19 +54,6 @@ export default function Index({ props, dispatchError }) {
   const [sprint, setSprint] = useState(null);
   const [isAllowed, toggleIsAllowed] = useState(true);
   const [isOpenEditSp, setIsOpenEditSp] = useState(false);
-
-  const [burndownData, setBurndownData] = useState([
-    {
-      dia: 1,
-      esperado: 1000,
-      restante: 950,
-    },
-    {
-      dia: 2,
-      esperado: 900,
-      restante: 800,
-    },
-  ]);
 
   const history = useHistory();
 

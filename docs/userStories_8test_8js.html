@@ -95,17 +95,89 @@ $(document).ready(function(){initNavTree('userStories_8test_8js.html',''); initR
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a29354bb1a7268bba0f4e041620cd8399"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="userStories_8test_8js.html#a29354bb1a7268bba0f4e041620cd8399">test</a> ('edit user story', <a class="el" href="roles_8test_8js.html#a2bbea1ca302c158b8d9fccabd4fd82bf">async</a>()=&gt; { await <a class="el" href="userStories_8js.html#acc1a571f6a534166eea470b2c3da0782">editUS</a>({<a class="el" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>, usName:'editedUs', description:'edited desc', estado:1, usId }) <a class="el" href="userStories_8test_8js.html#a92b303b76a3f942ea819498907d5e83c">const</a> res=await <a class="el" href="userStories_8js.html#aa384107b1b4fc4a017be2579907ee303">getUserStories</a>(<a class="el" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>) expect(res.data).toEqual(expect.arrayContaining([expect.objectContaining({nombre:'editedUs', creadoPor:'usTest'})])) expect(res.data).not.toEqual(expect.arrayContaining([expect.objectContaining({nombre:'test us'})])) })</td></tr>
-<tr class="separator:a29354bb1a7268bba0f4e041620cd8399"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79c2e4a552097b38119813364192ce49"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="userStories_8test_8js.html#a79c2e4a552097b38119813364192ce49">beforeAll</a> (<a class="el" href="roles_8test_8js.html#a2bbea1ca302c158b8d9fccabd4fd82bf">async</a>()=&gt; { await <a class="el" href="users_8js.html#a3100b23c7ba75c95f3bf3d1ba9fc82d8">getUser</a>(&quot;usTest&quot;, &quot;ustest@test.com&quot;, &quot;<a class="el" href="userStories_8test_8js.html#a7aa28142349c79e44dbc4315894be058">test</a> uno&quot;).catch((err)=&gt; console.log(&quot;error al crear usuario&quot;));await <a class="el" href="users_8js.html#a3100b23c7ba75c95f3bf3d1ba9fc82d8">getUser</a>(&quot;usTest2&quot;, &quot;ustest2@test.com&quot;, &quot;<a class="el" href="userStories_8test_8js.html#a7aa28142349c79e44dbc4315894be058">test</a> dos&quot;).catch((err)=&gt; console.log(&quot;error al crear usuario&quot;));const res=await <a class="el" href="projects_8js.html#a2e9d2ad3fbbc8cf8fe5dc7f6f51cd596">createProject</a>({ projectName:&quot;roleTest&quot;, estimation:&quot;10&quot;, scrumMasterId:&quot;usTest&quot;, }).catch((err)=&gt; console.log(&quot;error al crear proyecto&quot;));projectId=res.data.id;})</td></tr>
+<tr class="separator:a79c2e4a552097b38119813364192ce49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7aa28142349c79e44dbc4315894be058"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="userStories_8test_8js.html#a7aa28142349c79e44dbc4315894be058">test</a> (&quot;create user story&quot;, async()=&gt; { <a class="el" href="userStories_8test_8js.html#a92b303b76a3f942ea819498907d5e83c">const</a> usRes=await <a class="el" href="userStories_8js.html#acf4bc643c0219f004f7ca07097450669">createUserStory</a>({ <a class="el" href="userStories_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>, usName:&quot;test us&quot;, description:&quot;this is a test written in jest&quot;, creadoPor:&quot;usTest&quot;, });usId=usRes.data.id;<a class="el" href="userStories_8test_8js.html#a92b303b76a3f942ea819498907d5e83c">const</a> res=await <a class="el" href="userStories_8js.html#aa384107b1b4fc4a017be2579907ee303">getUserStories</a>(<a class="el" href="userStories_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>);expect(res.data).toEqual(expect.arrayContaining([expect.objectContaining({ nombre:&quot;test us&quot;, creadoPor:&quot;usTest&quot; }),]));})</td></tr>
+<tr class="separator:a7aa28142349c79e44dbc4315894be058"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f45efd5ba499df75cca5e59dbae51ee"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="userStories_8test_8js.html#a2f45efd5ba499df75cca5e59dbae51ee">afterAll</a> (<a class="el" href="roles_8test_8js.html#a2bbea1ca302c158b8d9fccabd4fd82bf">async</a>()=&gt; { await <a class="el" href="projects_8js.html#a5eedf1969a2b3145f557abe7bb64f9af">deleteProject</a>(<a class="el" href="userStories_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>);<a class="el" href="users_8test_8js.html#a2b3965a8b426cec936fe1fbb478e4018">deleteUser</a>(&quot;member1&quot;);deleteUser(&quot;member2&quot;);})</td></tr>
+<tr class="separator:a2f45efd5ba499df75cca5e59dbae51ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:a92b303b76a3f942ea819498907d5e83c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="userStories_8test_8js.html#a92b303b76a3f942ea819498907d5e83c">const</a></td></tr>
 <tr class="separator:a92b303b76a3f942ea819498907d5e83c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd9bc3ed2613e52963531a104ebddd17"><td class="memItemLeft" align="right" valign="top"><a class="el" href="userStories_8test_8js.html#a92b303b76a3f942ea819498907d5e83c">const</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="userStories_8test_8js.html#acd9bc3ed2613e52963531a104ebddd17">userStories</a> = require(&quot;../api/userStories&quot;).default</td></tr>
+<tr class="separator:acd9bc3ed2613e52963531a104ebddd17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab93ac135ddbec8da8629120d14726407"><td class="memItemLeft" align="right" valign="top"><a class="el" href="userStories_8test_8js.html#a92b303b76a3f942ea819498907d5e83c">const</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="userStories_8test_8js.html#ab93ac135ddbec8da8629120d14726407">sprints</a> = require(&quot;../api/sprints&quot;).default</td></tr>
+<tr class="separator:ab93ac135ddbec8da8629120d14726407"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12106278ecd31c348b8adbcd316f562f"><td class="memItemLeft" align="right" valign="top">let&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="userStories_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a></td></tr>
+<tr class="separator:a12106278ecd31c348b8adbcd316f562f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa98acedbe3f6d77e2c821af0a06b344e"><td class="memItemLeft" align="right" valign="top">let&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="userStories_8test_8js.html#aa98acedbe3f6d77e2c821af0a06b344e">usId</a></td></tr>
+<tr class="separator:aa98acedbe3f6d77e2c821af0a06b344e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd9febf62cc1fb2e368191ee0d195050"><td class="memItemLeft" align="right" valign="top">let&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="userStories_8test_8js.html#afd9febf62cc1fb2e368191ee0d195050">registroHoras</a></td></tr>
+<tr class="separator:afd9febf62cc1fb2e368191ee0d195050"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a367abbb6441003890161243b28b17ca4"><td class="memItemLeft" align="right" valign="top">let&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="userStories_8test_8js.html#a367abbb6441003890161243b28b17ca4">sprintId</a></td></tr>
+<tr class="separator:a367abbb6441003890161243b28b17ca4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a29354bb1a7268bba0f4e041620cd8399"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a29354bb1a7268bba0f4e041620cd8399">&#9670;&nbsp;</a></span>test()</h2>
+<a id="a2f45efd5ba499df75cca5e59dbae51ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f45efd5ba499df75cca5e59dbae51ee">&#9670;&nbsp;</a></span>afterAll()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">afterAll </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="roles_8test_8js.html#a2bbea1ca302c158b8d9fccabd4fd82bf">async</a>()&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">{ await <a class="el" href="projects_8js.html#a5eedf1969a2b3145f557abe7bb64f9af">deleteProject</a>(<a class="el" href="userStories_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>);<a class="el" href="users_8test_8js.html#a2b3965a8b426cec936fe1fbb478e4018">deleteUser</a>(&quot;member1&quot;);deleteUser(&quot;member2&quot;);}&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a79c2e4a552097b38119813364192ce49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a79c2e4a552097b38119813364192ce49">&#9670;&nbsp;</a></span>beforeAll()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">beforeAll </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="roles_8test_8js.html#a2bbea1ca302c158b8d9fccabd4fd82bf">async</a>()&#160;</td>
+          <td class="paramname"><em>async()</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">{ await <a class="el" href="users_8js.html#a3100b23c7ba75c95f3bf3d1ba9fc82d8">getUser</a>(&quot;usTest&quot;, &quot;ustest@test.com&quot;, &quot;<a class="el" href="userStories_8test_8js.html#a7aa28142349c79e44dbc4315894be058">test</a> uno&quot;).catch((err)=&gt; console.log(&quot;error al crear usuario&quot;));await <a class="el" href="users_8js.html#a3100b23c7ba75c95f3bf3d1ba9fc82d8">getUser</a>(&quot;usTest2&quot;, &quot;ustest2@test.com&quot;, &quot;<a class="el" href="userStories_8test_8js.html#a7aa28142349c79e44dbc4315894be058">test</a> dos&quot;).catch((err)=&gt; console.log(&quot;error al crear usuario&quot;));const res=await <a class="el" href="projects_8js.html#a2e9d2ad3fbbc8cf8fe5dc7f6f51cd596">createProject</a>({ projectName:&quot;roleTest&quot;, estimation:&quot;10&quot;, scrumMasterId:&quot;usTest&quot;, }).catch((err)=&gt; console.log(&quot;error al crear proyecto&quot;));projectId=res.data.id;}&#160;</td>
+          <td class="paramname"><em>{ await getUser(&quot;usTest&quot;, &quot;ustest@test.com&quot;, &quot;test uno&quot;).catch((err)=&gt; console.log(&quot;error al crear usuario&quot;));await getUser(&quot;usTest2&quot;, &quot;ustest2@test.com&quot;, &quot;test dos&quot;).catch((err)=&gt; console.log(&quot;error al crear usuario&quot;));const res=await createProject({ projectName:&quot;roleTest&quot;, estimation:&quot;10&quot;, scrumMasterId:&quot;usTest&quot;, }).catch((err)=&gt; console.log(&quot;error al crear proyecto&quot;));projectId=res.data.id;}</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7aa28142349c79e44dbc4315894be058"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7aa28142349c79e44dbc4315894be058">&#9670;&nbsp;</a></span>test()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -113,7 +185,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">test </td>
           <td>(</td>
-          <td class="paramtype">'edit user story'&#160;</td>
+          <td class="paramtype">&quot;create user story&quot;&#160;</td>
           <td class="paramname">, </td>
         </tr>
         <tr>
@@ -125,7 +197,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">{ await <a class="el" href="userStories_8js.html#acc1a571f6a534166eea470b2c3da0782">editUS</a>({<a class="el" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>, usName:'editedUs', description:'edited desc', estado:1, usId }) <a class="el" href="userStories_8test_8js.html#a92b303b76a3f942ea819498907d5e83c">const</a> res=await <a class="el" href="userStories_8js.html#aa384107b1b4fc4a017be2579907ee303">getUserStories</a>(<a class="el" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>) expect(res.data).toEqual(expect.arrayContaining([expect.objectContaining({nombre:'editedUs', creadoPor:'usTest'})])) expect(res.data).not.toEqual(expect.arrayContaining([expect.objectContaining({nombre:'test us'})])) }&#160;</td>
+          <td class="paramtype">{ <a class="el" href="userStories_8test_8js.html#a92b303b76a3f942ea819498907d5e83c">const</a> usRes=await <a class="el" href="userStories_8js.html#acf4bc643c0219f004f7ca07097450669">createUserStory</a>({ <a class="el" href="userStories_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>, usName:&quot;test us&quot;, description:&quot;this is a test written in jest&quot;, creadoPor:&quot;usTest&quot;, });usId=usRes.data.id;<a class="el" href="userStories_8test_8js.html#a92b303b76a3f942ea819498907d5e83c">const</a> res=await <a class="el" href="userStories_8js.html#aa384107b1b4fc4a017be2579907ee303">getUserStories</a>(<a class="el" href="userStories_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>);expect(res.data).toEqual(expect.arrayContaining([expect.objectContaining({ nombre:&quot;test us&quot;, creadoPor:&quot;usTest&quot; }),]));}&#160;</td>
           <td class="paramname">&#160;</td>
         </tr>
         <tr>
@@ -150,38 +222,101 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">{<a class="code" href="userStories_8js.html#acf4bc643c0219f004f7ca07097450669">createUserStory</a>, <a class="code" href="userStories_8js.html#acc1a571f6a534166eea470b2c3da0782">editUS</a>,<a class="code" href="userStories_8js.html#a6a58b9ecc1ee066fe170033ee8180dab">eliminarUS</a>,<a class="code" href="userStories_8js.html#aa384107b1b4fc4a017be2579907ee303">getUserStories</a>} = require(<span class="stringliteral">&#39;../api/userStories&#39;</span>)<span class="keyword"></span></div>
-<div class="line"><span class="keyword">const </span>{<a class="code" href="users_8js.html#a3100b23c7ba75c95f3bf3d1ba9fc82d8">getUser</a>, <a class="code" href="users_8js.html#a7c7de8cf91deb0126053ec7ba3d17b0b">deleteUser</a>} = require(<span class="stringliteral">&#39;../api/users&#39;</span>)<span class="keyword"></span></div>
-<div class="line"><span class="keyword">const </span>{<a class="code" href="projects_8js.html#a2e9d2ad3fbbc8cf8fe5dc7f6f51cd596">createProject</a>, <a class="code" href="projects_8js.html#a5eedf1969a2b3145f557abe7bb64f9af">deleteProject</a>} = require(<span class="stringliteral">&#39;../api/projects&#39;</span>)</div>
-<div class="line"> </div>
-<div class="line">let <a class="code" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a></div>
-<div class="line">let usId</div>
-<div class="line"><a class="code" href="projects_8test_8js.html#a474b80dda6f4008ffdb8418aa7d6667f">beforeAll</a>(<a class="code" href="projects_8test_8js.html#a2bbea1ca302c158b8d9fccabd4fd82bf">async</a> () =&gt; {</div>
-<div class="line">  await <a class="code" href="users_8js.html#a3100b23c7ba75c95f3bf3d1ba9fc82d8">getUser</a>(<span class="stringliteral">&#39;usTest&#39;</span>, <span class="stringliteral">&#39;ustest@test.com&#39;</span>, <span class="stringliteral">&#39;test uno&#39;</span>).catch(err =&gt; console.log(<span class="stringliteral">&#39;error al crear usuario&#39;</span>))</div>
-<div class="line">  await <a class="code" href="users_8js.html#a3100b23c7ba75c95f3bf3d1ba9fc82d8">getUser</a>(<span class="stringliteral">&#39;usTest2&#39;</span>, <span class="stringliteral">&#39;ustest2@test.com&#39;</span>, <span class="stringliteral">&#39;test dos&#39;</span>).catch(err =&gt; console.log(<span class="stringliteral">&#39;error al crear usuario&#39;</span>))</div>
-<div class="line">  <span class="keyword">const</span> res = await <a class="code" href="projects_8js.html#a2e9d2ad3fbbc8cf8fe5dc7f6f51cd596">createProject</a>({projectName:<span class="stringliteral">&#39;roleTest&#39;</span>,estimation:<span class="stringliteral">&quot;10&quot;</span>, scrumMasterId:<span class="stringliteral">&quot;usTest&quot;</span>}).<span class="keywordflow">catch</span>(err =&gt; console.log(<span class="stringliteral">&#39;error al crear proyecto&#39;</span>))</div>
-<div class="line">  <a class="code" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a> = res.data.<span class="keywordtype">id</span></div>
-<div class="line">})</div>
-<div class="line"> </div>
-<div class="line"><a class="code" href="userStories_8test_8js.html#a29354bb1a7268bba0f4e041620cd8399">test</a>(&#39;create user story&#39;, <a class="code" href="projects_8test_8js.html#a2bbea1ca302c158b8d9fccabd4fd82bf">async</a> () =&gt; {</div>
-<div class="line">  <span class="keyword">const</span> usRes = await <a class="code" href="userStories_8js.html#acf4bc643c0219f004f7ca07097450669">createUserStory</a>({<a class="code" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>, usName:<span class="stringliteral">&#39;test us&#39;</span>, description:<span class="stringliteral">&#39;this is a test written in jest&#39;</span>, creadoPor:<span class="stringliteral">&#39;usTest&#39;</span>})</div>
-<div class="line">  usId = usRes.data.id</div>
-<div class="line">  <span class="keyword">const</span> res = await <a class="code" href="userStories_8js.html#aa384107b1b4fc4a017be2579907ee303">getUserStories</a>(<a class="code" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>)</div>
-<div class="line">  expect(res.data).toEqual(expect.arrayContaining([expect.objectContaining({nombre:<span class="stringliteral">&#39;test us&#39;</span>, creadoPor:<span class="stringliteral">&#39;usTest&#39;</span>})]))</div>
-<div class="line">})</div>
-<div class="ttc" id="aprojects_8js_html_a2e9d2ad3fbbc8cf8fe5dc7f6f51cd596"><div class="ttname"><a href="projects_8js.html#a2e9d2ad3fbbc8cf8fe5dc7f6f51cd596">createProject</a></div><div class="ttdeci">export const createProject</div><div class="ttdoc">Crear proyecto, recibe como parametro un objeto con los siguientes atributos  estimation: la estimaci...</div><div class="ttdef"><b>Definition:</b> projects.js:28</div></div>
-<div class="ttc" id="aprojects_8js_html_a5eedf1969a2b3145f557abe7bb64f9af"><div class="ttname"><a href="projects_8js.html#a5eedf1969a2b3145f557abe7bb64f9af">deleteProject</a></div><div class="ttdeci">export const deleteProject</div><div class="ttdoc">Eliminar proyecto La funcion recibe como parametro el id del proyecto a eliminar, retorna true si se ...</div><div class="ttdef"><b>Definition:</b> projects.js:87</div></div>
-<div class="ttc" id="aprojects_8test_8js_html_a2bbea1ca302c158b8d9fccabd4fd82bf"><div class="ttname"><a href="projects_8test_8js.html#a2bbea1ca302c158b8d9fccabd4fd82bf">async</a></div><div class="ttdeci">async()</div></div>
-<div class="ttc" id="aprojects_8test_8js_html_a474b80dda6f4008ffdb8418aa7d6667f"><div class="ttname"><a href="projects_8test_8js.html#a474b80dda6f4008ffdb8418aa7d6667f">beforeAll</a></div><div class="ttdeci">beforeAll(async()=&gt; { const res=await getUser(998, 'test @test.com', 'project tests') const {email, nombre, id}=res expect(email).toBe(&quot;test@test.com&quot;) expect(nombre).toBe(&quot;project tests&quot;) expect(id).toBe(&quot;998&quot;) }) test('crear proyecto'</div></div>
-<div class="ttc" id="asprints_8test_8js_html_a12106278ecd31c348b8adbcd316f562f"><div class="ttname"><a href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a></div><div class="ttdeci">let projectId</div><div class="ttdef"><b>Definition:</b> sprints.test.js:14</div></div>
+<b>Initial value:</b><div class="fragment"><div class="line">{</div>
+<div class="line">  <a class="code" href="userStories_8js.html#acf4bc643c0219f004f7ca07097450669">createUserStory</a>,</div>
+<div class="line">  <a class="code" href="userStories_8js.html#acc1a571f6a534166eea470b2c3da0782">editUS</a>,</div>
+<div class="line">  <a class="code" href="userStories_8js.html#a6a58b9ecc1ee066fe170033ee8180dab">eliminarUS</a>,</div>
+<div class="line">  <a class="code" href="userStories_8js.html#aa384107b1b4fc4a017be2579907ee303">getUserStories</a>,</div>
+<div class="line">} = require(<span class="stringliteral">&quot;../api/userStories&quot;</span>)</div>
 <div class="ttc" id="auserStories_8js_html_a6a58b9ecc1ee066fe170033ee8180dab"><div class="ttname"><a href="userStories_8js.html#a6a58b9ecc1ee066fe170033ee8180dab">eliminarUS</a></div><div class="ttdeci">export const eliminarUS</div><div class="ttdoc">Elimina US.</div><div class="ttdef"><b>Definition:</b> userStories.js:97</div></div>
 <div class="ttc" id="auserStories_8js_html_aa384107b1b4fc4a017be2579907ee303"><div class="ttname"><a href="userStories_8js.html#aa384107b1b4fc4a017be2579907ee303">getUserStories</a></div><div class="ttdeci">export const getUserStories</div><div class="ttdoc">Obtiene US de un sprint o proyecto.</div><div class="ttdef"><b>Definition:</b> userStories.js:15</div></div>
 <div class="ttc" id="auserStories_8js_html_acc1a571f6a534166eea470b2c3da0782"><div class="ttname"><a href="userStories_8js.html#acc1a571f6a534166eea470b2c3da0782">editUS</a></div><div class="ttdeci">export const editUS</div><div class="ttdoc">Edita info de una US.</div><div class="ttdef"><b>Definition:</b> userStories.js:35</div></div>
 <div class="ttc" id="auserStories_8js_html_acf4bc643c0219f004f7ca07097450669"><div class="ttname"><a href="userStories_8js.html#acf4bc643c0219f004f7ca07097450669">createUserStory</a></div><div class="ttdeci">export const createUserStory</div><div class="ttdef"><b>Definition:</b> userStories.js:4</div></div>
-<div class="ttc" id="auserStories_8test_8js_html_a29354bb1a7268bba0f4e041620cd8399"><div class="ttname"><a href="userStories_8test_8js.html#a29354bb1a7268bba0f4e041620cd8399">test</a></div><div class="ttdeci">test('edit user story', async()=&gt; { await editUS({projectId, usName:'editedUs', description:'edited desc', estado:1, usId }) const res=await getUserStories(projectId) expect(res.data).toEqual(expect.arrayContaining([expect.objectContaining({nombre:'editedUs', creadoPor:'usTest'})])) expect(res.data).not.toEqual(expect.arrayContaining([expect.objectContaining({nombre:'test us'})])) })</div></div>
-<div class="ttc" id="ausers_8js_html_a3100b23c7ba75c95f3bf3d1ba9fc82d8"><div class="ttname"><a href="users_8js.html#a3100b23c7ba75c95f3bf3d1ba9fc82d8">getUser</a></div><div class="ttdeci">export const getUser</div><div class="ttdoc">Obtener usuario  La funcion sirve para que al iniciar sesion con el SSO, se busque al usuario en la b...</div><div class="ttdef"><b>Definition:</b> users.js:22</div></div>
-<div class="ttc" id="ausers_8js_html_a7c7de8cf91deb0126053ec7ba3d17b0b"><div class="ttname"><a href="users_8js.html#a7c7de8cf91deb0126053ec7ba3d17b0b">deleteUser</a></div><div class="ttdeci">export const deleteUser</div><div class="ttdoc">Eliminar usuario  La funcion recibe como parametro el id del usuario a eliminar.</div><div class="ttdef"><b>Definition:</b> users.js:64</div></div>
 </div><!-- fragment -->
+</div>
+</div>
+<a id="a12106278ecd31c348b8adbcd316f562f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a12106278ecd31c348b8adbcd316f562f">&#9670;&nbsp;</a></span>projectId</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">let projectId</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afd9febf62cc1fb2e368191ee0d195050"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd9febf62cc1fb2e368191ee0d195050">&#9670;&nbsp;</a></span>registroHoras</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">let registroHoras</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a367abbb6441003890161243b28b17ca4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a367abbb6441003890161243b28b17ca4">&#9670;&nbsp;</a></span>sprintId</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">let sprintId</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab93ac135ddbec8da8629120d14726407"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab93ac135ddbec8da8629120d14726407">&#9670;&nbsp;</a></span>sprints</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="userStories_8test_8js.html#a92b303b76a3f942ea819498907d5e83c">const</a> sprints = require(&quot;../api/sprints&quot;).default</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="acd9bc3ed2613e52963531a104ebddd17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd9bc3ed2613e52963531a104ebddd17">&#9670;&nbsp;</a></span>userStories</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="userStories_8test_8js.html#a92b303b76a3f942ea819498907d5e83c">const</a> userStories = require(&quot;../api/userStories&quot;).default</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa98acedbe3f6d77e2c821af0a06b344e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa98acedbe3f6d77e2c821af0a06b344e">&#9670;&nbsp;</a></span>usId</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">let usId</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
 </div>
 </div>
 </div><!-- contents -->
