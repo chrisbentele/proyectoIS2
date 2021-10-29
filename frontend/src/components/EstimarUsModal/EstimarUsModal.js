@@ -36,7 +36,7 @@ const Editar = ({ projectId, US, rolUsuario, isOpen, onClose }) => {
     formState: { errors, isSubmitting },
     control,
   } = useForm();
-  const history = useHistory()
+  const history = useHistory();
 
   const onSubmit = async (data) => {
     await api.userStories.estimarUs({
@@ -45,8 +45,8 @@ const Editar = ({ projectId, US, rolUsuario, isOpen, onClose }) => {
       usId: US.id,
       estimacion: data.estimacion,
     });
-        //TODO: quitar history y cambiar estado
-    history.go(0)
+    //TODO: quitar history y cambiar estado
+    history.go(0);
     onClose();
   };
 
@@ -59,7 +59,7 @@ const Editar = ({ projectId, US, rolUsuario, isOpen, onClose }) => {
         <ModalCloseButton />
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalBody pb={6}>
-            <FormControl isInvalid={errors["estimado"]}>
+            <FormControl isInvalid={errors["estimacion"]}>
               <FormLabel fontSize="25px">Duración estimada(horas)</FormLabel>
               <Controller
                 name="estimacion"
@@ -88,7 +88,9 @@ const Editar = ({ projectId, US, rolUsuario, isOpen, onClose }) => {
                   </NumberInput>
                 )}
               />
-              <FormErrorMessage>{errors["estimado"]?.message}</FormErrorMessage>
+              <FormErrorMessage>
+                {errors["estimacion"]?.message}
+              </FormErrorMessage>
             </FormControl>
           </ModalBody>
 
