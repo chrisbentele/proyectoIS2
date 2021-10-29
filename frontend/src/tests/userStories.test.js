@@ -91,6 +91,7 @@ test("registrar horas", async () => {
 
   const res_reg = await userStories
     .registrarHoras({
+      projectId,
       sprintId,
       usId,
       horas: 1,
@@ -98,6 +99,7 @@ test("registrar horas", async () => {
     .catch((e) => console.error(e));
   const res_registros = await userStories
     .getRegistrosHoras({
+      projectId,
       sprintId,
       usId,
     })

@@ -240,9 +240,12 @@ def usuarios(request, user_id=None):
         return HttpResponseBadRequest("Falta user_id")
     elif request.method == "DELETE":
         # Elimina un usuario
-        u = Usuario.objects.get(id=user_id)
-        u.delete()
-        return JsonResponse(True, safe=False, status=204)
+        try:
+            u = Usuario.objects.get(id=user_id)
+            u.delete()
+            return JsonResponse(True, safe=False, status=204)
+        except Usuario.DoesNotExist:
+            return HttpResponseNotFound()
 
 
 def usuarios_proyectos(request, user_id):
@@ -954,12 +957,17 @@ def usuarios_admin(request, user_id):
         return JsonResponse(serializer.errors, status=400, safe=False)
 
 
-def registro_horas(request, sprint_id, us_id=None):
+def registro_horas(request, proyect_id, sprint_id, us_id=None):
+
+    try:
+        sprint = Proyecto.objects.get(id=sprint_id)
+    except Proyecto.DoesNotExist:
+        return HttpResponseNotFound("sprint_id")
+
     try:
         sprint = Sprint.objects.get(id=sprint_id)
     except Sprint.DoesNotExist:
         return HttpResponseNotFound("sprint_id")
-
 
     if request.method == "POST":
         try:
@@ -970,6 +978,7 @@ def registro_horas(request, sprint_id, us_id=None):
         except US.DoesNotExist:
             return HttpResponseNotFound("us_id")
         try:
+            print(us_id)
             usa = USAsignada.objects.get(us=us_id)
             # TODO DEBUG
         except USAsignada.DoesNotExist:
@@ -987,7 +996,6 @@ def registro_horas(request, sprint_id, us_id=None):
                 "us": us_id,
                 "proyecto": us.proyecto.id,
                 "sprint": sprint_id,
-
                 "usuario": usa.usuario.id,
                 "horas": data["horas"],
                 "fecha": data.get("fecha", timezone.now().strftime("%Y-%m-%d")),
@@ -1023,7 +1031,6 @@ def registro_horas(request, sprint_id, us_id=None):
         except RegistroHoras.DoesNotExist:
             return HttpResponseNotFound()
 
-
     elif request.method == "PUT":
         if not us_id:
             return HttpResponseBadRequest("Falta us_id")
@@ -1034,7 +1041,6 @@ def registro_horas(request, sprint_id, us_id=None):
                 return HttpResponseBadRequest("faltan horas")
             if not data["fecha"]:
                 return HttpResponseBadRequest("falta fecha")
-
 
         except Exception as e:
             return HttpResponseBadRequest(e)
@@ -1113,4 +1119,3 @@ def sprints_miembros(request, proyect_id, sprint_id):
         miembros_list = [json.loads(x) for x in list(miembros_set)]
 
         return JsonResponse(miembros_list, safe=False)
-

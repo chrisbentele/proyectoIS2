@@ -97,25 +97,32 @@ export const desasignarUsASprint = ({ projectId, sprintId, usId }) =>
 export const eliminarUS = async (projectId, us_id) =>
   await axiosInstance.delete(`/proyectos/${projectId}/user_stories/${us_id}`);
 
-export const registrarHoras = ({ sprintId, usId, horas, fecha }) =>
+export const registrarHoras = ({ projectId, sprintId, usId, horas, fecha }) =>
   axiosInstance.post(
-    `/sprints/${sprintId}/user_stories/${usId}/registro_horas`,
+    `proyectos/${projectId}/sprints/${sprintId}/user_stories/${usId}/registro_horas`,
     { horas, fecha }
   );
-export const editRegistrosHoras = ({ sprintId, usId, horas, fecha }) =>
+
+export const editRegistrosHoras = ({
+  projectId,
+  sprintId,
+  usId,
+  horas,
+  fecha,
+}) =>
   axiosInstance.put(
-    `/sprints/${sprintId}/user_stories/${usId}/registro_horas`,
+    `proyectos/${projectId}/sprints/${sprintId}/user_stories/${usId}/registro_horas`,
     { horas, fecha }
   );
 
-export const deleteRegistrosHoras = ({ sprintId, usId }) =>
+export const deleteRegistrosHoras = ({ projectId, sprintId, usId }) =>
   axiosInstance.delete(
-    `/sprints/${sprintId}/user_stories/${usId}/registro_horas`
+    `proyectos/${projectId}/sprints/${sprintId}/user_stories/${usId}/registro_horas`
   );
 
-export const getRegistrosHoras = ({ sprintId, usId, fecha }) =>
+export const getRegistrosHoras = ({ projectId, sprintId, usId, fecha }) =>
   axiosInstance.get(
-    `/sprints/${sprintId}/user_stories/${usId}/registro_horas`,
+    `proyectos/${projectId}/sprints/${sprintId}/user_stories/${usId}/registro_horas`,
     { params: { fecha } }
   );
 
