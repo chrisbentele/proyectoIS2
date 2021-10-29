@@ -46,7 +46,7 @@ export function mapStateColor(projectState) {
 
 export function handleSprintBoxColor(sprint) {
   if (sprint.terminado) return "#808080";
-  if (sprint.activo) return "#51ed6b";
+  if (sprint.activo) return "#726bff";
   return "#ffe66d";
 }
 

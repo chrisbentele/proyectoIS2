@@ -15,12 +15,16 @@ import {
   LinkBox,
   LinkOverlay,
   Divider,
+  List,
+  ListItem,
+  Heading,
+  ListIcon,
 } from "@chakra-ui/layout";
 import { Link } from "react-router-dom";
 import { Button } from "@chakra-ui/button";
 import EditarSprintModal from "../../components/EditarSprintModal/EditarSprintModal";
 import USList from "../../components/userStoryList/userStoryList";
-import { mapStateColor } from "../../styles/theme";
+import { mapStateColor, handleSprintBoxColor } from "../../styles/theme";
 import { MdBuild } from "react-icons/md";
 import { useHistory } from "react-router-dom";
 import { BsFillPlayFill, BsFillStopFill } from "react-icons/bs";
@@ -160,7 +164,7 @@ export default function Index({ props, dispatchError }) {
     <Box
       minHeight="100vh"
       minWidth="full"
-      bg={mapStateColor(project?.estado)}
+      bg={handleSprintBoxColor(sprint)}
       color="#2b2d42"
       d="flex"
       justifyContent="left"
@@ -368,8 +372,49 @@ export default function Index({ props, dispatchError }) {
             onClose={() => setIsOpenEditSp(false)}
           />
 
-          <Flex bg="white" width="6xl">
-            <Box bg="black" borderColor="black"></Box>
+          <Flex
+            bg="white"
+            width="fit-content"
+            borderColor="black"
+            borderWidth="4px"
+            borderRadius="5"
+            m="5"
+            fontSize="lg"
+          >
+            <Box borderColor="black" borderRightWidth="3px">
+              <Box borderBottomWidth="3px" borderColor="black">
+                <Heading p="2" size="lg">
+                  US
+                </Heading>
+              </Box>
+              <List p="2">
+                <ListItem>
+                  <ListIcon as={MdBuild} />
+                  hola
+                </ListItem>
+                <ListItem>
+                  <ListIcon />
+                  hola
+                </ListItem>
+              </List>
+            </Box>
+            <Box>
+              <Box borderBottomWidth="3px" borderColor="black">
+                <Heading p="2" size="lg">
+                  Cambio
+                </Heading>
+              </Box>
+              <List p="2">
+                <ListItem>
+                  <ListIcon />
+                  hola
+                </ListItem>
+                <ListItem>
+                  <ListIcon />
+                  hola
+                </ListItem>
+              </List>
+            </Box>
           </Flex>
         </Box>
       ) : (
