@@ -11,7 +11,7 @@ var searchData=
   ['addrole_8',['addRole',['../roles_8js.html#aee7217c1d7b64ae182c2c60d52b0b1d3',1,'roles.js']]],
   ['admin_9',['admin',['../namespaceapi_1_1admin.html',1,'api']]],
   ['admin_2epy_10',['admin.py',['../admin_8py.html',1,'']]],
-  ['afterall_11',['afterAll',['../sprints_8test_8js.html#aa1299c0d68c4e3a25f06069cd1553704',1,'sprints.test.js']]],
+  ['afterall_11',['afterAll',['../userStories_8test_8js.html#a2f45efd5ba499df75cca5e59dbae51ee',1,'afterAll(async()=&gt; { await deleteProject(projectId);deleteUser(&quot;member1&quot;);deleteUser(&quot;member2&quot;);}):&#160;userStories.test.js'],['../sprints_8test_8js.html#aa1299c0d68c4e3a25f06069cd1553704',1,'afterAll(async()=&gt; { await deleteProject(projectId);deleteUser(&quot;sprintTest&quot;);deleteUser(&quot;sprintTest2&quot;);}):&#160;sprints.test.js']]],
   ['agruparregistrosporfecha_12',['agruparRegistrosPorFecha',['../util_2index_8js.html#a9a4dda09af718c445d271965874a3ae9',1,'index.js']]],
   ['allowed_5fhosts_13',['ALLOWED_HOSTS',['../namespacecontroller_1_1settings.html#ae3b0b1febe7b5441745a381a415b9de3',1,'controller::settings']]],
   ['api_14',['api',['../api_2index_8js.html#a940c8b838ec52e43cbab50e7e2107f0b',1,'index.js']]],
