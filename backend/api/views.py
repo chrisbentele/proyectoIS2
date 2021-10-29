@@ -634,7 +634,6 @@ def user_stories_estimar(request, proyect_id, us_id):
                     asignada = False
                 if asignada and data["user_id"] == usa.usuario.id:
                     # El asignado es el mismo SM
-                    print("entro")
                     serializer = USSerializer(
                         us, data={"estimacionesDev": data["estimacion"]}, partial=True
                     )
@@ -960,9 +959,9 @@ def usuarios_admin(request, user_id):
 def registro_horas(request, proyect_id, sprint_id, us_id=None):
 
     try:
-        sprint = Proyecto.objects.get(id=sprint_id)
+        proyecto = Proyecto.objects.get(id=proyect_id)
     except Proyecto.DoesNotExist:
-        return HttpResponseNotFound("sprint_id")
+        return HttpResponseNotFound("proyect_id")
 
     try:
         sprint = Sprint.objects.get(id=sprint_id)
@@ -978,7 +977,6 @@ def registro_horas(request, proyect_id, sprint_id, us_id=None):
         except US.DoesNotExist:
             return HttpResponseNotFound("us_id")
         try:
-            print(us_id)
             usa = USAsignada.objects.get(us=us_id)
             # TODO DEBUG
         except USAsignada.DoesNotExist:
@@ -1072,20 +1070,20 @@ def registro_horas(request, proyect_id, sprint_id, us_id=None):
             return HttpResponseBadRequest("Falta us_id")
 
         try:
-            data = JSONParser().parse(request)
-            if not data["fecha"]:
+            fecha = request.GET.get("fecha")
+            if not fecha:
                 return HttpResponseBadRequest("falta fecha")
         except Exception as e:
             return HttpResponseBadRequest(e)
 
         try:
-            rh = RegistroHoras.objects.get(us=us_id, fecha=data["fecha"])
+            rh = RegistroHoras.objects.get(us=us_id, fecha=fecha)
             rh.delete()
             return JsonResponse(True, safe=False, status=204)
 
         except RegistroHoras.DoesNotExist:
             return HttpResponseNotFound(
-                f"Sin registro de horas en {us_id} y fecha {data['fecha']}"
+                f"Sin registro de horas en {us_id} y fecha {fecha}"
             )
 
 
