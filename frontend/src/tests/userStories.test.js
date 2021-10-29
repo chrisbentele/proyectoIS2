@@ -107,6 +107,12 @@ test("registrar horas", async () => {
     })
     .catch((e) => console.error(e));
 
+  // const res_g = await userStories.getRegistrosHoras({
+  //   projectId,
+  //   sprintId,
+  //   usId,
+  // });
+
   expect(res_registros.data[0]).toEqual(res_reg.data);
 });
 
