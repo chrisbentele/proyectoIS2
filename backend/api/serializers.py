@@ -120,4 +120,5 @@ class RegistroHorasSerializer(serializers.ModelSerializer):
             "sprint",
             "usuario",
             "proyecto",
+            "mensaje",
         ]

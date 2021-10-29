@@ -98,6 +98,7 @@ test("registrar horas y buscar", async () => {
       sprintId,
       usId,
       horas: 1,
+      mensaje: "test",
     })
     .catch((e) => console.error(e));
   const res_registros = await userStories
@@ -125,6 +126,7 @@ test("editar registro de horas", async () => {
       usId,
       horas: registroHoras["horas"] + 1,
       fecha: registroHoras["fecha"],
+      mensaje:"aaaa"
     })
     .catch(console.error);
   expect(res.data).not.toEqual(registroHoras);
@@ -138,6 +140,7 @@ test("eliminar registro de horas", async () => {
       sprintId,
       usId,
       fecha: registroHoras["fecha"],
+      mensaje: "test",
     })
     .catch(console.error);
   expect(res.data).not.toEqual(

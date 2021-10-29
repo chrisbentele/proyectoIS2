@@ -16,6 +16,7 @@ import {
   Flex,
   Heading,
   Text,
+  Textarea,
   //useDisclosure,
   Modal,
   ModalOverlay,
@@ -468,7 +469,7 @@ const USList = ({
                                 <AlertDialogBody pb={6}>
                                   <FormControl isInvalid={errorsRegHoras["horas"]}>
                                     <FormLabel>
-                                      Agregue las horas trabajadas en esta US en el sprint actual.
+                                      Agregue la s horas trabajadas en esta US en el sprint actual.
                                     </FormLabel>
                                     <FormLabel>
                                       Horas totales ya registradas: {valorDefault}
@@ -496,7 +497,19 @@ const USList = ({
                                         </NumberInput>
                                       )}
                                     />
-                                    <FormErrorMessage>{errorsRegHoras["horas"]?.message}</FormErrorMessage>
+                                  </FormControl>
+                                  <FormControl  isInvalid={errorsRegHoras["mensaje"]}>
+                                    <FormLabel>Detalles</FormLabel>
+                                        <Textarea
+                                          {...registerRegHoras("mensaje", {
+                                            required: "Valor Requerido",
+                                            minLength: {
+                                              value: 4,
+                                              message: "Minimum length should be 4",
+                                            },
+                                          })}
+                                        />
+                                    <FormErrorMessage>{errorsRegHoras["mensaje"]?.message}</FormErrorMessage>
                                   </FormControl>
                                 </AlertDialogBody>
 

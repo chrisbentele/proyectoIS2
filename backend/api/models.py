@@ -142,6 +142,7 @@ class RegistroHoras(Model):
     usuario = ForeignKey(Usuario, on_delete=CASCADE)
     fechaEdit = DateField(null=True)
     fechaCreacion = DateField(editable=False)
+    mensaje = CharField(max_length=480, null=False, blank=True)
 
     def save(self, *args, **kwargs):
         """On save, update timestamps"""
