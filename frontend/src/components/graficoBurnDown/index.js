@@ -11,14 +11,14 @@ import {
 
 export default function BurnDown({ registros, sprint }) {
   const [burndownData, setBurndownData] = useState([]);
-  console.log(sprint);
+  //console.log(sprint);
   useEffect(() => {
     if (sprint && sprint.sumaHorasAsignadas && sprint.estimacion) {
-      console.log("sprint", sprint);
+      //console.log("sprint", sprint);
       const progresoEstimadoPorDia =
         sprint.sumaHorasAsignadas / sprint.estimacion;
-      console.log("progresoEstimadoPorDia", progresoEstimadoPorDia);
-      console.log("sprint suma horas", sprint.sumaHorasAsignadas);
+      //console.log("progresoEstimadoPorDia", progresoEstimadoPorDia);
+      //console.log("sprint suma horas", sprint.sumaHorasAsignadas);
       setBurndownData(
         [
           {

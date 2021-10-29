@@ -12,9 +12,10 @@ import {
   Flex,
   HStack,
   Text,
-  LinkBox,
-  LinkOverlay,
-  Divider,
+  Heading,
+  List,
+  ListItem,
+  ListIcon,
 } from "@chakra-ui/layout";
 import { Link } from "react-router-dom";
 import { Button } from "@chakra-ui/button";
@@ -24,16 +25,6 @@ import { mapStateColor } from "../../styles/theme";
 import { MdBuild } from "react-icons/md";
 import { useHistory } from "react-router-dom";
 import { BsFillPlayFill, BsFillStopFill } from "react-icons/bs";
-
-import {
-  LineChart,
-  YAxis,
-  XAxis,
-  Tooltip,
-  CartesianGrid,
-  Line,
-} from "recharts";
-
 
 import { tienePermiso } from "../../util";
 import { PERMISOS_MACRO } from "../roles/permisos";
@@ -54,6 +45,7 @@ export default function Index({ props, dispatchError }) {
   const [sprint, setSprint] = useState(null);
   const [isAllowed, toggleIsAllowed] = useState(true);
   const [isOpenEditSp, setIsOpenEditSp] = useState(false);
+  const [listaCambios, setListaCambios] = useState([]);
 
   const history = useHistory();
 
@@ -62,34 +54,47 @@ export default function Index({ props, dispatchError }) {
 
   //Al cargarse la pagina se busca el proyecto con el id del URL y se lo asigna a projectId
   useEffect(() => {
-    api
-      .getProjectById(projectId)
-      .then(({ data }) => setProject(data))
-      .catch((err) => console.log(err));
+    if(projectId && sprintId){
+      api
+        .getProjectById(projectId)
+        .then(({ data }) => setProject(data))
+        .catch((err) => console.log(err));
 
-    api.userStories
-      .getUserStories(projectId, sprintId)
-      .then(({ data }) => setUserStories(data));
+      api.userStories
+        .getUserStories(projectId, sprintId)
+        .then(({ data }) => setUserStories(data));
 
-    api.sprints
-      .getSprint(projectId, sprintId)
-      .then(({ data }) => {
-        setSprint(data);
-      })
-      .catch((err) => console.log(err));
+      api.sprints
+        .getSprint(projectId, sprintId)
+        .then(({ data }) => {
+          setSprint(data);
+        })
+        .catch((err) => console.log(err));
 
-    api
-      .getMember(projectId, user.sub)
-      .then(({ data: member }) => setThisMember(member))
-      .catch((err) =>
-        dispatchError(
-          "No autorizado",
-          "Debes formar parte del proyecto para visualizar el mismo o los sprints",
-          null,
-          false
-        )
-      );
+      api
+        .getMember(projectId, user.sub)
+        .then(({ data: member }) => setThisMember(member))
+        .catch((err) =>
+          dispatchError(
+            "No autorizado",
+            "Debes formar parte del proyecto para visualizar el mismo o los sprints",
+            null,
+            false
+          )
+        );
+
+      api.sprints
+        .getRegistrosHoras({projectId, spId:sprintId})
+        .then(({ data }) => {
+          setListaCambios(data);
+          console.log(listaCambios);
+          
+        })
+        .catch((err) => console.log(err));
+
+    }
   }, [projectId, sprintId]);
+  
   const activateSprint = async () => {
     if (!sprint.activable) {
       return dispatchError("No se puedo activar el sprint", "");
@@ -119,7 +124,7 @@ export default function Index({ props, dispatchError }) {
 
   useEffect(() => {
     if (sprint && userStories.length && thisMember) {
-      console.log("this member rol", thisMember.rol.nombre);
+      //console.log("this member rol", thisMember.rol.nombre);
       if (thisMember.rol.nombre === "Scrum Master") {
         toggleIsAllowed(true);
         return;
@@ -354,6 +359,53 @@ export default function Index({ props, dispatchError }) {
             isOpen={isOpenEditSp}
             onClose={() => setIsOpenEditSp(false)}
           />
+          <Flex
+            bg="white"
+            width="fit-content"
+            borderColor="black"
+            borderWidth="4px"
+            borderRadius="5"
+            m="5"
+            fontSize="lg"
+          >
+
+            {/*Columna izquierda*/}
+            <Box borderColor="black" borderRightWidth="3px">
+              <Box borderBottomWidth="3px" borderColor="black">
+                <Heading p="2" size="lg">
+                  US
+                </Heading>
+              </Box>
+                <List p="2">
+                {listaCambios.map((cambio) => (
+                  console.log(cambio),
+                  <ListItem key={cambio.id}>
+                    {cambio.us}
+                  </ListItem>
+                ))}
+                </List>
+            </Box>
+            {/*-------------------*/}
+
+            {/*Columna derecha*/}
+            <Box>
+              <Box borderBottomWidth="3px" borderColor="black">
+                <Heading p="2" size="lg">
+                  Cambio
+                </Heading>
+              </Box>
+              <List p="2">
+                {listaCambios.map((cambio) => (
+                  console.log(cambio),
+                  <ListItem key={cambio.id}>
+                    {'El usuario ' + cambio.usuario + ' registró ' + cambio.horas + ' horas: ' + cambio.mensaje}
+                  </ListItem>
+                ))}
+              </List>
+            </Box>
+            {/*-------------------*/}
+            
+          </Flex>
         </Box>
       ) : (
         <Flex align="center" ml="auto">
