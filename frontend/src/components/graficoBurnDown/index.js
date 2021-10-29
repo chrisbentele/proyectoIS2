@@ -13,7 +13,7 @@ import { api } from "../../api";
 
 export default function BurnDown({ registros, sprint }) {
   const [burndownData, setBurndownData] = useState([]);
-  console.log(sprint);
+  //console.log(sprint);
   useEffect(() => {
     console.log(sprint);
     if (
