@@ -130,12 +130,11 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= <a class="code" href="roles_8test_8js.html#a2bbea1ca302c158b8d9fccabd4fd82bf">async</a> (<a class="code" href="members_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>, userId) =&gt;</div>
+<b>Initial value:</b><div class="fragment"><div class="line">= async (<a class="code" href="members_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>, userId) =&gt;</div>
 <div class="line">  await <a class="code" href="api_2index_8js.html#a49de16393722038aeb1da8e9874d4d36">axiosInstance</a>.post(`/<a class="code" href="namespaceapi_1_1views.html#a308fb6ca7ed69b9aebed843b6786eff9">proyectos</a>/${<a class="code" href="members_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>}/miembros/${userId}`)</div>
 <div class="ttc" id="aapi_2index_8js_html_a49de16393722038aeb1da8e9874d4d36"><div class="ttname"><a href="api_2index_8js.html#a49de16393722038aeb1da8e9874d4d36">axiosInstance</a></div><div class="ttdeci">export const axiosInstance</div><div class="ttdef"><b>Definition:</b> index.js:47</div></div>
 <div class="ttc" id="amembers_8test_8js_html_a12106278ecd31c348b8adbcd316f562f"><div class="ttname"><a href="members_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a></div><div class="ttdeci">let projectId</div><div class="ttdef"><b>Definition:</b> members.test.js:15</div></div>
 <div class="ttc" id="anamespaceapi_1_1views_html_a308fb6ca7ed69b9aebed843b6786eff9"><div class="ttname"><a href="namespaceapi_1_1views.html#a308fb6ca7ed69b9aebed843b6786eff9">api.views.proyectos</a></div><div class="ttdeci">def proyectos(request, proyect_id=None)</div><div class="ttdef"><b>Definition:</b> views.py:37</div></div>
-<div class="ttc" id="aroles_8test_8js_html_a2bbea1ca302c158b8d9fccabd4fd82bf"><div class="ttname"><a href="roles_8test_8js.html#a2bbea1ca302c158b8d9fccabd4fd82bf">async</a></div><div class="ttdeci">async()</div></div>
 </div><!-- fragment -->
 <p>Agregar los roles de un miembro. </p>
 
@@ -152,9 +151,9 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= <a class="code" href="roles_8test_8js.html#a2bbea1ca302c158b8d9fccabd4fd82bf">async</a> (memberId, <a class="code" href="roles_8test_8js.html#aa82cb2fe7ee3e892f85a1aabe9c21248">roleId</a>) =&gt;</div>
+<b>Initial value:</b><div class="fragment"><div class="line">= async (memberId, <a class="code" href="roles_8test_8js.html#aa82cb2fe7ee3e892f85a1aabe9c21248">roleId</a>) =&gt;</div>
 <div class="line">  await <a class="code" href="api_2index_8js.html#a49de16393722038aeb1da8e9874d4d36">axiosInstance</a>.put(`/members/${memberId}`, { <a class="code" href="roles_8test_8js.html#aa82cb2fe7ee3e892f85a1aabe9c21248">roleId</a> })</div>
-<div class="ttc" id="aroles_8test_8js_html_aa82cb2fe7ee3e892f85a1aabe9c21248"><div class="ttname"><a href="roles_8test_8js.html#aa82cb2fe7ee3e892f85a1aabe9c21248">roleId</a></div><div class="ttdeci">let roleId</div><div class="ttdef"><b>Definition:</b> roles.test.js:9</div></div>
+<div class="ttc" id="aroles_8test_8js_html_aa82cb2fe7ee3e892f85a1aabe9c21248"><div class="ttname"><a href="roles_8test_8js.html#aa82cb2fe7ee3e892f85a1aabe9c21248">roleId</a></div><div class="ttdeci">let roleId</div><div class="ttdef"><b>Definition:</b> roles.test.js:16</div></div>
 </div><!-- fragment -->
 <p>Editar los roles de un miembro. </p>
 
@@ -171,7 +170,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= <a class="code" href="roles_8test_8js.html#a2bbea1ca302c158b8d9fccabd4fd82bf">async</a> (<a class="code" href="members_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>, userId) =&gt;</div>
+<b>Initial value:</b><div class="fragment"><div class="line">= async (<a class="code" href="members_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>, userId) =&gt;</div>
 <div class="line">  await <a class="code" href="api_2index_8js.html#a49de16393722038aeb1da8e9874d4d36">axiosInstance</a>.get(`<a class="code" href="namespaceapi_1_1views.html#a308fb6ca7ed69b9aebed843b6786eff9">proyectos</a>/${<a class="code" href="members_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>}/miembros/${userId}`)</div>
 </div><!-- fragment -->
 <p>Consige los datos un miembro de un proyecto. </p>
@@ -189,7 +188,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= <a class="code" href="roles_8test_8js.html#a2bbea1ca302c158b8d9fccabd4fd82bf">async</a> (<a class="code" href="members_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>) =&gt;</div>
+<b>Initial value:</b><div class="fragment"><div class="line">= async (<a class="code" href="members_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>) =&gt;</div>
 <div class="line">  await <a class="code" href="api_2index_8js.html#a49de16393722038aeb1da8e9874d4d36">axiosInstance</a>.get(`<a class="code" href="namespaceapi_1_1views.html#a308fb6ca7ed69b9aebed843b6786eff9">proyectos</a>/${<a class="code" href="members_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>}/miembros`)</div>
 </div><!-- fragment -->
 <p>Listar todos los miembros. </p>
@@ -223,7 +222,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= <a class="code" href="roles_8test_8js.html#a2bbea1ca302c158b8d9fccabd4fd82bf">async</a> (<a class="code" href="members_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>, userId) =&gt;</div>
+<b>Initial value:</b><div class="fragment"><div class="line">= async (<a class="code" href="members_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>, userId) =&gt;</div>
 <div class="line">  await <a class="code" href="api_2index_8js.html#a49de16393722038aeb1da8e9874d4d36">axiosInstance</a>.delete(`/<a class="code" href="namespaceapi_1_1views.html#a308fb6ca7ed69b9aebed843b6786eff9">proyectos</a>/${<a class="code" href="members_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>}/miembros/${userId}`)</div>
 </div><!-- fragment -->
 <p>Eliminar los roles de un miembro. </p>

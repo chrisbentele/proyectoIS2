@@ -95,11 +95,11 @@ $(document).ready(function(){initNavTree('members_8test_8js.html',''); initResiz
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:adac68e9cc88f22a1d12834e392d4d724"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="members_8test_8js.html#adac68e9cc88f22a1d12834e392d4d724">beforeAll</a> (<a class="el" href="roles_8test_8js.html#a2bbea1ca302c158b8d9fccabd4fd82bf">async</a>()=&gt; { await <a class="el" href="users_8js.html#a3100b23c7ba75c95f3bf3d1ba9fc82d8">getUser</a>(&quot;member1&quot;, &quot;member1@test.com&quot;, &quot;<a class="el" href="userStories_8test_8js.html#a7aa28142349c79e44dbc4315894be058">test</a> uno&quot;).catch((err)=&gt; console.log(&quot;error al crear usuario&quot;));await <a class="el" href="users_8js.html#a3100b23c7ba75c95f3bf3d1ba9fc82d8">getUser</a>(&quot;member2&quot;, &quot;member2@test.com&quot;, &quot;<a class="el" href="userStories_8test_8js.html#a7aa28142349c79e44dbc4315894be058">test</a> dos&quot;).catch((err)=&gt; console.log(&quot;error al crear usuario&quot;));const res=await <a class="el" href="projects_8js.html#a2e9d2ad3fbbc8cf8fe5dc7f6f51cd596">createProject</a>({ projectName:&quot;membersTestProject&quot;, estimation:&quot;10&quot;, scrumMasterId:&quot;member1&quot;, }).catch((err)=&gt; console.log(&quot;error al crear proyecto&quot;));projectId=res.data.id;})</td></tr>
+<tr class="memitem:adac68e9cc88f22a1d12834e392d4d724"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="members_8test_8js.html#adac68e9cc88f22a1d12834e392d4d724">beforeAll</a> (async()=&gt; { await <a class="el" href="users_8js.html#a3100b23c7ba75c95f3bf3d1ba9fc82d8">getUser</a>(&quot;member1&quot;, &quot;member1@test.com&quot;, &quot;<a class="el" href="userStories_8test_8js.html#a7aa28142349c79e44dbc4315894be058">test</a> uno&quot;).catch((err)=&gt; console.log(&quot;error al crear usuario&quot;));await <a class="el" href="users_8js.html#a3100b23c7ba75c95f3bf3d1ba9fc82d8">getUser</a>(&quot;member2&quot;, &quot;member2@test.com&quot;, &quot;<a class="el" href="userStories_8test_8js.html#a7aa28142349c79e44dbc4315894be058">test</a> dos&quot;).catch((err)=&gt; console.log(&quot;error al crear usuario&quot;));const res=await <a class="el" href="projects_8js.html#a2e9d2ad3fbbc8cf8fe5dc7f6f51cd596">createProject</a>({ projectName:&quot;membersTestProject&quot;, estimation:&quot;10&quot;, scrumMasterId:&quot;member1&quot;, }).catch((err)=&gt; console.log(&quot;error al crear proyecto&quot;));projectId=res.data.id;})</td></tr>
 <tr class="separator:adac68e9cc88f22a1d12834e392d4d724"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae10610eb3379c913da2fc073d963a2bb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="members_8test_8js.html#ae10610eb3379c913da2fc073d963a2bb">test</a> (&quot;agregar miembro&quot;, async()=&gt; { await <a class="el" href="members_8js.html#a519e1aa907607fb070812e803dc9b032">addMemberToProject</a>(<a class="el" href="userStories_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>, &quot;member2&quot;).catch((err)=&gt; console.log(&quot;error al agregar miembro&quot;, err));<a class="el" href="userStories_8test_8js.html#a92b303b76a3f942ea819498907d5e83c">const</a> res=await <a class="el" href="projects_8js.html#a03e596029d83db7bd1fbc2e0c7796b69">getProjectById</a>(<a class="el" href="userStories_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>);expect(res.data.miembros).toEqual(expect.arrayContaining([&quot;member2&quot;, &quot;member1&quot;]));})</td></tr>
 <tr class="separator:ae10610eb3379c913da2fc073d963a2bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f45efd5ba499df75cca5e59dbae51ee"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="members_8test_8js.html#a2f45efd5ba499df75cca5e59dbae51ee">afterAll</a> (<a class="el" href="roles_8test_8js.html#a2bbea1ca302c158b8d9fccabd4fd82bf">async</a>()=&gt; { await <a class="el" href="projects_8js.html#a5eedf1969a2b3145f557abe7bb64f9af">deleteProject</a>(<a class="el" href="userStories_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>);<a class="el" href="users_8test_8js.html#a2b3965a8b426cec936fe1fbb478e4018">deleteUser</a>(&quot;member1&quot;);deleteUser(&quot;member2&quot;);})</td></tr>
+<tr class="memitem:a2f45efd5ba499df75cca5e59dbae51ee"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="members_8test_8js.html#a2f45efd5ba499df75cca5e59dbae51ee">afterAll</a> (async()=&gt; { await <a class="el" href="projects_8js.html#a5eedf1969a2b3145f557abe7bb64f9af">deleteProject</a>(<a class="el" href="userStories_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>);<a class="el" href="users_8test_8js.html#a2b3965a8b426cec936fe1fbb478e4018">deleteUser</a>(&quot;member1&quot;);deleteUser(&quot;member2&quot;);})</td></tr>
 <tr class="separator:a2f45efd5ba499df75cca5e59dbae51ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
@@ -119,7 +119,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">afterAll </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="roles_8test_8js.html#a2bbea1ca302c158b8d9fccabd4fd82bf">async</a>()&#160;</td>
+          <td class="paramtype">async()&#160;</td>
           <td class="paramname">, </td>
         </tr>
         <tr>
@@ -147,14 +147,14 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">beforeAll </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="roles_8test_8js.html#a2bbea1ca302c158b8d9fccabd4fd82bf">async</a>()&#160;</td>
-          <td class="paramname"><em>async()</em>, </td>
+          <td class="paramtype">async()&#160;</td>
+          <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">{ await <a class="el" href="users_8js.html#a3100b23c7ba75c95f3bf3d1ba9fc82d8">getUser</a>(&quot;member1&quot;, &quot;member1@test.com&quot;, &quot;<a class="el" href="userStories_8test_8js.html#a7aa28142349c79e44dbc4315894be058">test</a> uno&quot;).catch((err)=&gt; console.log(&quot;error al crear usuario&quot;));await <a class="el" href="users_8js.html#a3100b23c7ba75c95f3bf3d1ba9fc82d8">getUser</a>(&quot;member2&quot;, &quot;member2@test.com&quot;, &quot;<a class="el" href="userStories_8test_8js.html#a7aa28142349c79e44dbc4315894be058">test</a> dos&quot;).catch((err)=&gt; console.log(&quot;error al crear usuario&quot;));const res=await <a class="el" href="projects_8js.html#a2e9d2ad3fbbc8cf8fe5dc7f6f51cd596">createProject</a>({ projectName:&quot;membersTestProject&quot;, estimation:&quot;10&quot;, scrumMasterId:&quot;member1&quot;, }).catch((err)=&gt; console.log(&quot;error al crear proyecto&quot;));projectId=res.data.id;}&#160;</td>
-          <td class="paramname"><em>{ await getUser(&quot;member1&quot;, &quot;member1@test.com&quot;, &quot;test uno&quot;).catch((err)=&gt; console.log(&quot;error al crear usuario&quot;));await getUser(&quot;member2&quot;, &quot;member2@test.com&quot;, &quot;test dos&quot;).catch((err)=&gt; console.log(&quot;error al crear usuario&quot;));const res=await createProject({ projectName:&quot;membersTestProject&quot;, estimation:&quot;10&quot;, scrumMasterId:&quot;member1&quot;, }).catch((err)=&gt; console.log(&quot;error al crear proyecto&quot;));projectId=res.data.id;}</em>&#160;</td>
+          <td class="paramname">&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -181,7 +181,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="roles_8test_8js.html#a2bbea1ca302c158b8d9fccabd4fd82bf">async</a>()&#160;</td>
+          <td class="paramtype">async()&#160;</td>
           <td class="paramname">, </td>
         </tr>
         <tr>

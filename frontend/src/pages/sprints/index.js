@@ -23,7 +23,17 @@ import USList from "../../components/userStoryList/userStoryList";
 import { mapStateColor } from "../../styles/theme";
 import { MdBuild } from "react-icons/md";
 import { useHistory } from "react-router-dom";
-import { BsFillPlayFill } from "react-icons/bs";
+import { BsFillPlayFill, BsFillStopFill } from "react-icons/bs";
+
+import {
+  LineChart,
+  YAxis,
+  XAxis,
+  Tooltip,
+  CartesianGrid,
+  Line,
+} from "recharts";
+
 
 import { tienePermiso } from "../../util";
 import { PERMISOS_MACRO } from "../roles/permisos";
@@ -202,6 +212,7 @@ export default function Index({ props, dispatchError }) {
                   variant="solid"
                   // opacity="30%"
                   onClick={() => history.push(`/projects/${projectId}/roles`)}
+                  isDisabled={project.estado === 1}
                 >
                   Configurar Roles
                 </Button>
@@ -213,6 +224,7 @@ export default function Index({ props, dispatchError }) {
                   variant="solid"
                   // opacity="30%"
                   onClick={() => setIsOpenEditSp(true)}
+                  isDisabled={project.estado === 1}
                 >
                   Configurar Sprint
                 </Button>
@@ -224,8 +236,8 @@ export default function Index({ props, dispatchError }) {
                   colorScheme="yellow"
                   variant="solid"
                   // opacity="30%"
-                  disabled={!sprint?.activable}
                   onClick={activateSprint}
+                  isDisabled={project.estado === 1 || !sprint?.activable}
                 >
                   Activar Sprint
                 </Button>
@@ -233,12 +245,12 @@ export default function Index({ props, dispatchError }) {
               {tienePermiso(thisMember, PERMISOS_MACRO.MODIFICAR_SPRINT) &&
               sprint?.activo ? (
                 <Button
-                  leftIcon={<BsFillPlayFill />}
+                  leftIcon={<BsFillStopFill />}
                   colorScheme="yellow"
                   variant="solid"
                   // opacity="30%"
-                  disabled={!sprint?.activable}
                   onClick={deactivateSprint}
+                  isDisabled={project.estado === 1 || !sprint?.activable}
                 >
                   Desactivar Sprint
                 </Button>
@@ -247,6 +259,16 @@ export default function Index({ props, dispatchError }) {
           </Box>
           <Box mt="50px">
             <HStack p="5" alignItems="top" float="top">
+              {!sprint?.activo ? (
+                <USList
+                  projectId={projectId}
+                  sprint={sprint}
+                  dispatchError={dispatchError}
+                  setUserStories={setUserStories}
+                  nombreLista="Backlog"
+                  userStories={userStories?.filter((us) => us.estado === 4)}
+                ></USList>
+              ) : null}
               <USList
                 projectId={projectId}
                 sprint={sprint}
@@ -322,14 +344,6 @@ export default function Index({ props, dispatchError }) {
                     : //Si no pertenece, null
                       null
                 }
-              ></USList>
-              <USList
-                projectId={projectId}
-                sprint={sprint}
-                dispatchError={dispatchError}
-                setUserStories={setUserStories}
-                nombreLista="Backlog"
-                userStories={userStories?.filter((us) => us.estado === 4)}
               ></USList>
             </HStack>
           </Box>

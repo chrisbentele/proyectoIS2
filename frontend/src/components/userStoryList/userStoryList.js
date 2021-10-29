@@ -16,6 +16,7 @@ import {
   Flex,
   Heading,
   Text,
+  Textarea,
   //useDisclosure,
   Modal,
   ModalOverlay,
@@ -82,11 +83,16 @@ const USList = ({
 
   const { user } = useAuth0();
   const [thisMember, setThisMember] = useState();
+  const [project, setProject] = useState();
 
   useEffect(() => {
     api
       .getMember(projectId, user.sub)
       .then(({ data: member }) => setThisMember(member))
+      .catch((err) => console.log(err));
+    api
+      .getProjectById(projectId)
+      .then(({ data: res }) => setProject(res))
       .catch((err) => console.log(err));
   }, []);
 
@@ -278,7 +284,8 @@ const USList = ({
                     />
                     <Flex>
                       {tienePermiso(thisMember, PERMISOS_MACRO.MODIFICAR_US) &&
-                      !sprint?.activo ? (
+                      !sprint?.activo &&
+                      !(project?.estado === 1) ? (
                         <Button
                           onClick={() => {
                             setIsOpenModal(true);
@@ -365,7 +372,9 @@ const USList = ({
                       {tienePermiso(
                         thisMember,
                         PERMISOS_MACRO.MODIFICAR_SPRINT
-                      ) && !sprint?.activo ? (
+                      ) &&
+                      !sprint?.activo &&
+                      !(project?.estado === 1) ? (
                         <>
                           <Button
                             mt="2"
@@ -428,7 +437,6 @@ const USList = ({
                         </>
                       ) : null}
 
-
                       {tienePermiso(
                       thisMember,
                       PERMISOS_MACRO.MODIFICAR_SPRINT
@@ -461,7 +469,7 @@ const USList = ({
                                 <AlertDialogBody pb={6}>
                                   <FormControl isInvalid={errorsRegHoras["horas"]}>
                                     <FormLabel>
-                                      Agregue las horas trabajadas en esta US en el sprint actual.
+                                      Agregue la s horas trabajadas en esta US en el sprint actual.
                                     </FormLabel>
                                     <FormLabel>
                                       Horas totales ya registradas: {valorDefault}
@@ -489,7 +497,19 @@ const USList = ({
                                         </NumberInput>
                                       )}
                                     />
-                                    <FormErrorMessage>{errorsRegHoras["horas"]?.message}</FormErrorMessage>
+                                  </FormControl>
+                                  <FormControl  isInvalid={errorsRegHoras["mensaje"]}>
+                                    <FormLabel>Detalles</FormLabel>
+                                        <Textarea
+                                          {...registerRegHoras("mensaje", {
+                                            required: "Valor Requerido",
+                                            minLength: {
+                                              value: 4,
+                                              message: "Minimum length should be 4",
+                                            },
+                                          })}
+                                        />
+                                    <FormErrorMessage>{errorsRegHoras["mensaje"]?.message}</FormErrorMessage>
                                   </FormControl>
                                 </AlertDialogBody>
 

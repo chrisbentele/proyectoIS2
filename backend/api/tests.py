@@ -103,7 +103,7 @@ def registro_horas(self, proyect_id, sprint_id, us_id, fecha=None):
 
     res = self.client.post(
         f"/api/proyectos/{proyect_id}/sprints/{sprint_id}/user_stories/{us_id}/registro_horas",
-        json.dumps({"horas": 1, "fecha": fecha}),
+        json.dumps({"horas": 1, "fecha": fecha, "mensaje":"aaaa"}),
         content_type="application/json",
     )
     self.assertEqual(res.status_code, 201)
@@ -695,7 +695,7 @@ class US_Registro_horas(TestCase):
         # Crear Registro de horas
         res = self.client.post(
             f"/api/proyectos/{p['id']}/sprints/{sp['id']}/user_stories/{us['id']}/registro_horas",
-            json.dumps({"horas": 1}),
+            json.dumps({"horas": 1, "mensaje":"aaaa"}),
             content_type="application/json",
         )
 
@@ -763,7 +763,7 @@ class US_Registro_horas(TestCase):
 
         res = self.client.put(
             f"/api/proyectos/{rg_data['proyecto']}/sprints/{rg_data['sprint']}/user_stories/{rg_data['us']}/registro_horas",
-            json.dumps({"new_horas": 2, "fecha": rg_data["fecha"]}),
+            json.dumps({"new_horas": 2, "fecha": rg_data["fecha"], "mensaje":"aaaa"}),
             content_type="application/json",
         )
         self.assertEqual(res.status_code, 200)
@@ -778,9 +778,7 @@ class US_Registro_horas(TestCase):
         rg_data = self.test_registro_horas_create()
 
         res = self.client.delete(
-            f"/api/proyectos/{rg_data['proyecto']}/sprints/{rg_data['sprint']}/user_stories/{rg_data['us']}/registro_horas",
-            json.dumps({"fecha": rg_data["fecha"]}),
-            content_type="application/json",
+            f"/api/proyectos/{rg_data['proyecto']}/sprints/{rg_data['sprint']}/user_stories/{rg_data['us']}/registro_horas?fecha={rg_data['fecha']}",
         )
 
         self.assertEqual(res.status_code, 204)

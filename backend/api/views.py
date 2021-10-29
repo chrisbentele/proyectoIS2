@@ -989,6 +989,12 @@ def registro_horas(request, proyect_id, sprint_id, us_id=None):
         except Exception as e:
             return HttpResponseBadRequest(e)
 
+        try:
+            if not data.get("mensaje"):
+                raise "falta mensaje"
+        except Exception as e:
+            return HttpResponseBadRequest(e)
+
         rh_seri = RegistroHorasSerializer(
             data={
                 "us": us_id,
@@ -997,6 +1003,7 @@ def registro_horas(request, proyect_id, sprint_id, us_id=None):
                 "usuario": usa.usuario.id,
                 "horas": data["horas"],
                 "fecha": data.get("fecha", timezone.now().strftime("%Y-%m-%d")),
+                "mensaje": data["mensaje"],
                 # "fechaEdit": timezone.now().strftime("%Y-%m-%d"),
             }
         )
@@ -1037,6 +1044,8 @@ def registro_horas(request, proyect_id, sprint_id, us_id=None):
             data = JSONParser().parse(request)
             if not data["new_horas"]:
                 return HttpResponseBadRequest("faltan horas")
+            if not data["mensaje"]:
+                return HttpResponseBadRequest("falta mensaje")
             if not data["fecha"]:
                 return HttpResponseBadRequest("falta fecha")
 
@@ -1057,6 +1066,7 @@ def registro_horas(request, proyect_id, sprint_id, us_id=None):
             rh,
             data={
                 "horas": data["new_horas"],
+                "mensaje":data["mensaje"]
             },
             partial=True,
         )
@@ -1070,20 +1080,20 @@ def registro_horas(request, proyect_id, sprint_id, us_id=None):
             return HttpResponseBadRequest("Falta us_id")
 
         try:
-            data = JSONParser().parse(request)
-            if not data["fecha"]:
+            fecha = request.GET.get("fecha")
+            if not fecha:
                 return HttpResponseBadRequest("falta fecha")
         except Exception as e:
             return HttpResponseBadRequest(e)
 
         try:
-            rh = RegistroHoras.objects.get(us=us_id, fecha=data["fecha"])
+            rh = RegistroHoras.objects.get(us=us_id, fecha=fecha)
             rh.delete()
             return JsonResponse(True, safe=False, status=204)
 
         except RegistroHoras.DoesNotExist:
             return HttpResponseNotFound(
-                f"Sin registro de horas en {us_id} y fecha {data['fecha']}"
+                f"Sin registro de horas en {us_id} y fecha {fecha}"
             )
 
 

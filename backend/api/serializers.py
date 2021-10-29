@@ -1,6 +1,6 @@
 ## @file serializers.py
 # @brief Definición de los distintos serializadores.
-# @details 
+# @details
 from rest_framework import serializers
 from .models import (
     RegistroHoras,
@@ -66,6 +66,7 @@ class USSerializer(serializers.ModelSerializer):
             "creadoPor",
             "fechaCreacion",
             "estado",
+            "prioridad",
             "estimacionSM",
             "estimacionesDev",
             "duracionEstimada",
@@ -119,4 +120,5 @@ class RegistroHorasSerializer(serializers.ModelSerializer):
             "sprint",
             "usuario",
             "proyecto",
+            "mensaje",
         ]
