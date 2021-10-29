@@ -99,8 +99,8 @@ Functions</h2></td></tr>
 <tr class="separator:a79c2e4a552097b38119813364192ce49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7aa28142349c79e44dbc4315894be058"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="userStories_8test_8js.html#a7aa28142349c79e44dbc4315894be058">test</a> (&quot;create user story&quot;, async()=&gt; { <a class="el" href="userStories_8test_8js.html#a92b303b76a3f942ea819498907d5e83c">const</a> usRes=await <a class="el" href="userStories_8js.html#acf4bc643c0219f004f7ca07097450669">createUserStory</a>({ <a class="el" href="userStories_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>, usName:&quot;test us&quot;, description:&quot;this is a test written in jest&quot;, creadoPor:&quot;usTest&quot;, });usId=usRes.data.id;<a class="el" href="userStories_8test_8js.html#a92b303b76a3f942ea819498907d5e83c">const</a> res=await <a class="el" href="userStories_8js.html#aa384107b1b4fc4a017be2579907ee303">getUserStories</a>(<a class="el" href="userStories_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>);expect(res.data).toEqual(expect.arrayContaining([expect.objectContaining({ nombre:&quot;test us&quot;, creadoPor:&quot;usTest&quot; }),]));})</td></tr>
 <tr class="separator:a7aa28142349c79e44dbc4315894be058"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f45efd5ba499df75cca5e59dbae51ee"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="userStories_8test_8js.html#a2f45efd5ba499df75cca5e59dbae51ee">afterAll</a> (async()=&gt; { await <a class="el" href="projects_8js.html#a5eedf1969a2b3145f557abe7bb64f9af">deleteProject</a>(<a class="el" href="userStories_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>);<a class="el" href="users_8test_8js.html#a2b3965a8b426cec936fe1fbb478e4018">deleteUser</a>(&quot;member1&quot;);deleteUser(&quot;member2&quot;);})</td></tr>
-<tr class="separator:a2f45efd5ba499df75cca5e59dbae51ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73f220eaaa9aba36dc19e16e6a5ddc91"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="userStories_8test_8js.html#a73f220eaaa9aba36dc19e16e6a5ddc91">afterAll</a> (async()=&gt; { await <a class="el" href="projects_8js.html#a5eedf1969a2b3145f557abe7bb64f9af">deleteProject</a>(<a class="el" href="userStories_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>);<a class="el" href="users_8test_8js.html#a2b3965a8b426cec936fe1fbb478e4018">deleteUser</a>(&quot;usTest&quot;);deleteUser(&quot;usTest2&quot;);})</td></tr>
+<tr class="separator:a73f220eaaa9aba36dc19e16e6a5ddc91"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -120,8 +120,8 @@ Variables</h2></td></tr>
 <tr class="separator:a367abbb6441003890161243b28b17ca4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a2f45efd5ba499df75cca5e59dbae51ee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2f45efd5ba499df75cca5e59dbae51ee">&#9670;&nbsp;</a></span>afterAll()</h2>
+<a id="a73f220eaaa9aba36dc19e16e6a5ddc91"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73f220eaaa9aba36dc19e16e6a5ddc91">&#9670;&nbsp;</a></span>afterAll()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -135,7 +135,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">{ await <a class="el" href="projects_8js.html#a5eedf1969a2b3145f557abe7bb64f9af">deleteProject</a>(<a class="el" href="userStories_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>);<a class="el" href="users_8test_8js.html#a2b3965a8b426cec936fe1fbb478e4018">deleteUser</a>(&quot;member1&quot;);deleteUser(&quot;member2&quot;);}&#160;</td>
+          <td class="paramtype">{ await <a class="el" href="projects_8js.html#a5eedf1969a2b3145f557abe7bb64f9af">deleteProject</a>(<a class="el" href="userStories_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>);<a class="el" href="users_8test_8js.html#a2b3965a8b426cec936fe1fbb478e4018">deleteUser</a>(&quot;usTest&quot;);deleteUser(&quot;usTest2&quot;);}&#160;</td>
           <td class="paramname">&#160;</td>
         </tr>
         <tr>

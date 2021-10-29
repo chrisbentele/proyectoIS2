@@ -102,8 +102,8 @@ var NAVTREEINDEX2 =
 "userStories_8js.html#afdc6005dbe337df324e5eeeba67dd056":[4,0,2,0,0,6,5],
 "userStories_8test_8js.html":[4,0,2,0,5,6],
 "userStories_8test_8js.html#a12106278ecd31c348b8adbcd316f562f":[4,0,2,0,5,6,4],
-"userStories_8test_8js.html#a2f45efd5ba499df75cca5e59dbae51ee":[4,0,2,0,5,6,0],
 "userStories_8test_8js.html#a367abbb6441003890161243b28b17ca4":[4,0,2,0,5,6,6],
+"userStories_8test_8js.html#a73f220eaaa9aba36dc19e16e6a5ddc91":[4,0,2,0,5,6,0],
 "userStories_8test_8js.html#a79c2e4a552097b38119813364192ce49":[4,0,2,0,5,6,1],
 "userStories_8test_8js.html#a7aa28142349c79e44dbc4315894be058":[4,0,2,0,5,6,2],
 "userStories_8test_8js.html#a92b303b76a3f942ea819498907d5e83c":[4,0,2,0,5,6,3],
@@ -160,7 +160,7 @@ var NAVTREEINDEX2 =
 "views_8py.html#afbe6ebfb4b7b1705fdf034fcfdd2f5f6":[4,0,0,0,8,12],
 "wsgi_8py.html":[4,0,0,1,3],
 "wsgi_8py.html#a845c0e7adb483331c32c53ca5dab762f":[4,0,0,1,3,0],
-"":[2,0,0],
 "":[2,0,0,7],
+"":[2,0,0],
 "":[2,0,1]
 };
