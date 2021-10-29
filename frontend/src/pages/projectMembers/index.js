@@ -21,6 +21,8 @@ export default function ProjectMembers({ props, dispatchError }) {
 
   const projectId = props.computedMatch.params.id;
 
+  const [project, setProject] = useState();
+
   const history = useHistory();
 
   useEffect(() => {
@@ -50,6 +52,10 @@ export default function ProjectMembers({ props, dispatchError }) {
       .getRoles(projectId)
       .then((res) => setROLES(res.data))
       .catch(() => dispatchError(null, "No se han podido cargar los roles"));
+    api
+      .getProjectById(projectId)
+      .then(({ data: res }) => setProject(res))
+      .catch((err) => console.log(err));
   }, [projectId, dispatchError]);
 
   const handleSearchChange = async (e) => {
@@ -68,7 +74,7 @@ export default function ProjectMembers({ props, dispatchError }) {
   const actualizarUsuarios = (usuariosNuevos) => {
     setUsers(usuariosNuevos);
   };
-
+  console.log(project?.estado);
   return (
     <Box mt="55px">
       <GoBack
@@ -88,29 +94,32 @@ export default function ProjectMembers({ props, dispatchError }) {
           setUsers={actualizarUsuarios}
           state={state}
         />
+        {!(project?.estado === 1) ? (
+          <>
+            <Text
+              style={{
+                marginTop: "50px",
+                marginBottom: "10px",
+                fontWeight: "bold",
+              }}
+            >
+              Agregar nuevo miembro
+            </Text>
 
-        <Text
-          style={{
-            marginTop: "50px",
-            marginBottom: "10px",
-            fontWeight: "bold",
-          }}
-        >
-          Agregar nuevo miembro
-        </Text>
-
-        <Grid gap={6}>
-          <Input onChange={handleSearchChange} width="400px" />
-          <AddMemberTable
-            members={[...members]}
-            setMembers={actualizarMiembros}
-            projectId={projectId}
-            ROLES={ROLES}
-            users={[...users]}
-            setUsers={actualizarUsuarios}
-            state={state}
-          />
-        </Grid>
+            <Grid gap={6}>
+              <Input onChange={handleSearchChange} width="400px" />
+              <AddMemberTable
+                members={[...members]}
+                setMembers={actualizarMiembros}
+                projectId={projectId}
+                ROLES={ROLES}
+                users={[...users]}
+                setUsers={actualizarUsuarios}
+                state={state}
+              />
+            </Grid>
+          </>
+        ) : null}
       </Box>
     </Box>
   );

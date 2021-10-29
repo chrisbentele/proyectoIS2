@@ -24,6 +24,7 @@ import USListUnset from "../../components/userStoryListUnset/userStoryListUnset"
 import CrearSprintModal from "../../components/CrearSprintModal/CrearSprintModal";
 import { useHistory } from "react-router-dom";
 import { MdBuild } from "react-icons/md";
+import { AiFillStop } from "react-icons/ai";
 import EliminarSprintModal from "../../components/EliminarSprintModal/EliminarSprintModal";
 
 import { useAuth0 } from "@auth0/auth0-react";
@@ -48,7 +49,6 @@ export default function Index({ dispatchError, props }) {
   const history = useHistory();
   const { user } = useAuth0();
   const [thisMember, setThisMember] = useState();
-
   const [focusedSprint, setFocusedSprint] = useState();
   //Al cargarse la pagina se busca el proyecto con el id del URL y se lo asigna a projectId
   useEffect(() => {
@@ -72,6 +72,14 @@ export default function Index({ dispatchError, props }) {
       .then(({ data: member }) => setThisMember(member))
       .catch((err) => console.log(err));
   }, []);
+
+  async function onStatusChange(values) {
+    //funcion que define el comportamiento al confirmar el form
+    await api.editProject({ projectId, ...values }).then(({ data }) => {
+      console.log(data);
+    });
+    history.go(0);
+  }
 
   return (
     <Box
@@ -126,6 +134,7 @@ export default function Index({ dispatchError, props }) {
                   variant="solid"
                   // opacity="30%"
                   onClick={() => history.push(`/projects/${projectId}/roles`)}
+                  isDisabled={project.estado === 1}
                 >
                   Configurar Roles
                 </Button>
@@ -140,51 +149,80 @@ export default function Index({ dispatchError, props }) {
                   variant="solid"
                   // opacity="30%"
                   onClick={() => history.push(`/projects/${projectId}/config`)}
+                  isDisabled={project.estado === 1}
                 >
                   Configurar Proyecto
+                </Button>
+              ) : null}
+              {tienePermiso(
+                thisMember,
+                PERMISOS_MACRO.EDITAR_CONFIGURACIÓN_DEL_PROYECTO
+              ) && project.estado === 0 ? (
+                <Button
+                  ml="auto"
+                  colorScheme="red"
+                  leftIcon={<AiFillStop />}
+                  onClick={() => onStatusChange({ status: 1 })}
+                >
+                  Terminar Proyecto
+                </Button>
+              ) : null}
+              {tienePermiso(
+                thisMember,
+                PERMISOS_MACRO.EDITAR_CONFIGURACIÓN_DEL_PROYECTO
+              ) && project.estado === 1 ? (
+                <Button
+                  ml="auto"
+                  colorScheme="green"
+                  leftIcon={<AiFillStop />}
+                  onClick={() => onStatusChange({ status: 0 })}
+                >
+                  Reactivar Proyecto
                 </Button>
               ) : null}
             </HStack>
           </Box>
           <Box as="main" mt="50px" w="100vw">
             <HStack p="5">
-              <HStack w="fit-content">
-                <USListUnset
-                  minWidth="3"
-                  projectId={projectId}
-                  setUserStories={setUserStories}
-                  nombreLista="Backlog"
-                  dispatchError={dispatchError}
-                  thisMember={thisMember}
-                  userStories={userStories?.filter((us) => us.estado === 4)}
-                >
-                  <Flex justify="center">
-                    <LinkBox
-                      to={`projects/${projectId}/createUS`}
-                      pt="2px"
-                      pl="2"
-                      pr="2"
-                      borderRadius="5"
-                      m="10px"
-                      justify="center"
-                      d="flex"
-                      _hover={{
-                        background: "#F5F4F5",
-                        color: "blue.400",
-                      }}
-                    >
-                      {tienePermiso(thisMember, PERMISOS_MACRO.CREAR_ROL) ? (
-                        <LinkOverlay
-                          href={`/projects/${projectId}/createUS`}
-                          fontSize="lg"
-                        >
-                          + agregar nueva tarjeta
-                        </LinkOverlay>
-                      ) : null}
-                    </LinkBox>
-                  </Flex>
-                </USListUnset>
-              </HStack>
+              {project.estado === 0 ? (
+                <HStack w="fit-content">
+                  <USListUnset
+                    minWidth="3"
+                    projectId={projectId}
+                    setUserStories={setUserStories}
+                    nombreLista="Backlog"
+                    dispatchError={dispatchError}
+                    thisMember={thisMember}
+                    userStories={userStories?.filter((us) => us.estado === 4)}
+                  >
+                    <Flex justify="center">
+                      <LinkBox
+                        to={`projects/${projectId}/createUS`}
+                        pt="2px"
+                        pl="2"
+                        pr="2"
+                        borderRadius="5"
+                        m="10px"
+                        justify="center"
+                        d="flex"
+                        _hover={{
+                          background: "#F5F4F5",
+                          color: "blue.400",
+                        }}
+                      >
+                        {tienePermiso(thisMember, PERMISOS_MACRO.CREAR_ROL) ? (
+                          <LinkOverlay
+                            href={`/projects/${projectId}/createUS`}
+                            fontSize="lg"
+                          >
+                            + agregar nueva tarjeta
+                          </LinkOverlay>
+                        ) : null}
+                      </LinkBox>
+                    </Flex>
+                  </USListUnset>
+                </HStack>
+              ) : null}
               {/* sprints */}
               <Box>
                 <VStack
@@ -196,7 +234,8 @@ export default function Index({ dispatchError, props }) {
                   boxShadow="lg"
                 >
                   <Heading fontSize="3xl">Sprints</Heading>
-                  {tienePermiso(thisMember, PERMISOS_MACRO.CREAR_SPRINT) ? (
+                  {tienePermiso(thisMember, PERMISOS_MACRO.CREAR_SPRINT) &&
+                  project.estado === 0 ? (
                     <Box
                       display="flex"
                       w="lg"
@@ -271,6 +310,7 @@ export default function Index({ dispatchError, props }) {
                               setFocusedSprint(sprint);
                               setShowEliminarModal(true);
                             }}
+                            isDisabled={project.estado === 1}
                           >
                             Eliminar :o
                           </Button>
