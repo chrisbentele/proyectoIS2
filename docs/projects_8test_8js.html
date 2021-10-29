@@ -95,38 +95,53 @@ $(document).ready(function(){initNavTree('projects_8test_8js.html',''); initResi
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a474b80dda6f4008ffdb8418aa7d6667f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="projects_8test_8js.html#a474b80dda6f4008ffdb8418aa7d6667f">beforeAll</a> (<a class="el" href="roles_8test_8js.html#a2bbea1ca302c158b8d9fccabd4fd82bf">async</a>()=&gt; { <a class="el" href="userStories_8test_8js.html#a92b303b76a3f942ea819498907d5e83c">const</a> res=await <a class="el" href="users_8js.html#a3100b23c7ba75c95f3bf3d1ba9fc82d8">getUser</a>(998, '<a class="el" href="userStories_8test_8js.html#a7aa28142349c79e44dbc4315894be058">test</a> @test.com', 'project tests') <a class="el" href="userStories_8test_8js.html#a92b303b76a3f942ea819498907d5e83c">const</a> {email, nombre, id}=res expect(email).toBe(&quot;test@test.com&quot;) expect(nombre).toBe(&quot;project tests&quot;) expect(id).toBe(&quot;998&quot;) }) <a class="el" href="userStories_8test_8js.html#a7aa28142349c79e44dbc4315894be058">test</a>('crear proyecto'</td></tr>
-<tr class="separator:a474b80dda6f4008ffdb8418aa7d6667f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2bbea1ca302c158b8d9fccabd4fd82bf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="projects_8test_8js.html#a2bbea1ca302c158b8d9fccabd4fd82bf">async</a> ()</td></tr>
-<tr class="separator:a2bbea1ca302c158b8d9fccabd4fd82bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7df3cb49bd35d2067a64adbbc33d494"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="projects_8test_8js.html#ad7df3cb49bd35d2067a64adbbc33d494">beforeAll</a> (<a class="el" href="roles_8test_8js.html#a2bbea1ca302c158b8d9fccabd4fd82bf">async</a>()=&gt; { <a class="el" href="userStories_8test_8js.html#a92b303b76a3f942ea819498907d5e83c">const</a> res=await <a class="el" href="users_8js.html#a3100b23c7ba75c95f3bf3d1ba9fc82d8">getUser</a>(998, &quot;test@test.com&quot;, &quot;project tests&quot;);const { email, nombre, id }=res;expect(email).toBe(&quot;test@test.com&quot;);expect(nombre).toBe(&quot;project tests&quot;);expect(id).toBe(&quot;998&quot;);})</td></tr>
+<tr class="separator:ad7df3cb49bd35d2067a64adbbc33d494"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2a1c591995d4ecefa4ce56a941b6931"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="projects_8test_8js.html#ac2a1c591995d4ecefa4ce56a941b6931">test</a> (&quot;crear proyecto&quot;, async()=&gt; { <a class="el" href="userStories_8test_8js.html#a92b303b76a3f942ea819498907d5e83c">const</a> res=await <a class="el" href="projects_8js.html#a2e9d2ad3fbbc8cf8fe5dc7f6f51cd596">createProject</a>({ projectName:&quot;testProject2&quot;, estimation:&quot;10&quot;, scrumMasterId:&quot;998&quot;, });expect(Object.keys(res.data)).toEqual(expect.arrayContaining([&quot;id&quot;, &quot;duracionEstimada&quot;, &quot;fechaInicio&quot;, &quot;fechaFinalizacion&quot;, &quot;estado&quot;, &quot;miembros&quot;, &quot;nombre&quot;,]));expect(res.data.estado).toBe(0);<a class="el" href="userStories_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>=res.data.id;<a class="el" href="projects_8test_8js.html#a63ba6444b71a2363cf97c02cda8e5d4d">createdProject</a>=res.data;})</td></tr>
+<tr class="separator:ac2a1c591995d4ecefa4ce56a941b6931"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33be2753441ba34c3b9cd64ce3c5ce48"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="projects_8test_8js.html#a33be2753441ba34c3b9cd64ce3c5ce48">afterAll</a> (<a class="el" href="roles_8test_8js.html#a2bbea1ca302c158b8d9fccabd4fd82bf">async</a>()=&gt; { <a class="el" href="userStories_8test_8js.html#a92b303b76a3f942ea819498907d5e83c">const</a> res=await <a class="el" href="users_8test_8js.html#a2b3965a8b426cec936fe1fbb478e4018">deleteUser</a>(998);expect(res.data).toBe(true);})</td></tr>
+<tr class="separator:a33be2753441ba34c3b9cd64ce3c5ce48"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a92b303b76a3f942ea819498907d5e83c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="projects_8test_8js.html#a92b303b76a3f942ea819498907d5e83c">const</a></td></tr>
+<tr class="memitem:a92b303b76a3f942ea819498907d5e83c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="projects_8test_8js.html#a92b303b76a3f942ea819498907d5e83c">const</a> { <a class="el" href="users_8js.html#a3100b23c7ba75c95f3bf3d1ba9fc82d8">getUser</a>, <a class="el" href="users_8test_8js.html#a2b3965a8b426cec936fe1fbb478e4018">deleteUser</a> } = require(&quot;../api/<a class="el" href="App_8js.html#a10a07c69d6e3c1d4255e6b5e7dd41638">users</a>&quot;)</td></tr>
 <tr class="separator:a92b303b76a3f942ea819498907d5e83c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12106278ecd31c348b8adbcd316f562f"><td class="memItemLeft" align="right" valign="top">let&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="projects_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a></td></tr>
+<tr class="separator:a12106278ecd31c348b8adbcd316f562f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63ba6444b71a2363cf97c02cda8e5d4d"><td class="memItemLeft" align="right" valign="top">let&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="projects_8test_8js.html#a63ba6444b71a2363cf97c02cda8e5d4d">createdProject</a></td></tr>
 <tr class="separator:a63ba6444b71a2363cf97c02cda8e5d4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a2bbea1ca302c158b8d9fccabd4fd82bf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2bbea1ca302c158b8d9fccabd4fd82bf">&#9670;&nbsp;</a></span>async()</h2>
+<a id="a33be2753441ba34c3b9cd64ce3c5ce48"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a33be2753441ba34c3b9cd64ce3c5ce48">&#9670;&nbsp;</a></span>afterAll()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">async </td>
+          <td class="memname">afterAll </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype"><a class="el" href="roles_8test_8js.html#a2bbea1ca302c158b8d9fccabd4fd82bf">async</a>()&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">{ <a class="el" href="userStories_8test_8js.html#a92b303b76a3f942ea819498907d5e83c">const</a> res=await <a class="el" href="users_8test_8js.html#a2b3965a8b426cec936fe1fbb478e4018">deleteUser</a>(998);expect(res.data).toBe(true);}&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a474b80dda6f4008ffdb8418aa7d6667f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a474b80dda6f4008ffdb8418aa7d6667f">&#9670;&nbsp;</a></span>beforeAll()</h2>
+<a id="ad7df3cb49bd35d2067a64adbbc33d494"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7df3cb49bd35d2067a64adbbc33d494">&#9670;&nbsp;</a></span>beforeAll()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -134,14 +149,48 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">beforeAll </td>
           <td>(</td>
-          <td class="paramtype">&#160;</td>
+          <td class="paramtype"><a class="el" href="roles_8test_8js.html#a2bbea1ca302c158b8d9fccabd4fd82bf">async</a>()&#160;</td>
           <td class="paramname"><em>async()</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>{ const res=await getUser(998, 'test @test.com', 'project tests') const {email, nombre, id}=res expect(email).toBe(&quot;test@test.com&quot;) expect(nombre).toBe(&quot;project tests&quot;) expect(id).toBe(&quot;998&quot;) }</em>&#160;</td>
+          <td class="paramtype">{ <a class="el" href="userStories_8test_8js.html#a92b303b76a3f942ea819498907d5e83c">const</a> res=await <a class="el" href="users_8js.html#a3100b23c7ba75c95f3bf3d1ba9fc82d8">getUser</a>(998, &quot;test@test.com&quot;, &quot;project tests&quot;);const { email, nombre, id }=res;expect(email).toBe(&quot;test@test.com&quot;);expect(nombre).toBe(&quot;project tests&quot;);expect(id).toBe(&quot;998&quot;);}&#160;</td>
+          <td class="paramname"><em>{ const res=await getUser(998, &quot;test@test.com&quot;, &quot;project tests&quot;);const { email, nombre, id }=res;expect(email).toBe(&quot;test@test.com&quot;);expect(nombre).toBe(&quot;project tests&quot;);expect(id).toBe(&quot;998&quot;);}</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac2a1c591995d4ecefa4ce56a941b6931"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2a1c591995d4ecefa4ce56a941b6931">&#9670;&nbsp;</a></span>test()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">test </td>
+          <td>(</td>
+          <td class="paramtype">&quot;crear proyecto&quot;&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="roles_8test_8js.html#a2bbea1ca302c158b8d9fccabd4fd82bf">async</a>()&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">{ <a class="el" href="userStories_8test_8js.html#a92b303b76a3f942ea819498907d5e83c">const</a> res=await <a class="el" href="projects_8js.html#a2e9d2ad3fbbc8cf8fe5dc7f6f51cd596">createProject</a>({ projectName:&quot;testProject2&quot;, estimation:&quot;10&quot;, scrumMasterId:&quot;998&quot;, });expect(Object.keys(res.data)).toEqual(expect.arrayContaining([&quot;id&quot;, &quot;duracionEstimada&quot;, &quot;fechaInicio&quot;, &quot;fechaFinalizacion&quot;, &quot;estado&quot;, &quot;miembros&quot;, &quot;nombre&quot;,]));expect(res.data.estado).toBe(0);<a class="el" href="userStories_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>=res.data.id;<a class="el" href="projects_8test_8js.html#a63ba6444b71a2363cf97c02cda8e5d4d">createdProject</a>=res.data;}&#160;</td>
+          <td class="paramname">&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -161,22 +210,11 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const</td>
+          <td class="memname">const { <a class="el" href="users_8js.html#a3100b23c7ba75c95f3bf3d1ba9fc82d8">getUser</a>, <a class="el" href="users_8test_8js.html#a2b3965a8b426cec936fe1fbb478e4018">deleteUser</a> } = require(&quot;../api/<a class="el" href="App_8js.html#a10a07c69d6e3c1d4255e6b5e7dd41638">users</a>&quot;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">{<a class="code" href="users_8js.html#a3100b23c7ba75c95f3bf3d1ba9fc82d8">getUser</a>, <a class="code" href="users_8js.html#a7c7de8cf91deb0126053ec7ba3d17b0b">deleteUser</a>} = require(<span class="stringliteral">&#39;../api/users&#39;</span>)<span class="keyword"></span></div>
-<div class="line"><span class="keyword">const </span>{<a class="code" href="projects_8js.html#a2e9d2ad3fbbc8cf8fe5dc7f6f51cd596">createProject</a>, <a class="code" href="projects_8js.html#a5eedf1969a2b3145f557abe7bb64f9af">deleteProject</a>, <a class="code" href="projects_8js.html#aa5941459294191899f916c80f34e0547">editProject</a>, <a class="code" href="projects_8js.html#a03e596029d83db7bd1fbc2e0c7796b69">getProjectById</a>, <a class="code" href="projects_8js.html#a58aa3a71f71a18c9f77d806cc5f973b4">getProjects</a>} = require(<span class="stringliteral">&#39;../api/projects&#39;</span>)</div>
-<div class="line">let <a class="code" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a></div>
-<div class="ttc" id="aprojects_8js_html_a03e596029d83db7bd1fbc2e0c7796b69"><div class="ttname"><a href="projects_8js.html#a03e596029d83db7bd1fbc2e0c7796b69">getProjectById</a></div><div class="ttdeci">export const getProjectById</div><div class="ttdoc">Listar proyecto por id La funcion recibe como parametro el id del proyecto y luego retorna la informa...</div><div class="ttdef"><b>Definition:</b> projects.js:80</div></div>
-<div class="ttc" id="aprojects_8js_html_a2e9d2ad3fbbc8cf8fe5dc7f6f51cd596"><div class="ttname"><a href="projects_8js.html#a2e9d2ad3fbbc8cf8fe5dc7f6f51cd596">createProject</a></div><div class="ttdeci">export const createProject</div><div class="ttdoc">Crear proyecto, recibe como parametro un objeto con los siguientes atributos  estimation: la estimaci...</div><div class="ttdef"><b>Definition:</b> projects.js:28</div></div>
-<div class="ttc" id="aprojects_8js_html_a58aa3a71f71a18c9f77d806cc5f973b4"><div class="ttname"><a href="projects_8js.html#a58aa3a71f71a18c9f77d806cc5f973b4">getProjects</a></div><div class="ttdeci">export const getProjects</div><div class="ttdoc">Listar proyectos  Si no se provee el id de usuario la funcion solicita al servidor todos los proyecto...</div><div class="ttdef"><b>Definition:</b> projects.js:58</div></div>
-<div class="ttc" id="aprojects_8js_html_a5eedf1969a2b3145f557abe7bb64f9af"><div class="ttname"><a href="projects_8js.html#a5eedf1969a2b3145f557abe7bb64f9af">deleteProject</a></div><div class="ttdeci">export const deleteProject</div><div class="ttdoc">Eliminar proyecto La funcion recibe como parametro el id del proyecto a eliminar, retorna true si se ...</div><div class="ttdef"><b>Definition:</b> projects.js:87</div></div>
-<div class="ttc" id="aprojects_8js_html_aa5941459294191899f916c80f34e0547"><div class="ttname"><a href="projects_8js.html#aa5941459294191899f916c80f34e0547">editProject</a></div><div class="ttdeci">export const editProject</div><div class="ttdoc">Editar proyeto.</div><div class="ttdef"><b>Definition:</b> projects.js:66</div></div>
-<div class="ttc" id="asprints_8test_8js_html_a12106278ecd31c348b8adbcd316f562f"><div class="ttname"><a href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a></div><div class="ttdeci">let projectId</div><div class="ttdef"><b>Definition:</b> sprints.test.js:14</div></div>
-<div class="ttc" id="ausers_8js_html_a3100b23c7ba75c95f3bf3d1ba9fc82d8"><div class="ttname"><a href="users_8js.html#a3100b23c7ba75c95f3bf3d1ba9fc82d8">getUser</a></div><div class="ttdeci">export const getUser</div><div class="ttdoc">Obtener usuario  La funcion sirve para que al iniciar sesion con el SSO, se busque al usuario en la b...</div><div class="ttdef"><b>Definition:</b> users.js:22</div></div>
-<div class="ttc" id="ausers_8js_html_a7c7de8cf91deb0126053ec7ba3d17b0b"><div class="ttname"><a href="users_8js.html#a7c7de8cf91deb0126053ec7ba3d17b0b">deleteUser</a></div><div class="ttdeci">export const deleteUser</div><div class="ttdoc">Eliminar usuario  La funcion recibe como parametro el id del usuario a eliminar.</div><div class="ttdef"><b>Definition:</b> users.js:64</div></div>
-</div><!-- fragment -->
+
 </div>
 </div>
 <a id="a63ba6444b71a2363cf97c02cda8e5d4d"></a>
@@ -187,6 +225,20 @@ Variables</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">let createdProject</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a12106278ecd31c348b8adbcd316f562f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a12106278ecd31c348b8adbcd316f562f">&#9670;&nbsp;</a></span>projectId</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">let projectId</td>
         </tr>
       </table>
 </div><div class="memdoc">
