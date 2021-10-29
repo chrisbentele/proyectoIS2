@@ -30,6 +30,7 @@ import EliminarSprintModal from "../../components/EliminarSprintModal/EliminarSp
 import { useAuth0 } from "@auth0/auth0-react";
 import { tienePermiso } from "../../util";
 import { PERMISOS_MACRO } from "../roles/permisos";
+import { forEach } from "lodash";
 
 /**
  * Función que contiene el código de la vista
@@ -75,10 +76,33 @@ export default function Index({ dispatchError, props }) {
 
   async function onStatusChange(values) {
     //funcion que define el comportamiento al confirmar el form
-    await api.editProject({ projectId, ...values }).then(({ data }) => {
-      console.log(data);
-    });
+    let sprints_estados = sprints.map((sprint) => sprint.activo);
+    console.log(sprints_estados);
+    if (!sprints_estados.includes(true)) {
+      await api.editProject({ projectId, ...values }).then(({ data }) => {
+        console.log(data);
+      });
+    } else {
+      return dispatchError(
+        "No se pudo terminar el proyecto",
+        "Hay todavia sprints activos"
+      );
+    }
+
     history.go(0);
+  }
+
+  function crearSprint() {
+    let sprints_counter = sprints.map((sprint) => sprint.activo);
+    console.log(sprints_counter);
+    if (sprints_counter.length < 2) {
+      setIsOpenCrearSp(true);
+    } else {
+      return dispatchError(
+        "No se puede crear el Sprint",
+        "Ya hay dos Sprints existentes"
+      );
+    }
   }
 
   return (
@@ -249,7 +273,7 @@ export default function Index({ dispatchError, props }) {
                       bg="white"
                       justifyContent="center"
                       alignItems="center"
-                      onClick={() => setIsOpenCrearSp(true)}
+                      onClick={() => crearSprint()}
                       cursor="pointer"
                     >
                       <Text>Crear sprint</Text>
