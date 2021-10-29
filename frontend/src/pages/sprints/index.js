@@ -34,7 +34,6 @@ import {
   Line,
 } from "recharts";
 
-
 import { tienePermiso } from "../../util";
 import { PERMISOS_MACRO } from "../roles/permisos";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -347,13 +346,31 @@ export default function Index({ props, dispatchError }) {
               ></USList>
             </HStack>
           </Box>
-          <BurnDown registros={[]} sprint={sprint} />
+          <Flex
+            justify="center"
+            backgroundColor="#ffffff"
+            borderWidth={3}
+            borderColor={"#9c9c9c"}
+            display={"flex"}
+            justifyContent={"center"}
+            alignItems={"center"}
+            width="6xl"
+            p="5"
+            ml="5"
+          >
+            <BurnDown registros={[]} sprint={sprint} />
+          </Flex>
+
           <EditarSprintModal
             projectId={projectId}
             sprint={sprint}
             isOpen={isOpenEditSp}
             onClose={() => setIsOpenEditSp(false)}
           />
+
+          <Flex bg="white" width="6xl">
+            <Box bg="black" borderColor="black"></Box>
+          </Flex>
         </Box>
       ) : (
         <Flex align="center" ml="auto">

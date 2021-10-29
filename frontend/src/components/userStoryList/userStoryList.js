@@ -74,6 +74,7 @@ const USList = ({
   const { user } = useAuth0();
   const [thisMember, setThisMember] = useState();
   const [project, setProject] = useState();
+  let [contadorChange, setContadorChange] = useState();
 
   useEffect(() => {
     api
