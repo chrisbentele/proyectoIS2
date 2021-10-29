@@ -157,6 +157,6 @@ test("eliminar user story", async () => {
 
 afterAll(async () => {
   await deleteProject(projectId);
-  deleteUser("member1");
-  deleteUser("member2");
+  deleteUser("usTest");
+  deleteUser("usTest2");
 });
