@@ -960,9 +960,9 @@ def usuarios_admin(request, user_id):
 def registro_horas(request, proyect_id, sprint_id, us_id=None):
 
     try:
-        sprint = Proyecto.objects.get(id=sprint_id)
+        proyecto = Proyecto.objects.get(id=proyect_id)
     except Proyecto.DoesNotExist:
-        return HttpResponseNotFound("sprint_id")
+        return HttpResponseNotFound("proyect_id")
 
     try:
         sprint = Sprint.objects.get(id=sprint_id)
