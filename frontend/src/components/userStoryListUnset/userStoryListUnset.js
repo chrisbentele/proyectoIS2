@@ -125,7 +125,7 @@ const USListUnset = ({
 
   return (
     <Box
-      minHeight="100px"
+      minHeight="255px"
       maxHeight="80%"
       borderWidth="1px"
       borderRadius="lg"

@@ -73,11 +73,16 @@ const USList = ({
 
   const { user } = useAuth0();
   const [thisMember, setThisMember] = useState();
+  const [project, setProject] = useState();
 
   useEffect(() => {
     api
       .getMember(projectId, user.sub)
       .then(({ data: member }) => setThisMember(member))
+      .catch((err) => console.log(err));
+    api
+      .getProjectById(projectId)
+      .then(({ data: res }) => setProject(res))
       .catch((err) => console.log(err));
   }, []);
 
@@ -219,7 +224,8 @@ const USList = ({
                     />
                     <Flex>
                       {tienePermiso(thisMember, PERMISOS_MACRO.MODIFICAR_US) &&
-                      !sprint?.activo ? (
+                      !sprint?.activo &&
+                      !(project?.estado === 1) ? (
                         <Button
                           onClick={() => {
                             setIsOpenModal(true);
@@ -306,7 +312,9 @@ const USList = ({
                       {tienePermiso(
                         thisMember,
                         PERMISOS_MACRO.MODIFICAR_SPRINT
-                      ) && !sprint?.activo ? (
+                      ) &&
+                      !sprint?.activo &&
+                      !(project?.estado === 1) ? (
                         <>
                           <Button
                             mt="2"
@@ -368,7 +376,6 @@ const USList = ({
                           </AlertDialog>
                         </>
                       ) : null}
-
 
                       {tienePermiso(
                         thisMember,
