@@ -6,6 +6,9 @@ const {
   eliminarUS,
   getUserStories,
 } = require("../api/userStories");
+const userStories = require("../api/userStories").default;
+const sprints = require("../api/sprints").default;
+
 const { getUser, deleteUser } = require("../api/users");
 const { createProject, deleteProject } = require("../api/projects");
 
@@ -59,6 +62,48 @@ test("edit user story", async () => {
   expect(res.data).not.toEqual(
     expect.arrayContaining([expect.objectContaining({ nombre: "test us" })])
   );
+});
+
+test("registrar horas", async () => {
+  const res_sprint = await sprints.createSprint({
+    projectId,
+    creadoPor: "sprintTest",
+    estimacion: 2,
+    nombre: "sprint",
+  });
+  let sprintId = res_sprint.data["id"];
+  const res_asignar_us_usuario = await userStories
+    .asignarUsAUsuario({
+      projectId,
+      sprintId,
+      usId,
+      userId: "usTest",
+    })
+    .catch((e) => console.error(e));
+
+  const res_asignar_us_sp = await userStories
+    .asignarUsASprint({
+      projectId,
+      sprintId,
+      usId,
+    })
+    .catch((e) => console.error(e));
+
+  const res_reg = await userStories
+    .registrarHoras({
+      sprintId,
+      usId,
+      horas: 1,
+    })
+    .catch((e) => console.error(e));
+  const res_registros = await userStories
+    .getRegistrosHoras({
+      sprintId,
+      usId,
+    })
+    .catch((e) => console.error(e));
+
+  expect(res_registros.data[0]).toEqual(res_reg.data);
 });
 
 test("eliminar user story", async () => {
