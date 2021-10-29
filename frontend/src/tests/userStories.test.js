@@ -65,12 +65,14 @@ test("edit user story", async () => {
 });
 
 test("registrar horas", async () => {
-  const res_sprint = await sprints.createSprint({
-    projectId,
-    creadoPor: "sprintTest",
-    estimacion: 2,
-    nombre: "sprint",
-  });
+  const res_sprint = await sprints
+    .createSprint({
+      projectId,
+      creadoPor: "usTest",
+      estimacion: 2,
+      nombre: "sprint",
+    })
+    .catch((e) => console.error(e));
   let sprintId = res_sprint.data["id"];
   const res_asignar_us_usuario = await userStories
     .asignarUsAUsuario({
