@@ -7,10 +7,11 @@ var searchData=
   ['use_5ftz_749',['USE_TZ',['../namespacecontroller_1_1settings.html#a65b6b46abd8cb3ed84377cacbb5154f1',1,'controller::settings']]],
   ['useauth_750',['useAuth',['../DbAuth_8js.html#a08276290a55215e58d2ce1803ffae8bf',1,'DbAuth.js']]],
   ['users_751',['users',['../api_2index_8js.html#ab120cd1cbcf9481b7e713c8e926cb26b',1,'users():&#160;index.js'],['../users_8js.html#ab120cd1cbcf9481b7e713c8e926cb26b',1,'users():&#160;users.js'],['../App_8js.html#a10a07c69d6e3c1d4255e6b5e7dd41638',1,'users():&#160;App.js']]],
-  ['userstories_752',['userStories',['../api_2index_8js.html#aaf5fc385fbe0fe628a43854be43b92b5',1,'userStories():&#160;index.js'],['../userStories_8js.html#aaf5fc385fbe0fe628a43854be43b92b5',1,'userStories():&#160;userStories.js']]],
+  ['userstories_752',['userStories',['../api_2index_8js.html#aaf5fc385fbe0fe628a43854be43b92b5',1,'userStories():&#160;index.js'],['../userStories_8js.html#aaf5fc385fbe0fe628a43854be43b92b5',1,'userStories():&#160;userStories.js'],['../userStories_8test_8js.html#acd9bc3ed2613e52963531a104ebddd17',1,'userStories():&#160;userStories.test.js']]],
   ['userstorylist_753',['userStoryList',['../pages_2sprints_2index_8js.html#add9c57a245ae3b95f31f8d5ae4423bce',1,'index.js']]],
   ['userstorylistunset_754',['userStoryListUnset',['../pages_2projects_2index_8js.html#a8fe8d80ecdce36dc59da0dbfdc991c3d',1,'index.js']]],
-  ['uslist_755',['USList',['../userStoryList_8js.html#a73b3f9c476ae6bab126e3f5b9f51ad94',1,'userStoryList.js']]],
-  ['uslistunset_756',['USListUnset',['../userStoryListUnset_8js.html#ae7b79df693979d77388917c564076a23',1,'userStoryListUnset.js']]],
-  ['usuario_757',['usuario',['../classapi_1_1models_1_1RegistroHoras.html#aa24d93ee7623fc54af5b56fdbf49516b',1,'api.models.RegistroHoras.usuario()'],['../classapi_1_1models_1_1RolAsignado.html#aaeff6c6b3e1adfbb9cb232b9523ce5bf',1,'api.models.RolAsignado.usuario()'],['../classapi_1_1models_1_1USAsignada.html#a56b25f3596999191df714164b1b5c52d',1,'api.models.USAsignada.usuario()']]]
+  ['usid_755',['usId',['../userStories_8test_8js.html#aa98acedbe3f6d77e2c821af0a06b344e',1,'userStories.test.js']]],
+  ['uslist_756',['USList',['../userStoryList_8js.html#a73b3f9c476ae6bab126e3f5b9f51ad94',1,'userStoryList.js']]],
+  ['uslistunset_757',['USListUnset',['../userStoryListUnset_8js.html#ae7b79df693979d77388917c564076a23',1,'userStoryListUnset.js']]],
+  ['usuario_758',['usuario',['../classapi_1_1models_1_1RegistroHoras.html#aa24d93ee7623fc54af5b56fdbf49516b',1,'api.models.RegistroHoras.usuario()'],['../classapi_1_1models_1_1RolAsignado.html#aaeff6c6b3e1adfbb9cb232b9523ce5bf',1,'api.models.RolAsignado.usuario()'],['../classapi_1_1models_1_1USAsignada.html#a56b25f3596999191df714164b1b5c52d',1,'api.models.USAsignada.usuario()']]]
 ];

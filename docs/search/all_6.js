@@ -19,8 +19,8 @@ var searchData=
   ['getusers_142',['getUsers',['../users_8js.html#a5fb2812833fec743f1d291112b36358c',1,'users.js']]],
   ['getuserstories_143',['getUserStories',['../userStories_8js.html#aa384107b1b4fc4a017be2579907ee303',1,'userStories.js']]],
   ['getusuariosasignados_144',['getUsuariosAsignados',['../userStories_8js.html#a178863ae40c7b1251feab2497c87627b',1,'userStories.js']]],
-  ['goback_145',['GoBack',['../goBack_8js.html#ae9a936939816368352f467104559dba2',1,'goBack.js']]],
-  ['goback_146',['goBack',['../pages_2projectConfig_2index_8js.html#a4d6f0c13a50ab726ce760d2e3489c8f6',1,'goBack():&#160;index.js'],['../pages_2projectMembers_2index_8js.html#a4d6f0c13a50ab726ce760d2e3489c8f6',1,'goBack():&#160;index.js'],['../pages_2roles_2index_8js.html#a4d6f0c13a50ab726ce760d2e3489c8f6',1,'goBack():&#160;index.js']]],
+  ['goback_145',['goBack',['../pages_2projectConfig_2index_8js.html#a4d6f0c13a50ab726ce760d2e3489c8f6',1,'goBack():&#160;index.js'],['../pages_2projectMembers_2index_8js.html#a4d6f0c13a50ab726ce760d2e3489c8f6',1,'goBack():&#160;index.js'],['../pages_2roles_2index_8js.html#a4d6f0c13a50ab726ce760d2e3489c8f6',1,'goBack():&#160;index.js']]],
+  ['goback_146',['GoBack',['../goBack_8js.html#ae9a936939816368352f467104559dba2',1,'goBack.js']]],
   ['goback_2ejs_147',['goBack.js',['../goBack_8js.html',1,'']]],
   ['graficoburndown_148',['graficoBurnDown',['../pages_2sprints_2index_8js.html#ab002ac1f21a20c6adac8f081df08f0e5',1,'index.js']]]
 ];

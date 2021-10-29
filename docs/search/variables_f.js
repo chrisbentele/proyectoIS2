@@ -7,6 +7,6 @@ var searchData=
   ['setuserrole_735',['setUserRole',['../roles_8js.html#a9bf4531d318396ad5103e5a0c71eccdd',1,'roles.js']]],
   ['sprint_736',['sprint',['../classapi_1_1models_1_1US.html#a37ddd053488887363869390a90f1e064',1,'api.models.US.sprint()'],['../classapi_1_1models_1_1RegistroHoras.html#a836f27df294dced9289bbfe6de166000',1,'api.models.RegistroHoras.sprint()']]],
   ['sprintid_737',['sprintId',['../sprints_8test_8js.html#a367abbb6441003890161243b28b17ca4',1,'sprints.test.js']]],
-  ['sprints_738',['sprints',['../api_2index_8js.html#a1f18b9442096f9df5b6410772d14b713',1,'sprints():&#160;index.js'],['../sprints_8js.html#a1f18b9442096f9df5b6410772d14b713',1,'sprints():&#160;sprints.js'],['../App_8js.html#a84028cd643b641c81b85c0e32d8e21e1',1,'sprints():&#160;App.js']]],
+  ['sprints_738',['sprints',['../api_2index_8js.html#a1f18b9442096f9df5b6410772d14b713',1,'sprints():&#160;index.js'],['../sprints_8js.html#a1f18b9442096f9df5b6410772d14b713',1,'sprints():&#160;sprints.js'],['../App_8js.html#a84028cd643b641c81b85c0e32d8e21e1',1,'sprints():&#160;App.js'],['../userStories_8test_8js.html#ab93ac135ddbec8da8629120d14726407',1,'sprints():&#160;userStories.test.js']]],
   ['static_5furl_739',['STATIC_URL',['../namespacecontroller_1_1settings.html#a8f63029324d586661904877890523544',1,'controller::settings']]]
 ];

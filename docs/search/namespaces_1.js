@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['asgi_422',['asgi',['../namespacecontroller_1_1asgi.html',1,'controller']]],
-  ['settings_423',['settings',['../namespacecontroller_1_1settings.html',1,'controller']]],
-  ['urls_424',['urls',['../namespacecontroller_1_1urls.html',1,'controller']]],
-  ['wsgi_425',['wsgi',['../namespacecontroller_1_1wsgi.html',1,'controller']]]
+  ['asgi_423',['asgi',['../namespacecontroller_1_1asgi.html',1,'controller']]],
+  ['settings_424',['settings',['../namespacecontroller_1_1settings.html',1,'controller']]],
+  ['urls_425',['urls',['../namespacecontroller_1_1urls.html',1,'controller']]],
+  ['wsgi_426',['wsgi',['../namespacecontroller_1_1wsgi.html',1,'controller']]]
 ];
