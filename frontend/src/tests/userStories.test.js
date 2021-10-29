@@ -63,7 +63,8 @@ test("edit user story", async () => {
     expect.arrayContaining([expect.objectContaining({ nombre: "test us" })])
   );
 });
-
+let registroHoras;
+let sprintId;
 test("registrar horas", async () => {
   const res_sprint = await sprints
     .createSprint({
@@ -73,7 +74,7 @@ test("registrar horas", async () => {
       nombre: "sprint",
     })
     .catch((e) => console.error(e));
-  let sprintId = res_sprint.data["id"];
+  sprintId = res_sprint.data["id"];
   const res_asignar_us_usuario = await userStories
     .asignarUsAUsuario({
       projectId,
@@ -112,8 +113,38 @@ test("registrar horas", async () => {
   //   sprintId,
   //   usId,
   // });
-
+  registroHoras = res_reg.data;
   expect(res_registros.data[0]).toEqual(res_reg.data);
+});
+
+test("editar registro de horas", async () => {
+  const res = await userStories
+    .editRegistrosHoras({
+      projectId,
+      sprintId,
+      usId,
+      horas: registroHoras["horas"] + 1,
+      fecha: registroHoras["fecha"],
+    })
+    .catch(console.error);
+  expect(res.data).not.toEqual(registroHoras);
+  expect(res.data["horas"]).toEqual(registroHoras["horas"] + 1);
+});
+
+test("eliminar registro de horas", async () => {
+  const res = await userStories
+    .deleteRegistrosHoras({
+      projectId,
+      sprintId,
+      usId,
+      fecha: registroHoras["fecha"],
+    })
+    .catch(console.error);
+  expect(res.data).not.toEqual(
+    expect.arrayContaining([
+      expect.objectContaining({ fecha: registroHoras["fecha"], usId }),
+    ])
+  );
 });
 
 test("eliminar user story", async () => {
