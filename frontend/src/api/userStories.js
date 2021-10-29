@@ -97,10 +97,10 @@ export const desasignarUsASprint = ({ projectId, sprintId, usId }) =>
 export const eliminarUS = async (projectId, us_id) =>
   await axiosInstance.delete(`/proyectos/${projectId}/user_stories/${us_id}`);
 
-export const registrarHoras = ({ projectId, sprintId, usId, horas, fecha }) =>
+export const registrarHoras = ({ projectId, sprintId, usId, horas, fecha, mensaje }) =>
   axiosInstance.post(
     `proyectos/${projectId}/sprints/${sprintId}/user_stories/${usId}/registro_horas`,
-    { horas, fecha }
+    { horas, fecha, mensaje }
   );
 
 export const editRegistrosHoras = ({
@@ -109,10 +109,11 @@ export const editRegistrosHoras = ({
   usId,
   horas,
   fecha,
+  mensaje
 }) =>
   axiosInstance.put(
     `proyectos/${projectId}/sprints/${sprintId}/user_stories/${usId}/registro_horas`,
-    { new_horas: horas, fecha }
+    { new_horas: horas, fecha, mensaje }
   );
 
 export const deleteRegistrosHoras = ({ projectId, sprintId, usId, fecha }) =>

@@ -989,6 +989,12 @@ def registro_horas(request, proyect_id, sprint_id, us_id=None):
         except Exception as e:
             return HttpResponseBadRequest(e)
 
+        try:
+            if not data.get("mensaje"):
+                raise "falta mensaje"
+        except Exception as e:
+            return HttpResponseBadRequest(e)
+
         rh_seri = RegistroHorasSerializer(
             data={
                 "us": us_id,
@@ -997,6 +1003,7 @@ def registro_horas(request, proyect_id, sprint_id, us_id=None):
                 "usuario": usa.usuario.id,
                 "horas": data["horas"],
                 "fecha": data.get("fecha", timezone.now().strftime("%Y-%m-%d")),
+                "mensaje": data["mensaje"],
                 # "fechaEdit": timezone.now().strftime("%Y-%m-%d"),
             }
         )
@@ -1037,6 +1044,8 @@ def registro_horas(request, proyect_id, sprint_id, us_id=None):
             data = JSONParser().parse(request)
             if not data["new_horas"]:
                 return HttpResponseBadRequest("faltan horas")
+            if not data["mensaje"]:
+                return HttpResponseBadRequest("falta mensaje")
             if not data["fecha"]:
                 return HttpResponseBadRequest("falta fecha")
 
@@ -1057,6 +1066,7 @@ def registro_horas(request, proyect_id, sprint_id, us_id=None):
             rh,
             data={
                 "horas": data["new_horas"],
+                "mensaje":data["mensaje"]
             },
             partial=True,
         )
