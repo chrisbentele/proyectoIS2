@@ -144,9 +144,9 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= ({ <a class="code" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>, <a class="code" href="sprints_8test_8js.html#a367abbb6441003890161243b28b17ca4">sprintId</a>, usId }) =&gt;</div>
+<b>Initial value:</b><div class="fragment"><div class="line">= ({ <a class="code" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>, <a class="code" href="sprints_8test_8js.html#a367abbb6441003890161243b28b17ca4">sprintId</a>, <a class="code" href="userStories_8test_8js.html#aa98acedbe3f6d77e2c821af0a06b344e">usId</a> }) =&gt;</div>
 <div class="line">  <a class="code" href="api_2index_8js.html#a49de16393722038aeb1da8e9874d4d36">axiosInstance</a>.post(</div>
-<div class="line">    `/<a class="code" href="namespaceapi_1_1views.html#a308fb6ca7ed69b9aebed843b6786eff9">proyectos</a>/${<a class="code" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>}/<a class="code" href="api_2index_8js.html#a1f18b9442096f9df5b6410772d14b713">sprints</a>/${<a class="code" href="sprints_8test_8js.html#a367abbb6441003890161243b28b17ca4">sprintId</a>}/<a class="code" href="namespaceapi_1_1views.html#a90b750ebd195cf58a5b9add3a9d7fa88">user_stories</a>/${usId}`</div>
+<div class="line">    `/<a class="code" href="namespaceapi_1_1views.html#a308fb6ca7ed69b9aebed843b6786eff9">proyectos</a>/${<a class="code" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>}/<a class="code" href="api_2index_8js.html#a1f18b9442096f9df5b6410772d14b713">sprints</a>/${<a class="code" href="sprints_8test_8js.html#a367abbb6441003890161243b28b17ca4">sprintId</a>}/<a class="code" href="namespaceapi_1_1views.html#a90b750ebd195cf58a5b9add3a9d7fa88">user_stories</a>/${<a class="code" href="userStories_8test_8js.html#aa98acedbe3f6d77e2c821af0a06b344e">usId</a>}`</div>
 <div class="line">  )</div>
 <div class="ttc" id="aapi_2index_8js_html_a1f18b9442096f9df5b6410772d14b713"><div class="ttname"><a href="api_2index_8js.html#a1f18b9442096f9df5b6410772d14b713">sprints</a></div><div class="ttdeci">import import sprints from sprints</div><div class="ttdef"><b>Definition:</b> index.js:37</div></div>
 <div class="ttc" id="aapi_2index_8js_html_a49de16393722038aeb1da8e9874d4d36"><div class="ttname"><a href="api_2index_8js.html#a49de16393722038aeb1da8e9874d4d36">axiosInstance</a></div><div class="ttdeci">export const axiosInstance</div><div class="ttdef"><b>Definition:</b> index.js:47</div></div>
@@ -154,6 +154,7 @@ Variables</h2></td></tr>
 <div class="ttc" id="anamespaceapi_1_1views_html_a90b750ebd195cf58a5b9add3a9d7fa88"><div class="ttname"><a href="namespaceapi_1_1views.html#a90b750ebd195cf58a5b9add3a9d7fa88">api.views.user_stories</a></div><div class="ttdeci">def user_stories(request, proyect_id, us_id=None)</div><div class="ttdef"><b>Definition:</b> views.py:504</div></div>
 <div class="ttc" id="asprints_8test_8js_html_a12106278ecd31c348b8adbcd316f562f"><div class="ttname"><a href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a></div><div class="ttdeci">let projectId</div><div class="ttdef"><b>Definition:</b> sprints.test.js:14</div></div>
 <div class="ttc" id="asprints_8test_8js_html_a367abbb6441003890161243b28b17ca4"><div class="ttname"><a href="sprints_8test_8js.html#a367abbb6441003890161243b28b17ca4">sprintId</a></div><div class="ttdeci">let sprintId</div><div class="ttdef"><b>Definition:</b> sprints.test.js:15</div></div>
+<div class="ttc" id="auserStories_8test_8js_html_aa98acedbe3f6d77e2c821af0a06b344e"><div class="ttname"><a href="userStories_8test_8js.html#aa98acedbe3f6d77e2c821af0a06b344e">usId</a></div><div class="ttdeci">let usId</div><div class="ttdef"><b>Definition:</b> userStories.test.js:13</div></div>
 </div><!-- fragment -->
 <p>Asigna US a sprint. </p>
 
@@ -170,14 +171,14 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= ({ <a class="code" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>, <a class="code" href="sprints_8test_8js.html#a367abbb6441003890161243b28b17ca4">sprintId</a>, usId, userId }) =&gt; {</div>
+<b>Initial value:</b><div class="fragment"><div class="line">= ({ <a class="code" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>, <a class="code" href="sprints_8test_8js.html#a367abbb6441003890161243b28b17ca4">sprintId</a>, <a class="code" href="userStories_8test_8js.html#aa98acedbe3f6d77e2c821af0a06b344e">usId</a>, userId }) =&gt; {</div>
 <div class="line">  <span class="keywordflow">if</span> (userId) {</div>
 <div class="line">    <span class="keywordflow">return</span> <a class="code" href="api_2index_8js.html#a49de16393722038aeb1da8e9874d4d36">axiosInstance</a>.post(</div>
-<div class="line">      `/<a class="code" href="namespaceapi_1_1views.html#a308fb6ca7ed69b9aebed843b6786eff9">proyectos</a>/${<a class="code" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>}/<a class="code" href="namespaceapi_1_1views.html#a90b750ebd195cf58a5b9add3a9d7fa88">user_stories</a>/${usId}/asignar/${userId}`</div>
+<div class="line">      `/<a class="code" href="namespaceapi_1_1views.html#a308fb6ca7ed69b9aebed843b6786eff9">proyectos</a>/${<a class="code" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>}/<a class="code" href="namespaceapi_1_1views.html#a90b750ebd195cf58a5b9add3a9d7fa88">user_stories</a>/${<a class="code" href="userStories_8test_8js.html#aa98acedbe3f6d77e2c821af0a06b344e">usId</a>}/asignar/${userId}`</div>
 <div class="line">    );</div>
 <div class="line">  } <span class="keywordflow">else</span> {</div>
 <div class="line">    <span class="keywordflow">return</span> <a class="code" href="api_2index_8js.html#a49de16393722038aeb1da8e9874d4d36">axiosInstance</a>.delete(</div>
-<div class="line">      `/<a class="code" href="namespaceapi_1_1views.html#a308fb6ca7ed69b9aebed843b6786eff9">proyectos</a>/${<a class="code" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>}/<a class="code" href="namespaceapi_1_1views.html#a90b750ebd195cf58a5b9add3a9d7fa88">user_stories</a>/${usId}/asignar`</div>
+<div class="line">      `/<a class="code" href="namespaceapi_1_1views.html#a308fb6ca7ed69b9aebed843b6786eff9">proyectos</a>/${<a class="code" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>}/<a class="code" href="namespaceapi_1_1views.html#a90b750ebd195cf58a5b9add3a9d7fa88">user_stories</a>/${<a class="code" href="userStories_8test_8js.html#aa98acedbe3f6d77e2c821af0a06b344e">usId</a>}/asignar`</div>
 <div class="line">    );</div>
 <div class="line">  }</div>
 <div class="line">}</div>
@@ -221,9 +222,9 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= ({ <a class="code" href="sprints_8test_8js.html#a367abbb6441003890161243b28b17ca4">sprintId</a>, usId }) =&gt;</div>
+<b>Initial value:</b><div class="fragment"><div class="line">= ({ <a class="code" href="sprints_8test_8js.html#a367abbb6441003890161243b28b17ca4">sprintId</a>, <a class="code" href="userStories_8test_8js.html#aa98acedbe3f6d77e2c821af0a06b344e">usId</a> }) =&gt;</div>
 <div class="line">  <a class="code" href="api_2index_8js.html#a49de16393722038aeb1da8e9874d4d36">axiosInstance</a>.delete(</div>
-<div class="line">    `/<a class="code" href="api_2index_8js.html#a1f18b9442096f9df5b6410772d14b713">sprints</a>/${<a class="code" href="sprints_8test_8js.html#a367abbb6441003890161243b28b17ca4">sprintId</a>}/<a class="code" href="namespaceapi_1_1views.html#a90b750ebd195cf58a5b9add3a9d7fa88">user_stories</a>/${usId}/<a class="code" href="namespaceapi_1_1tests.html#aa4bbdfcecd36815a2165114b1bf9fe33">registro_horas</a>`</div>
+<div class="line">    `/<a class="code" href="api_2index_8js.html#a1f18b9442096f9df5b6410772d14b713">sprints</a>/${<a class="code" href="sprints_8test_8js.html#a367abbb6441003890161243b28b17ca4">sprintId</a>}/<a class="code" href="namespaceapi_1_1views.html#a90b750ebd195cf58a5b9add3a9d7fa88">user_stories</a>/${<a class="code" href="userStories_8test_8js.html#aa98acedbe3f6d77e2c821af0a06b344e">usId</a>}/<a class="code" href="namespaceapi_1_1tests.html#aa4bbdfcecd36815a2165114b1bf9fe33">registro_horas</a>`</div>
 <div class="line">  )</div>
 <div class="ttc" id="anamespaceapi_1_1tests_html_aa4bbdfcecd36815a2165114b1bf9fe33"><div class="ttname"><a href="namespaceapi_1_1tests.html#aa4bbdfcecd36815a2165114b1bf9fe33">api.tests.registro_horas</a></div><div class="ttdeci">def registro_horas(self, sprint_id, us_id, fecha=None)</div><div class="ttdef"><b>Definition:</b> tests.py:102</div></div>
 </div><!-- fragment -->
@@ -240,9 +241,9 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= ({ <a class="code" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>, <a class="code" href="sprints_8test_8js.html#a367abbb6441003890161243b28b17ca4">sprintId</a>, usId }) =&gt;</div>
+<b>Initial value:</b><div class="fragment"><div class="line">= ({ <a class="code" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>, <a class="code" href="sprints_8test_8js.html#a367abbb6441003890161243b28b17ca4">sprintId</a>, <a class="code" href="userStories_8test_8js.html#aa98acedbe3f6d77e2c821af0a06b344e">usId</a> }) =&gt;</div>
 <div class="line">  <a class="code" href="api_2index_8js.html#a49de16393722038aeb1da8e9874d4d36">axiosInstance</a>.delete(</div>
-<div class="line">    `/<a class="code" href="namespaceapi_1_1views.html#a308fb6ca7ed69b9aebed843b6786eff9">proyectos</a>/${<a class="code" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>}/<a class="code" href="api_2index_8js.html#a1f18b9442096f9df5b6410772d14b713">sprints</a>/${<a class="code" href="sprints_8test_8js.html#a367abbb6441003890161243b28b17ca4">sprintId</a>}/<a class="code" href="namespaceapi_1_1views.html#a90b750ebd195cf58a5b9add3a9d7fa88">user_stories</a>/${usId}`</div>
+<div class="line">    `/<a class="code" href="namespaceapi_1_1views.html#a308fb6ca7ed69b9aebed843b6786eff9">proyectos</a>/${<a class="code" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>}/<a class="code" href="api_2index_8js.html#a1f18b9442096f9df5b6410772d14b713">sprints</a>/${<a class="code" href="sprints_8test_8js.html#a367abbb6441003890161243b28b17ca4">sprintId</a>}/<a class="code" href="namespaceapi_1_1views.html#a90b750ebd195cf58a5b9add3a9d7fa88">user_stories</a>/${<a class="code" href="userStories_8test_8js.html#aa98acedbe3f6d77e2c821af0a06b344e">usId</a>}`</div>
 <div class="line">  )</div>
 </div><!-- fragment -->
 <p>Desasigna US de sprint. </p>
@@ -260,9 +261,9 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= ({ <a class="code" href="sprints_8test_8js.html#a367abbb6441003890161243b28b17ca4">sprintId</a>, usId, horas, fecha }) =&gt;</div>
+<b>Initial value:</b><div class="fragment"><div class="line">= ({ <a class="code" href="sprints_8test_8js.html#a367abbb6441003890161243b28b17ca4">sprintId</a>, <a class="code" href="userStories_8test_8js.html#aa98acedbe3f6d77e2c821af0a06b344e">usId</a>, horas, fecha }) =&gt;</div>
 <div class="line">  <a class="code" href="api_2index_8js.html#a49de16393722038aeb1da8e9874d4d36">axiosInstance</a>.put(</div>
-<div class="line">    `/<a class="code" href="api_2index_8js.html#a1f18b9442096f9df5b6410772d14b713">sprints</a>/${<a class="code" href="sprints_8test_8js.html#a367abbb6441003890161243b28b17ca4">sprintId</a>}/<a class="code" href="namespaceapi_1_1views.html#a90b750ebd195cf58a5b9add3a9d7fa88">user_stories</a>/${usId}/<a class="code" href="namespaceapi_1_1tests.html#aa4bbdfcecd36815a2165114b1bf9fe33">registro_horas</a>`,</div>
+<div class="line">    `/<a class="code" href="api_2index_8js.html#a1f18b9442096f9df5b6410772d14b713">sprints</a>/${<a class="code" href="sprints_8test_8js.html#a367abbb6441003890161243b28b17ca4">sprintId</a>}/<a class="code" href="namespaceapi_1_1views.html#a90b750ebd195cf58a5b9add3a9d7fa88">user_stories</a>/${<a class="code" href="userStories_8test_8js.html#aa98acedbe3f6d77e2c821af0a06b344e">usId</a>}/<a class="code" href="namespaceapi_1_1tests.html#aa4bbdfcecd36815a2165114b1bf9fe33">registro_horas</a>`,</div>
 <div class="line">    { horas, fecha }</div>
 <div class="line">  )</div>
 </div><!-- fragment -->
@@ -284,11 +285,11 @@ Variables</h2></td></tr>
 <div class="line">  usName,</div>
 <div class="line">  description,</div>
 <div class="line">  estado,</div>
-<div class="line">  usId,</div>
+<div class="line">  <a class="code" href="userStories_8test_8js.html#aa98acedbe3f6d77e2c821af0a06b344e">usId</a>,</div>
 <div class="line">  prioridad,</div>
 <div class="line">}) =&gt; {</div>
 <div class="line">  <span class="keywordflow">return</span> await <a class="code" href="api_2index_8js.html#a49de16393722038aeb1da8e9874d4d36">axiosInstance</a>.put(</div>
-<div class="line">    `/<a class="code" href="namespaceapi_1_1views.html#a308fb6ca7ed69b9aebed843b6786eff9">proyectos</a>/${<a class="code" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>}/<a class="code" href="namespaceapi_1_1views.html#a90b750ebd195cf58a5b9add3a9d7fa88">user_stories</a>/${usId}`,</div>
+<div class="line">    `/<a class="code" href="namespaceapi_1_1views.html#a308fb6ca7ed69b9aebed843b6786eff9">proyectos</a>/${<a class="code" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>}/<a class="code" href="namespaceapi_1_1views.html#a90b750ebd195cf58a5b9add3a9d7fa88">user_stories</a>/${<a class="code" href="userStories_8test_8js.html#aa98acedbe3f6d77e2c821af0a06b344e">usId</a>}`,</div>
 <div class="line">    {</div>
 <div class="line">      nombre: usName,</div>
 <div class="line">      contenido: description,</div>
@@ -331,8 +332,8 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= ({ <a class="code" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>, userId, usId, estimacion }) =&gt;</div>
-<div class="line">  <a class="code" href="api_2index_8js.html#a49de16393722038aeb1da8e9874d4d36">axiosInstance</a>.post(`/<a class="code" href="namespaceapi_1_1views.html#a308fb6ca7ed69b9aebed843b6786eff9">proyectos</a>/${<a class="code" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>}/<a class="code" href="namespaceapi_1_1views.html#a90b750ebd195cf58a5b9add3a9d7fa88">user_stories</a>/${usId}/estimar`, {</div>
+<b>Initial value:</b><div class="fragment"><div class="line">= ({ <a class="code" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>, userId, <a class="code" href="userStories_8test_8js.html#aa98acedbe3f6d77e2c821af0a06b344e">usId</a>, estimacion }) =&gt;</div>
+<div class="line">  <a class="code" href="api_2index_8js.html#a49de16393722038aeb1da8e9874d4d36">axiosInstance</a>.post(`/<a class="code" href="namespaceapi_1_1views.html#a308fb6ca7ed69b9aebed843b6786eff9">proyectos</a>/${<a class="code" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>}/<a class="code" href="namespaceapi_1_1views.html#a90b750ebd195cf58a5b9add3a9d7fa88">user_stories</a>/${<a class="code" href="userStories_8test_8js.html#aa98acedbe3f6d77e2c821af0a06b344e">usId</a>}/estimar`, {</div>
 <div class="line">    user_id: userId,</div>
 <div class="line">    estimacion,</div>
 <div class="line">  })</div>
@@ -352,9 +353,9 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= ({ <a class="code" href="sprints_8test_8js.html#a367abbb6441003890161243b28b17ca4">sprintId</a>, usId, fecha }) =&gt;</div>
+<b>Initial value:</b><div class="fragment"><div class="line">= ({ <a class="code" href="sprints_8test_8js.html#a367abbb6441003890161243b28b17ca4">sprintId</a>, <a class="code" href="userStories_8test_8js.html#aa98acedbe3f6d77e2c821af0a06b344e">usId</a>, fecha }) =&gt;</div>
 <div class="line">  <a class="code" href="api_2index_8js.html#a49de16393722038aeb1da8e9874d4d36">axiosInstance</a>.get(</div>
-<div class="line">    `/<a class="code" href="api_2index_8js.html#a1f18b9442096f9df5b6410772d14b713">sprints</a>/${<a class="code" href="sprints_8test_8js.html#a367abbb6441003890161243b28b17ca4">sprintId</a>}/<a class="code" href="namespaceapi_1_1views.html#a90b750ebd195cf58a5b9add3a9d7fa88">user_stories</a>/${usId}/<a class="code" href="namespaceapi_1_1tests.html#aa4bbdfcecd36815a2165114b1bf9fe33">registro_horas</a>`,</div>
+<div class="line">    `/<a class="code" href="api_2index_8js.html#a1f18b9442096f9df5b6410772d14b713">sprints</a>/${<a class="code" href="sprints_8test_8js.html#a367abbb6441003890161243b28b17ca4">sprintId</a>}/<a class="code" href="namespaceapi_1_1views.html#a90b750ebd195cf58a5b9add3a9d7fa88">user_stories</a>/${<a class="code" href="userStories_8test_8js.html#aa98acedbe3f6d77e2c821af0a06b344e">usId</a>}/<a class="code" href="namespaceapi_1_1tests.html#aa4bbdfcecd36815a2165114b1bf9fe33">registro_horas</a>`,</div>
 <div class="line">    { params: { fecha } }</div>
 <div class="line">  )</div>
 </div><!-- fragment -->
@@ -404,10 +405,10 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= ({ <a class="code" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>, usId }) =&gt; {</div>
+<b>Initial value:</b><div class="fragment"><div class="line">= ({ <a class="code" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>, <a class="code" href="userStories_8test_8js.html#aa98acedbe3f6d77e2c821af0a06b344e">usId</a> }) =&gt; {</div>
 <div class="line">  <span class="keywordflow">if</span> (<span class="keyword">true</span>) {</div>
 <div class="line">    <span class="keywordflow">return</span> <a class="code" href="api_2index_8js.html#a49de16393722038aeb1da8e9874d4d36">axiosInstance</a>.get(</div>
-<div class="line">      `/<a class="code" href="namespaceapi_1_1views.html#a308fb6ca7ed69b9aebed843b6786eff9">proyectos</a>/${<a class="code" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>}/<a class="code" href="namespaceapi_1_1views.html#a90b750ebd195cf58a5b9add3a9d7fa88">user_stories</a>/${usId}/asignados`</div>
+<div class="line">      `/<a class="code" href="namespaceapi_1_1views.html#a308fb6ca7ed69b9aebed843b6786eff9">proyectos</a>/${<a class="code" href="sprints_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>}/<a class="code" href="namespaceapi_1_1views.html#a90b750ebd195cf58a5b9add3a9d7fa88">user_stories</a>/${<a class="code" href="userStories_8test_8js.html#aa98acedbe3f6d77e2c821af0a06b344e">usId</a>}/asignados`</div>
 <div class="line">    );</div>
 <div class="line">  } <span class="keywordflow">else</span> {</div>
 <div class="line">    <span class="keywordflow">return</span> <span class="keyword">null</span>;</div>
@@ -441,9 +442,9 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= ({ <a class="code" href="sprints_8test_8js.html#a367abbb6441003890161243b28b17ca4">sprintId</a>, usId, horas, fecha }) =&gt;</div>
+<b>Initial value:</b><div class="fragment"><div class="line">= ({ <a class="code" href="sprints_8test_8js.html#a367abbb6441003890161243b28b17ca4">sprintId</a>, <a class="code" href="userStories_8test_8js.html#aa98acedbe3f6d77e2c821af0a06b344e">usId</a>, horas, fecha }) =&gt;</div>
 <div class="line">  <a class="code" href="api_2index_8js.html#a49de16393722038aeb1da8e9874d4d36">axiosInstance</a>.post(</div>
-<div class="line">    `/<a class="code" href="api_2index_8js.html#a1f18b9442096f9df5b6410772d14b713">sprints</a>/${<a class="code" href="sprints_8test_8js.html#a367abbb6441003890161243b28b17ca4">sprintId</a>}/<a class="code" href="namespaceapi_1_1views.html#a90b750ebd195cf58a5b9add3a9d7fa88">user_stories</a>/${usId}/<a class="code" href="namespaceapi_1_1tests.html#aa4bbdfcecd36815a2165114b1bf9fe33">registro_horas</a>`,</div>
+<div class="line">    `/<a class="code" href="api_2index_8js.html#a1f18b9442096f9df5b6410772d14b713">sprints</a>/${<a class="code" href="sprints_8test_8js.html#a367abbb6441003890161243b28b17ca4">sprintId</a>}/<a class="code" href="namespaceapi_1_1views.html#a90b750ebd195cf58a5b9add3a9d7fa88">user_stories</a>/${<a class="code" href="userStories_8test_8js.html#aa98acedbe3f6d77e2c821af0a06b344e">usId</a>}/<a class="code" href="namespaceapi_1_1tests.html#aa4bbdfcecd36815a2165114b1bf9fe33">registro_horas</a>`,</div>
 <div class="line">    { horas, fecha }</div>
 <div class="line">  )</div>
 </div><!-- fragment -->
