@@ -634,7 +634,6 @@ def user_stories_estimar(request, proyect_id, us_id):
                     asignada = False
                 if asignada and data["user_id"] == usa.usuario.id:
                     # El asignado es el mismo SM
-                    print("entro")
                     serializer = USSerializer(
                         us, data={"estimacionesDev": data["estimacion"]}, partial=True
                     )
@@ -978,7 +977,6 @@ def registro_horas(request, proyect_id, sprint_id, us_id=None):
         except US.DoesNotExist:
             return HttpResponseNotFound("us_id")
         try:
-            print(us_id)
             usa = USAsignada.objects.get(us=us_id)
             # TODO DEBUG
         except USAsignada.DoesNotExist:
