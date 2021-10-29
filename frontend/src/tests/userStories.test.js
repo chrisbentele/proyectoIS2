@@ -65,7 +65,7 @@ test("edit user story", async () => {
 });
 let registroHoras;
 let sprintId;
-test("registrar horas", async () => {
+test("registrar horas y buscar", async () => {
   const res_sprint = await sprints
     .createSprint({
       projectId,
