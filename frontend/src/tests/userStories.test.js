@@ -65,7 +65,7 @@ test("edit user story", async () => {
 });
 let registroHoras;
 let sprintId;
-test("registrar horas", async () => {
+test("registrar horas y buscar", async () => {
   const res_sprint = await sprints
     .createSprint({
       projectId,
@@ -157,6 +157,6 @@ test("eliminar user story", async () => {
 
 afterAll(async () => {
   await deleteProject(projectId);
-  deleteUser("member1");
-  deleteUser("member2");
+  deleteUser("usTest");
+  deleteUser("usTest2");
 });
