@@ -1,3 +1,5 @@
+import json
+
 from django.utils import timezone
 from rest_framework.exceptions import ValidationError
 
@@ -238,9 +240,12 @@ def usuarios(request, user_id=None):
         return HttpResponseBadRequest("Falta user_id")
     elif request.method == "DELETE":
         # Elimina un usuario
-        u = Usuario.objects.get(id=user_id)
-        u.delete()
-        return JsonResponse(True, safe=False, status=204)
+        try:
+            u = Usuario.objects.get(id=user_id)
+            u.delete()
+            return JsonResponse(True, safe=False, status=204)
+        except Usuario.DoesNotExist:
+            return HttpResponseNotFound()
 
 
 def usuarios_proyectos(request, user_id):
@@ -588,12 +593,12 @@ def user_stories_estimar(request, proyect_id, us_id):
     try:
         proyecto = Proyecto.objects.get(id=proyect_id)
     except Proyecto.DoesNotExist:
-        return HttpResponseNotFound()
+        return HttpResponseNotFound("proyecto")
 
     try:
         us = US.objects.get(id=us_id)
     except US.DoesNotExist:
-        return HttpResponseNotFound()
+        return HttpResponseNotFound("us")
 
     if request.method == "POST":
         try:
@@ -601,35 +606,55 @@ def user_stories_estimar(request, proyect_id, us_id):
         except Exception as e:
             return HttpResponseBadRequest(e)
 
-        rol_asign = RolAsignado.objects.filter(
-            usuario=data["user_id"], proyecto=proyect_id
-        )
+    rol_asign = RolAsignado.objects.filter(usuario=data["user_id"], proyecto=proyect_id)
 
-        rol_asign = (
-            RolAsignadoSerializer(rol_asign[0]).data if len(rol_asign) > 0 else None
-        )
+    rol_asign = RolAsignadoSerializer(rol_asign[0]).data if len(rol_asign) > 0 else None
 
-        if not rol_asign:
-            return HttpResponseForbidden("No tiene permisos")
+    if not rol_asign:
+        return HttpResponseForbidden("No tiene permisos")
 
-        rol_user = Rol.objects.get(id=rol_asign["rol"])
+    rol_user = Rol.objects.get(id=rol_asign["rol"])
 
-        rol_user = RolSerializer(rol_user).data
+    rol_user = RolSerializer(rol_user).data
+
+    if request.method == "POST":
 
         if rol_user["id"] == proyect_id:
-
+            # Si es el SM
             serializer = USSerializer(
                 us, data={"estimacionSM": data["estimacion"]}, partial=True
             )
+            if serializer.is_valid():
+                serializer.save()
+                asignada = False
+                try:
+                    usa = USAsignada.objects.get(us=us_id)
+                    asignada = True
+                except USAsignada.DoesNotExist:
+                    asignada = False
+                if asignada and data["user_id"] == usa.usuario.id:
+                    # El asignado es el mismo SM
+                    serializer = USSerializer(
+                        us, data={"estimacionesDev": data["estimacion"]}, partial=True
+                    )
+                    if serializer.is_valid():
+                        serializer.save()
+                        return JsonResponse(serializer.data, status=200)
+                    else:
+                        return JsonResponse(serializer.errors, status=400, safe=False)
+                return JsonResponse(serializer.data, status=200)
+            else:
+                return JsonResponse(serializer.errors, status=400, safe=False)
         else:
+            # Si es Dev
             serializer = USSerializer(
                 us, data={"estimacionesDev": data["estimacion"]}, partial=True
             )
 
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=200)
-        return JsonResponse(serializer.errors, status=400, safe=False)
+            if serializer.is_valid():
+                serializer.save()
+                return JsonResponse(serializer.data, status=200)
+            return JsonResponse(serializer.errors, status=400, safe=False)
 
 
 def sprints(request, proyect_id, sprint_id=None):
@@ -825,7 +850,6 @@ def sprints_activar(request, proyect_id, sprint_id):
                 us_seri.is_valid(raise_exception=True)
                 us_seri.save()
         except Exception as e:
-            print(e)
             return JsonResponse("Error actualizando US", status=400, safe=False)
 
         # estimacion de horas
@@ -862,7 +886,6 @@ def sprints_desactivar(request, proyect_id, sprint_id):
                 us_seri.is_valid(raise_exception=True)
                 us_seri.save()
         except Exception as e:
-            print(e)
             return JsonResponse("Error cambiando estado", status=400, safe=False)
 
         if serializer.is_valid():
@@ -933,17 +956,24 @@ def usuarios_admin(request, user_id):
         return JsonResponse(serializer.errors, status=400, safe=False)
 
 
-def registro_horas(request, sp_id, us_id=None):
+def registro_horas(request, proyect_id, sprint_id, us_id=None):
+
     try:
-        sprint = Sprint.objects.get(id=sp_id)
-    except Sprint.DoesNotExist:
+        proyecto = Proyecto.objects.get(id=proyect_id)
+    except Proyecto.DoesNotExist:
         return HttpResponseNotFound("proyect_id")
+
+    try:
+        sprint = Sprint.objects.get(id=sprint_id)
+    except Sprint.DoesNotExist:
+        return HttpResponseNotFound("sprint_id")
 
     if request.method == "POST":
         try:
             us = US.objects.get(id=us_id)
-            if int(sp_id) != us.sprint.id:
-                return HttpResponseForbidden("sp_id != us.sprint")
+            if int(sprint_id) != us.sprint.id:
+                return HttpResponseForbidden("sprint_id != us.sprint")
+
         except US.DoesNotExist:
             return HttpResponseNotFound("us_id")
         try:
@@ -959,14 +989,21 @@ def registro_horas(request, sp_id, us_id=None):
         except Exception as e:
             return HttpResponseBadRequest(e)
 
+        try:
+            if not data.get("mensaje"):
+                raise "falta mensaje"
+        except Exception as e:
+            return HttpResponseBadRequest(e)
+
         rh_seri = RegistroHorasSerializer(
             data={
                 "us": us_id,
                 "proyecto": us.proyecto.id,
-                "sprint": sp_id,
+                "sprint": sprint_id,
                 "usuario": usa.usuario.id,
                 "horas": data["horas"],
                 "fecha": data.get("fecha", timezone.now().strftime("%Y-%m-%d")),
+                "mensaje": data["mensaje"],
                 # "fechaEdit": timezone.now().strftime("%Y-%m-%d"),
             }
         )
@@ -977,15 +1014,28 @@ def registro_horas(request, sp_id, us_id=None):
         return JsonResponse(rh_seri.errors, status=400, safe=False)
     elif request.method == "GET":
         if not us_id:
-            rh = RegistroHoras.objects.filter(sprint=sp_id)
+            rh = RegistroHoras.objects.filter(sprint=sprint_id)
+            rh_seri = RegistroHorasSerializer(rh, many=True)
+            return JsonResponse(rh_seri.data, safe=False)
+
+        fecha = request.GET.get("fecha")
+        if not fecha:
+            rh = RegistroHoras.objects.filter(us=us_id)
+
             rh_seri = RegistroHorasSerializer(rh, many=True)
             return JsonResponse(rh_seri.data, safe=False)
 
         try:
-            u = RegistroHoras.objects.get(us=us_id)
+            timezone.datetime.strptime(fecha, "%Y-%m-%d")
+        except:
+            return HttpResponseBadRequest("La fecha debe estar en formato %Y-%m-%d")
+
+        try:
+            u = RegistroHoras.objects.get(us=us_id, fecha=fecha)
             return JsonResponse(RegistroHorasSerializer(u).data, safe=False)
-        except Usuario.DoesNotExist:
+        except RegistroHoras.DoesNotExist:
             return HttpResponseNotFound()
+
     elif request.method == "PUT":
         if not us_id:
             return HttpResponseBadRequest("Falta us_id")
@@ -994,8 +1044,10 @@ def registro_horas(request, sp_id, us_id=None):
             data = JSONParser().parse(request)
             if not data["new_horas"]:
                 return HttpResponseBadRequest("faltan horas")
+            if not data["mensaje"]:
+                return HttpResponseBadRequest("falta mensaje")
             if not data["fecha"]:
-                return HttpResponseBadRequest("faltan fecha")
+                return HttpResponseBadRequest("falta fecha")
 
         except Exception as e:
             return HttpResponseBadRequest(e)
@@ -1014,6 +1066,7 @@ def registro_horas(request, sp_id, us_id=None):
             rh,
             data={
                 "horas": data["new_horas"],
+                "mensaje":data["mensaje"]
             },
             partial=True,
         )
@@ -1022,7 +1075,55 @@ def registro_horas(request, sp_id, us_id=None):
             serializer.save()
             return JsonResponse(serializer.data, status=200)
         return JsonResponse(serializer.errors, status=400, safe=False)
-    # elif request.method == "DELETE":
-    #     p = RegistroHoras.objects.get(id=proyect_id)
-    #     p.delete()
-    #     return JsonResponse(True, safe=False, status=204)
+    elif request.method == "DELETE":
+        if not us_id:
+            return HttpResponseBadRequest("Falta us_id")
+
+        try:
+            fecha = request.GET.get("fecha")
+            if not fecha:
+                return HttpResponseBadRequest("falta fecha")
+        except Exception as e:
+            return HttpResponseBadRequest(e)
+
+        try:
+            rh = RegistroHoras.objects.get(us=us_id, fecha=fecha)
+            rh.delete()
+            return JsonResponse(True, safe=False, status=204)
+
+        except RegistroHoras.DoesNotExist:
+            return HttpResponseNotFound(
+                f"Sin registro de horas en {us_id} y fecha {fecha}"
+            )
+
+
+def sprints_miembros(request, proyect_id, sprint_id):
+    try:
+        proyecto = Proyecto.objects.get(id=proyect_id)
+    except Proyecto.DoesNotExist:
+        return HttpResponseNotFound("Proyecto no existe")
+
+    try:
+        sprint = Sprint.objects.get(id=sprint_id)
+    except Sprint.DoesNotExist:
+        return HttpResponseNotFound("Sprint no existe")
+
+    if request.method == "GET":
+        us = US.objects.filter(proyecto=proyecto, sprint=sprint_id)
+        serializer = USSerializer(us, many=True)
+        us_list = serializer.data
+
+        miembros_set = set()
+        for us in us_list:
+            asigned_user_id = get_asigned_user(us["id"])
+            if asigned_user_id:
+                asigned_user = UsuarioSerializer(
+                    Usuario.objects.get(id=asigned_user_id)
+                ).data
+                miembros_set.add(json.dumps(asigned_user))
+
+        miembros_list = list(miembros_set)
+
+        miembros_list = [json.loads(x) for x in list(miembros_set)]
+
+        return JsonResponse(miembros_list, safe=False)

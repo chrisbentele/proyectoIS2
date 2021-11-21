@@ -1,10 +1,8 @@
 export function projectStateToString(projectState) {
   switch (projectState) {
     case 0:
-      return "Pendiente";
-    case 1:
       return "Activo";
-    case 2:
+    case 1:
       return "Terminado";
     default:
       return "codigo de estado de proyecto erroneo";
@@ -42,4 +40,20 @@ export function agruparRegistrosPorFecha(registros) {
   });
 
   return sumaHorasPorFecha;
+}
+
+export function getProxDias(fecha, prox_dias) {
+  Date.prototype.addDays = function (days) {
+    var date = new Date(this.valueOf());
+    date.setDate(date.getDate() + days);
+    return date;
+  };
+  let dateArray = [];
+  let actual = new Date(fecha);
+
+  for (let dia = 0; dia < prox_dias + 1; dia++) {
+    let newDate = actual.addDays(dia).toISOString().split("T")[0];
+    dateArray.push(newDate);
+  }
+  return dateArray;
 }

@@ -16,22 +16,27 @@ import {
   LinkBox,
   LinkOverlay,
   Button,
+  Heading,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import { mapStateColor } from "../../styles/theme";
+import { mapStateColor, handleSprintBoxColor } from "../../styles/theme";
 import USListUnset from "../../components/userStoryListUnset/userStoryListUnset";
 import CrearSprintModal from "../../components/CrearSprintModal/CrearSprintModal";
 import { useHistory } from "react-router-dom";
 import { MdBuild } from "react-icons/md";
+import { AiFillStop } from "react-icons/ai";
 import EliminarSprintModal from "../../components/EliminarSprintModal/EliminarSprintModal";
 
 import { useAuth0 } from "@auth0/auth0-react";
 import { tienePermiso } from "../../util";
 import { PERMISOS_MACRO } from "../roles/permisos";
+import { forEach } from "lodash";
 
 /**
  * Función que contiene el código de la vista
- * @param { props } param0
+ * @param {Object} obj Un objeto.
+ * @param {function} obj.dispatchError Función que despliega el mensaje de error en la página.
+ * @param {props} obj.props Propiedades del entorno.
  * @returns React Component
  */
 export default function Index({ dispatchError, props }) {
@@ -45,7 +50,6 @@ export default function Index({ dispatchError, props }) {
   const history = useHistory();
   const { user } = useAuth0();
   const [thisMember, setThisMember] = useState();
-
   const [focusedSprint, setFocusedSprint] = useState();
   //Al cargarse la pagina se busca el proyecto con el id del URL y se lo asigna a projectId
   useEffect(() => {
@@ -70,17 +74,42 @@ export default function Index({ dispatchError, props }) {
       .catch((err) => console.log(err));
   }, []);
 
-  function handleSprintBoxColor(sprint) {
-    if (sprint.terminado) return "#808080";
-    if (sprint.activo) return "#a0ff6d";
-    return "#ffe66d";
+  async function onStatusChange(values) {
+    //funcion que define el comportamiento al confirmar el form
+    let sprints_estados = sprints.map((sprint) => sprint.activo);
+    console.log(sprints_estados);
+    if (!sprints_estados.includes(true)) {
+      await api.editProject({ projectId, ...values }).then(({ data }) => {
+        console.log(data);
+      });
+    } else {
+      return dispatchError(
+        "No se pudo terminar el proyecto",
+        "Hay todavia sprints activos"
+      );
+    }
+
+    history.go(0);
+  }
+
+  function crearSprint() {
+    let sprints_counter = sprints.map((sprint) => sprint.activo);
+    console.log(sprints_counter);
+    if (sprints_counter.length < 2) {
+      setIsOpenCrearSp(true);
+    } else {
+      return dispatchError(
+        "No se puede crear el Sprint",
+        "Ya hay dos Sprints existentes"
+      );
+    }
   }
 
   return (
     <Box
       minHeight="100vh"
       minWidth="full"
-      bg={mapStateColor(project?.estado)}
+      bg={"#FAFAFA"}
       color="#2b2d42"
       d="flex"
       // justifyContent="left"
@@ -129,6 +158,7 @@ export default function Index({ dispatchError, props }) {
                   variant="solid"
                   // opacity="30%"
                   onClick={() => history.push(`/projects/${projectId}/roles`)}
+                  isDisabled={project.estado === 1}
                 >
                   Configurar Roles
                 </Button>
@@ -143,59 +173,98 @@ export default function Index({ dispatchError, props }) {
                   variant="solid"
                   // opacity="30%"
                   onClick={() => history.push(`/projects/${projectId}/config`)}
+                  isDisabled={project.estado === 1}
                 >
                   Configurar Proyecto
+                </Button>
+              ) : null}
+              {tienePermiso(
+                thisMember,
+                PERMISOS_MACRO.EDITAR_CONFIGURACIÓN_DEL_PROYECTO
+              ) && project.estado === 0 ? (
+                <Button
+                  ml="auto"
+                  colorScheme="red"
+                  leftIcon={<AiFillStop />}
+                  onClick={() => onStatusChange({ status: 1 })}
+                >
+                  Terminar Proyecto
+                </Button>
+              ) : null}
+              {tienePermiso(
+                thisMember,
+                PERMISOS_MACRO.EDITAR_CONFIGURACIÓN_DEL_PROYECTO
+              ) && project.estado === 1 ? (
+                <Button
+                  ml="auto"
+                  colorScheme="green"
+                  leftIcon={<AiFillStop />}
+                  onClick={() => onStatusChange({ status: 0 })}
+                >
+                  Reactivar Proyecto
                 </Button>
               ) : null}
             </HStack>
           </Box>
           <Box as="main" mt="50px" w="100vw">
             <HStack p="5">
-              <HStack w="fit-content">
-                <USListUnset
-                  projectId={projectId}
-                  setUserStories={setUserStories}
-                  nombreLista="Backlog"
-                  dispatchError={dispatchError}
-                  thisMember={thisMember}
-                  userStories={userStories?.filter((us) => us.estado === 4)}
-                >
-                  <Flex justify="center">
-                    <LinkBox
-                      to={`projects/${projectId}/createUS`}
-                      pt="2px"
-                      pl="2"
-                      pr="2"
-                      borderRadius="5"
-                      m="10px"
-                      justify="center"
-                      d="flex"
-                      _hover={{
-                        background: "#F5F4F5",
-                        color: "teal.500",
-                      }}
-                    >
-                      {tienePermiso(thisMember, PERMISOS_MACRO.CREAR_ROL) ? (
-                        <LinkOverlay
-                          href={`/projects/${projectId}/createUS`}
-                          fontSize="lg"
-                        >
-                          + agregar nueva tarjeta
-                        </LinkOverlay>
-                      ) : null}
-                    </LinkBox>
-                  </Flex>
-                </USListUnset>
-              </HStack>
+              {project.estado === 0 ? (
+                <HStack w="fit-content">
+                  <USListUnset
+                    minWidth="3"
+                    projectId={projectId}
+                    setUserStories={setUserStories}
+                    nombreLista="Backlog"
+                    dispatchError={dispatchError}
+                    thisMember={thisMember}
+                    userStories={userStories?.filter((us) => us.estado === 4)}
+                  >
+                    <Flex justify="center">
+                      <LinkBox
+                        to={`projects/${projectId}/createUS`}
+                        pt="2px"
+                        pl="2"
+                        pr="2"
+                        borderRadius="5"
+                        m="10px"
+                        justify="center"
+                        d="flex"
+                        _hover={{
+                          background: "#F5F4F5",
+                          color: "blue.400",
+                        }}
+                      >
+                        {tienePermiso(thisMember, PERMISOS_MACRO.CREAR_ROL) ? (
+                          <LinkOverlay
+                            href={`/projects/${projectId}/createUS`}
+                            fontSize="lg"
+                          >
+                            + agregar nueva tarjeta
+                          </LinkOverlay>
+                        ) : null}
+                      </LinkBox>
+                    </Flex>
+                  </USListUnset>
+                </HStack>
+              ) : null}
               {/* sprints */}
               <Box>
-                <VStack>
-                  {tienePermiso(thisMember, PERMISOS_MACRO.CREAR_SPRINT) ? (
+                <VStack
+                  p="3"
+                  bg="#F5F4F5"
+                  borderWidth="px"
+                  borderColor={"#40474a"}
+                  borderRadius="lg"
+                  boxShadow="lg"
+                >
+                  <Heading fontSize="3xl">Sprints</Heading>
+                  {tienePermiso(thisMember, PERMISOS_MACRO.CREAR_SPRINT) &&
+                  project.estado === 0 ? (
                     <Box
                       display="flex"
                       w="lg"
                       height="180px"
-                      borderWidth="3px"
+                      borderWidth="4px"
                       borderColor={"#40474a"}
                       borderRadius="lg"
                       overflow="hidden"
@@ -204,7 +273,7 @@ export default function Index({ dispatchError, props }) {
                       bg="white"
                       justifyContent="center"
                       alignItems="center"
-                      onClick={() => setIsOpenCrearSp(true)}
+                      onClick={() => crearSprint()}
                       cursor="pointer"
                     >
                       <Text>Crear sprint</Text>
@@ -227,7 +296,7 @@ export default function Index({ dispatchError, props }) {
                         display="flex"
                         w="lg"
                         height="180px"
-                        borderWidth="3px"
+                        borderWidth="2px"
                         borderRadius="lg"
                         borderColor={"#40474a"}
                         overflow="hidden"
@@ -265,6 +334,7 @@ export default function Index({ dispatchError, props }) {
                               setFocusedSprint(sprint);
                               setShowEliminarModal(true);
                             }}
+                            isDisabled={project.estado === 1}
                           >
                             Eliminar :o
                           </Button>

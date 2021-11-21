@@ -36,7 +36,6 @@ test("crear sprint", async () => {
     estimacion: 1,
     nombre: "sprint",
   });
-  console.log(res);
   expect(res.data).toEqual(
     expect.objectContaining({
       activo: false,
@@ -52,7 +51,6 @@ test("crear sprint", async () => {
 test("get sprints", async () => {
   const res = await getSprints(projectId);
   expect(res.data.length).toBe(1);
-  console.log(res.data);
   expect(res.data).toEqual(
     expect.arrayContaining([expect.objectContaining({ id: sprintId })])
   );

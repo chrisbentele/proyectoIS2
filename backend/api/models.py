@@ -1,4 +1,11 @@
-from django.utils import timezone
+##
+# @namespace api.models
+# @brief Registro de modelos de datos.
+# @details En este archivo se definirán los modelos correspondientes a los
+# datos de todo el sistema. \n Entro ellos se encuentran los siguientes:\n
+# - Usuario: El modelo correspondiente a cualquier usuario del sistema.
+# - Proyecto: Modelo correspondiente a un proyecto.
+# -
 from django.db.models.base import Model
 from django.db.models.deletion import CASCADE
 from django.db.models.fields import (
@@ -11,8 +18,11 @@ from django.db.models.fields import (
 from django.db.models.fields.related import ForeignKey, ManyToManyField, OneToOneField
 from django.contrib.postgres.fields import ArrayField
 import uuid
+from django.utils import timezone
 
-# Create your models here.
+"""!
+fasdfsa
+"""
 PERMISOS = (
     (0, "Crear proyecto"),
     (1, "Ver proyecto"),
@@ -37,9 +47,9 @@ PERMISOS = (
     (20, "Eliminar Sprint"),
     (21, "Estimar Sprint"),
 )
-ESTADO_US = ((0, "To do"), (1, "Doing"), (2, "Done"), (4, "Backlog"))
+ESTADO_US = ((0, "To do"), (1, "Doing"), (2, "Done"), (3, "QA"), (4, "Backlog"))
 
-estadoProyecto = ((0, "Pendiente"), (1, "Activo"), (2, "Terminado"))
+estadoProyecto = ((0, "Activo"), (1, "Terminado"))
 
 
 class Usuario(Model):
@@ -66,6 +76,9 @@ class Retrospectiva(Model):
 
 
 class Sprint(Model):
+    ##
+    # @brief Nombre del Sprint
+    # @details Puede tener una longitud máxima de 100 caracteres.
     nombre = CharField(max_length=100)
     activo = BooleanField(default=False)
     fechaCreacion = DateField(auto_now_add=True)
@@ -84,6 +97,7 @@ class US(Model):
     creadoPor = ForeignKey(Usuario, on_delete=CASCADE)
     fechaCreacion = DateField(auto_now_add=True)
     estado = IntegerField(choices=ESTADO_US, default=4)
+    prioridad = IntegerField(default=0)
     estimacionSM = IntegerField(null=True)
     estimacionesDev = IntegerField(null=True)
     duracionEstimada = IntegerField(null=True)
@@ -128,6 +142,7 @@ class RegistroHoras(Model):
     usuario = ForeignKey(Usuario, on_delete=CASCADE)
     fechaEdit = DateField(null=True)
     fechaCreacion = DateField(editable=False)
+    mensaje = CharField(max_length=480, null=False, blank=True)
 
     def save(self, *args, **kwargs):
         """On save, update timestamps"""

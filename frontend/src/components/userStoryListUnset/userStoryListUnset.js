@@ -125,13 +125,14 @@ const USListUnset = ({
 
   return (
     <Box
-      minHeight="100px"
+      minHeight="255px"
       maxHeight="80%"
       borderWidth="1px"
       borderRadius="lg"
       fontSize="sm"
       bg={"#F5F4F5"}
       justifyContent="center"
+      minW="xs"
     >
       <Flex justify="center">
         <Heading fontSize="2xl">{nombreLista}</Heading>

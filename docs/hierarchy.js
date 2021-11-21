@@ -2,6 +2,7 @@ var hierarchy =
 [
     [ "api.serializers.ComentarioSerializer.Meta", "classapi_1_1serializers_1_1ComentarioSerializer_1_1Meta.html", null ],
     [ "api.serializers.ProyectoSerializer.Meta", "classapi_1_1serializers_1_1ProyectoSerializer_1_1Meta.html", null ],
+    [ "api.serializers.RegistroHorasSerializer.Meta", "classapi_1_1serializers_1_1RegistroHorasSerializer_1_1Meta.html", null ],
     [ "api.serializers.RetrospectivaSerializer.Meta", "classapi_1_1serializers_1_1RetrospectivaSerializer_1_1Meta.html", null ],
     [ "api.serializers.RolAsignadoSerializer.Meta", "classapi_1_1serializers_1_1RolAsignadoSerializer_1_1Meta.html", null ],
     [ "api.serializers.RolSerializer.Meta", "classapi_1_1serializers_1_1RolSerializer_1_1Meta.html", null ],
@@ -9,12 +10,10 @@ var hierarchy =
     [ "api.serializers.USAsignadaSerializer.Meta", "classapi_1_1serializers_1_1USAsignadaSerializer_1_1Meta.html", null ],
     [ "api.serializers.USSerializer.Meta", "classapi_1_1serializers_1_1USSerializer_1_1Meta.html", null ],
     [ "api.serializers.UsuarioSerializer.Meta", "classapi_1_1serializers_1_1UsuarioSerializer_1_1Meta.html", null ],
-    [ "admin.ModelAdmin", null, [
-      [ "api.admin.AuthorAdmin", "classapi_1_1admin_1_1AuthorAdmin.html", null ]
-    ] ],
     [ "serializers.ModelSerializer", null, [
       [ "api.serializers.ComentarioSerializer", "classapi_1_1serializers_1_1ComentarioSerializer.html", null ],
       [ "api.serializers.ProyectoSerializer", "classapi_1_1serializers_1_1ProyectoSerializer.html", null ],
+      [ "api.serializers.RegistroHorasSerializer", "classapi_1_1serializers_1_1RegistroHorasSerializer.html", null ],
       [ "api.serializers.RetrospectivaSerializer", "classapi_1_1serializers_1_1RetrospectivaSerializer.html", null ],
       [ "api.serializers.RolAsignadoSerializer", "classapi_1_1serializers_1_1RolAsignadoSerializer.html", null ],
       [ "api.serializers.RolSerializer", "classapi_1_1serializers_1_1RolSerializer.html", null ],
@@ -29,6 +28,7 @@ var hierarchy =
     [ "Model", null, [
       [ "api.models.Comentario", "classapi_1_1models_1_1Comentario.html", null ],
       [ "api.models.Proyecto", "classapi_1_1models_1_1Proyecto.html", null ],
+      [ "api.models.RegistroHoras", "classapi_1_1models_1_1RegistroHoras.html", null ],
       [ "api.models.Retrospectiva", "classapi_1_1models_1_1Retrospectiva.html", null ],
       [ "api.models.Rol", "classapi_1_1models_1_1Rol.html", null ],
       [ "api.models.RolAsignado", "classapi_1_1models_1_1RolAsignado.html", null ],
@@ -45,6 +45,7 @@ var hierarchy =
       [ "api.tests.Sprint_Activar_Tests", "classapi_1_1tests_1_1Sprint__Activar__Tests.html", null ],
       [ "api.tests.Sprints_Tests", "classapi_1_1tests_1_1Sprints__Tests.html", null ],
       [ "api.tests.Sprints_User_Stories_Tests", "classapi_1_1tests_1_1Sprints__User__Stories__Tests.html", null ],
+      [ "api.tests.US_Registro_horas", "classapi_1_1tests_1_1US__Registro__horas.html", null ],
       [ "api.tests.User_Stories_Asignar_Tests", "classapi_1_1tests_1_1User__Stories__Asignar__Tests.html", null ],
       [ "api.tests.User_Stories_Estimar_Tests", "classapi_1_1tests_1_1User__Stories__Estimar__Tests.html", null ],
       [ "api.tests.User_Stories_Tests", "classapi_1_1tests_1_1User__Stories__Tests.html", null ],

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 
 import { BsFillPersonPlusFill, BsFillPeopleFill } from "react-icons/bs";
 
@@ -16,6 +16,7 @@ import {
   Flex,
   Heading,
   Text,
+  Textarea,
   //useDisclosure,
   Modal,
   ModalOverlay,
@@ -28,16 +29,22 @@ import {
   FormLabel,
   Input,
   FormErrorMessage,
-  toast,
+  useToast,
   Image,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
 } from "@chakra-ui/react";
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { PlusSquareIcon, EditIcon, TimeIcon } from "@chakra-ui/icons";
 import { api } from "../../api";
 import Select from "react-select";
 import AsignarDevUsModal from "../../components/AsignarDevUsModal/AsignarDevUsModal";
 import { tienePermiso } from "../../util";
 import { PERMISOS_MACRO } from "../../pages/roles/permisos";
 import { useAuth0 } from "@auth0/auth0-react";
+import { MdPriorityHigh, MdTimer } from "react-icons/md";
 
 import { getUsers } from "../../api/users";
 import { desasignarUsASprint } from "../../api/userStories";
@@ -54,8 +61,12 @@ const USList = ({
   const [isOpen, setIsOpen] = useState(false);
   const [focusedUS, setFocusedUS] = useState();
   const [isOpenAlertSp, setIsOpenAlertSp] = useState(false);
+  const [isOpenRegHoras, setIsOpenRegHoras] = useState(false);
   const onClose = () => setIsOpen(false);
   const onCloseAlertSp = () => setIsOpenAlertSp(false);
+  const onCloseRegHoras = () => setIsOpenRegHoras(false);
+  const [valorDefault, setValorDefault] = useState(0);
+  const toast = useToast();
   const onDelete = () => {
     eliminarUS(focusedUS);
     setIsOpen(false);
@@ -72,13 +83,39 @@ const USList = ({
 
   const { user } = useAuth0();
   const [thisMember, setThisMember] = useState();
+  const [project, setProject] = useState();
+  let [contadorChange, setContadorChange] = useState();
 
   useEffect(() => {
     api
       .getMember(projectId, user.sub)
       .then(({ data: member }) => setThisMember(member))
       .catch((err) => console.log(err));
+    api
+      .getProjectById(projectId)
+      .then(({ data: res }) => setProject(res))
+      .catch((err) => console.log(err));
   }, []);
+
+  useEffect(() => {
+    if (focusedUS && isOpenRegHoras)
+      api.userStories
+        .getRegistrosHoras({
+          projectId,
+          sprintId: sprint?.id,
+          usId: focusedUS?.id,
+        })
+        .then((res) => {
+          let regHoras = 0;
+          if (res.data.length > 0) {
+            res.data.forEach((reg) => {
+              regHoras += reg.horas;
+            });
+            setValorDefault(regHoras);
+          }
+        })
+        .catch((err) => err);
+  }, [isOpenRegHoras, focusedUS?.id]);
 
   const moverUS = async (estado, usId) => {
     await api.editUS({ projectId, estado, usId });
@@ -113,7 +150,51 @@ const USList = ({
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
+    control,
   } = useForm();
+
+  const {
+    handleSubmit: handleSubmitRegHoras,
+    register: registerRegHoras,
+    formState: { errors: errorsRegHoras, isSubmitting: isSubmittingRegHoras },
+    control: controlRegHoras,
+  } = useForm();
+
+  const {
+    handleSubmit: handleSubmitPrio,
+    register: registerPrio,
+    formState: { errors: errorsPrio, isSubmitting: isSubmittingPrio },
+    control: controlPrio,
+  } = useForm();
+
+  async function onSubmitPrio(values) {
+    //funcion que define el comportamiento al confirmar el form
+    console.log(values);
+    await api
+      .editUS({ ...values, projectId, usId: values.id })
+      .then((res) => {
+        if (res.statusText == "OK") {
+          toast({
+            description: "US cambiada.",
+            status: "success",
+            duration: 5000,
+            isClosable: true,
+          });
+        } else {
+          toast({
+            description: "US no pudo ser cambiada.",
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+        }
+      })
+      .catch((err) => console.log(err));
+    await api.userStories
+      .getUserStories(projectId, sprint.id)
+      .then(({ data }) => setUserStories(data));
+    setIsOpenModal(false);
+  }
 
   async function onSubmit(values) {
     //funcion que define el comportamiento al confirmar el form
@@ -141,6 +222,42 @@ const USList = ({
       .getUserStories(projectId, sprint.id)
       .then(({ data }) => setUserStories(data));
     setIsOpenModal(false);
+  }
+
+  async function onSubmitRegHoras(values) {
+    //funcion que define el comportamiento al confirmar el form
+    console.log({
+      ...values,
+      sprintId: sprint.id,
+      projectId,
+      usId: focusedUS?.id,
+    });
+    await api.userStories
+      .registrarHoras({
+        ...values,
+        sprintId: sprint.id,
+        projectId,
+        usId: focusedUS?.id,
+      })
+      .then((res) => {
+        if (res.data) {
+          toast({
+            description: "Horas registradas.",
+            status: "success",
+            duration: 5000,
+            isClosable: true,
+          });
+          setIsOpenRegHoras(false);
+        } else {
+          toast({
+            description: "Horas no pudieron ser registradas.",
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+        }
+      })
+      .catch((err) => console.log(err));
   }
 
   const onRemoverUsDeSprint = async () => {
@@ -209,10 +326,17 @@ const USList = ({
                           label: "Hecho",
                           isDisabled: us.estado === 2,
                         },
+                        {
+                          value: "3",
+                          label: "QA",
+                          isDisabled: us.estado === 3,
+                        },
                       ]}
                     />
                     <Flex>
-                      {tienePermiso(thisMember, PERMISOS_MACRO.MODIFICAR_US) ? (
+                      {tienePermiso(thisMember, PERMISOS_MACRO.MODIFICAR_US) &&
+                      !sprint?.activo &&
+                      !(project?.estado === 1) ? (
                         <Button
                           onClick={() => {
                             setIsOpenModal(true);
@@ -299,7 +423,9 @@ const USList = ({
                       {tienePermiso(
                         thisMember,
                         PERMISOS_MACRO.MODIFICAR_SPRINT
-                      ) ? (
+                      ) &&
+                      !sprint?.activo &&
+                      !(project?.estado === 1) ? (
                         <>
                           <Button
                             mt="2"
@@ -362,54 +488,159 @@ const USList = ({
                         </>
                       ) : null}
 
-                      {tienePermiso(thisMember, PERMISOS_MACRO.ELIMINAR_US) ? (
-                        <Button
-                          onClick={() => setIsOpen(true)}
-                          mt="2"
-                          ml="auto"
-                          bg="red.500"
-                          _hover={{
-                            background: "red.600",
-                            color: "teal.500",
-                          }}
-                          _active={{
-                            background: "red.600",
-                          }}
-                          disabled={sprint?.activo}
-                        >
-                          <DeleteIcon color={"#F5F4F5"} />
-                        </Button>
+                      {tienePermiso(
+                        thisMember,
+                        PERMISOS_MACRO.MODIFICAR_SPRINT
+                      ) && sprint?.activo ? (
+                        <>
+                          <Button
+                            onClick={() => {
+                              setFocusedUS(us);
+                              setIsOpenRegHoras(true);
+                            }}
+                            mt="2"
+                            ml="1"
+                          >
+                            <TimeIcon />
+                          </Button>
+                          <AlertDialog
+                            isOpen={isOpenRegHoras}
+                            onClose={onCloseRegHoras}
+                          >
+                            <AlertDialogOverlay>
+                              <AlertDialogContent>
+                                <AlertDialogHeader
+                                  fontSize="lg"
+                                  fontWeight="bold"
+                                >
+                                  Registrar horas de '{focusedUS?.nombre}'
+                                </AlertDialogHeader>
+
+                                <form
+                                  onSubmit={handleSubmitRegHoras(
+                                    onSubmitRegHoras
+                                  )}
+                                >
+                                  <AlertDialogBody pb={6}>
+                                    <FormControl
+                                      isInvalid={errorsRegHoras["horas"]}
+                                    >
+                                      <FormLabel>
+                                        Agregue la s horas trabajadas en esta US
+                                        en el sprint actual.
+                                      </FormLabel>
+                                      <FormLabel>
+                                        Horas totales ya registradas:{" "}
+                                        {valorDefault}
+                                      </FormLabel>
+                                      <Controller
+                                        name="horas"
+                                        control={controlRegHoras}
+                                        rules={{ required: "Valor Requerido" }}
+                                        defaultValue={valorDefault}
+                                        render={(props) => (
+                                          <NumberInput
+                                            fontSize="lg"
+                                            value={props.field.value}
+                                            onChange={(n) => {
+                                              if (n > 0) {
+                                                props.field.onChange(n);
+                                              }
+                                            }}
+                                          >
+                                            <NumberInputField
+                                              fontSize="lg"
+                                              borderColor="grey.300"
+                                            />
+                                            <NumberInputStepper>
+                                              <NumberIncrementStepper />
+                                              <NumberDecrementStepper />
+                                            </NumberInputStepper>
+                                          </NumberInput>
+                                        )}
+                                      />
+                                    </FormControl>
+                                    <FormControl
+                                      isInvalid={errorsRegHoras["mensaje"]}
+                                    >
+                                      <FormLabel>Detalles</FormLabel>
+                                      <Textarea
+                                        {...registerRegHoras("mensaje", {
+                                          required: "Valor Requerido",
+                                          minLength: {
+                                            value: 4,
+                                            message:
+                                              "Minimum length should be 4",
+                                          },
+                                        })}
+                                      />
+                                      <FormErrorMessage>
+                                        {errorsRegHoras["mensaje"]?.message}
+                                      </FormErrorMessage>
+                                    </FormControl>
+                                  </AlertDialogBody>
+
+                                  <AlertDialogFooter>
+                                    <Button
+                                      isLoading={isSubmittingRegHoras}
+                                      type="submit"
+                                    >
+                                      <PlusSquareIcon />
+                                    </Button>
+                                  </AlertDialogFooter>
+                                </form>
+                              </AlertDialogContent>
+                            </AlertDialogOverlay>
+                          </AlertDialog>
+                        </>
                       ) : null}
-                      <AlertDialog
-                        isOpen={isOpen}
-                        leastDestructiveRef={cancelRef}
-                        onClose={onClose}
-                      >
-                        <AlertDialogOverlay>
-                          <AlertDialogContent>
-                            <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                              Eliminar US
-                            </AlertDialogHeader>
-
-                            <AlertDialogBody>
-                              ¿Está seguro que desea eliminar a esta US?
-                            </AlertDialogBody>
-
-                            <AlertDialogFooter>
-                              <Button ref={cancelRef} onClick={onClose}>
-                                Cancelar
-                              </Button>
-                              <Button
-                                colorScheme="red"
-                                onClick={onDelete}
-                                ml={3}
-                              >
-                                Eliminar
-                              </Button>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                        </AlertDialogOverlay>
-                      </AlertDialog>
+                      <form onSubmit={handleSubmitPrio(onSubmitPrio)}>
+                        {tienePermiso(
+                          thisMember,
+                          PERMISOS_MACRO.MODIFICAR_SPRINT
+                        ) && sprint?.activo ? (
+                          <>
+                            <Flex
+                              mt="2"
+                              ml="1"
+                              align="center"
+                              width="fit-content"
+                              bg="gray.100"
+                              borderRadius="5"
+                            >
+                              <Text ml="2" mr="2">
+                                Prioridad
+                              </Text>
+                              <Controller
+                                name="prioridad"
+                                control={controlPrio}
+                                render={(props) => (
+                                  <NumberInput
+                                    max={10}
+                                    min={1}
+                                    defaultValue={us?.prioridad || 5}
+                                    width="100px"
+                                    borderWidth="0"
+                                    value={props.field.value}
+                                    onChange={(n) => {
+                                      if (n > 0) {
+                                        props.field.onChange(n);
+                                        onSubmitPrio({ ...us, prioridad: n });
+                                      }
+                                    }}
+                                  >
+                                    <NumberInputField />
+                                    <NumberInputStepper>
+                                      <NumberIncrementStepper />
+                                      <NumberDecrementStepper />
+                                    </NumberInputStepper>
+                                  </NumberInput>
+                                )}
+                              />
+                            </Flex>
+                          </>
+                        ) : null}
+                      </form>
                     </Flex>
                   </>
                 ) : null}

@@ -2,7 +2,7 @@
 
 //TODO: faltan tests de searchUserByName
 
-const { getUser, getUsers, deleteUser } = require("../api/users");
+const { getUser, getUsers, deleteUser, setAdmin } = require("../api/users");
 
 test("getUsers retorna array", async () => {
   const res = await getUsers();
@@ -12,28 +12,35 @@ test("getUsers retorna array", async () => {
 deleteUser(999).catch((err) => {});
 
 test("buscar usuario que no existe y lo crea", async () => {
-  const res = await getUser(999, "userTest@test.com", "test test");
+  await getUser(999, "userTest@test.com", "test test");
+  await setAdmin(999);
+  const res = await getUser(999);
 
-  const { email, nombre, id } = res;
+  const { email, nombre, id, proy_admin } = res;
+
   expect(email).toBe("userTest@test.com");
   expect(nombre).toBe("test test");
   expect(id).toBe("999");
+  expect(proy_admin).toBe(true);
 });
 
 test("buscar usuario que ya existe", async () => {
   const res = await getUser(999);
-  const { email, nombre, id } = res;
+  const { email, nombre, id, proy_admin } = res;
   expect(email).toBe("userTest@test.com");
   expect(nombre).toBe("test test");
   expect(id).toBe("999");
+  expect(proy_admin).toBe(true);
 });
+
 test("usuario esta en array", async () => {
   const user = {
     id: "999",
     email: "userTest@test.com",
     nombre: "test test",
-    proy_admin: false,
+    proy_admin: true,
   };
+
   const res = await getUsers();
   expect(res.data).toEqual(expect.arrayContaining([user]));
 });
