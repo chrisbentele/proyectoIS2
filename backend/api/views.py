@@ -1,9 +1,11 @@
 import json
-
+import os
 from django.utils import timezone
 from rest_framework.exceptions import ValidationError
 
-from .utils.misc import get_asigned_user, get_us_count
+import pdfkit
+
+from .utils.misc import generate_table, get_asigned_user, get_us_count
 from .serializers import (
     ProyectoSerializer,
     RegistroHorasSerializer,
@@ -15,6 +17,7 @@ from .serializers import (
     UsuarioSerializer,
 )
 from api.models import (
+    ESTADO_US,
     US,
     Proyecto,
     RegistroHoras,
@@ -25,6 +28,7 @@ from api.models import (
     Usuario,
 )
 from django.http.response import (
+    HttpResponse,
     HttpResponseBadRequest,
     HttpResponseForbidden,
     HttpResponseNotFound,
@@ -989,6 +993,12 @@ def registro_horas(request, proyect_id, sprint_id, us_id=None):
         except Exception as e:
             return HttpResponseBadRequest(e)
 
+        try:
+            if not data.get("mensaje"):
+                raise "falta mensaje"
+        except Exception as e:
+            return HttpResponseBadRequest(e)
+
         rh_seri = RegistroHorasSerializer(
             data={
                 "us": us_id,
@@ -997,6 +1007,7 @@ def registro_horas(request, proyect_id, sprint_id, us_id=None):
                 "usuario": usa.usuario.id,
                 "horas": data["horas"],
                 "fecha": data.get("fecha", timezone.now().strftime("%Y-%m-%d")),
+                "mensaje": data["mensaje"],
                 # "fechaEdit": timezone.now().strftime("%Y-%m-%d"),
             }
         )
@@ -1009,6 +1020,13 @@ def registro_horas(request, proyect_id, sprint_id, us_id=None):
         if not us_id:
             rh = RegistroHoras.objects.filter(sprint=sprint_id)
             rh_seri = RegistroHorasSerializer(rh, many=True)
+            for registro in rh_seri.data:
+                # get user by their id in registro_horas
+                print(registro["usuario"])
+                user = Usuario.objects.get(id=registro["usuario"])
+                user_seri = UsuarioSerializer(user)
+                registro["usuario"] = user_seri.data
+                print(user_seri.data)
             return JsonResponse(rh_seri.data, safe=False)
 
         fecha = request.GET.get("fecha")
@@ -1037,6 +1055,8 @@ def registro_horas(request, proyect_id, sprint_id, us_id=None):
             data = JSONParser().parse(request)
             if not data["new_horas"]:
                 return HttpResponseBadRequest("faltan horas")
+            if not data["mensaje"]:
+                return HttpResponseBadRequest("falta mensaje")
             if not data["fecha"]:
                 return HttpResponseBadRequest("falta fecha")
 
@@ -1055,9 +1075,7 @@ def registro_horas(request, proyect_id, sprint_id, us_id=None):
 
         serializer = RegistroHorasSerializer(
             rh,
-            data={
-                "horas": data["new_horas"],
-            },
+            data={"horas": data["new_horas"], "mensaje": data["mensaje"]},
             partial=True,
         )
 
@@ -1117,3 +1135,128 @@ def sprints_miembros(request, proyect_id, sprint_id):
         miembros_list = [json.loads(x) for x in list(miembros_set)]
 
         return JsonResponse(miembros_list, safe=False)
+
+
+# View to generate a pdf report of the registro_horas
+def reporte_sprint(request, proyect_id, sprint_id):
+    try:
+        proyecto = Proyecto.objects.get(id=proyect_id)
+    except Proyecto.DoesNotExist:
+        return HttpResponseNotFound("Proyecto no existe")
+
+    try:
+        sprint = Sprint.objects.get(id=sprint_id)
+    except Sprint.DoesNotExist:
+        return HttpResponseNotFound("Sprint no existe")
+
+    if request.method == "GET":
+        rh = RegistroHoras.objects.filter(sprint=sprint_id)
+        rh_seri = RegistroHorasSerializer(rh, many=True)
+
+        data_obj = {}
+        for registro in rh_seri.data:
+            # get user by their id in registro_horas
+            data_obj[registro["us"]] = (
+                data_obj.get(registro["us"], 0) + registro["horas"]
+            )
+            user_ref = Usuario.objects.get(id=registro["usuario"])
+            user_seri = UsuarioSerializer(user_ref)
+
+        data_list = []
+        for key, value in data_obj.items():
+
+            US_ref = US.objects.get(id=key)
+            US_data = USSerializer(US_ref).data
+
+            id_asignado = get_asigned_user(key)
+            if id_asignado:
+                asignado_data = UsuarioSerializer(
+                    Usuario.objects.get(id=id_asignado)
+                ).data
+            else:
+                asignado_data = {"nombre": "Sin asignar"}
+
+            elemento = {}
+            elemento["horas_registradas"] = value
+            elemento["asignado"] = asignado_data.get("nombre")
+            elemento["us_id"] = key
+            elemento["us_name"] = US_data.get("nombre")
+            elemento["prioridad"] = US_data.get("prioridad")
+            elemento["estado"] = dict(ESTADO_US)[US_data.get("estado", 4)]
+            elemento["estimacion"] = (
+                user_seri.data.get("estimacionSM", 0)
+                + user_seri.data.get("estimacionesDev", 0)
+            ) / 2
+            data_list.append(elemento)
+
+        # generate pdf file with pdfkit to folder temp/
+        from hashlib import blake2b
+        import random
+
+        curr_dir = os.path.dirname(__file__)
+        temp_dir = os.path.join(curr_dir, "temp")
+        os.path.exists(temp_dir) or os.mkdir(temp_dir)
+        h = blake2b(digest_size=20)
+        h.update(random.getrandbits(8))
+        hexhash_ = h.hexdigest()
+        file_name = f"reporte_horas_{hexhash_}.pdf"
+        pdf_path = os.path.join(temp_dir, file_name)
+        pdfkit.from_string(
+            generate_table(data_list),
+            pdf_path,
+        )
+
+        # return pdf file
+        with open(pdf_path, "rb") as pdf:
+            response = HttpResponse(pdf.read(), content_type="application/pdf")
+            response["Content-Disposition"] = f"inline; filename={pdf_path}"
+            os.remove(pdf_path)
+            return response
+        # return HttpResponse(generate_table(data_list))
+
+
+def reporte_proyecto(request, proyect_id):
+    """View to generate a pdf report of the US in project"""
+    try:
+        proyecto = Proyecto.objects.get(id=proyect_id)
+    except Proyecto.DoesNotExist:
+        return HttpResponseNotFound("Proyecto no existe")
+
+    if request.method == "GET":
+        us = US.objects.filter(proyecto=proyect_id)
+        serializer = USSerializer(us, many=True)
+        data_list = []
+        for us in serializer.data:
+            elemento = {}
+            elemento["id"] = us.get("id")
+            elemento["nombre"] = us.get("nombre")
+            elemento["descripcion"] = us.get("descripcion")
+            elemento["fecha_inicio"] = us.get("fecha_inicio")
+            elemento["fecha_fin"] = us.get("fecha_fin")
+            elemento["estado"] = us.get("estado")
+            elemento["sprint"] = us.get("sprint")
+            elemento["asignado_a"] = us.get("asignado_a")
+            data_list.append(elemento)
+
+        from hashlib import blake2b
+        import random
+
+        curr_dir = os.path.dirname(__file__)
+        temp_dir = os.path.join(curr_dir, "temp")
+        os.path.exists(temp_dir) or os.mkdir(temp_dir)
+        h = blake2b(digest_size=20)
+        h.update(random.getrandbits(8))
+        hexhash_ = h.hexdigest()
+        file_name = f"reporte_proyecto_{hexhash_}.pdf"
+        pdf_path = os.path.join(temp_dir, file_name)
+        pdfkit.from_string(
+            generate_table_proyecto(data_list),
+            pdf_path,
+        )
+
+        # return pdf file
+        with open(pdf_path, "rb") as pdf:
+            response = HttpResponse(pdf.read(), content_type="application/pdf")
+            response["Content-Disposition"] = f"inline; filename={pdf_path}"
+            os.remove(pdf_path)
+            return response

@@ -13,7 +13,7 @@ import { api } from "../../api";
 
 export default function BurnDown({ registros, sprint }) {
   const [burndownData, setBurndownData] = useState([]);
-  console.log(sprint);
+  //console.log(sprint);
   useEffect(() => {
     console.log(sprint);
     if (
@@ -85,16 +85,7 @@ export default function BurnDown({ registros, sprint }) {
   }
 
   return (
-    <Box
-      backgroundColor="#ffffff"
-      borderWidth={3}
-      borderColor={"#9c9c9c"}
-      display={"flex"}
-      justifyContent={"center"}
-      alignItems={"center"}
-      width={"fit-content"}
-      marginLeft={"auto"}
-    >
+    <Box width={"fit-content"}>
       <LineChart
         width={1000}
         height={500}
