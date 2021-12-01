@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 
 import { useForm, Controller } from "react-hook-form";
 
-import { BsFillPersonPlusFill, BsFillPeopleFill } from "react-icons/bs";
-
 import {
   AlertDialog,
   AlertDialogBody,
@@ -56,6 +54,7 @@ const USList = ({
   nombreLista,
   children,
   dispatchError,
+  quitarUserStory,
   ...props
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -78,6 +77,8 @@ const USList = ({
       usId: focusedUS?.id,
     });
     setIsOpenAlertSp(false);
+    quitarUserStory(userStories.filter((us) => us.id !== focusedUS?.id));
+    setFocusedUS();
   };
   const cancelRef = React.useRef();
 
@@ -119,9 +120,11 @@ const USList = ({
 
   const moverUS = async (estado, usId) => {
     await api.editUS({ projectId, estado, usId });
-    api
-      .getUserStories(projectId, sprint.id)
-      .then(({ data }) => setUserStories(data));
+    setTimeout(() => {
+      api
+        .getUserStories(projectId, sprint.id)
+        .then(({ data }) => setUserStories(data));
+    }, 200);
   };
 
   // const editarUS = async (usName, description, usId) => {
@@ -166,10 +169,8 @@ const USList = ({
     formState: { errors: errorsPrio, isSubmitting: isSubmittingPrio },
     control: controlPrio,
   } = useForm();
-
   async function onSubmitPrio(values) {
     //funcion que define el comportamiento al confirmar el form
-    console.log(values);
     await api
       .editUS({ ...values, projectId, usId: values.id })
       .then((res) => {
@@ -226,12 +227,6 @@ const USList = ({
 
   async function onSubmitRegHoras(values) {
     //funcion que define el comportamiento al confirmar el form
-    console.log({
-      ...values,
-      sprintId: sprint.id,
-      projectId,
-      usId: focusedUS?.id,
-    });
     await api.userStories
       .registrarHoras({
         ...values,
@@ -259,7 +254,6 @@ const USList = ({
       })
       .catch((err) => console.log(err));
   }
-
   const onRemoverUsDeSprint = async () => {
     await moverUS(4, focusedUS?.id);
     await onRemove(focusedUS?.id);
@@ -268,19 +262,23 @@ const USList = ({
   return (
     <Box
       w="xs"
-      minHeight="100px"
+      minHeight="200px"
       maxHeight="80%"
-      borderWidth="1px"
+      borderWidth="2px"
       borderRadius="lg"
       fontSize="sm"
       bg={"#F5F4F5"}
       justifyContent="center"
+      boxShadow="lg"
+      borderColor="#c9ccd1"
     >
       <Flex justify="center">
-        <Heading fontSize="2xl">{nombreLista}</Heading>
+        <Heading fontSize="2xl" paddingTop={2} paddingBottom={1}>
+          {nombreLista}
+        </Heading>
       </Flex>
       {userStories
-        ? userStories.map((us) => {
+        ? userStories.map((us, index) => {
             return (
               <Box
                 borderRadius="8"
@@ -289,6 +287,8 @@ const USList = ({
                 key={us.id}
                 bg="white"
                 boxShadow="md"
+                borderWidth={2}
+                borderColor="#E2E8F0"
               >
                 <Flex>
                   <Text fontSize="20px" fontWeight="semibold">
@@ -488,10 +488,12 @@ const USList = ({
                         </>
                       ) : null}
 
-                      {tienePermiso(
+                      {(tienePermiso(
                         thisMember,
                         PERMISOS_MACRO.MODIFICAR_SPRINT
-                      ) && sprint?.activo ? (
+                      ) ||
+                        us.asignado.id === thisMember.id) &&
+                      sprint?.activo ? (
                         <>
                           <Button
                             onClick={() => {
