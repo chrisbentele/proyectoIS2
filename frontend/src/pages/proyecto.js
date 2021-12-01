@@ -17,7 +17,7 @@ const Profile = () => {
       const getProyecto = async() =>{
         const token =  await getAccessTokenSilently()
         console.log(token)
-          const data =await fetch("http://localhost:8000/api/proyecto",{headers:{"auth-token":token}})
+          const data =await fetch("http://localhost/api/proyecto",{headers:{"auth-token":token}})
           setData(data)
           console.log(data)
       }
