@@ -45,7 +45,7 @@ import sprints from "./sprints";
 
 //Instancia de axios, para no tener que escribir en cada request el URL
 export const axiosInstance = axios.create({
-  baseURL: "http://localhost:8000/api",
+  baseURL: "http://localhost/api",
 });
 
 //Exportar todas las apis, para solo tener que importar un objeto
