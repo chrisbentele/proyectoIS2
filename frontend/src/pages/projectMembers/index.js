@@ -28,34 +28,42 @@ export default function ProjectMembers({ props, dispatchError }) {
   useEffect(() => {
     //Al cargar la pagina se buscan los usuarios
     api
-      .getUsers()
-      .then((usersRes) => {
+      .getProjectById(projectId)
+      .then(({ data: res }) => {
+        setProject(res);
+
         api
-          .getMembers(projectId)
-          .then((membersRes) => {
-            let membersIds = membersRes.data.map((member) => member.id);
-            let filteredUsers = usersRes.data.filter(
-              (user) => !membersIds.includes(user.id)
-            );
-            setState((state) => ({ ...state, loading: false }));
-            setUsers([...filteredUsers]);
-            setMembers(membersRes.data);
+          .getUsers()
+          .then((usersRes) => {
+            api
+              .getMembers(projectId)
+              .then((membersRes) => {
+                let membersIds = membersRes.data.map((member) => member.id);
+                let filteredUsers = usersRes.data.filter(
+                  (user) => !membersIds.includes(user.id)
+                );
+                setState((state) => ({ ...state, loading: false }));
+                setUsers([...filteredUsers]);
+                setMembers(membersRes.data);
+              })
+              .catch(() =>
+                dispatchError(null, "error cargando miembros del proyecto")
+              );
           })
+          .catch((err) =>
+            dispatchError(null, "error cargando usuarios del sistema")
+          );
+        api
+          .getRoles(projectId)
+          .then((res) => setROLES(res.data))
           .catch(() =>
-            dispatchError(null, "error cargando miembros del proyecto")
+            dispatchError(null, "No se han podido cargar los roles")
           );
       })
-      .catch((err) =>
-        dispatchError(null, "error cargando usuarios del sistema")
-      );
-    api
-      .getRoles(projectId)
-      .then((res) => setROLES(res.data))
-      .catch(() => dispatchError(null, "No se han podido cargar los roles"));
-    api
-      .getProjectById(projectId)
-      .then(({ data: res }) => setProject(res))
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        dispatchError("Error", "No existe proyecto con el ID proveido", 5000);
+        history.push("/profile");
+      });
   }, [projectId, dispatchError]);
 
   const handleSearchChange = async (e) => {

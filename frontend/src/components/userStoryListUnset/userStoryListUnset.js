@@ -127,17 +127,20 @@ const USListUnset = ({
     <Box
       minHeight="255px"
       maxHeight="80%"
-      borderWidth="1px"
+      borderWidth="2px"
       borderRadius="lg"
+      borderColor="#c9ccd1"
       fontSize="sm"
       bg={"#F5F4F5"}
       justifyContent="center"
-      minW="xs"
+      minW={1000}
     >
       <Flex justify="center">
-        <Heading fontSize="2xl">{nombreLista}</Heading>
+        <Heading fontSize="3xl" marginTop={3}>
+          {nombreLista}
+        </Heading>
       </Flex>
-      <Grid templateColumns="repeat(3, 1fr)">
+      <Grid templateColumns="repeat(3, 1fr)" paddingLeft={3} paddingRight={2}>
         {userStories
           ? userStories.map((us) => {
               return (
@@ -149,14 +152,20 @@ const USListUnset = ({
                   bg="white"
                   boxShadow="md"
                   w="xs"
+                  borderWidth={2}
                 >
                   <Flex>
                     <Text fontSize="20px" fontWeight="semibold">
                       {us.nombre}
                     </Text>
                     <Text ml="auto" fontSize="xs">
-                      Asignado a: <br />
-                      {us.asignado?.nombre || "nadie"}
+                      {us.asignado ? (
+                        <p>
+                          Asignado a: <br /> {us.asignado.nombre}
+                        </p>
+                      ) : (
+                        <p>No asignado</p>
+                      )}
                     </Text>
                   </Flex>
                   <Text fontSize="15px">{us.contenido}</Text>
