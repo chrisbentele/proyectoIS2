@@ -15,6 +15,8 @@ var namespaces_dup =
       ] ],
       [ "utils", null, [
         [ "misc", "namespaceapi_1_1utils_1_1misc.html", [
+          [ "generate_table", "namespaceapi_1_1utils_1_1misc.html#a3959f48b5f9bcd7d27ac263efc975159", null ],
+          [ "generate_table_proyecto", "namespaceapi_1_1utils_1_1misc.html#adb57c0b170620e0260d9f1a86ebbe3e6", null ],
           [ "get_asigned_user", "namespaceapi_1_1utils_1_1misc.html#a576e7813e79e499a63d84e7c9d5d381e", null ],
           [ "get_us_count", "namespaceapi_1_1utils_1_1misc.html#a31b92cf0752893dcee477fffa86e11af", null ]
         ] ]
@@ -24,6 +26,8 @@ var namespaces_dup =
         [ "proyectos_miembros", "namespaceapi_1_1views.html#a25c497cc085e6d9efce65bd77c05304b", null ],
         [ "proyectos_miembros_roles", "namespaceapi_1_1views.html#a4706beb584a487d0cfa109e562e1ac3e", null ],
         [ "registro_horas", "namespaceapi_1_1views.html#ae0c5ccbbfe2a040cba83808c2240023e", null ],
+        [ "reporte_proyecto", "namespaceapi_1_1views.html#a02f51f24bae5731022b6bb92ac775f5a", null ],
+        [ "reporte_sprint", "namespaceapi_1_1views.html#abd8b3674b9c8ae34fd585632ae184726", null ],
         [ "roles", "namespaceapi_1_1views.html#a8ff787143d0f02c45e8c53ad077347b2", null ],
         [ "sprints", "namespaceapi_1_1views.html#a08bee8433c942b0cfcc38a7bc73d26b5", null ],
         [ "sprints_activar", "namespaceapi_1_1views.html#a895cb0e63883c1aa0ad89bb17f4396f2", null ],
