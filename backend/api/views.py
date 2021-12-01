@@ -1184,8 +1184,8 @@ def reporte_sprint(request, proyect_id, sprint_id):
             elemento["prioridad"] = US_data.get("prioridad")
             elemento["estado"] = dict(ESTADO_US)[US_data.get("estado", 4)]
             elemento["estimacion"] = (
-                user_seri.data.get("estimacionSM", 0)
-                + user_seri.data.get("estimacionesDev", 0)
+                US_data.get("estimacionSM", 0)
+                + US_data.get("estimacionesDev", 0)
             ) / 2
             data_list.append(elemento)
 
@@ -1197,7 +1197,7 @@ def reporte_sprint(request, proyect_id, sprint_id):
         temp_dir = os.path.join(curr_dir, "temp")
         os.path.exists(temp_dir) or os.mkdir(temp_dir)
         h = blake2b(digest_size=20)
-        h.update(random.getrandbits(8))
+        h.update(f"{random.random()}".encode())
         hexhash_ = h.hexdigest()
         file_name = f"reporte_horas_{hexhash_}.pdf"
         pdf_path = os.path.join(temp_dir, file_name)

@@ -109,7 +109,7 @@ def generate_table(data_list):
                 Estimacion
             </th>
             <th style="border: 1px solid black">
-                Horas Registradas
+                Horas Reg.
             </th>
         </tr>
         {rows}
