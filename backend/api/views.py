@@ -5,9 +5,11 @@ from rest_framework.exceptions import ValidationError
 
 import pdfkit
 
+from backend.bui import Product_Backlog_table, Sprint_Backlog_table, US_Prioridad_table
+
 from .utils.misc import (
-    US_row,
-    generate_table,
+    US_prio_row,
+    generar_tabla,
     get_asigned_user,
     get_horas_registradas_US,
     get_random_string,
@@ -1146,6 +1148,7 @@ def sprints_miembros(request, proyect_id, sprint_id):
 
 # View to generate a pdf report of the registro_horas
 def reporte_sprint(request, proyect_id, sprint_id):
+    """View para generar un reporte de registro_horas de un sprint"""
     try:
         proyecto = Proyecto.objects.get(id=proyect_id)
     except Proyecto.DoesNotExist:
@@ -1160,42 +1163,18 @@ def reporte_sprint(request, proyect_id, sprint_id):
         us_refs = US.objects.filter(proyecto=proyecto, sprint=sprint_id)
         us_list = USSerializer(us_refs, many=True).data
 
-        data_list = []
+        us_table = Sprint_Backlog_table(reporte_name="Reporte: Spring Backlog")
         for us in us_list:
-            print(us)
-            asignado_id = get_asigned_user(us["id"])
-            if asignado_id:
-                try:
-                    asignado = Usuario.objects.get(id=asignado_id).nombre
-                except Exception:
-                    asignado = "Error encontrando usuario"
-            else:
-                asignado = "Sin asignar"
-
-            us_data = US_row(
+            us_table.add_row(
                 us_id=us["id"],
                 us_name=us["nombre"],
-                asignado=asignado,
-                prioridad=us["prioridad"],
                 estado=dict(ESTADO_US)[us.get("estado", 4)],
                 estimacion=(us.get("estimacionSM", 0) + us.get("estimacionesDev", 0))
                 / 2,
-                horas_registradas=get_horas_registradas_US(us["id"]),
+                horas_trabajadas=get_horas_registradas_US(us["id"]),
             )
 
-            data_list.append(us_data)
-
-        # generate pdf file with pdfkit to folder temp/
-        curr_dir = os.path.dirname(__file__)
-        temp_dir = os.path.join(curr_dir, "temp")
-        os.path.exists(temp_dir) or os.mkdir(temp_dir)
-
-        file_name = f"reporte_sprint_{get_random_string()}.pdf"
-        pdf_path = os.path.join(temp_dir, file_name)
-        pdfkit.from_string(
-            generate_table(data_list, "Sprint", sprint.nombre),
-            pdf_path,
-        )
+        pdf_path = us_table.generate_pdf()
 
         # return pdf file
         with open(pdf_path, "rb") as pdf:
@@ -1217,40 +1196,16 @@ def reporte_proyecto(request, proyect_id):
         us_refs = US.objects.filter(proyecto=proyecto)
         us_list = USSerializer(us_refs, many=True).data
 
-        data_list = []
+        us_table = Product_Backlog_table(f"Reporte: US en {proyecto.nombre}")
         for us in us_list:
-            asignado_id = get_asigned_user(us["id"])
-            if asignado_id:
-                try:
-                    asignado = Usuario.objects.get(id=asignado_id).nombre
-                except Exception:
-                    asignado = "Error encontrando usuario"
-            else:
-                asignado = "Sin asignar"
-            us_data = US_row(
+            us_table.add_row(
                 us_id=us["id"],
                 us_name=us["nombre"],
-                asignado=asignado,
-                prioridad=us["prioridad"],
                 estado=dict(ESTADO_US)[us.get("estado", 4)],
-                estimacion=(us.get("estimacionSM", 0) + us.get("estimacionesDev", 0))
-                / 2,
-                horas_registradas=get_horas_registradas_US(us["id"]),
             )
 
-            data_list.append(us_data)
-
         # generate pdf file with pdfkit to folder temp/
-        curr_dir = os.path.dirname(__file__)
-        temp_dir = os.path.join(curr_dir, "temp")
-        os.path.exists(temp_dir) or os.mkdir(temp_dir)
-
-        file_name = f"reporte_proyecto_{get_random_string()}.pdf"
-        pdf_path = os.path.join(temp_dir, file_name)
-        pdfkit.from_string(
-            generate_table(data_list, "Sprint", proyecto.nombre),
-            pdf_path,
-        )
+        pdf_path = us_table.generate_pdf()
 
         # return pdf file
         with open(pdf_path, "rb") as pdf:
@@ -1261,47 +1216,41 @@ def reporte_proyecto(request, proyect_id):
         # return HttpResponse(generate_table(data_list))
 
 
-def reporte_US(request, us_id):
-    """View to generate a pdf report of the US in project"""
+def reporte_US_Prioridad(request, proyect_id, sprint_id):
     try:
-        us = US.objects.get(id=us_id)
-    except US.DoesNotExist:
-        return HttpResponseNotFound("US no existe")
+        proyecto = Proyecto.objects.get(id=proyect_id)
+    except Proyecto.DoesNotExist:
+        return HttpResponseNotFound("Proyecto no existe")
+
+    try:
+        sprint = Sprint.objects.get(id=sprint_id)
+    except Sprint.DoesNotExist:
+        return HttpResponseNotFound("Sprint no existe")
 
     if request.method == "GET":
-        data_list = []
-        asignado_id = get_asigned_user(us_id)
-        if asignado_id:
-            try:
-                asignado = Usuario.objects.get(id=asignado_id).nombre
-            except Exception:
-                asignado = "Error encontrando usuario"
-        else:
-            asignado = "Sin asignar"
+        us_refs = US.objects.filter(proyecto=proyecto, sprint=sprint_id)
+        us_list = USSerializer(us_refs, many=True).data
 
-        us_data = US_row(
-            us_id=us["id"],
-            us_name=us["nombre"],
-            asignado=asignado,
-            prioridad=us["prioridad"],
-            estado=dict(ESTADO_US)[us.get("estado", 4)],
-            estimacion=(us.get("estimacionSM", 0) + us.get("estimacionesDev", 0)) / 2,
-            horas_registradas=get_horas_registradas_US(us["id"]),
-        )
+        us_table = US_Prioridad_table(f"Reporte: US por prioridad en {sprint.nombre}")
+        for us in us_list:
+            asignado_id = get_asigned_user(us["id"])
+            if asignado_id:
+                try:
+                    asignado = Usuario.objects.get(id=asignado_id).nombre
+                except Exception:
+                    asignado = "Error encontrando usuario"
+            else:
+                asignado = "Sin asignar"
 
-        data_list.append(us_data)
+            us_table.add_row(
+                us_id=us["id"],
+                us_name=us["nombre"],
+                asignado=asignado,
+                prioridad=us["prioridad"],
+                horas_trabajadas=get_horas_registradas_US(us["id"]),
+            )
 
-        # generate pdf file with pdfkit to folder temp/
-        curr_dir = os.path.dirname(__file__)
-        temp_dir = os.path.join(curr_dir, "temp")
-        os.path.exists(temp_dir) or os.mkdir(temp_dir)
-
-        file_name = f"reporte_US_{get_random_string()}.pdf"
-        pdf_path = os.path.join(temp_dir, file_name)
-        pdfkit.from_string(
-            generate_table(data_list, "Sprint", us.nombre),
-            pdf_path,
-        )
+        pdf_path = us_table.generate_pdf()
 
         # return pdf file
         with open(pdf_path, "rb") as pdf:
