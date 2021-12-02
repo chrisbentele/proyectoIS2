@@ -12,7 +12,7 @@ from api.serializers import (
 )
 from django.test import TestCase
 
-from api.models import US, RegistroHoras, RolAsignado
+from api.models import US, RegistroHoras, RolAsignado, Usuario
 
 ## @file tests.py
 #
@@ -103,7 +103,7 @@ def registro_horas(self, proyect_id, sprint_id, us_id, fecha=None):
 
     res = self.client.post(
         f"/api/proyectos/{proyect_id}/sprints/{sprint_id}/user_stories/{us_id}/registro_horas",
-        json.dumps({"horas": 1, "fecha": fecha, "mensaje":"aaaa"}),
+        json.dumps({"horas": 1, "fecha": fecha, "mensaje": "aaaa"}),
         content_type="application/json",
     )
     self.assertEqual(res.status_code, 201)
@@ -695,7 +695,7 @@ class US_Registro_horas(TestCase):
         # Crear Registro de horas
         res = self.client.post(
             f"/api/proyectos/{p['id']}/sprints/{sp['id']}/user_stories/{us['id']}/registro_horas",
-            json.dumps({"horas": 1, "mensaje":"aaaa"}),
+            json.dumps({"horas": 1, "mensaje": "aaaa"}),
             content_type="application/json",
         )
 
@@ -736,6 +736,9 @@ class US_Registro_horas(TestCase):
 
     def test_sprints_horas_get(self):
         rg_data_1 = self.test_registro_horas_create()
+        asigned_1 = Usuario.objects.get(id=rg_data_1["usuario"])
+
+        rg_data_1["usuario"] = UsuarioSerializer(asigned_1).data
 
         # Crear una segunda hora
         td = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
@@ -746,6 +749,8 @@ class US_Registro_horas(TestCase):
             rg_data_1["us"],
             td,
         )
+        asigned_2 = Usuario.objects.get(id=rg_data_2["usuario"])
+        rg_data_2["usuario"] = UsuarioSerializer(asigned_2).data
 
         res = self.client.get(
             f"/api/proyectos/{rg_data_1['proyecto']}/sprints/{rg_data_1['sprint']}/registro_horas",
@@ -763,7 +768,7 @@ class US_Registro_horas(TestCase):
 
         res = self.client.put(
             f"/api/proyectos/{rg_data['proyecto']}/sprints/{rg_data['sprint']}/user_stories/{rg_data['us']}/registro_horas",
-            json.dumps({"new_horas": 2, "fecha": rg_data["fecha"], "mensaje":"aaaa"}),
+            json.dumps({"new_horas": 2, "fecha": rg_data["fecha"], "mensaje": "aaaa"}),
             content_type="application/json",
         )
         self.assertEqual(res.status_code, 200)
