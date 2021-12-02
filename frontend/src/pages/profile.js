@@ -7,6 +7,7 @@
 import React, { useEffect, useState } from "react";
 //! Componente de Auth0
 import { useAuth0 } from "@auth0/auth0-react";
+import placeholderImg from "../assets/userPlaceholder.jpg";
 import {
   Box,
   Flex,
@@ -84,7 +85,7 @@ const Profile = ({ props, dispatchError }) => {
       >
         <Image
           borderRadius="100"
-          src={user.picture}
+          src={user.picture || placeholderImg}
           alt={user.name}
           width={100}
           height={100}
