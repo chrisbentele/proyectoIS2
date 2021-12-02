@@ -3,16 +3,15 @@ import os
 from django.utils import timezone
 from rest_framework.exceptions import ValidationError
 
-import pdfkit
-
-from backend.bui import Product_Backlog_table, Sprint_Backlog_table, US_Prioridad_table
+from .utils.reportes import (
+    Product_Backlog_table,
+    Sprint_Backlog_table,
+    US_Prioridad_table,
+)
 
 from .utils.misc import (
-    US_prio_row,
-    generar_tabla,
     get_asigned_user,
     get_horas_registradas_US,
-    get_random_string,
     get_us_count,
 )
 from .serializers import (
@@ -1031,11 +1030,9 @@ def registro_horas(request, proyect_id, sprint_id, us_id=None):
             rh_seri = RegistroHorasSerializer(rh, many=True)
             for registro in rh_seri.data:
                 # get user by their id in registro_horas
-                print(registro["usuario"])
                 user = Usuario.objects.get(id=registro["usuario"])
                 user_seri = UsuarioSerializer(user)
                 registro["usuario"] = user_seri.data
-                print(user_seri.data)
             return JsonResponse(rh_seri.data, safe=False)
 
         fecha = request.GET.get("fecha")
@@ -1147,7 +1144,7 @@ def sprints_miembros(request, proyect_id, sprint_id):
 
 
 # View to generate a pdf report of the registro_horas
-def reporte_sprint(request, proyect_id, sprint_id):
+def reporte_sprint_backlog(request, proyect_id, sprint_id):
     """View para generar un reporte de registro_horas de un sprint"""
     try:
         proyecto = Proyecto.objects.get(id=proyect_id)
@@ -1185,7 +1182,7 @@ def reporte_sprint(request, proyect_id, sprint_id):
         # return HttpResponse(generate_table(data_list))
 
 
-def reporte_proyecto(request, proyect_id):
+def reporte_product_backlog(request, proyect_id):
     """View to generate a pdf report of the US in project"""
     try:
         proyecto = Proyecto.objects.get(id=proyect_id)
