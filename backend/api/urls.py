@@ -18,7 +18,7 @@ from django.urls import path, include
 from .views import (
     proyectos,
     registro_horas,
-    reporte_US_Prioridad,
+    reporte_US_prioridad,
     reporte_product_backlog,
     reporte_sprint_backlog,
     roles,
@@ -76,8 +76,8 @@ apiPaths = [
         reporte_sprint_backlog,
     ),
     path(
-        "proyectos/<str:proyect_id>/sprints/<str:sprint_id>/reporte_US_Prioridad",
-        reporte_US_Prioridad,
+        "proyectos/<str:proyect_id>/sprints/<str:sprint_id>/reporte_US_prioridad",
+        reporte_US_prioridad,
     ),
     # Sprints
     path("proyectos/<str:proyect_id>/sprints", sprints),

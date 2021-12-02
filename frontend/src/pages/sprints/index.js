@@ -54,7 +54,7 @@ export default function Index({ props, dispatchError }) {
 
   //Al cargarse la pagina se busca el proyecto con el id del URL y se lo asigna a projectId
   useEffect(() => {
-    if(projectId && sprintId){
+    if (projectId && sprintId) {
       api
         .getProjectById(projectId)
         .then(({ data }) => setProject(data))
@@ -84,17 +84,15 @@ export default function Index({ props, dispatchError }) {
         );
 
       api.sprints
-        .getRegistrosHoras({projectId, spId:sprintId})
+        .getRegistrosHoras({ projectId, spId: sprintId })
         .then(({ data }) => {
           setListaCambios(data);
           console.log(listaCambios);
-          
         })
         .catch((err) => console.log(err));
-
     }
   }, [projectId, sprintId]);
-  
+
   const activateSprint = async () => {
     if (!sprint.activable) {
       return dispatchError("No se puedo activar el sprint", "");
@@ -160,6 +158,20 @@ export default function Index({ props, dispatchError }) {
     api.userStories
       .getUserStories(projectId, sprintId)
       .then(({ data }) => setUserStories(data));
+  };
+
+  const onReporteUSPrioridad = async () => {
+    const { data } = await api.sprints.generarReporteUSPrioridad({
+      projectId,
+      spId: sprintId,
+    });
+    const fileDoc = window.URL.createObjectURL(data);
+
+    var tempLink = document.createElement("a");
+    tempLink.href = fileDoc;
+    tempLink.setAttribute("download", "reporte_US_prioridad.pdf");
+    tempLink.click();
+    window.URL.revokeObjectURL(fileDoc);
   };
 
   return isAllowed && userStories && sprint ? (
@@ -260,6 +272,10 @@ export default function Index({ props, dispatchError }) {
                   Desactivar Sprint
                 </Button>
               ) : null}
+
+              <Button onClick={onReporteUSPrioridad} colorScheme="green">
+                Generar reporte
+              </Button>
             </HStack>
           </Box>
           <Box mt="50px">
@@ -383,7 +399,6 @@ export default function Index({ props, dispatchError }) {
             m="5"
             fontSize="lg"
           >
-
             {/*Columna izquierda*/}
 
             <Box borderColor="black" borderRightWidth="3px">
@@ -392,14 +407,14 @@ export default function Index({ props, dispatchError }) {
                   US
                 </Heading>
               </Box>
-                <List p="2">
-                {listaCambios.map((cambio) => (
-                  console.log(cambio),
-                  <ListItem key={cambio.id}>
-                    {cambio.us}
-                  </ListItem>
-                ))}
-                </List>
+              <List p="2">
+                {listaCambios.map(
+                  (cambio) => (
+                    console.log(cambio),
+                    (<ListItem key={cambio.id}>{cambio.us}</ListItem>)
+                  )
+                )}
+              </List>
             </Box>
             {/*-------------------*/}
 
@@ -411,16 +426,24 @@ export default function Index({ props, dispatchError }) {
                 </Heading>
               </Box>
               <List p="2">
-                {listaCambios.map((cambio) => (
-                  console.log(cambio),
-                  <ListItem key={cambio.id}>
-                    {'El usuario ' + cambio.usuario + ' registró ' + cambio.horas + ' horas: ' + cambio.mensaje}
-                  </ListItem>
-                ))}
+                {listaCambios.map(
+                  (cambio) => (
+                    console.log(cambio),
+                    (
+                      <ListItem key={cambio.id}>
+                        {"El usuario " +
+                          cambio.usuario +
+                          " registró " +
+                          cambio.horas +
+                          " horas: " +
+                          cambio.mensaje}
+                      </ListItem>
+                    )
+                  )
+                )}
               </List>
             </Box>
             {/*-------------------*/}
-
           </Flex>
         </Box>
       ) : (
