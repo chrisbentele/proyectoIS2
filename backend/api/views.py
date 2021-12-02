@@ -5,7 +5,14 @@ from rest_framework.exceptions import ValidationError
 
 import pdfkit
 
-from .utils.misc import generate_table, get_asigned_user, get_us_count
+from .utils.misc import (
+    US_row,
+    generate_table,
+    get_asigned_user,
+    get_horas_registradas_US,
+    get_random_string,
+    get_us_count,
+)
 from .serializers import (
     ProyectoSerializer,
     RegistroHorasSerializer,
@@ -1150,59 +1157,43 @@ def reporte_sprint(request, proyect_id, sprint_id):
         return HttpResponseNotFound("Sprint no existe")
 
     if request.method == "GET":
-        rh = RegistroHoras.objects.filter(sprint=sprint_id)
-        rh_seri = RegistroHorasSerializer(rh, many=True)
-
-        data_obj = {}
-        for registro in rh_seri.data:
-            # get user by their id in registro_horas
-            data_obj[registro["us"]] = (
-                data_obj.get(registro["us"], 0) + registro["horas"]
-            )
-            user_ref = Usuario.objects.get(id=registro["usuario"])
-            user_seri = UsuarioSerializer(user_ref)
+        us_refs = US.objects.filter(proyecto=proyecto, sprint=sprint_id)
+        us_list = USSerializer(us_refs, many=True).data
 
         data_list = []
-        for key, value in data_obj.items():
-
-            US_ref = US.objects.get(id=key)
-            US_data = USSerializer(US_ref).data
-
-            id_asignado = get_asigned_user(key)
-            if id_asignado:
-                asignado_data = UsuarioSerializer(
-                    Usuario.objects.get(id=id_asignado)
-                ).data
+        for us in us_list:
+            print(us)
+            asignado_id = get_asigned_user(us["id"])
+            if asignado_id:
+                try:
+                    asignado = Usuario.objects.get(id=asignado_id).nombre
+                except Exception:
+                    asignado = "Error encontrando usuario"
             else:
-                asignado_data = {"nombre": "Sin asignar"}
+                asignado = "Sin asignar"
 
-            elemento = {}
-            elemento["horas_registradas"] = value
-            elemento["asignado"] = asignado_data.get("nombre")
-            elemento["us_id"] = key
-            elemento["us_name"] = US_data.get("nombre")
-            elemento["prioridad"] = US_data.get("prioridad")
-            elemento["estado"] = dict(ESTADO_US)[US_data.get("estado", 4)]
-            elemento["estimacion"] = (
-                US_data.get("estimacionSM", 0)
-                + US_data.get("estimacionesDev", 0)
-            ) / 2
-            data_list.append(elemento)
+            us_data = US_row(
+                us_id=us["id"],
+                us_name=us["nombre"],
+                asignado=asignado,
+                prioridad=us["prioridad"],
+                estado=dict(ESTADO_US)[us.get("estado", 4)],
+                estimacion=(us.get("estimacionSM", 0) + us.get("estimacionesDev", 0))
+                / 2,
+                horas_registradas=get_horas_registradas_US(us["id"]),
+            )
+
+            data_list.append(us_data)
 
         # generate pdf file with pdfkit to folder temp/
-        from hashlib import blake2b
-        import random
-
         curr_dir = os.path.dirname(__file__)
         temp_dir = os.path.join(curr_dir, "temp")
         os.path.exists(temp_dir) or os.mkdir(temp_dir)
-        h = blake2b(digest_size=20)
-        h.update(f"{random.random()}".encode())
-        hexhash_ = h.hexdigest()
-        file_name = f"reporte_horas_{hexhash_}.pdf"
+
+        file_name = f"reporte_sprint_{get_random_string()}.pdf"
         pdf_path = os.path.join(temp_dir, file_name)
         pdfkit.from_string(
-            generate_table(data_list),
+            generate_table(data_list, "Sprint", sprint.nombre),
             pdf_path,
         )
 
@@ -1223,34 +1214,41 @@ def reporte_proyecto(request, proyect_id):
         return HttpResponseNotFound("Proyecto no existe")
 
     if request.method == "GET":
-        us = US.objects.filter(proyecto=proyect_id)
-        serializer = USSerializer(us, many=True)
+        us_refs = US.objects.filter(proyecto=proyecto)
+        us_list = USSerializer(us_refs, many=True).data
+
         data_list = []
-        for us in serializer.data:
-            elemento = {}
-            elemento["id"] = us.get("id")
-            elemento["nombre"] = us.get("nombre")
-            elemento["descripcion"] = us.get("descripcion")
-            elemento["fecha_inicio"] = us.get("fecha_inicio")
-            elemento["fecha_fin"] = us.get("fecha_fin")
-            elemento["estado"] = us.get("estado")
-            elemento["sprint"] = us.get("sprint")
-            elemento["asignado_a"] = us.get("asignado_a")
-            data_list.append(elemento)
+        for us in us_list:
+            asignado_id = get_asigned_user(us["id"])
+            if asignado_id:
+                try:
+                    asignado = Usuario.objects.get(id=asignado_id).nombre
+                except Exception:
+                    asignado = "Error encontrando usuario"
+            else:
+                asignado = "Sin asignar"
+            us_data = US_row(
+                us_id=us["id"],
+                us_name=us["nombre"],
+                asignado=asignado,
+                prioridad=us["prioridad"],
+                estado=dict(ESTADO_US)[us.get("estado", 4)],
+                estimacion=(us.get("estimacionSM", 0) + us.get("estimacionesDev", 0))
+                / 2,
+                horas_registradas=get_horas_registradas_US(us["id"]),
+            )
 
-        from hashlib import blake2b
-        import random
+            data_list.append(us_data)
 
+        # generate pdf file with pdfkit to folder temp/
         curr_dir = os.path.dirname(__file__)
         temp_dir = os.path.join(curr_dir, "temp")
         os.path.exists(temp_dir) or os.mkdir(temp_dir)
-        h = blake2b(digest_size=20)
-        h.update(random.getrandbits(8))
-        hexhash_ = h.hexdigest()
-        file_name = f"reporte_proyecto_{hexhash_}.pdf"
+
+        file_name = f"reporte_proyecto_{get_random_string()}.pdf"
         pdf_path = os.path.join(temp_dir, file_name)
         pdfkit.from_string(
-            generate_table_proyecto(data_list),
+            generate_table(data_list, "Sprint", proyecto.nombre),
             pdf_path,
         )
 
@@ -1260,3 +1258,55 @@ def reporte_proyecto(request, proyect_id):
             response["Content-Disposition"] = f"inline; filename={pdf_path}"
             os.remove(pdf_path)
             return response
+        # return HttpResponse(generate_table(data_list))
+
+
+def reporte_US(request, us_id):
+    """View to generate a pdf report of the US in project"""
+    try:
+        us = US.objects.get(id=us_id)
+    except US.DoesNotExist:
+        return HttpResponseNotFound("US no existe")
+
+    if request.method == "GET":
+        data_list = []
+        asignado_id = get_asigned_user(us_id)
+        if asignado_id:
+            try:
+                asignado = Usuario.objects.get(id=asignado_id).nombre
+            except Exception:
+                asignado = "Error encontrando usuario"
+        else:
+            asignado = "Sin asignar"
+
+        us_data = US_row(
+            us_id=us["id"],
+            us_name=us["nombre"],
+            asignado=asignado,
+            prioridad=us["prioridad"],
+            estado=dict(ESTADO_US)[us.get("estado", 4)],
+            estimacion=(us.get("estimacionSM", 0) + us.get("estimacionesDev", 0)) / 2,
+            horas_registradas=get_horas_registradas_US(us["id"]),
+        )
+
+        data_list.append(us_data)
+
+        # generate pdf file with pdfkit to folder temp/
+        curr_dir = os.path.dirname(__file__)
+        temp_dir = os.path.join(curr_dir, "temp")
+        os.path.exists(temp_dir) or os.mkdir(temp_dir)
+
+        file_name = f"reporte_US_{get_random_string()}.pdf"
+        pdf_path = os.path.join(temp_dir, file_name)
+        pdfkit.from_string(
+            generate_table(data_list, "Sprint", us.nombre),
+            pdf_path,
+        )
+
+        # return pdf file
+        with open(pdf_path, "rb") as pdf:
+            response = HttpResponse(pdf.read(), content_type="application/pdf")
+            response["Content-Disposition"] = f"inline; filename={pdf_path}"
+            os.remove(pdf_path)
+            return response
+        # return HttpResponse(generate_table(data_list))

@@ -1,8 +1,8 @@
 ## @file misc.py
 # @brief Funciones misceláneas
 
-from ..models import US, USAsignada
-from ..serializers import USAsignadaSerializer, USSerializer
+from ..models import US, RegistroHoras, USAsignada
+from ..serializers import RegistroHorasSerializer, USAsignadaSerializer, USSerializer
 
 
 def get_asigned_user(us_id):
@@ -45,70 +45,94 @@ def get_us_count(proyect_id, sprint_id):
     return conteo, len(us_list), activable
 
 
-def generate_table(data_list):
+class US_row:
     """
-    Recibe una lista de objetos y genera una tabla HTML
+    Clase que representa una fila de la tabla de US
+    """
+
+    def __init__(
+        self, us_id, us_name, asignado, prioridad, estado, estimacion, horas_registradas
+    ):
+        self.us_id = us_id
+        self.us_name = us_name
+        self.asignado = asignado
+        self.prioridad = prioridad
+        self.estado = estado
+        self.estimacion = estimacion
+        self.horas_registradas = horas_registradas
+
+    def generate_html_row(self):
+        """
+        Genera una fila HTML para la tabla de US
+        """
+        return f"""
+                <td>
+                    {self.us_id}
+                </td>
+                <td>
+                    {self.us_name}
+                </td>
+                <td>
+                    {self.asignado}
+                </td>
+                <td>
+                    {self.prioridad}
+                </td>
+                <td>
+                    {self.estado}
+                </td>
+                <td>
+                    {self.estimacion}
+                </td>
+                <td>
+                    {self.horas_registradas}
+                </td>
+            """
+
+
+def generate_table(US_row_list, reporte_name, sprint_name):
+    """
+    Recibe una lista de US_row y genera una tabla HTML
     """
 
     rows = ""
-    for row in data_list:
+    for row in US_row_list:
         print(row)
-        rows += f"""
-            <tr>
-                <td style="border: 1px solid black">
-                    {row["us_id"]}
-                </td>
-                <td style="border: 1px solid black">
-                    {row["us_name"]}
-                </td>
-                <td style="border: 1px solid black">
-                    {row["asignado"]}
-                </td>
-                <td style="border: 1px solid black">
-                    {row["prioridad"]}
-                </td>
-                <td style="border: 1px solid black">
-                    {row["estado"]}
-                </td>
-                <td style="border: 1px solid black">
-                    {row["estimacion"]}
-                </td>
-                <td style="border: 1px solid black">
-                    {row["horas_registradas"]}
-                </td>
+        rows += row.generate_html_row()
 
-            </tr>
-        """
     table = f"""
+    <h1>
+        Reporte de {reporte_name} - {sprint_name}
+    </h1>
     <table>
         <style>
-            table, th, td {{
+            table, th, td{{
             border: 1px solid black;
             border-collapse: collapse;
             padding: 5px;
             }}
         </style>
         <tr>
-            <th style="border: 1px solid black">
+            <th>
                 Id
             </th>
-            <th style="border: 1px solid black">
+            <th>
                 User Story
             </th>
-            <th style="border: 1px solid black">
+            <th>
                 Asignado
             </th>
 
-            <th style="border: 1px solid black">
+            <th>
                 Prioridad
             </th>
-            <th style="border: 1px solid black">
+            <th>
                 Estado
             </th>
-            <th style="border: 1px solid black">
+            <th>
                 Estimacion
             </th>
-            <th style="border: 1px solid black">
+            <th>
                 Horas Reg.
             </th>
         </tr>
@@ -118,51 +142,26 @@ def generate_table(data_list):
     return table
 
 
-def generate_table_proyecto(data_list):
+def get_horas_registradas_US(us_id):
     """
-    Recibe una lista de objetos y genera una tabla HTML
+    Extrae los datos de las historias de usuario
     """
+    rh = RegistroHoras.objects.filter(us=us_id)
+    rh_list = RegistroHorasSerializer(rh, many=True).data
+    horas = 0
+    for rh in rh_list:
+        horas += rh["horas"]
 
-    rows = ""
-    for row in data_list:
-        print(row)
-        rows += f"""
-            <tr>
-                <td style="border: 1px solid black">
-                    {row["us_id"]}
-                </td>
-                <td style="border: 1px solid black">
-                    {row["us_name"]}
-                </td>
-                <td style="border: 1px solid black">
-                    {row["estado"]}
-                </td>
-            </tr>
-        """
-    table = f"""
-    <table>
-        <style>
-            table, th, td {{
-            border: 1px solid black;
-            border-collapse: collapse;
-            padding: 5px;
-            }}
-        </style>
-        <tr>
-            <th style="border: 1px solid black">
-                Id
-            </th>
-            <th style="border: 1px solid black">
-                User Story
-            </th>
-            <th style="border: 1px solid black">
-                Horas
-            </th>
-            <th style="border: 1px solid black">
-                Mensaje
-            </th>
-        </tr>
-        {rows}
-    </table>
+    return horas
+
+
+def get_random_string():
     """
-    return table
+    Genera una cadena aleatoria de 8 caracteres
+    """
+    import random
+    import string
+
+    return "".join(
+        random.choice(string.ascii_letters + string.digits) for _ in range(8)
+    )
