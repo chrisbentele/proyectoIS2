@@ -1,9 +1,10 @@
 var searchData=
 [
-  ['save_537',['save',['../classapi_1_1models_1_1RegistroHoras.html#ac54acb79e4c4bb3b0a9ad607ff6226e1',1,'api::models::RegistroHoras']]],
-  ['sprints_538',['sprints',['../namespaceapi_1_1views.html#a08bee8433c942b0cfcc38a7bc73d26b5',1,'api::views']]],
-  ['sprints_5factivar_539',['sprints_activar',['../namespaceapi_1_1views.html#a895cb0e63883c1aa0ad89bb17f4396f2',1,'api::views']]],
-  ['sprints_5fdesactivar_540',['sprints_desactivar',['../namespaceapi_1_1views.html#a135a24268e8ecaf4c59e302d00eff986',1,'api::views']]],
-  ['sprints_5fmiembros_541',['sprints_miembros',['../namespaceapi_1_1views.html#a628f96082842bd9e6f24854f6fd1af85',1,'api::views']]],
-  ['sprints_5fuser_5fstories_542',['sprints_user_stories',['../namespaceapi_1_1views.html#aabcbc1bf2ba827d6015a2a27af1bd45f',1,'api::views']]]
+  ['registro_5fhoras_555',['registro_horas',['../namespaceapi_1_1tests.html#a6bd1c9d6ba0520f787770ce6d720332a',1,'api.tests.registro_horas()'],['../namespaceapi_1_1views.html#ae0c5ccbbfe2a040cba83808c2240023e',1,'api.views.registro_horas()']]],
+  ['render_556',['render',['../index_8js.html#a38ccbaa0d521db8adf24431ad1b84fbb',1,'index.js']]],
+  ['reporte_5fproduct_5fbacklog_557',['reporte_product_backlog',['../namespaceapi_1_1views.html#ae8d214872d0e25176b3154c5e7909955',1,'api::views']]],
+  ['reporte_5fsprint_5fbacklog_558',['reporte_sprint_backlog',['../namespaceapi_1_1views.html#a89a9e72c53ba4c66388979c92855e95d',1,'api::views']]],
+  ['reporte_5fus_5fprioridad_559',['reporte_US_Prioridad',['../namespaceapi_1_1views.html#a2106170c17a470a187d032ed1c461858',1,'api::views']]],
+  ['roles_560',['Roles',['../pages_2roles_2index_8js.html#a6a494ef8409d95cfb5f6e8d9edfd6d8c',1,'index.js']]],
+  ['roles_561',['roles',['../namespaceapi_1_1views.html#a8ff787143d0f02c45e8c53ad077347b2',1,'api::views']]]
 ];

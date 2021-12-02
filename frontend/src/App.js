@@ -51,7 +51,7 @@ export default function App() {
         <Switch>
           <Route path="/" component={Home} exact />
           <Route path="/login" component={Login} exact />
-          <PrivateRoute path="/users" component={Users} exact />
+          {/* <PrivateRoute path="/users" component={Users} exact /> */}
           <PrivateRoute path="/profile" component={Profile} exact />
           <PrivateRoute path="/roles" component={Roles} exact />
           <PrivateRoute path="/roles/:id" component={EditRole} exact />

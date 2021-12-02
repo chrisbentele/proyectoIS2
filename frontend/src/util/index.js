@@ -43,6 +43,7 @@ export function agruparRegistrosPorFecha(registros) {
 }
 
 export function getProxDias(fecha, prox_dias) {
+  console.log("fecha", fecha);
   Date.prototype.addDays = function (days) {
     var date = new Date(this.valueOf());
     date.setDate(date.getDate() + days);
@@ -50,7 +51,7 @@ export function getProxDias(fecha, prox_dias) {
   };
   let dateArray = [];
   let actual = new Date(fecha);
-
+  actual.setDate(actual.getDate() - 1);
   for (let dia = 0; dia < prox_dias + 1; dia++) {
     let newDate = actual.addDays(dia).toISOString().split("T")[0];
     dateArray.push(newDate);

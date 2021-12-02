@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['index_517',['Index',['../components_2errorBox_2index_8js.html#ab5cdd86552a64ecf41986975d1e24132',1,'Index():&#160;index.js'],['../pages_2projects_2index_8js.html#ac1f02fcbdf8e06125bd77a92b3ad332e',1,'Index({ dispatchError, props }):&#160;index.js'],['../pages_2sprints_2index_8js.html#aa774c69ac87dfd6524f2d0c90cd10c0b',1,'Index({ props, dispatchError }):&#160;index.js'],['../indexcopy_8js.html#aa774c69ac87dfd6524f2d0c90cd10c0b',1,'Index({ props, dispatchError }):&#160;indexcopy.js']]]
+  ['handlesprintboxcolor_539',['handleSprintBoxColor',['../theme_8js.html#acc92429ebd0ec5cfb207dce8b06ebf1e',1,'theme.js']]],
+  ['home_540',['Home',['../home_8js.html#a1ca766def48e3de8e6f2bc3b8466649e',1,'home.js']]]
 ];
