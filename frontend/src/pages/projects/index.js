@@ -306,25 +306,28 @@ export default function Index({ dispatchError, props }) {
                         justifyContent="center"
                         alignItems="center"
                         key={index}
-                        cursor="pointer"
                       >
-                        <Box
+                        <VStack
+                          width="100%"
+                          cursor="pointer"
                           onClick={() =>
                             history.push(
                               `/projects/${projectId}/sprints/${sprint.id}`
                             )
                           }
                         >
-                          <Text>{sprint.nombre}</Text>
-                        </Box>
-                        <Box fontSize="18px">
-                          <Text>Total US: {sprint.numeroDeUs}</Text>
-                        </Box>
-                        <Box fontSize="18px">
-                          <Text>
-                            {sprint.activo ? "Activo" : "No activado"}
-                          </Text>
-                        </Box>
+                          <Box>
+                            <Text>{sprint.nombre}</Text>
+                          </Box>
+                          <Box fontSize="18px">
+                            <Text>Total US: {sprint.numeroDeUs}</Text>
+                          </Box>
+                          <Box fontSize="18px">
+                            <Text>
+                              {sprint.activo ? "Activo" : "No activado"}
+                            </Text>
+                          </Box>
+                        </VStack>
                         {tienePermiso(
                           thisMember,
                           PERMISOS_MACRO.ELIMINAR_SPRINT
@@ -339,20 +342,20 @@ export default function Index({ dispatchError, props }) {
                             Eliminar :o
                           </Button>
                         ) : null}
-                        {focusedSprint && (
-                          <EliminarSprintModal
-                            projectId={projectId}
-                            spId={focusedSprint.id}
-                            isOpen={showEliminarModal}
-                            onClose={() => {
-                              setShowEliminarModal(false);
-                            }}
-                            setSprints={setSprints}
-                          />
-                        )}
                       </VStack>
                     </>
                   ))}
+                  {focusedSprint && (
+                    <EliminarSprintModal
+                      projectId={projectId}
+                      spId={focusedSprint.id}
+                      isOpen={showEliminarModal}
+                      onClose={() => {
+                        setShowEliminarModal(false);
+                      }}
+                      setSprints={setSprints}
+                    />
+                  )}
                 </VStack>
               </Box>
             </HStack>
