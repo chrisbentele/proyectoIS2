@@ -55,33 +55,32 @@ export default function Index({ props, dispatchError }) {
   //Al cargarse la pagina se busca el proyecto con el id del URL y se lo asigna a projectId
   useEffect(() => {
     if (projectId && sprintId) {
-      api
-        .getProjectById(projectId)
+      api.getProjectById(projectId).then(({ data }) => {
+        setProject(data);
+      });
+
+      api.userStories
+        .getUserStories(projectId, sprintId)
+        .then(({ data }) => setUserStories(data));
+
+      api.sprints
+        .getSprint(projectId, sprintId)
         .then(({ data }) => {
-          setProject(data);
+          setSprint(data);
+        })
+        .catch((err) => console.log(err));
 
-          api.userStories
-            .getUserStories(projectId, sprintId)
-            .then(({ data }) => setUserStories(data));
-
-          api.sprints
-            .getSprint(projectId, sprintId)
-            .then(({ data }) => {
-              setSprint(data);
-            })
-            .catch((err) => console.log(err));
-
-          api
-            .getMember(projectId, user.sub)
-            .then(({ data: member }) => setThisMember(member))
-            .catch((err) =>
-              dispatchError(
-                "No autorizado",
-                "Debes formar parte del proyecto para visualizar el mismo o los sprints",
-                null,
-                false
-              )
-            );
+      api
+        .getMember(projectId, user.sub)
+        .then(({ data: member }) => setThisMember(member))
+        .catch((err) =>
+          dispatchError(
+            "No autorizado",
+            "Debes formar parte del proyecto para visualizar el mismo o los sprints",
+            null,
+            false
+          )
+        );
 
       api.sprints
         .getRegistrosHoras({ projectId, spId: sprintId })
@@ -90,7 +89,6 @@ export default function Index({ props, dispatchError }) {
           console.log(listaCambios);
         })
         .catch((err) => console.log(err));
-
     }
   }, [projectId, sprintId]);
 
@@ -432,7 +430,6 @@ export default function Index({ props, dispatchError }) {
                 </Heading>
               </Box>
               <List p="2">
-
                 {listaCambios.map((cambio) => (
                   <ListItem key={cambio.id}>{cambio.us}</ListItem>
                 ))}
@@ -448,7 +445,6 @@ export default function Index({ props, dispatchError }) {
                 </Heading>
               </Box>
               <List p="2">
-
                 {listaCambios.map((cambio) => (
                   <ListItem key={cambio.id}>
                     {"El usuario " +
