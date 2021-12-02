@@ -22,6 +22,11 @@ var hierarchy =
       [ "api.serializers.USSerializer", "classapi_1_1serializers_1_1USSerializer.html", null ],
       [ "api.serializers.UsuarioSerializer", "classapi_1_1serializers_1_1UsuarioSerializer.html", null ]
     ] ],
+    [ "api.utils.reportes.US_table", "classapi_1_1utils_1_1reportes_1_1US__table.html", [
+      [ "api.utils.reportes.Product_Backlog_table", "classapi_1_1utils_1_1reportes_1_1Product__Backlog__table.html", null ],
+      [ "api.utils.reportes.Sprint_Backlog_table", "classapi_1_1utils_1_1reportes_1_1Sprint__Backlog__table.html", null ],
+      [ "api.utils.reportes.US_Prioridad_table", "classapi_1_1utils_1_1reportes_1_1US__Prioridad__table.html", null ]
+    ] ],
     [ "AppConfig", null, [
       [ "api.apps.ApiConfig", "classapi_1_1apps_1_1ApiConfig.html", null ]
     ] ],
