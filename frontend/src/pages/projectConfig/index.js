@@ -61,7 +61,10 @@ export default function ProjectConfig({ props, dispatchError }) {
     api
       .getProjectById(projectId)
       .then(({ data: res }) => setProject(res))
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        dispatchError("Error", "No existe proyecto con el ID proveido", 5000);
+        history.push("/profile");
+      });
   }, [projectId]);
 
   async function onSubmit(values) {
