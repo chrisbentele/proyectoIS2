@@ -12,12 +12,9 @@ import {
   Flex,
   HStack,
   Text,
-  LinkBox,
-  LinkOverlay,
-  Divider,
+  Heading,
   List,
   ListItem,
-  Heading,
   ListIcon,
 } from "@chakra-ui/layout";
 import { Link } from "react-router-dom";
@@ -28,15 +25,6 @@ import { mapStateColor, handleSprintBoxColor } from "../../styles/theme";
 import { MdBuild } from "react-icons/md";
 import { useHistory } from "react-router-dom";
 import { BsFillPlayFill, BsFillStopFill } from "react-icons/bs";
-
-import {
-  LineChart,
-  YAxis,
-  XAxis,
-  Tooltip,
-  CartesianGrid,
-  Line,
-} from "recharts";
 
 import { tienePermiso } from "../../util";
 import { PERMISOS_MACRO } from "../roles/permisos";
@@ -57,6 +45,7 @@ export default function Index({ props, dispatchError }) {
   const [sprint, setSprint] = useState(null);
   const [isAllowed, toggleIsAllowed] = useState(true);
   const [isOpenEditSp, setIsOpenEditSp] = useState(false);
+  const [listaCambios, setListaCambios] = useState([]);
 
   const history = useHistory();
 
@@ -65,34 +54,49 @@ export default function Index({ props, dispatchError }) {
 
   //Al cargarse la pagina se busca el proyecto con el id del URL y se lo asigna a projectId
   useEffect(() => {
-    api
-      .getProjectById(projectId)
-      .then(({ data }) => setProject(data))
-      .catch((err) => console.log(err));
+    if (projectId && sprintId) {
+      api
+        .getProjectById(projectId)
+        .then(({ data }) => {
+          setProject(data);
 
-    api.userStories
-      .getUserStories(projectId, sprintId)
-      .then(({ data }) => setUserStories(data));
+          api.userStories
+            .getUserStories(projectId, sprintId)
+            .then(({ data }) => setUserStories(data));
 
-    api.sprints
-      .getSprint(projectId, sprintId)
-      .then(({ data }) => {
-        setSprint(data);
-      })
-      .catch((err) => console.log(err));
+          api.sprints
+            .getSprint(projectId, sprintId)
+            .then(({ data }) => {
+              setSprint(data);
+            })
+            .catch((err) => console.log(err));
 
-    api
-      .getMember(projectId, user.sub)
-      .then(({ data: member }) => setThisMember(member))
-      .catch((err) =>
-        dispatchError(
-          "No autorizado",
-          "Debes formar parte del proyecto para visualizar el mismo o los sprints",
-          null,
-          false
-        )
-      );
+          api
+            .getMember(projectId, user.sub)
+            .then(({ data: member }) => setThisMember(member))
+            .catch((err) =>
+              dispatchError(
+                "No autorizado",
+                "Debes formar parte del proyecto para visualizar el mismo o los sprints",
+                null,
+                false
+              )
+            );
+
+          api.sprints
+            .getRegistrosHoras({ projectId, spId: sprintId })
+            .then(({ data }) => {
+              setListaCambios(data);
+            })
+            .catch((err) => console.log(err));
+        })
+        .catch((err) => {
+          dispatchError("Error", "No existe proyecto con el ID proveido", 5000);
+          history.push("/profile");
+        });
+    }
   }, [projectId, sprintId]);
+
   const activateSprint = async () => {
     if (!sprint.activable) {
       return dispatchError("No se puedo activar el sprint", "");
@@ -122,7 +126,6 @@ export default function Index({ props, dispatchError }) {
 
   useEffect(() => {
     if (sprint && userStories.length && thisMember) {
-      console.log("this member rol", thisMember.rol.nombre);
       if (thisMember.rol.nombre === "Scrum Master") {
         toggleIsAllowed(true);
         return;
@@ -133,7 +136,6 @@ export default function Index({ props, dispatchError }) {
           return;
         }
       }
-      debugger;
       toggleIsAllowed(false);
     }
   }, [sprint, userStories, thisMember]);
@@ -159,7 +161,10 @@ export default function Index({ props, dispatchError }) {
       .getUserStories(projectId, sprintId)
       .then(({ data }) => setUserStories(data));
   };
-
+  const quitarUserStory = (USs) => {
+    debugger;
+    setUserStories(USs);
+  };
   return isAllowed && userStories && sprint ? (
     <Box
       minHeight="100vh"
@@ -169,13 +174,14 @@ export default function Index({ props, dispatchError }) {
       d="flex"
       justifyContent="left"
       overflow="auto"
+      marginTop={5}
       top="55px"
     >
       {project ? ( //si ya se cargo el proyecto se muestra el mismo, si no se muestra la pantalla de carga
         <Box mt="3rem">
           <Box
-            pos="fixed"
-            top="55px"
+            // pos="fixed"
+            // top="55px"
             zIndex="100"
             bg={mapStateColor(project.estado) - 40}
             left="0"
@@ -183,16 +189,26 @@ export default function Index({ props, dispatchError }) {
             // boxShadow="md"
             width="full"
             pl="3"
-            mb="3rem"
+            // mb="3rem"
           >
-            <HStack spacing="24px" fontSize="2xl" p="2">
+            <Heading size="lg" p="2">
               <Link to={`/projects/${projectId}`}>
-                {/* <Link to="/projects">Projects</Link> */}
-                <Text fontWeight="medium">{project.nombre}</Text>
+                Proyecto: {project.nombre}
               </Link>
+            </Heading>
 
+            <HStack spacing="12px" fontSize="2xl" p="2">
+              <Text fontWeight="medium">
+                Sprint: {sprint.nombre}{" "}
+                {sprint.terminado ? (
+                  <Text fontWeight="medium">Sprint Terminado</Text>
+                ) : sprint.activo ? (
+                  <Text fontWeight="medium">Sprint Activo</Text>
+                ) : (
+                  <Text fontWeight="medium">Sprint Inactivo</Text>
+                )}
+              </Text>
               <Box fontWeight="thin">|</Box>
-
               {tienePermiso(
                 thisMember,
                 PERMISOS_MACRO.EDITAR_MIEMBROS_A_PROYECTO
@@ -260,8 +276,8 @@ export default function Index({ props, dispatchError }) {
               ) : null}
             </HStack>
           </Box>
-          <Box mt="50px">
-            <HStack p="5" alignItems="top" float="top">
+          <Box marginTop="10px" marginBottom="10px">
+            <HStack p="5" float="top" alignItems="flex-start">
               {!sprint?.activo ? (
                 <USList
                   projectId={projectId}
@@ -270,6 +286,7 @@ export default function Index({ props, dispatchError }) {
                   setUserStories={setUserStories}
                   nombreLista="Backlog"
                   userStories={userStories?.filter((us) => us.estado === 4)}
+                  quitarUserStory={quitarUserStory}
                 ></USList>
               ) : null}
               <USList
@@ -282,7 +299,17 @@ export default function Index({ props, dispatchError }) {
                   //Es un array?
                   Array.isArray(userStories)
                     ? //Si es un array, qué elementos pertenecen a esta lista?
-                      userStories?.filter((us) => us.estado === 0)
+                      userStories
+                        ?.filter((us) => us.estado === 0)
+                        .sort(function comparePriorities(a, b) {
+                          if (a.prioridad > b.prioridad) {
+                            return -1;
+                          }
+                          if (a.prioridad < b.prioridad) {
+                            return 1;
+                          }
+                          return 0;
+                        })
                     : //Si es un solo elemento, pertenece a esta lista?
                     userStories?.estado === 0
                     ? //Si pertenece retorno
@@ -354,7 +381,7 @@ export default function Index({ props, dispatchError }) {
             justify="center"
             backgroundColor="#ffffff"
             borderWidth={3}
-            borderColor={"#9c9c9c"}
+            borderColor={"#c9ccd1"}
             display={"flex"}
             justifyContent={"center"}
             alignItems={"center"}
@@ -381,6 +408,8 @@ export default function Index({ props, dispatchError }) {
             m="5"
             fontSize="lg"
           >
+            {/*Columna izquierda*/}
+
             <Box borderColor="black" borderRightWidth="3px">
               <Box borderBottomWidth="3px" borderColor="black">
                 <Heading p="2" size="lg">
@@ -388,16 +417,14 @@ export default function Index({ props, dispatchError }) {
                 </Heading>
               </Box>
               <List p="2">
-                <ListItem>
-                  <ListIcon as={MdBuild} />
-                  hola
-                </ListItem>
-                <ListItem>
-                  <ListIcon />
-                  hola
-                </ListItem>
+                {listaCambios.map((cambio) => (
+                  <ListItem key={cambio.id}>{cambio.us}</ListItem>
+                ))}
               </List>
             </Box>
+            {/*-------------------*/}
+
+            {/*Columna derecha*/}
             <Box>
               <Box borderBottomWidth="3px" borderColor="black">
                 <Heading p="2" size="lg">
@@ -405,16 +432,19 @@ export default function Index({ props, dispatchError }) {
                 </Heading>
               </Box>
               <List p="2">
-                <ListItem>
-                  <ListIcon />
-                  hola
-                </ListItem>
-                <ListItem>
-                  <ListIcon />
-                  hola
-                </ListItem>
+                {listaCambios.map((cambio) => (
+                  <ListItem key={cambio.id}>
+                    {"El usuario " +
+                      cambio.usuario +
+                      " registró " +
+                      cambio.horas +
+                      " horas: " +
+                      cambio.mensaje}
+                  </ListItem>
+                ))}
               </List>
             </Box>
+            {/*-------------------*/}
           </Flex>
         </Box>
       ) : (

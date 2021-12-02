@@ -1,9 +1,19 @@
 import json
-
+import os
 from django.utils import timezone
 from rest_framework.exceptions import ValidationError
 
-from .utils.misc import get_asigned_user, get_us_count
+from .utils.reportes import (
+    Product_Backlog_table,
+    Sprint_Backlog_table,
+    US_Prioridad_table,
+)
+
+from .utils.misc import (
+    get_asigned_user,
+    get_horas_registradas_US,
+    get_us_count,
+)
 from .serializers import (
     ProyectoSerializer,
     RegistroHorasSerializer,
@@ -15,6 +25,7 @@ from .serializers import (
     UsuarioSerializer,
 )
 from api.models import (
+    ESTADO_US,
     US,
     Proyecto,
     RegistroHoras,
@@ -25,6 +36,7 @@ from api.models import (
     Usuario,
 )
 from django.http.response import (
+    HttpResponse,
     HttpResponseBadRequest,
     HttpResponseForbidden,
     HttpResponseNotFound,
@@ -1016,6 +1028,11 @@ def registro_horas(request, proyect_id, sprint_id, us_id=None):
         if not us_id:
             rh = RegistroHoras.objects.filter(sprint=sprint_id)
             rh_seri = RegistroHorasSerializer(rh, many=True)
+            for registro in rh_seri.data:
+                # get user by their id in registro_horas
+                user = Usuario.objects.get(id=registro["usuario"])
+                user_seri = UsuarioSerializer(user)
+                registro["usuario"] = user_seri.data
             return JsonResponse(rh_seri.data, safe=False)
 
         fecha = request.GET.get("fecha")
@@ -1064,10 +1081,7 @@ def registro_horas(request, proyect_id, sprint_id, us_id=None):
 
         serializer = RegistroHorasSerializer(
             rh,
-            data={
-                "horas": data["new_horas"],
-                "mensaje":data["mensaje"]
-            },
+            data={"horas": data["new_horas"], "mensaje": data["mensaje"]},
             partial=True,
         )
 
@@ -1127,3 +1141,118 @@ def sprints_miembros(request, proyect_id, sprint_id):
         miembros_list = [json.loads(x) for x in list(miembros_set)]
 
         return JsonResponse(miembros_list, safe=False)
+
+
+# View to generate a pdf report of the registro_horas
+def reporte_sprint_backlog(request, proyect_id, sprint_id):
+    """View para generar un reporte de registro_horas de un sprint"""
+    try:
+        proyecto = Proyecto.objects.get(id=proyect_id)
+    except Proyecto.DoesNotExist:
+        return HttpResponseNotFound("Proyecto no existe")
+
+    try:
+        sprint = Sprint.objects.get(id=sprint_id)
+    except Sprint.DoesNotExist:
+        return HttpResponseNotFound("Sprint no existe")
+
+    if request.method == "GET":
+        us_refs = US.objects.filter(proyecto=proyecto, sprint=sprint_id)
+        us_list = USSerializer(us_refs, many=True).data
+
+        us_table = Sprint_Backlog_table(reporte_name="Reporte: Spring Backlog")
+        for us in us_list:
+            us_table.add_row(
+                us_id=us["id"],
+                us_name=us["nombre"],
+                estado=dict(ESTADO_US)[us.get("estado", 4)],
+                estimacion=(us.get("estimacionSM", 0) + us.get("estimacionesDev", 0))
+                / 2,
+                horas_trabajadas=get_horas_registradas_US(us["id"]),
+            )
+
+        pdf_path = us_table.generate_pdf()
+
+        # return pdf file
+        with open(pdf_path, "rb") as pdf:
+            response = HttpResponse(pdf.read(), content_type="application/pdf")
+            response["Content-Disposition"] = f"inline; filename={pdf_path}"
+            os.remove(pdf_path)
+            return response
+        # return HttpResponse(generate_table(data_list))
+
+
+def reporte_product_backlog(request, proyect_id):
+    """View to generate a pdf report of the US in project"""
+    try:
+        proyecto = Proyecto.objects.get(id=proyect_id)
+    except Proyecto.DoesNotExist:
+        return HttpResponseNotFound("Proyecto no existe")
+
+    if request.method == "GET":
+        us_refs = US.objects.filter(proyecto=proyecto)
+        us_list = USSerializer(us_refs, many=True).data
+
+        us_table = Product_Backlog_table(f"Reporte: US en {proyecto.nombre}")
+        for us in us_list:
+            us_table.add_row(
+                us_id=us["id"],
+                us_name=us["nombre"],
+                estado=dict(ESTADO_US)[us.get("estado", 4)],
+            )
+
+        # generate pdf file with pdfkit to folder temp/
+        pdf_path = us_table.generate_pdf()
+
+        # return pdf file
+        with open(pdf_path, "rb") as pdf:
+            response = HttpResponse(pdf.read(), content_type="application/pdf")
+            response["Content-Disposition"] = f"inline; filename={pdf_path}"
+            os.remove(pdf_path)
+            return response
+        # return HttpResponse(generate_table(data_list))
+
+
+def reporte_US_Prioridad(request, proyect_id, sprint_id):
+    try:
+        proyecto = Proyecto.objects.get(id=proyect_id)
+    except Proyecto.DoesNotExist:
+        return HttpResponseNotFound("Proyecto no existe")
+
+    try:
+        sprint = Sprint.objects.get(id=sprint_id)
+    except Sprint.DoesNotExist:
+        return HttpResponseNotFound("Sprint no existe")
+
+    if request.method == "GET":
+        us_refs = US.objects.filter(proyecto=proyecto, sprint=sprint_id)
+        us_list = USSerializer(us_refs, many=True).data
+
+        us_table = US_Prioridad_table(f"Reporte: US por prioridad en {sprint.nombre}")
+        for us in us_list:
+            asignado_id = get_asigned_user(us["id"])
+            if asignado_id:
+                try:
+                    asignado = Usuario.objects.get(id=asignado_id).nombre
+                except Exception:
+                    asignado = "Error encontrando usuario"
+            else:
+                asignado = "Sin asignar"
+
+            us_table.add_row(
+                us_id=us["id"],
+                us_name=us["nombre"],
+                asignado=asignado,
+                prioridad=us["prioridad"],
+                horas_trabajadas=get_horas_registradas_US(us["id"]),
+            )
+
+        pdf_path = us_table.generate_pdf()
+
+        # return pdf file
+        with open(pdf_path, "rb") as pdf:
+            response = HttpResponse(pdf.read(), content_type="application/pdf")
+            response["Content-Disposition"] = f"inline; filename={pdf_path}"
+            os.remove(pdf_path)
+            return response
+        # return HttpResponse(generate_table(data_list))

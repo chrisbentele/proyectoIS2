@@ -16,14 +16,19 @@ var namespaces_dup =
       [ "utils", null, [
         [ "misc", "namespaceapi_1_1utils_1_1misc.html", [
           [ "get_asigned_user", "namespaceapi_1_1utils_1_1misc.html#a576e7813e79e499a63d84e7c9d5d381e", null ],
+          [ "get_horas_registradas_US", "namespaceapi_1_1utils_1_1misc.html#a0c5511fb636c2794b3d647d251194322", null ],
           [ "get_us_count", "namespaceapi_1_1utils_1_1misc.html#a31b92cf0752893dcee477fffa86e11af", null ]
-        ] ]
+        ] ],
+        [ "reportes", "namespaceapi_1_1utils_1_1reportes.html", "namespaceapi_1_1utils_1_1reportes" ]
       ] ],
       [ "views", "namespaceapi_1_1views.html", [
         [ "proyectos", "namespaceapi_1_1views.html#a308fb6ca7ed69b9aebed843b6786eff9", null ],
         [ "proyectos_miembros", "namespaceapi_1_1views.html#a25c497cc085e6d9efce65bd77c05304b", null ],
         [ "proyectos_miembros_roles", "namespaceapi_1_1views.html#a4706beb584a487d0cfa109e562e1ac3e", null ],
         [ "registro_horas", "namespaceapi_1_1views.html#ae0c5ccbbfe2a040cba83808c2240023e", null ],
+        [ "reporte_product_backlog", "namespaceapi_1_1views.html#ae8d214872d0e25176b3154c5e7909955", null ],
+        [ "reporte_sprint_backlog", "namespaceapi_1_1views.html#a89a9e72c53ba4c66388979c92855e95d", null ],
+        [ "reporte_US_Prioridad", "namespaceapi_1_1views.html#a2106170c17a470a187d032ed1c461858", null ],
         [ "roles", "namespaceapi_1_1views.html#a8ff787143d0f02c45e8c53ad077347b2", null ],
         [ "sprints", "namespaceapi_1_1views.html#a08bee8433c942b0cfcc38a7bc73d26b5", null ],
         [ "sprints_activar", "namespaceapi_1_1views.html#a895cb0e63883c1aa0ad89bb17f4396f2", null ],

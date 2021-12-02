@@ -1,7 +1,7 @@
 # Install script
 cd backend/ && \
     sudo apt update && \
-    sudo apt install python3-pip python3-venv postgresql libpq-dev -y && \
+    sudo apt install python3-pip python3-venv postgresql libpq-dev wkhtmltopdf -y && \
     mkdir .venv && \
     python3 -m venv .venv && \
     source .venv/bin/activate && \

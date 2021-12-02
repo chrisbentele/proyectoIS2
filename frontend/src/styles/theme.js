@@ -35,9 +35,9 @@ const theme = extendTheme({
 
 export function mapStateColor(projectState) {
   switch (projectState) {
-    case 0:
+    case 0: //activo
       return "#ffe66d";
-    case 1:
+    case 1: //terminado
       return "#726bff";
     default:
       return "#ffffff";

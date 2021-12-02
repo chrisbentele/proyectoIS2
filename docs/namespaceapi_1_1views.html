@@ -126,6 +126,12 @@ Functions</h2></td></tr>
 <tr class="separator:ae0c5ccbbfe2a040cba83808c2240023e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a628f96082842bd9e6f24854f6fd1af85"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceapi_1_1views.html#a628f96082842bd9e6f24854f6fd1af85">sprints_miembros</a> (request, proyect_id, sprint_id)</td></tr>
 <tr class="separator:a628f96082842bd9e6f24854f6fd1af85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89a9e72c53ba4c66388979c92855e95d"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceapi_1_1views.html#a89a9e72c53ba4c66388979c92855e95d">reporte_sprint_backlog</a> (request, proyect_id, sprint_id)</td></tr>
+<tr class="separator:a89a9e72c53ba4c66388979c92855e95d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8d214872d0e25176b3154c5e7909955"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceapi_1_1views.html#ae8d214872d0e25176b3154c5e7909955">reporte_product_backlog</a> (request, proyect_id)</td></tr>
+<tr class="separator:ae8d214872d0e25176b3154c5e7909955"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2106170c17a470a187d032ed1c461858"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceapi_1_1views.html#a2106170c17a470a187d032ed1c461858">reporte_US_Prioridad</a> (request, proyect_id, sprint_id)</td></tr>
+<tr class="separator:a2106170c17a470a187d032ed1c461858"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a308fb6ca7ed69b9aebed843b6786eff9"></a>
@@ -259,6 +265,102 @@ Functions</h2></td></tr>
           <td></td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>us_id</em> = <code>None</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae8d214872d0e25176b3154c5e7909955"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8d214872d0e25176b3154c5e7909955">&#9670;&nbsp;</a></span>reporte_product_backlog()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def api.views.reporte_product_backlog </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>request</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>proyect_id</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<pre class="fragment">View to generate a pdf report of the US in project</pre> 
+</div>
+</div>
+<a id="a89a9e72c53ba4c66388979c92855e95d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a89a9e72c53ba4c66388979c92855e95d">&#9670;&nbsp;</a></span>reporte_sprint_backlog()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def api.views.reporte_sprint_backlog </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>request</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>proyect_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>sprint_id</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<pre class="fragment">View para generar un reporte de registro_horas de un sprint</pre> 
+</div>
+</div>
+<a id="a2106170c17a470a187d032ed1c461858"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2106170c17a470a187d032ed1c461858">&#9670;&nbsp;</a></span>reporte_US_Prioridad()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def api.views.reporte_US_Prioridad </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>request</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>proyect_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>sprint_id</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
