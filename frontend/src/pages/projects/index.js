@@ -112,6 +112,32 @@ export default function Index({ dispatchError, props }) {
     }
   }
 
+  const onReporteSprint = async (sprintId) => {
+    console.log(sprintId);
+    const { data } = await api.sprints.generarReporteUSPrioridad({
+      projectId,
+      spId: sprintId,
+    });
+    const fileDoc = window.URL.createObjectURL(data);
+
+    var tempLink = document.createElement("a");
+    tempLink.href = fileDoc;
+    tempLink.setAttribute("download", "reporte_Sprint_Backlog.pdf");
+    tempLink.click();
+    window.URL.revokeObjectURL(fileDoc);
+  };
+
+  const onReporteProyecto = async () => {
+    const { data } = await api.projects.generateProjectReport(projectId);
+    const fileDoc = window.URL.createObjectURL(data);
+
+    var tempLink = document.createElement("a");
+    tempLink.href = fileDoc;
+    tempLink.setAttribute("download", "reporte_Product_Backlog.pdf");
+    tempLink.click();
+    window.URL.revokeObjectURL(fileDoc);
+  };
+
   return (
     <Box
       minHeight="100vh"
@@ -212,6 +238,9 @@ export default function Index({ dispatchError, props }) {
                   Reactivar Proyecto
                 </Button>
               ) : null}
+              <Button colorScheme="green" onClick={onReporteProyecto}>
+                Generar reporte
+              </Button>
             </HStack>
           </Box>
           <Box as="main" mt="0px" w="100vw">
@@ -318,53 +347,69 @@ export default function Index({ dispatchError, props }) {
                         justifyContent="center"
                         alignItems="center"
                         key={index}
-                        cursor="pointer"
                       >
-                        <Box
+                        <VStack
+                          width="100%"
+                          cursor="pointer"
                           onClick={() =>
                             history.push(
                               `/projects/${projectId}/sprints/${sprint.id}`
                             )
                           }
                         >
-                          <Text>{sprint.nombre}</Text>
-                        </Box>
-                        <Box fontSize="18px">
-                          <Text>Total US: {sprint.numeroDeUs}</Text>
-                        </Box>
-                        <Box fontSize="18px">
-                          <Text>
-                            {sprint.activo ? "Activo" : "No activado"}
-                          </Text>
-                        </Box>
-                        {tienePermiso(
-                          thisMember,
-                          PERMISOS_MACRO.ELIMINAR_SPRINT
-                        ) ? (
+                          <Box>
+                            <Text>{sprint.nombre}</Text>
+                          </Box>
+                          <Box fontSize="18px">
+                            <Text>Total US: {sprint.numeroDeUs}</Text>
+                          </Box>
+                          <Box fontSize="18px">
+                            <Text>
+                              {sprint.activo ? "Activo" : "No activado"}
+                            </Text>
+                          </Box>
+                        </VStack>
+                        <HStack>
+                          {tienePermiso(
+                            thisMember,
+                            PERMISOS_MACRO.ELIMINAR_SPRINT
+                          ) ? (
+                            <Button
+                              onClick={() => {
+                                setFocusedSprint(sprint);
+                                setShowEliminarModal(true);
+                              }}
+                              isDisabled={project.estado === 1}
+                              colorScheme="red"
+                              bg="red.300"
+                              color="black"
+                            >
+                              Eliminar :o
+                            </Button>
+                          ) : null}
                           <Button
-                            onClick={() => {
-                              setFocusedSprint(sprint);
-                              setShowEliminarModal(true);
-                            }}
-                            isDisabled={project.estado === 1}
+                            colorScheme="green"
+                            bg="green.300"
+                            color="black"
+                            onClick={() => onReporteSprint(sprint.id)}
                           >
-                            Eliminar :o
+                            Generar reporte
                           </Button>
-                        ) : null}
-                        {focusedSprint && (
-                          <EliminarSprintModal
-                            projectId={projectId}
-                            spId={focusedSprint.id}
-                            isOpen={showEliminarModal}
-                            onClose={() => {
-                              setShowEliminarModal(false);
-                            }}
-                            setSprints={setSprints}
-                          />
-                        )}
+                        </HStack>
                       </VStack>
                     </>
                   ))}
+                  {focusedSprint && (
+                    <EliminarSprintModal
+                      projectId={projectId}
+                      spId={focusedSprint.id}
+                      isOpen={showEliminarModal}
+                      onClose={() => {
+                        setShowEliminarModal(false);
+                      }}
+                      setSprints={setSprints}
+                    />
+                  )}
                 </VStack>
               </Box>
             </HStack>

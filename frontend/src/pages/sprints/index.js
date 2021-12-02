@@ -83,17 +83,14 @@ export default function Index({ props, dispatchError }) {
               )
             );
 
-          api.sprints
-            .getRegistrosHoras({ projectId, spId: sprintId })
-            .then(({ data }) => {
-              setListaCambios(data);
-            })
-            .catch((err) => console.log(err));
+      api.sprints
+        .getRegistrosHoras({ projectId, spId: sprintId })
+        .then(({ data }) => {
+          setListaCambios(data);
+          console.log(listaCambios);
         })
-        .catch((err) => {
-          dispatchError("Error", "No existe proyecto con el ID proveido", 5000);
-          history.push("/profile");
-        });
+        .catch((err) => console.log(err));
+
     }
   }, [projectId, sprintId]);
 
@@ -161,8 +158,22 @@ export default function Index({ props, dispatchError }) {
       .getUserStories(projectId, sprintId)
       .then(({ data }) => setUserStories(data));
   };
+
+  const onReporteUSPrioridad = async () => {
+    const { data } = await api.sprints.generarReporteUSPrioridad({
+      projectId,
+      spId: sprintId,
+    });
+    const fileDoc = window.URL.createObjectURL(data);
+
+    var tempLink = document.createElement("a");
+    tempLink.href = fileDoc;
+    tempLink.setAttribute("download", "reporte_US_prioridad.pdf");
+    tempLink.click();
+    window.URL.revokeObjectURL(fileDoc);
+  };
+
   const quitarUserStory = (USs) => {
-    debugger;
     setUserStories(USs);
   };
   return isAllowed && userStories && sprint ? (
@@ -274,6 +285,10 @@ export default function Index({ props, dispatchError }) {
                   Desactivar Sprint
                 </Button>
               ) : null}
+
+              <Button onClick={onReporteUSPrioridad} colorScheme="green">
+                Generar reporte
+              </Button>
             </HStack>
           </Box>
           <Box marginTop="10px" marginBottom="10px">
@@ -417,6 +432,7 @@ export default function Index({ props, dispatchError }) {
                 </Heading>
               </Box>
               <List p="2">
+
                 {listaCambios.map((cambio) => (
                   <ListItem key={cambio.id}>{cambio.us}</ListItem>
                 ))}
@@ -432,6 +448,7 @@ export default function Index({ props, dispatchError }) {
                 </Heading>
               </Box>
               <List p="2">
+
                 {listaCambios.map((cambio) => (
                   <ListItem key={cambio.id}>
                     {"El usuario " +

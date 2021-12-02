@@ -1213,7 +1213,7 @@ def reporte_product_backlog(request, proyect_id):
         # return HttpResponse(generate_table(data_list))
 
 
-def reporte_US_Prioridad(request, proyect_id, sprint_id):
+def reporte_US_prioridad(request, proyect_id, sprint_id):
     try:
         proyecto = Proyecto.objects.get(id=proyect_id)
     except Proyecto.DoesNotExist:
