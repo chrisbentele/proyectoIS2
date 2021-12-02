@@ -4,6 +4,8 @@ var views_8py =
     [ "proyectos_miembros", "views_8py.html#a25c497cc085e6d9efce65bd77c05304b", null ],
     [ "proyectos_miembros_roles", "views_8py.html#a4706beb584a487d0cfa109e562e1ac3e", null ],
     [ "registro_horas", "views_8py.html#ae0c5ccbbfe2a040cba83808c2240023e", null ],
+    [ "reporte_proyecto", "views_8py.html#a02f51f24bae5731022b6bb92ac775f5a", null ],
+    [ "reporte_sprint", "views_8py.html#abd8b3674b9c8ae34fd585632ae184726", null ],
     [ "roles", "views_8py.html#a8ff787143d0f02c45e8c53ad077347b2", null ],
     [ "sprints", "views_8py.html#a08bee8433c942b0cfcc38a7bc73d26b5", null ],
     [ "sprints_activar", "views_8py.html#a895cb0e63883c1aa0ad89bb17f4396f2", null ],

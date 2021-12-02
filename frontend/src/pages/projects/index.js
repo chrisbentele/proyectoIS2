@@ -55,23 +55,30 @@ export default function Index({ dispatchError, props }) {
   useEffect(() => {
     api
       .getProjectById(projectId)
-      .then((res) => setProject(res.data))
-      .catch((err) => console.log(err));
+      .then((res) => {
+        setProject(res.data);
 
-    api.userStories
-      .getUserStories(projectId)
-      .then((US) => setUserStories(US.data))
-      .catch((err) => console.log(err));
+        api.userStories
+          .getUserStories(projectId)
+          .then((US) => {
+            setUserStories(US.data);
 
-    api.sprints
-      .getSprints(projectId)
-      .then(({ data }) => setSprints(data))
-      .catch((err) => console.log(err));
+            api.sprints
+              .getSprints(projectId)
+              .then(({ data }) => setSprints(data))
+              .catch((err) => console.log(err));
 
-    api
-      .getMember(projectId, user.sub)
-      .then(({ data: member }) => setThisMember(member))
-      .catch((err) => console.log(err));
+            api
+              .getMember(projectId, user.sub)
+              .then(({ data: member }) => setThisMember(member))
+              .catch((err) => console.log(err));
+          })
+          .catch((err) => console.log(err));
+      })
+      .catch((err) => {
+        dispatchError("Error", "No existe proyecto con el ID proveido", 5000);
+        history.push("/profile");
+      });
   }, []);
 
   async function onStatusChange(values) {
@@ -114,22 +121,23 @@ export default function Index({ dispatchError, props }) {
       d="flex"
       // justifyContent="left"
       overflow="auto"
+      marginTop={5}
       top="55px"
     >
       {project ? ( //si ya se cargo el proyecto se muestra el mismo, si no se muestra la pantalla de carga
         <Box mt="3rem">
           <Box
-            pos="fixed"
-            top="55px"
+            // pos="fixed"
+            // top="100px"
             zIndex="100"
             bg={mapStateColor(project.estado) - 40}
             left="0"
             right="0"
             width="full"
             pl="3"
-            mb="3rem"
+            // mb="3rem"
           >
-            <HStack spacing="24px" fontSize="2xl" p="2">
+            <HStack spacing="12px" fontSize="2xl" p="2">
               <Link to={`/projects/${projectId}`}>
                 {/* <Link to="/projects">Projects</Link> */}
                 <Text fontWeight="medium">{project.nombre}</Text>
@@ -206,18 +214,19 @@ export default function Index({ dispatchError, props }) {
               ) : null}
             </HStack>
           </Box>
-          <Box as="main" mt="50px" w="100vw">
-            <HStack p="5">
+          <Box as="main" mt="0px" w="100vw">
+            <HStack p="5" alignItems="flex-start">
               {project.estado === 0 ? (
-                <HStack w="fit-content">
+                <HStack w="fit-content" borderRadius="lg" boxShadow="lg">
                   <USListUnset
-                    minWidth="3"
                     projectId={projectId}
                     setUserStories={setUserStories}
                     nombreLista="Backlog"
                     dispatchError={dispatchError}
                     thisMember={thisMember}
                     userStories={userStories?.filter((us) => us.estado === 4)}
+                    borderRadius="lg"
+                    boxShadow="lg"
                   >
                     <Flex justify="center">
                       <LinkBox
@@ -252,10 +261,13 @@ export default function Index({ dispatchError, props }) {
                 <VStack
                   p="3"
                   bg="#F5F4F5"
-                  borderWidth="px"
-                  borderColor={"#40474a"}
+                  borderWidth="2px"
                   borderRadius="lg"
                   boxShadow="lg"
+                  marginLeft={50}
+                  borderColor="#c9ccd1"
+                  minWidth={500}
+                  minHeight={286}
                 >
                   <Heading fontSize="3xl">Sprints</Heading>
                   {tienePermiso(thisMember, PERMISOS_MACRO.CREAR_SPRINT) &&
@@ -264,8 +276,8 @@ export default function Index({ dispatchError, props }) {
                       display="flex"
                       w="lg"
                       height="180px"
-                      borderWidth="4px"
-                      borderColor={"#40474a"}
+                      borderWidth="2px"
+                      borderColor={"#c9ccd1"}
                       borderRadius="lg"
                       overflow="hidden"
                       fontSize="3xl"
@@ -298,7 +310,7 @@ export default function Index({ dispatchError, props }) {
                         height="180px"
                         borderWidth="2px"
                         borderRadius="lg"
-                        borderColor={"#40474a"}
+                        borderColor={"#c9ccd1"}
                         overflow="hidden"
                         fontSize="3xl"
                         fontWeight="bold"

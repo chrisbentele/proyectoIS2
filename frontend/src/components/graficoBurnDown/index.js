@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box } from "@chakra-ui/layout";
+import { Box, Heading } from "@chakra-ui/layout";
 import {
   LineChart,
   YAxis,
@@ -13,26 +13,18 @@ import { api } from "../../api";
 
 export default function BurnDown({ registros, sprint }) {
   const [burndownData, setBurndownData] = useState([]);
-  //console.log(sprint);
   useEffect(() => {
-    console.log(sprint);
     if (
       sprint &&
       sprint?.sumaHorasAsignadas >= 0 &&
       sprint.estimacion &&
-      sprint.activo &&
       sprint.fechaInicio
     ) {
-      console.log("sprint", sprint);
-
       const asyncFoo = async () => {
         const progresoEstimadoPorDia =
           sprint.sumaHorasAsignadas / sprint.estimacion;
-        console.log("progresoEstimadoPorDia", progresoEstimadoPorDia);
-        console.log("sprint suma horas", sprint.sumaHorasAsignadas);
 
-        let proxDias = getProxDias(sprint.fechaInicio, sprint.estimacion + 1);
-        console.log(sprint.estimacion);
+        let proxDias = getProxDias(sprint.fechaInicio, sprint.estimacion);
         const regHoras = await api.sprints
           .getRegistrosHoras({
             projectId: sprint.proyecto,
@@ -41,31 +33,34 @@ export default function BurnDown({ registros, sprint }) {
           .then((res) => res.data);
 
         let burningData = [];
+        burningData.push({
+          dia: proxDias[0],
+          esperado: sprint.sumaHorasAsignadas,
+          restante: sprint.sumaHorasAsignadas,
+        });
         let horasRegistradas = 0;
-        for (let dia = 0; dia < proxDias.length; dia++) {
+        for (let dia = 1; dia < proxDias.length; dia++) {
           const fecha = proxDias[dia];
-          // console.log(fecha);
-          // console.log(regHoras.map((x) => x.fecha));
           const regHorasFecha = regHoras.filter((x) => x.fecha == fecha);
-          // console.log(regHorasFecha);
-          const horasRegistradasLocal = regHorasFecha
-            .map((x) => x.horas)
-            .reduce((actual, suma) => actual + suma, 0);
-          horasRegistradas += horasRegistradasLocal;
-          const p_est = progresoEstimadoPorDia * (dia + 1);
-          console.log(p_est);
-          console.log(sprint.sumaHorasAsignadas);
-          burningData.push({
-            dia: fecha,
-            esperado:
-              sprint.sumaHorasAsignadas -
-              progresoEstimadoPorDia * (dia + 1) +
-              progresoEstimadoPorDia * proxDias.length,
-            restante:
-              sprint.sumaHorasAsignadas +
-              progresoEstimadoPorDia * proxDias.length -
-              horasRegistradas,
-          });
+          if (!regHorasFecha.length) {
+            burningData.push({
+              dia: fecha,
+              esperado:
+                sprint.sumaHorasAsignadas - progresoEstimadoPorDia * dia,
+              restante: null,
+            });
+          } else {
+            const horasRegistradasLocal = regHorasFecha
+              .map((x) => x.horas)
+              .reduce((actual, suma) => actual + suma, 0);
+            horasRegistradas += horasRegistradasLocal;
+            burningData.push({
+              dia: fecha,
+              esperado:
+                sprint.sumaHorasAsignadas - progresoEstimadoPorDia * dia,
+              restante: sprint.sumaHorasAsignadas - horasRegistradas,
+            });
+          }
         }
 
         setBurndownData(burningData.sort(compare));
@@ -85,15 +80,28 @@ export default function BurnDown({ registros, sprint }) {
   }
 
   return (
-    <Box width={"fit-content"}>
+    <Box
+      width={"fit-content"}
+      display="flex"
+      flexDir="column"
+      alignItems="center"
+    >
+      <Heading size="lg">Grafico Burndown</Heading>
       <LineChart
-        width={1000}
-        height={500}
+        width={1100}
+        height={550}
         data={burndownData}
-        margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
+        margin={{ top: 5, right: 20, left: 10, bottom: 15 }}
       >
-        <XAxis dataKey="dia" />
-        <YAxis dataKey="restante" />
+        <XAxis
+          dataKey="dia"
+          label={{ value: "Dia", position: "insideBottom", offset: -10 }}
+          minTickGap={10}
+        />
+        <YAxis
+          label={{ value: "Horas", angle: -90, position: "insideLeft" }}
+          padding={{ left: 1000 }}
+        />
         <Tooltip />
         <CartesianGrid stroke="#f5f5f5" />
         <Line
@@ -103,6 +111,7 @@ export default function BurnDown({ registros, sprint }) {
           yAxisId={0}
           strokeWidth={3}
           connectNulls={true}
+          dot={{ stroke: "black", strokeWidth: 3 }}
         />
         <Line
           type="monotone"
@@ -111,6 +120,7 @@ export default function BurnDown({ registros, sprint }) {
           yAxisId={0}
           strokeWidth={3}
           connectNulls={true}
+          dot={{ stroke: "black", strokeWidth: 3 }}
         />
       </LineChart>
     </Box>
