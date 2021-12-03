@@ -1,8 +1,5 @@
 var NAVTREEINDEX2 =
 {
-"pages_2projects_2index_8js.html#a8485a95d5bf158ae58945c5c5ed6a153":[4,0,2,0,2,8,0,2],
-"pages_2projects_2index_8js.html#a8e6a862a904cf8b07c69fae7c44a1a04":[4,0,2,0,2,8,0,4],
-"pages_2projects_2index_8js.html#a8fe8d80ecdce36dc59da0dbfdc991c3d":[4,0,2,0,2,8,0,5],
 "pages_2projects_2index_8js.html#ac1f02fcbdf8e06125bd77a92b3ad332e":[4,0,2,0,2,8,0,0],
 "pages_2projects_2index_8js.html#ae1d334a6e58eb108c75623084af632bb":[4,0,2,0,2,8,0,1],
 "pages_2roles_2index_8js.html":[4,0,2,0,2,9,0],
@@ -221,5 +218,8 @@ var NAVTREEINDEX2 =
 "views_8py.html#ae8d214872d0e25176b3154c5e7909955":[4,0,0,0,8,4],
 "views_8py.html#afbe6ebfb4b7b1705fdf034fcfdd2f5f6":[4,0,0,0,8,15],
 "wsgi_8py.html":[4,0,0,1,3],
-"wsgi_8py.html#a845c0e7adb483331c32c53ca5dab762f":[4,0,0,1,3,0]
+"wsgi_8py.html#a845c0e7adb483331c32c53ca5dab762f":[4,0,0,1,3,0],
+"":[2,0,1],
+"":[2,0,0],
+"":[2,0,0,7]
 };
