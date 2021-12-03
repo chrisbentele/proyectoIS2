@@ -11,6 +11,8 @@ import os
 from django.utils import timezone
 from rest_framework.exceptions import ValidationError
 
+from .utils.email import send_email
+
 from .utils.reportes import (
     Product_Backlog_table,
     Sprint_Backlog_table,
@@ -316,6 +318,16 @@ def proyectos_miembros(request, proyect_id, user_id=None):
                     ra.is_valid()
                     ra.save()
                     break
+
+            try:
+                user = Usuario.objects.get(id=user_id)
+                send_email(
+                    "Bienvenido a Proyecto",
+                    f"Te han agregado al proyecto: {p.nombre}",
+                    user.email,
+                )
+            except Exception:
+                pass
 
             return JsonResponse(True, status=201, safe=False)
         except Exception as e:
@@ -925,6 +937,16 @@ def sprints_desactivar(request, proyect_id, sprint_id):
 def user_stories_asignar(request, proyect_id, us_id, user_id=None):
     """Metodos p/ asignar un miembro a una US del proyecto"""
 
+    try:
+        proyecto = Proyecto.objects.get(id=proyect_id)
+    except Proyecto.DoesNotExist:
+        return HttpResponseNotFound("Proyecto no existe")
+
+    try:
+        us = US.objects.get(id=us_id)
+    except US.DoesNotExist:
+        return HttpResponseNotFound("US no existe")
+
     if request.method == "POST":
         try:
             usAsignadaList = USAsignada.objects.filter(us=us_id)
@@ -944,6 +966,15 @@ def user_stories_asignar(request, proyect_id, us_id, user_id=None):
 
             seri.is_valid(raise_exception=True)
             seri.save()
+
+            try:
+                user = Usuario.objects.get(id=user_id)
+                send_email(
+                    "Asignacion de US", f"Te asignaron la US: {us.nombre}", user.email
+                )
+            except Exception:
+                pass
+
             return JsonResponse(seri.data, status=201)
         except:
             return JsonResponse(seri.errors, status=400, safe=False)

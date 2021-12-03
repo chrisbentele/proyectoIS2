@@ -106,6 +106,18 @@ Variables</h2></td></tr>
 <tr class="separator:ae3b0b1febe7b5441745a381a415b9de3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae3c6eae4bb0e981b93263a7f995da89"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecontroller_1_1settings.html#aae3c6eae4bb0e981b93263a7f995da89">INSTALLED_APPS</a></td></tr>
 <tr class="separator:aae3c6eae4bb0e981b93263a7f995da89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef0a9e155b3e7c5aa31666c62d038b48"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecontroller_1_1settings.html#aef0a9e155b3e7c5aa31666c62d038b48">EMAIL_BACKEND</a> = &quot;django.core.mail.backends.smtp.EmailBackend&quot;</td></tr>
+<tr class="separator:aef0a9e155b3e7c5aa31666c62d038b48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a45f12039b43f908e85203b95b69d79"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecontroller_1_1settings.html#a1a45f12039b43f908e85203b95b69d79">EMAIL_HOST</a> = &quot;smtp.gmail.com&quot;</td></tr>
+<tr class="separator:a1a45f12039b43f908e85203b95b69d79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b0f91910bb914aeedb9b2255e97f991"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecontroller_1_1settings.html#a1b0f91910bb914aeedb9b2255e97f991">EMAIL_USE_TLS</a> = True</td></tr>
+<tr class="separator:a1b0f91910bb914aeedb9b2255e97f991"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57dae25085558c33df23e794c5cb86b0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecontroller_1_1settings.html#a57dae25085558c33df23e794c5cb86b0">EMAIL_PORT</a> = 587</td></tr>
+<tr class="separator:a57dae25085558c33df23e794c5cb86b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab728c93af47383e63ea04cb522b9774d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecontroller_1_1settings.html#ab728c93af47383e63ea04cb522b9774d">EMAIL_HOST_USER</a> = os.environ.get(&quot;EMAIL_HOST_USER&quot;)</td></tr>
+<tr class="separator:ab728c93af47383e63ea04cb522b9774d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a947cd44cb12973e2452b396ed4418d1b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecontroller_1_1settings.html#a947cd44cb12973e2452b396ed4418d1b">EMAIL_HOST_PASSWORD</a> = os.environ.get(&quot;EMAIL_HOST_PASSWORD&quot;)</td></tr>
+<tr class="separator:a947cd44cb12973e2452b396ed4418d1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1319b4b3bd86b8193f419c86a7715281"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecontroller_1_1settings.html#a1319b4b3bd86b8193f419c86a7715281">CORS_ORIGIN_ALLOW_ALL</a> = True</td></tr>
 <tr class="separator:a1319b4b3bd86b8193f419c86a7715281"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad969f93baecdfdbebb1e39fb6d86fe3d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecontroller_1_1settings.html#ad969f93baecdfdbebb1e39fb6d86fe3d">CORS_ALLOW_HEADERS</a></td></tr>
@@ -283,6 +295,90 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
       <table class="memname">
         <tr>
           <td class="memname">string controller.settings.DEFAULT_AUTO_FIELD = &quot;django.db.models.BigAutoField&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aef0a9e155b3e7c5aa31666c62d038b48"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef0a9e155b3e7c5aa31666c62d038b48">&#9670;&nbsp;</a></span>EMAIL_BACKEND</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">string controller.settings.EMAIL_BACKEND = &quot;django.core.mail.backends.smtp.EmailBackend&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1a45f12039b43f908e85203b95b69d79"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a45f12039b43f908e85203b95b69d79">&#9670;&nbsp;</a></span>EMAIL_HOST</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">string controller.settings.EMAIL_HOST = &quot;smtp.gmail.com&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a947cd44cb12973e2452b396ed4418d1b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a947cd44cb12973e2452b396ed4418d1b">&#9670;&nbsp;</a></span>EMAIL_HOST_PASSWORD</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">controller.settings.EMAIL_HOST_PASSWORD = os.environ.get(&quot;EMAIL_HOST_PASSWORD&quot;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab728c93af47383e63ea04cb522b9774d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab728c93af47383e63ea04cb522b9774d">&#9670;&nbsp;</a></span>EMAIL_HOST_USER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">controller.settings.EMAIL_HOST_USER = os.environ.get(&quot;EMAIL_HOST_USER&quot;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a57dae25085558c33df23e794c5cb86b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57dae25085558c33df23e794c5cb86b0">&#9670;&nbsp;</a></span>EMAIL_PORT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int controller.settings.EMAIL_PORT = 587</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1b0f91910bb914aeedb9b2255e97f991"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b0f91910bb914aeedb9b2255e97f991">&#9670;&nbsp;</a></span>EMAIL_USE_TLS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool controller.settings.EMAIL_USE_TLS = True</td>
         </tr>
       </table>
 </div><div class="memdoc">
