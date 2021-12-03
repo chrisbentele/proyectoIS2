@@ -61,6 +61,14 @@ var annotated_dup =
         [ "User_Stories_Asignar_Tests", "classapi_1_1tests_1_1User__Stories__Asignar__Tests.html", "classapi_1_1tests_1_1User__Stories__Asignar__Tests" ],
         [ "Sprints_User_Stories_Tests", "classapi_1_1tests_1_1Sprints__User__Stories__Tests.html", "classapi_1_1tests_1_1Sprints__User__Stories__Tests" ],
         [ "US_Registro_horas", "classapi_1_1tests_1_1US__Registro__horas.html", "classapi_1_1tests_1_1US__Registro__horas" ]
+      ] ],
+      [ "utils", null, [
+        [ "reportes", "namespaceapi_1_1utils_1_1reportes.html", [
+          [ "US_table", "classapi_1_1utils_1_1reportes_1_1US__table.html", "classapi_1_1utils_1_1reportes_1_1US__table" ],
+          [ "Product_Backlog_table", "classapi_1_1utils_1_1reportes_1_1Product__Backlog__table.html", "classapi_1_1utils_1_1reportes_1_1Product__Backlog__table" ],
+          [ "Sprint_Backlog_table", "classapi_1_1utils_1_1reportes_1_1Sprint__Backlog__table.html", "classapi_1_1utils_1_1reportes_1_1Sprint__Backlog__table" ],
+          [ "US_Prioridad_table", "classapi_1_1utils_1_1reportes_1_1US__Prioridad__table.html", "classapi_1_1utils_1_1reportes_1_1US__Prioridad__table" ]
+        ] ]
       ] ]
     ] ]
 ];

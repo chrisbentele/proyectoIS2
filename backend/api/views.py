@@ -3,9 +3,17 @@ import os
 from django.utils import timezone
 from rest_framework.exceptions import ValidationError
 
-import pdfkit
+from .utils.reportes import (
+    Product_Backlog_table,
+    Sprint_Backlog_table,
+    US_Prioridad_table,
+)
 
-from .utils.misc import generate_table, get_asigned_user, get_us_count
+from .utils.misc import (
+    get_asigned_user,
+    get_horas_registradas_US,
+    get_us_count,
+)
 from .serializers import (
     ProyectoSerializer,
     RegistroHorasSerializer,
@@ -1022,11 +1030,9 @@ def registro_horas(request, proyect_id, sprint_id, us_id=None):
             rh_seri = RegistroHorasSerializer(rh, many=True)
             for registro in rh_seri.data:
                 # get user by their id in registro_horas
-                print(registro["usuario"])
                 user = Usuario.objects.get(id=registro["usuario"])
                 user_seri = UsuarioSerializer(user)
                 registro["usuario"] = user_seri.data
-                print(user_seri.data)
             return JsonResponse(rh_seri.data, safe=False)
 
         fecha = request.GET.get("fecha")
@@ -1138,7 +1144,8 @@ def sprints_miembros(request, proyect_id, sprint_id):
 
 
 # View to generate a pdf report of the registro_horas
-def reporte_sprint(request, proyect_id, sprint_id):
+def reporte_sprint_backlog(request, proyect_id, sprint_id):
+    """View para generar un reporte de registro_horas de un sprint"""
     try:
         proyecto = Proyecto.objects.get(id=proyect_id)
     except Proyecto.DoesNotExist:
@@ -1150,61 +1157,21 @@ def reporte_sprint(request, proyect_id, sprint_id):
         return HttpResponseNotFound("Sprint no existe")
 
     if request.method == "GET":
-        rh = RegistroHoras.objects.filter(sprint=sprint_id)
-        rh_seri = RegistroHorasSerializer(rh, many=True)
+        us_refs = US.objects.filter(proyecto=proyecto, sprint=sprint_id)
+        us_list = USSerializer(us_refs, many=True).data
 
-        data_obj = {}
-        for registro in rh_seri.data:
-            # get user by their id in registro_horas
-            data_obj[registro["us"]] = (
-                data_obj.get(registro["us"], 0) + registro["horas"]
+        us_table = Sprint_Backlog_table(reporte_name="Reporte: Spring Backlog")
+        for us in us_list:
+            us_table.add_row(
+                us_id=us["id"],
+                us_name=us["nombre"],
+                estado=dict(ESTADO_US)[us.get("estado", 4)],
+                estimacion=(us.get("estimacionSM", 0) + us.get("estimacionesDev", 0))
+                / 2,
+                horas_trabajadas=get_horas_registradas_US(us["id"]),
             )
-            user_ref = Usuario.objects.get(id=registro["usuario"])
-            user_seri = UsuarioSerializer(user_ref)
 
-        data_list = []
-        for key, value in data_obj.items():
-
-            US_ref = US.objects.get(id=key)
-            US_data = USSerializer(US_ref).data
-
-            id_asignado = get_asigned_user(key)
-            if id_asignado:
-                asignado_data = UsuarioSerializer(
-                    Usuario.objects.get(id=id_asignado)
-                ).data
-            else:
-                asignado_data = {"nombre": "Sin asignar"}
-
-            elemento = {}
-            elemento["horas_registradas"] = value
-            elemento["asignado"] = asignado_data.get("nombre")
-            elemento["us_id"] = key
-            elemento["us_name"] = US_data.get("nombre")
-            elemento["prioridad"] = US_data.get("prioridad")
-            elemento["estado"] = dict(ESTADO_US)[US_data.get("estado", 4)]
-            elemento["estimacion"] = (
-                user_seri.data.get("estimacionSM", 0)
-                + user_seri.data.get("estimacionesDev", 0)
-            ) / 2
-            data_list.append(elemento)
-
-        # generate pdf file with pdfkit to folder temp/
-        from hashlib import blake2b
-        import random
-
-        curr_dir = os.path.dirname(__file__)
-        temp_dir = os.path.join(curr_dir, "temp")
-        os.path.exists(temp_dir) or os.mkdir(temp_dir)
-        h = blake2b(digest_size=20)
-        h.update(random.getrandbits(8))
-        hexhash_ = h.hexdigest()
-        file_name = f"reporte_horas_{hexhash_}.pdf"
-        pdf_path = os.path.join(temp_dir, file_name)
-        pdfkit.from_string(
-            generate_table(data_list),
-            pdf_path,
-        )
+        pdf_path = us_table.generate_pdf()
 
         # return pdf file
         with open(pdf_path, "rb") as pdf:
@@ -1215,7 +1182,7 @@ def reporte_sprint(request, proyect_id, sprint_id):
         # return HttpResponse(generate_table(data_list))
 
 
-def reporte_proyecto(request, proyect_id):
+def reporte_product_backlog(request, proyect_id):
     """View to generate a pdf report of the US in project"""
     try:
         proyecto = Proyecto.objects.get(id=proyect_id)
@@ -1223,36 +1190,19 @@ def reporte_proyecto(request, proyect_id):
         return HttpResponseNotFound("Proyecto no existe")
 
     if request.method == "GET":
-        us = US.objects.filter(proyecto=proyect_id)
-        serializer = USSerializer(us, many=True)
-        data_list = []
-        for us in serializer.data:
-            elemento = {}
-            elemento["id"] = us.get("id")
-            elemento["nombre"] = us.get("nombre")
-            elemento["descripcion"] = us.get("descripcion")
-            elemento["fecha_inicio"] = us.get("fecha_inicio")
-            elemento["fecha_fin"] = us.get("fecha_fin")
-            elemento["estado"] = us.get("estado")
-            elemento["sprint"] = us.get("sprint")
-            elemento["asignado_a"] = us.get("asignado_a")
-            data_list.append(elemento)
+        us_refs = US.objects.filter(proyecto=proyecto)
+        us_list = USSerializer(us_refs, many=True).data
 
-        from hashlib import blake2b
-        import random
+        us_table = Product_Backlog_table(f"Reporte: US en {proyecto.nombre}")
+        for us in us_list:
+            us_table.add_row(
+                us_id=us["id"],
+                us_name=us["nombre"],
+                estado=dict(ESTADO_US)[us.get("estado", 4)],
+            )
 
-        curr_dir = os.path.dirname(__file__)
-        temp_dir = os.path.join(curr_dir, "temp")
-        os.path.exists(temp_dir) or os.mkdir(temp_dir)
-        h = blake2b(digest_size=20)
-        h.update(random.getrandbits(8))
-        hexhash_ = h.hexdigest()
-        file_name = f"reporte_proyecto_{hexhash_}.pdf"
-        pdf_path = os.path.join(temp_dir, file_name)
-        pdfkit.from_string(
-            generate_table_proyecto(data_list),
-            pdf_path,
-        )
+        # generate pdf file with pdfkit to folder temp/
+        pdf_path = us_table.generate_pdf()
 
         # return pdf file
         with open(pdf_path, "rb") as pdf:
@@ -1260,3 +1210,49 @@ def reporte_proyecto(request, proyect_id):
             response["Content-Disposition"] = f"inline; filename={pdf_path}"
             os.remove(pdf_path)
             return response
+        # return HttpResponse(generate_table(data_list))
+
+
+def reporte_US_prioridad(request, proyect_id, sprint_id):
+    try:
+        proyecto = Proyecto.objects.get(id=proyect_id)
+    except Proyecto.DoesNotExist:
+        return HttpResponseNotFound("Proyecto no existe")
+
+    try:
+        sprint = Sprint.objects.get(id=sprint_id)
+    except Sprint.DoesNotExist:
+        return HttpResponseNotFound("Sprint no existe")
+
+    if request.method == "GET":
+        us_refs = US.objects.filter(proyecto=proyecto, sprint=sprint_id)
+        us_list = USSerializer(us_refs, many=True).data
+
+        us_table = US_Prioridad_table(f"Reporte: US por prioridad en {sprint.nombre}")
+        for us in us_list:
+            asignado_id = get_asigned_user(us["id"])
+            if asignado_id:
+                try:
+                    asignado = Usuario.objects.get(id=asignado_id).nombre
+                except Exception:
+                    asignado = "Error encontrando usuario"
+            else:
+                asignado = "Sin asignar"
+
+            us_table.add_row(
+                us_id=us["id"],
+                us_name=us["nombre"],
+                asignado=asignado,
+                prioridad=us["prioridad"],
+                horas_trabajadas=get_horas_registradas_US(us["id"]),
+            )
+
+        pdf_path = us_table.generate_pdf()
+
+        # return pdf file
+        with open(pdf_path, "rb") as pdf:
+            response = HttpResponse(pdf.read(), content_type="application/pdf")
+            response["Content-Disposition"] = f"inline; filename={pdf_path}"
+            os.remove(pdf_path)
+            return response
+        # return HttpResponse(generate_table(data_list))

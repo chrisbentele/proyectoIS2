@@ -97,7 +97,7 @@ $(document).ready(function(){initNavTree('projects_8js.html',''); initResizable(
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a59be084da8908b7d77ff34b25cd84488"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="projects_8js.html#a59be084da8908b7d77ff34b25cd84488">import</a> { <a class="el" href="api_2index_8js.html#a49de16393722038aeb1da8e9874d4d36">axiosInstance</a> } from '.'</td></tr>
+<tr class="memitem:a59be084da8908b7d77ff34b25cd84488"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="projects_8js.html#a59be084da8908b7d77ff34b25cd84488">import</a> { <a class="el" href="api_2index_8js.html#a49de16393722038aeb1da8e9874d4d36">axiosInstance</a> } from &quot;.&quot;</td></tr>
 <tr class="memdesc:a59be084da8908b7d77ff34b25cd84488"><td class="mdescLeft">&#160;</td><td class="mdescRight">Importar la instancia de axios.  <a href="projects_8js.html#a59be084da8908b7d77ff34b25cd84488">More...</a><br /></td></tr>
 <tr class="separator:a59be084da8908b7d77ff34b25cd84488"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e9d2ad3fbbc8cf8fe5dc7f6f51cd596"><td class="memItemLeft" align="right" valign="top">export <a class="el" href="userStories_8test_8js.html#a92b303b76a3f942ea819498907d5e83c">const</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="projects_8js.html#a2e9d2ad3fbbc8cf8fe5dc7f6f51cd596">createProject</a></td></tr>
@@ -119,6 +119,9 @@ Si no se provee el id de usuario la funcion solicita al servidor todos los proye
 <tr class="memitem:a5eedf1969a2b3145f557abe7bb64f9af"><td class="memItemLeft" align="right" valign="top">export <a class="el" href="userStories_8test_8js.html#a92b303b76a3f942ea819498907d5e83c">const</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="projects_8js.html#a5eedf1969a2b3145f557abe7bb64f9af">deleteProject</a></td></tr>
 <tr class="memdesc:a5eedf1969a2b3145f557abe7bb64f9af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Eliminar proyecto La funcion recibe como parametro el id del proyecto a eliminar, retorna true si se pudo eliminar el proyecto.  <a href="projects_8js.html#a5eedf1969a2b3145f557abe7bb64f9af">More...</a><br /></td></tr>
 <tr class="separator:a5eedf1969a2b3145f557abe7bb64f9af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fb1e8ec686596667ce7d539c7a7e535"><td class="memItemLeft" align="right" valign="top">export <a class="el" href="userStories_8test_8js.html#a92b303b76a3f942ea819498907d5e83c">const</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="projects_8js.html#a6fb1e8ec686596667ce7d539c7a7e535">generateProjectReport</a></td></tr>
+<tr class="memdesc:a6fb1e8ec686596667ce7d539c7a7e535"><td class="mdescLeft">&#160;</td><td class="mdescRight">Genera un archivo PDF de los us de un proyecto.  <a href="projects_8js.html#a6fb1e8ec686596667ce7d539c7a7e535">More...</a><br /></td></tr>
+<tr class="separator:a6fb1e8ec686596667ce7d539c7a7e535"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8fb28a31443ef894b3b27824ed4b8234"><td class="memItemLeft" align="right" valign="top">export <a class="el" href="userStories_8test_8js.html#a92b303b76a3f942ea819498907d5e83c">const</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="projects_8js.html#a8fb28a31443ef894b3b27824ed4b8234">getProjectMembers</a></td></tr>
 <tr class="memdesc:a8fb28a31443ef894b3b27824ed4b8234"><td class="mdescLeft">&#160;</td><td class="mdescRight">Listar miembros de un proyecto <br  />
 Si no se provee el id de usuario la funcion solicita al servidor todos los proyectos.  <a href="projects_8js.html#a8fb28a31443ef894b3b27824ed4b8234">More...</a><br /></td></tr>
@@ -141,7 +144,6 @@ Si no se provee el id de usuario la funcion solicita al servidor todos los proye
       </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= async (projectData) =&gt; {</div>
-<div class="line">  console.log(<span class="stringliteral">&#39;create pro&#39;</span>)</div>
 <div class="line">  <span class="keyword">const</span> { projectName, scrumMasterId, estimation } = projectData;</div>
 <div class="line">  <span class="keywordflow">if</span> (!estimation || !scrumMasterId || !projectName) {</div>
 <div class="line">    console.log(<span class="stringliteral">&quot;error&quot;</span>);</div>
@@ -149,7 +151,6 @@ Si no se provee el id de usuario la funcion solicita al servidor todos los proye
 <div class="line">      <span class="stringliteral">&quot;Para crear proyecto debes proveer la duracion estimada, miembros y nombre del proyecto&quot;</span></div>
 <div class="line">    );</div>
 <div class="line">  }</div>
-<div class="line">  console.log(scrumMasterId)</div>
 <div class="line">  <span class="keywordflow">return</span> await <a class="code" href="api_2index_8js.html#a49de16393722038aeb1da8e9874d4d36">axiosInstance</a>.post(<span class="stringliteral">&quot;proyectos&quot;</span>, {</div>
 <div class="line">    duracionEstimada: estimation,</div>
 <div class="line">    miembros: [scrumMasterId],</div>
@@ -187,7 +188,7 @@ projectName: nombre del proyecto. </p>
 <b>Initial value:</b><div class="fragment"><div class="line">= async (<a class="code" href="members_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>) =&gt;</div>
 <div class="line">  await <a class="code" href="api_2index_8js.html#a49de16393722038aeb1da8e9874d4d36">axiosInstance</a>.delete(`<a class="code" href="namespaceapi_1_1views.html#a308fb6ca7ed69b9aebed843b6786eff9">proyectos</a>/${<a class="code" href="members_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>}`)</div>
 <div class="ttc" id="amembers_8test_8js_html_a12106278ecd31c348b8adbcd316f562f"><div class="ttname"><a href="members_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a></div><div class="ttdeci">let projectId</div><div class="ttdef"><b>Definition:</b> members.test.js:15</div></div>
-<div class="ttc" id="anamespaceapi_1_1views_html_a308fb6ca7ed69b9aebed843b6786eff9"><div class="ttname"><a href="namespaceapi_1_1views.html#a308fb6ca7ed69b9aebed843b6786eff9">api.views.proyectos</a></div><div class="ttdeci">def proyectos(request, proyect_id=None)</div><div class="ttdef"><b>Definition:</b> views.py:41</div></div>
+<div class="ttc" id="anamespaceapi_1_1views_html_a308fb6ca7ed69b9aebed843b6786eff9"><div class="ttname"><a href="namespaceapi_1_1views.html#a308fb6ca7ed69b9aebed843b6786eff9">api.views.proyectos</a></div><div class="ttdeci">def proyectos(request, proyect_id=None)</div><div class="ttdef"><b>Definition:</b> views.py:49</div></div>
 </div><!-- fragment -->
 <p>Eliminar proyecto La funcion recibe como parametro el id del proyecto a eliminar, retorna true si se pudo eliminar el proyecto. </p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -221,6 +222,34 @@ projectName: nombre del proyecto. </p>
 <div class="line">}</div>
 </div><!-- fragment -->
 <p>Editar proyeto. </p>
+
+</div>
+</div>
+<a id="a6fb1e8ec686596667ce7d539c7a7e535"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6fb1e8ec686596667ce7d539c7a7e535">&#9670;&nbsp;</a></span>generateProjectReport</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">export <a class="el" href="userStories_8test_8js.html#a92b303b76a3f942ea819498907d5e83c">const</a> generateProjectReport</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= async (<a class="code" href="members_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>) =&gt;</div>
+<div class="line">  await <a class="code" href="api_2index_8js.html#a49de16393722038aeb1da8e9874d4d36">axiosInstance</a>.get(`<a class="code" href="namespaceapi_1_1views.html#a308fb6ca7ed69b9aebed843b6786eff9">proyectos</a>/${<a class="code" href="members_8test_8js.html#a12106278ecd31c348b8adbcd316f562f">projectId</a>}/<a class="code" href="namespaceapi_1_1views.html#ae8d214872d0e25176b3154c5e7909955">reporte_product_backlog</a>`, {</div>
+<div class="line">    responseType: <span class="stringliteral">&quot;blob&quot;</span>,</div>
+<div class="line">  })</div>
+<div class="ttc" id="anamespaceapi_1_1views_html_ae8d214872d0e25176b3154c5e7909955"><div class="ttname"><a href="namespaceapi_1_1views.html#ae8d214872d0e25176b3154c5e7909955">api.views.reporte_product_backlog</a></div><div class="ttdeci">def reporte_product_backlog(request, proyect_id)</div><div class="ttdef"><b>Definition:</b> views.py:1185</div></div>
+</div><!-- fragment -->
+<p>Genera un archivo PDF de los us de un proyecto. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">{*}</td><td>projectId </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>archivo PDf </dd></dl>
 
 </div>
 </div>
@@ -297,7 +326,7 @@ Si se provee el id de usuario la funcion solicita todos los proyectos de un usua
 <div class="line">  }</div>
 <div class="line">  <span class="keywordflow">return</span> await <a class="code" href="api_2index_8js.html#a49de16393722038aeb1da8e9874d4d36">axiosInstance</a>.get(<span class="stringliteral">&quot;proyectos&quot;</span>);</div>
 <div class="line">}</div>
-<div class="ttc" id="anamespaceapi_1_1views_html_a7cf2387f02ec05f86f8bb1498b22bf82"><div class="ttname"><a href="namespaceapi_1_1views.html#a7cf2387f02ec05f86f8bb1498b22bf82">api.views.usuarios</a></div><div class="ttdeci">def usuarios(request, user_id=None)</div><div class="ttdef"><b>Definition:</b> views.py:187</div></div>
+<div class="ttc" id="anamespaceapi_1_1views_html_a7cf2387f02ec05f86f8bb1498b22bf82"><div class="ttname"><a href="namespaceapi_1_1views.html#a7cf2387f02ec05f86f8bb1498b22bf82">api.views.usuarios</a></div><div class="ttdeci">def usuarios(request, user_id=None)</div><div class="ttdef"><b>Definition:</b> views.py:195</div></div>
 </div><!-- fragment -->
 <p>Listar proyectos <br  />
 Si no se provee el id de usuario la funcion solicita al servidor todos los proyectos. </p>
@@ -320,7 +349,7 @@ Si se provee el id de usuario la funcion solicita todos los proyectos de un usua
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">import { <a class="el" href="api_2index_8js.html#a49de16393722038aeb1da8e9874d4d36">axiosInstance</a> } from '.'</td>
+          <td class="memname">import { <a class="el" href="api_2index_8js.html#a49de16393722038aeb1da8e9874d4d36">axiosInstance</a> } from &quot;.&quot;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -347,13 +376,15 @@ Si se provee el id de usuario la funcion solicita todos los proyectos de un usua
 <div class="line">  <a class="code" href="projects_8js.html#a03e596029d83db7bd1fbc2e0c7796b69">getProjectById</a>,</div>
 <div class="line">  <a class="code" href="projects_8js.html#a5eedf1969a2b3145f557abe7bb64f9af">deleteProject</a>,</div>
 <div class="line">  <a class="code" href="projects_8js.html#a8fb28a31443ef894b3b27824ed4b8234">getProjectMembers</a>,</div>
+<div class="line">  <a class="code" href="projects_8js.html#a6fb1e8ec686596667ce7d539c7a7e535">generateProjectReport</a>,</div>
 <div class="line">}</div>
-<div class="ttc" id="aprojects_8js_html_a03e596029d83db7bd1fbc2e0c7796b69"><div class="ttname"><a href="projects_8js.html#a03e596029d83db7bd1fbc2e0c7796b69">getProjectById</a></div><div class="ttdeci">export const getProjectById</div><div class="ttdoc">Listar proyecto por id La funcion recibe como parametro el id del proyecto y luego retorna la informa...</div><div class="ttdef"><b>Definition:</b> projects.js:80</div></div>
-<div class="ttc" id="aprojects_8js_html_a2e9d2ad3fbbc8cf8fe5dc7f6f51cd596"><div class="ttname"><a href="projects_8js.html#a2e9d2ad3fbbc8cf8fe5dc7f6f51cd596">createProject</a></div><div class="ttdeci">export const createProject</div><div class="ttdoc">Crear proyecto, recibe como parametro un objeto con los siguientes atributos  estimation: la estimaci...</div><div class="ttdef"><b>Definition:</b> projects.js:28</div></div>
-<div class="ttc" id="aprojects_8js_html_a58aa3a71f71a18c9f77d806cc5f973b4"><div class="ttname"><a href="projects_8js.html#a58aa3a71f71a18c9f77d806cc5f973b4">getProjects</a></div><div class="ttdeci">export const getProjects</div><div class="ttdoc">Listar proyectos  Si no se provee el id de usuario la funcion solicita al servidor todos los proyecto...</div><div class="ttdef"><b>Definition:</b> projects.js:58</div></div>
-<div class="ttc" id="aprojects_8js_html_a5eedf1969a2b3145f557abe7bb64f9af"><div class="ttname"><a href="projects_8js.html#a5eedf1969a2b3145f557abe7bb64f9af">deleteProject</a></div><div class="ttdeci">export const deleteProject</div><div class="ttdoc">Eliminar proyecto La funcion recibe como parametro el id del proyecto a eliminar, retorna true si se ...</div><div class="ttdef"><b>Definition:</b> projects.js:87</div></div>
-<div class="ttc" id="aprojects_8js_html_a8fb28a31443ef894b3b27824ed4b8234"><div class="ttname"><a href="projects_8js.html#a8fb28a31443ef894b3b27824ed4b8234">getProjectMembers</a></div><div class="ttdeci">export const getProjectMembers</div><div class="ttdoc">Listar miembros de un proyecto  Si no se provee el id de usuario la funcion solicita al servidor todo...</div><div class="ttdef"><b>Definition:</b> projects.js:97</div></div>
-<div class="ttc" id="aprojects_8js_html_aa5941459294191899f916c80f34e0547"><div class="ttname"><a href="projects_8js.html#aa5941459294191899f916c80f34e0547">editProject</a></div><div class="ttdeci">export const editProject</div><div class="ttdoc">Editar proyeto.</div><div class="ttdef"><b>Definition:</b> projects.js:66</div></div>
+<div class="ttc" id="aprojects_8js_html_a03e596029d83db7bd1fbc2e0c7796b69"><div class="ttname"><a href="projects_8js.html#a03e596029d83db7bd1fbc2e0c7796b69">getProjectById</a></div><div class="ttdeci">export const getProjectById</div><div class="ttdoc">Listar proyecto por id La funcion recibe como parametro el id del proyecto y luego retorna la informa...</div><div class="ttdef"><b>Definition:</b> projects.js:77</div></div>
+<div class="ttc" id="aprojects_8js_html_a2e9d2ad3fbbc8cf8fe5dc7f6f51cd596"><div class="ttname"><a href="projects_8js.html#a2e9d2ad3fbbc8cf8fe5dc7f6f51cd596">createProject</a></div><div class="ttdeci">export const createProject</div><div class="ttdoc">Crear proyecto, recibe como parametro un objeto con los siguientes atributos  estimation: la estimaci...</div><div class="ttdef"><b>Definition:</b> projects.js:27</div></div>
+<div class="ttc" id="aprojects_8js_html_a58aa3a71f71a18c9f77d806cc5f973b4"><div class="ttname"><a href="projects_8js.html#a58aa3a71f71a18c9f77d806cc5f973b4">getProjects</a></div><div class="ttdeci">export const getProjects</div><div class="ttdoc">Listar proyectos  Si no se provee el id de usuario la funcion solicita al servidor todos los proyecto...</div><div class="ttdef"><b>Definition:</b> projects.js:55</div></div>
+<div class="ttc" id="aprojects_8js_html_a5eedf1969a2b3145f557abe7bb64f9af"><div class="ttname"><a href="projects_8js.html#a5eedf1969a2b3145f557abe7bb64f9af">deleteProject</a></div><div class="ttdeci">export const deleteProject</div><div class="ttdoc">Eliminar proyecto La funcion recibe como parametro el id del proyecto a eliminar, retorna true si se ...</div><div class="ttdef"><b>Definition:</b> projects.js:84</div></div>
+<div class="ttc" id="aprojects_8js_html_a6fb1e8ec686596667ce7d539c7a7e535"><div class="ttname"><a href="projects_8js.html#a6fb1e8ec686596667ce7d539c7a7e535">generateProjectReport</a></div><div class="ttdeci">export const generateProjectReport</div><div class="ttdoc">Genera un archivo PDF de los us de un proyecto.</div><div class="ttdef"><b>Definition:</b> projects.js:92</div></div>
+<div class="ttc" id="aprojects_8js_html_a8fb28a31443ef894b3b27824ed4b8234"><div class="ttname"><a href="projects_8js.html#a8fb28a31443ef894b3b27824ed4b8234">getProjectMembers</a></div><div class="ttdeci">export const getProjectMembers</div><div class="ttdoc">Listar miembros de un proyecto  Si no se provee el id de usuario la funcion solicita al servidor todo...</div><div class="ttdef"><b>Definition:</b> projects.js:104</div></div>
+<div class="ttc" id="aprojects_8js_html_aa5941459294191899f916c80f34e0547"><div class="ttname"><a href="projects_8js.html#aa5941459294191899f916c80f34e0547">editProject</a></div><div class="ttdeci">export const editProject</div><div class="ttdoc">Editar proyeto.</div><div class="ttdef"><b>Definition:</b> projects.js:63</div></div>
 </div><!-- fragment -->
 </div>
 </div>

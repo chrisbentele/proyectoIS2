@@ -1,8 +1,8 @@
 ## @file misc.py
 # @brief Funciones misceláneas
 
-from ..models import US, USAsignada
-from ..serializers import USAsignadaSerializer, USSerializer
+from ..models import US, RegistroHoras, USAsignada
+from ..serializers import RegistroHorasSerializer, USAsignadaSerializer, USSerializer
 
 
 def get_asigned_user(us_id):
@@ -45,124 +45,14 @@ def get_us_count(proyect_id, sprint_id):
     return conteo, len(us_list), activable
 
 
-def generate_table(data_list):
+def get_horas_registradas_US(us_id):
     """
-    Recibe una lista de objetos y genera una tabla HTML
+    Extrae los datos de las historias de usuario
     """
+    rh = RegistroHoras.objects.filter(us=us_id)
+    rh_list = RegistroHorasSerializer(rh, many=True).data
+    horas = 0
+    for rh in rh_list:
+        horas += rh["horas"]
 
-    rows = ""
-    for row in data_list:
-        print(row)
-        rows += f"""
-            <tr>
-                <td style="border: 1px solid black">
-                    {row["us_id"]}
-                </td>
-                <td style="border: 1px solid black">
-                    {row["us_name"]}
-                </td>
-                <td style="border: 1px solid black">
-                    {row["asignado"]}
-                </td>
-                <td style="border: 1px solid black">
-                    {row["prioridad"]}
-                </td>
-                <td style="border: 1px solid black">
-                    {row["estado"]}
-                </td>
-                <td style="border: 1px solid black">
-                    {row["estimacion"]}
-                </td>
-                <td style="border: 1px solid black">
-                    {row["horas_registradas"]}
-                </td>
-
-            </tr>
-        """
-    table = f"""
-    <table>
-        <style>
-            table, th, td {{
-            border: 1px solid black;
-            border-collapse: collapse;
-            padding: 5px;
-            }}
-        </style>
-        <tr>
-            <th style="border: 1px solid black">
-                Id
-            </th>
-            <th style="border: 1px solid black">
-                User Story
-            </th>
-            <th style="border: 1px solid black">
-                Asignado
-            </th>
-
-            <th style="border: 1px solid black">
-                Prioridad
-            </th>
-            <th style="border: 1px solid black">
-                Estado
-            </th>
-            <th style="border: 1px solid black">
-                Estimacion
-            </th>
-            <th style="border: 1px solid black">
-                Horas Registradas
-            </th>
-        </tr>
-        {rows}
-    </table>
-    """
-    return table
-
-
-def generate_table_proyecto(data_list):
-    """
-    Recibe una lista de objetos y genera una tabla HTML
-    """
-
-    rows = ""
-    for row in data_list:
-        print(row)
-        rows += f"""
-            <tr>
-                <td style="border: 1px solid black">
-                    {row["us_id"]}
-                </td>
-                <td style="border: 1px solid black">
-                    {row["us_name"]}
-                </td>
-                <td style="border: 1px solid black">
-                    {row["estado"]}
-                </td>
-            </tr>
-        """
-    table = f"""
-    <table>
-        <style>
-            table, th, td {{
-            border: 1px solid black;
-            border-collapse: collapse;
-            padding: 5px;
-            }}
-        </style>
-        <tr>
-            <th style="border: 1px solid black">
-                Id
-            </th>
-            <th style="border: 1px solid black">
-                User Story
-            </th>
-            <th style="border: 1px solid black">
-                Horas
-            </th>
-            <th style="border: 1px solid black">
-                Mensaje
-            </th>
-        </tr>
-        {rows}
-    </table>
-    """
-    return table
+    return horas
