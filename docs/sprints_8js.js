@@ -5,6 +5,8 @@ var sprints_8js =
     [ "deleteSprint", "sprints_8js.html#aecfb6f4fcb091b3ba5273364fdea5778", null ],
     [ "desactivarSprint", "sprints_8js.html#aeacbad1838d276b175c66633563c9ad0", null ],
     [ "editSprint", "sprints_8js.html#a362901486069ec473e14f059a4fd6912", null ],
+    [ "generarReporteSprintBacklog", "sprints_8js.html#a4128be76ea3a7d08ed1f3faa348a9725", null ],
+    [ "generarReporteUSPrioridad", "sprints_8js.html#a87fb7d3b6ad98a50e1fc42de1fbc9de9", null ],
     [ "getHoras", "sprints_8js.html#a0815db75ba8e4413ab5321cbc7997055", null ],
     [ "getRegistrosHoras", "sprints_8js.html#ad943250468556213209aac94f7801390", null ],
     [ "getSprint", "sprints_8js.html#ae6db574470e7dd773d2f2502dc98401a", null ],
