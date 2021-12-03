@@ -79,7 +79,6 @@ export default function ProjectConfig({ props, dispatchError }) {
       );
 
     history.push(`/projects/${projectId}`);
-    console.log(values);
   }
 
   return project ? (

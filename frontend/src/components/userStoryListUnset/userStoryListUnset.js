@@ -57,7 +57,6 @@ const USListUnset = ({
   const [showAsignarDevModal, setShowAsignarDevModal] = useState(false);
   const onClose = () => setIsOpen(false);
   const onDelete = (id) => {
-    console.log(id);
     eliminarUS(id);
     setIsOpen(false);
   };

@@ -32,14 +32,12 @@ const Profile = ({ props, dispatchError }) => {
   const [thisMember, setThisMember] = useState();
   useEffect(() => {
     if (!isLoading) {
-      console.log(user);
       api
         .getProjects(user.sub)
         .then(({ data: projects }) => {
           const activeProjects = [];
           const finishedProjects = [];
           projects.forEach((project) => {
-            console.log(project);
             if (project.estado === 1) {
               finishedProjects.push(project);
             } else {
