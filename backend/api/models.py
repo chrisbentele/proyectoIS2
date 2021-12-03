@@ -46,6 +46,9 @@ PERMISOS = (
     (19, "Modificar Sprint"),
     (20, "Eliminar Sprint"),
     (21, "Estimar Sprint"),
+    (22, "Reporte Product Backlog"),
+    (23, "Reporte Sprint Backlog"),
+    (24, "Estimar US - Sprint"),
 )
 ESTADO_US = ((0, "To do"), (1, "Doing"), (2, "Done"), (3, "QA"), (4, "Backlog"))
 

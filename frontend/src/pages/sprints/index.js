@@ -283,10 +283,14 @@ export default function Index({ props, dispatchError }) {
                   Desactivar Sprint
                 </Button>
               ) : null}
-
-              <Button onClick={onReporteUSPrioridad} colorScheme="green">
-                Generar reporte
-              </Button>
+              {tienePermiso(
+                thisMember,
+                PERMISOS_MACRO.REPORTE_US_PRIORIDAD
+              ) && (
+                <Button onClick={onReporteUSPrioridad} colorScheme="green">
+                  Generar reporte
+                </Button>
+              )}
             </HStack>
           </Box>
           <Box marginTop="10px" marginBottom="10px">
@@ -412,7 +416,7 @@ export default function Index({ props, dispatchError }) {
             onClose={() => setIsOpenEditSp(false)}
           />
 
-          <Flex
+          {/* <Flex
             bg="white"
             width="fit-content"
             borderColor="black"
@@ -421,7 +425,6 @@ export default function Index({ props, dispatchError }) {
             m="5"
             fontSize="lg"
           >
-            {/*Columna izquierda*/}
 
             <Box borderColor="black" borderRightWidth="3px">
               <Box borderBottomWidth="3px" borderColor="black">
@@ -435,9 +438,7 @@ export default function Index({ props, dispatchError }) {
                 ))}
               </List>
             </Box>
-            {/*-------------------*/}
 
-            {/*Columna derecha*/}
             <Box>
               <Box borderBottomWidth="3px" borderColor="black">
                 <Heading p="2" size="lg">
@@ -457,8 +458,7 @@ export default function Index({ props, dispatchError }) {
                 ))}
               </List>
             </Box>
-            {/*-------------------*/}
-          </Flex>
+          </Flex> */}
         </Box>
       ) : (
         <Flex align="center" ml="auto">
