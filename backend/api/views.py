@@ -929,6 +929,16 @@ def sprints_desactivar(request, proyect_id, sprint_id):
 def user_stories_asignar(request, proyect_id, us_id, user_id=None):
     """Metodos p/ asignar un miembro a una US del proyecto"""
 
+    try:
+        proyecto = Proyecto.objects.get(id=proyect_id)
+    except Proyecto.DoesNotExist:
+        return HttpResponseNotFound("Proyecto no existe")
+
+    try:
+        us = US.objects.get(id=us_id)
+    except US.DoesNotExist:
+        return HttpResponseNotFound("US no existe")
+
     if request.method == "POST":
         try:
             usAsignadaList = USAsignada.objects.filter(us=us_id)
@@ -952,7 +962,7 @@ def user_stories_asignar(request, proyect_id, us_id, user_id=None):
             try:
                 user = Usuario.objects.get(id=user_id)
                 send_email(
-                    "Asignacion de US", f"Te asignaron la US: {us_id}", user.email
+                    "Asignacion de US", f"Te asignaron la US: {us.nombre}", user.email
                 )
             except Exception:
                 pass
