@@ -1,13 +1,13 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="node1" title=" " alt="" coords="5,303,176,330"/>
-<area shape="rect" id="node2" href="$classapi_1_1serializers_1_1ComentarioSerializer.html" title=" " alt="" coords="240,5,409,47"/>
-<area shape="rect" id="node3" href="$classapi_1_1serializers_1_1ProyectoSerializer.html" title=" " alt="" coords="247,71,402,112"/>
-<area shape="rect" id="node4" href="$classapi_1_1serializers_1_1RegistroHorasSerializer.html" title=" " alt="" coords="249,136,400,177"/>
-<area shape="rect" id="node5" href="$classapi_1_1serializers_1_1RetrospectivaSerializer.html" title=" " alt="" coords="233,201,416,243"/>
-<area shape="rect" id="node6" href="$classapi_1_1serializers_1_1RolAsignadoSerializer.html" title=" " alt="" coords="237,267,413,308"/>
-<area shape="rect" id="node7" href="$classapi_1_1serializers_1_1RolSerializer.html" title=" " alt="" coords="237,333,412,359"/>
-<area shape="rect" id="node8" href="$classapi_1_1serializers_1_1SprintSerializer.html" title=" " alt="" coords="229,383,420,410"/>
-<area shape="rect" id="node9" href="$classapi_1_1serializers_1_1USAsignadaSerializer.html" title=" " alt="" coords="237,435,413,476"/>
-<area shape="rect" id="node10" href="$classapi_1_1serializers_1_1USSerializer.html" title=" " alt="" coords="237,501,412,527"/>
-<area shape="rect" id="node11" href="$classapi_1_1serializers_1_1UsuarioSerializer.html" title=" " alt="" coords="224,551,425,578"/>
+<area shape="rect" id="node2" href="$classapi_1_1serializers_1_1ComentarioSerializer.html" title="Serializador de un Comentario." alt="" coords="240,5,409,47"/>
+<area shape="rect" id="node3" href="$classapi_1_1serializers_1_1ProyectoSerializer.html" title="Serializador de un Proyecto." alt="" coords="247,71,402,112"/>
+<area shape="rect" id="node4" href="$classapi_1_1serializers_1_1RegistroHorasSerializer.html" title="Serializador de un RegistroHoras." alt="" coords="249,136,400,177"/>
+<area shape="rect" id="node5" href="$classapi_1_1serializers_1_1RetrospectivaSerializer.html" title="Serializador de una Retrospectiva." alt="" coords="233,201,416,243"/>
+<area shape="rect" id="node6" href="$classapi_1_1serializers_1_1RolAsignadoSerializer.html" title="Serializador de un RolASignado." alt="" coords="237,267,413,308"/>
+<area shape="rect" id="node7" href="$classapi_1_1serializers_1_1RolSerializer.html" title="Serializador de un Rol." alt="" coords="237,333,412,359"/>
+<area shape="rect" id="node8" href="$classapi_1_1serializers_1_1SprintSerializer.html" title="Serializador de un Sprint." alt="" coords="229,383,420,410"/>
+<area shape="rect" id="node9" href="$classapi_1_1serializers_1_1USAsignadaSerializer.html" title="Serializador de una USAsignada." alt="" coords="237,435,413,476"/>
+<area shape="rect" id="node10" href="$classapi_1_1serializers_1_1USSerializer.html" title="Serializador de una US." alt="" coords="237,501,412,527"/>
+<area shape="rect" id="node11" href="$classapi_1_1serializers_1_1UsuarioSerializer.html" title="Serializador de un Usuario." alt="" coords="224,551,425,578"/>
 </map>

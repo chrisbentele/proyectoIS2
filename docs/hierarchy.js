@@ -22,6 +22,11 @@ var hierarchy =
       [ "api.serializers.USSerializer", "classapi_1_1serializers_1_1USSerializer.html", null ],
       [ "api.serializers.UsuarioSerializer", "classapi_1_1serializers_1_1UsuarioSerializer.html", null ]
     ] ],
+    [ "api.utils.reportes.US_table", "classapi_1_1utils_1_1reportes_1_1US__table.html", [
+      [ "api.utils.reportes.Product_Backlog_table", "classapi_1_1utils_1_1reportes_1_1Product__Backlog__table.html", null ],
+      [ "api.utils.reportes.Sprint_Backlog_table", "classapi_1_1utils_1_1reportes_1_1Sprint__Backlog__table.html", null ],
+      [ "api.utils.reportes.US_Prioridad_table", "classapi_1_1utils_1_1reportes_1_1US__Prioridad__table.html", null ]
+    ] ],
     [ "AppConfig", null, [
       [ "api.apps.ApiConfig", "classapi_1_1apps_1_1ApiConfig.html", null ]
     ] ],
@@ -38,14 +43,20 @@ var hierarchy =
       [ "api.models.Usuario", "classapi_1_1models_1_1Usuario.html", null ]
     ] ],
     [ "TestCase", null, [
+      [ "api.tests.Product_Backlog_Table_Tests", "classapi_1_1tests_1_1Product__Backlog__Table__Tests.html", null ],
       [ "api.tests.Proyectos_Miembros_Tests", "classapi_1_1tests_1_1Proyectos__Miembros__Tests.html", null ],
       [ "api.tests.Proyectos_Tests", "classapi_1_1tests_1_1Proyectos__Tests.html", null ],
       [ "api.tests.Proyectos_Usuarios_Roles_Tests", "classapi_1_1tests_1_1Proyectos__Usuarios__Roles__Tests.html", null ],
+      [ "api.tests.Reporte_Product_Backlog_Tests", "classapi_1_1tests_1_1Reporte__Product__Backlog__Tests.html", null ],
+      [ "api.tests.Reporte_Sprint_Backlog_Tests", "classapi_1_1tests_1_1Reporte__Sprint__Backlog__Tests.html", null ],
+      [ "api.tests.Reporte_US_Prioridad", "classapi_1_1tests_1_1Reporte__US__Prioridad.html", null ],
       [ "api.tests.Roles_Tests", "classapi_1_1tests_1_1Roles__Tests.html", null ],
       [ "api.tests.Sprint_Activar_Tests", "classapi_1_1tests_1_1Sprint__Activar__Tests.html", null ],
+      [ "api.tests.Sprint_Backlog_table_Tests", "classapi_1_1tests_1_1Sprint__Backlog__table__Tests.html", null ],
       [ "api.tests.Sprints_Tests", "classapi_1_1tests_1_1Sprints__Tests.html", null ],
       [ "api.tests.Sprints_User_Stories_Tests", "classapi_1_1tests_1_1Sprints__User__Stories__Tests.html", null ],
-      [ "api.tests.US_Registro_horas", "classapi_1_1tests_1_1US__Registro__horas.html", null ],
+      [ "api.tests.US_Prioridad_table_Tests", "classapi_1_1tests_1_1US__Prioridad__table__Tests.html", null ],
+      [ "api.tests.US_Registro_horas_Tests", "classapi_1_1tests_1_1US__Registro__horas__Tests.html", null ],
       [ "api.tests.User_Stories_Asignar_Tests", "classapi_1_1tests_1_1User__Stories__Asignar__Tests.html", null ],
       [ "api.tests.User_Stories_Estimar_Tests", "classapi_1_1tests_1_1User__Stories__Estimar__Tests.html", null ],
       [ "api.tests.User_Stories_Tests", "classapi_1_1tests_1_1User__Stories__Tests.html", null ],

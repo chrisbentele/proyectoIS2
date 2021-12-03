@@ -1,26 +1,9 @@
 var searchData=
 [
-  ['get_5fasigned_5fuser_124',['get_asigned_user',['../namespaceapi_1_1utils_1_1misc.html#a576e7813e79e499a63d84e7c9d5d381e',1,'api::utils::misc']]],
-  ['get_5fus_5fcount_125',['get_us_count',['../namespaceapi_1_1utils_1_1misc.html#a31b92cf0752893dcee477fffa86e11af',1,'api::utils::misc']]],
-  ['gethoras_126',['getHoras',['../sprints_8js.html#a0815db75ba8e4413ab5321cbc7997055',1,'sprints.js']]],
-  ['getmember_127',['getMember',['../members_8js.html#ae966970c307c8a17ec09d69c1edf0d5a',1,'members.js']]],
-  ['getmembers_128',['getMembers',['../members_8js.html#a8ecbd24ba2e390513c20902c595fba92',1,'members.js']]],
-  ['getprojectbyid_129',['getProjectById',['../projects_8js.html#a03e596029d83db7bd1fbc2e0c7796b69',1,'projects.js']]],
-  ['getprojectmembers_130',['getProjectMembers',['../projects_8js.html#a8fb28a31443ef894b3b27824ed4b8234',1,'projects.js']]],
-  ['getprojects_131',['getProjects',['../projects_8js.html#a58aa3a71f71a18c9f77d806cc5f973b4',1,'projects.js']]],
-  ['getregistroshoras_132',['getRegistrosHoras',['../sprints_8js.html#ad943250468556213209aac94f7801390',1,'getRegistrosHoras():&#160;sprints.js'],['../userStories_8js.html#ad943250468556213209aac94f7801390',1,'getRegistrosHoras():&#160;userStories.js']]],
-  ['getrole_133',['getRole',['../roles_8js.html#a0cf87cee4712da2945ae7d56b2bc3daa',1,'roles.js']]],
-  ['getroles_134',['getRoles',['../roles_8js.html#a6b2678cb9ef217909366979ab7c865a4',1,'roles.js']]],
-  ['getsprint_135',['getSprint',['../sprints_8js.html#ae6db574470e7dd773d2f2502dc98401a',1,'sprints.js']]],
-  ['getsprintmiembros_136',['getSprintMiembros',['../sprints_8js.html#abb55da0ef7a2de6fc5f1936224a583e2',1,'sprints.js']]],
-  ['getsprints_137',['getSprints',['../sprints_8js.html#a1e506ff3bcede93c92d45ec588152191',1,'sprints.js']]],
-  ['getting_20started_20with_20create_20react_20app_138',['Getting Started with Create React App',['../md_frontend_README.html',1,'']]],
-  ['getuser_139',['getUser',['../users_8js.html#a3100b23c7ba75c95f3bf3d1ba9fc82d8',1,'users.js']]],
-  ['getusers_140',['getUsers',['../users_8js.html#a5fb2812833fec743f1d291112b36358c',1,'users.js']]],
-  ['getuserstories_141',['getUserStories',['../userStories_8js.html#aa384107b1b4fc4a017be2579907ee303',1,'userStories.js']]],
-  ['getusuariosasignados_142',['getUsuariosAsignados',['../userStories_8js.html#a178863ae40c7b1251feab2497c87627b',1,'userStories.js']]],
-  ['goback_143',['goBack',['../pages_2projectConfig_2index_8js.html#a4d6f0c13a50ab726ce760d2e3489c8f6',1,'goBack():&#160;index.js'],['../pages_2projectMembers_2index_8js.html#a4d6f0c13a50ab726ce760d2e3489c8f6',1,'goBack():&#160;index.js'],['../pages_2roles_2index_8js.html#a4d6f0c13a50ab726ce760d2e3489c8f6',1,'goBack():&#160;index.js']]],
-  ['goback_144',['GoBack',['../goBack_8js.html#ae9a936939816368352f467104559dba2',1,'goBack.js']]],
-  ['goback_2ejs_145',['goBack.js',['../goBack_8js.html',1,'']]],
-  ['graficoburndown_146',['graficoBurnDown',['../pages_2sprints_2index_8js.html#ab002ac1f21a20c6adac8f081df08f0e5',1,'index.js']]]
+  ['fecha_130',['fecha',['../classapi_1_1models_1_1RegistroHoras.html#a47a018d52cd16b76229ee6dc76c7f2b4',1,'api::models::RegistroHoras']]],
+  ['fechacreacion_131',['fechaCreacion',['../classapi_1_1models_1_1Retrospectiva.html#a8354ebbad6c8d5dc3ab1e21862d0ee3a',1,'api.models.Retrospectiva.fechaCreacion()'],['../classapi_1_1models_1_1Sprint.html#a63f2c2bb0fc3ec56ae63afe52b462635',1,'api.models.Sprint.fechaCreacion()'],['../classapi_1_1models_1_1US.html#a3243d4d09bb008239c97007953b4d449',1,'api.models.US.fechaCreacion()'],['../classapi_1_1models_1_1Comentario.html#a1e58a0d55e1bc11a4334cdace9cb0374',1,'api.models.Comentario.fechaCreacion()'],['../classapi_1_1models_1_1RegistroHoras.html#a2d6fdc27232eff93afa1ba0a81cdb58e',1,'api.models.RegistroHoras.fechaCreacion()']]],
+  ['fechaedit_132',['fechaEdit',['../classapi_1_1models_1_1RegistroHoras.html#ad6c726b7734af0564afeaffa3bc1dd69',1,'api::models::RegistroHoras']]],
+  ['fechafinalizacion_133',['fechaFinalizacion',['../classapi_1_1models_1_1Proyecto.html#ae177e723d5d046554d60adb969bd27c7',1,'api.models.Proyecto.fechaFinalizacion()'],['../classapi_1_1models_1_1Sprint.html#acb7a0a502b0eccc8b237e10a71018551',1,'api.models.Sprint.fechaFinalizacion()']]],
+  ['fechainicio_134',['fechaInicio',['../classapi_1_1models_1_1Sprint.html#a05452f1921100dfd75f9f2b034ca3e63',1,'api.models.Sprint.fechaInicio()'],['../classapi_1_1models_1_1Proyecto.html#a8dce622d20ca5e00fcbb9eb324c5fc4c',1,'api.models.Proyecto.fechaInicio()']]],
+  ['fields_135',['fields',['../classapi_1_1serializers_1_1RolSerializer_1_1Meta.html#a2ab626d4e174f0d7d82430cf9c43dd53',1,'api.serializers.RolSerializer.Meta.fields()'],['../classapi_1_1serializers_1_1UsuarioSerializer_1_1Meta.html#afd6e66b88f95775950ef9c69ea1efbce',1,'api.serializers.UsuarioSerializer.Meta.fields()'],['../classapi_1_1serializers_1_1RetrospectivaSerializer_1_1Meta.html#a9eb70e4afbe447a38844746eabc2b9b2',1,'api.serializers.RetrospectivaSerializer.Meta.fields()'],['../classapi_1_1serializers_1_1SprintSerializer_1_1Meta.html#aea83d60c1faf38965f64592f6d289259',1,'api.serializers.SprintSerializer.Meta.fields()'],['../classapi_1_1serializers_1_1USSerializer_1_1Meta.html#abfdb002a65732579e326f21e1f7072af',1,'api.serializers.USSerializer.Meta.fields()'],['../classapi_1_1serializers_1_1USAsignadaSerializer_1_1Meta.html#a56a606430dee8aca86006834509bb99b',1,'api.serializers.USAsignadaSerializer.Meta.fields()'],['../classapi_1_1serializers_1_1ComentarioSerializer_1_1Meta.html#ad3f4c6ac2633cdbbe6f77ab07058fa9d',1,'api.serializers.ComentarioSerializer.Meta.fields()'],['../classapi_1_1serializers_1_1ProyectoSerializer_1_1Meta.html#acf008ef0f359fb88b42f1761a52d4596',1,'api.serializers.ProyectoSerializer.Meta.fields()'],['../classapi_1_1serializers_1_1RolAsignadoSerializer_1_1Meta.html#af0c8aff780e4d66ae8e2eed91a49ff73',1,'api.serializers.RolAsignadoSerializer.Meta.fields()'],['../classapi_1_1serializers_1_1RegistroHorasSerializer_1_1Meta.html#a3b6c470eb38b0e266f6eae56c07558f6',1,'api.serializers.RegistroHorasSerializer.Meta.fields()']]]
 ];

@@ -35,15 +35,19 @@ const theme = extendTheme({
 
 export function mapStateColor(projectState) {
   switch (projectState) {
-    case 0:
+    case 0: //activo
       return "#ffe66d";
-    case 1:
-      return "#a0ff6d";
-    case 2:
+    case 1: //terminado
       return "#726bff";
     default:
       return "#ffffff";
   }
+}
+
+export function handleSprintBoxColor(sprint) {
+  if (sprint.terminado) return "#808080";
+  if (sprint.activo) return "#726bff";
+  return "#ffe66d";
 }
 
 export default theme;

@@ -12,32 +12,24 @@ import {
   Flex,
   HStack,
   Text,
-  LinkBox,
-  LinkOverlay,
-  Divider,
+  Heading,
+  List,
+  ListItem,
+  ListIcon,
 } from "@chakra-ui/layout";
 import { Link } from "react-router-dom";
 import { Button } from "@chakra-ui/button";
 import EditarSprintModal from "../../components/EditarSprintModal/EditarSprintModal";
 import USList from "../../components/userStoryList/userStoryList";
-import { mapStateColor } from "../../styles/theme";
+import { mapStateColor, handleSprintBoxColor } from "../../styles/theme";
 import { MdBuild } from "react-icons/md";
 import { useHistory } from "react-router-dom";
-import { BsFillPlayFill } from "react-icons/bs";
-import {
-  LineChart,
-  YAxis,
-  XAxis,
-  Tooltip,
-  CartesianGrid,
-  Line,
-} from "recharts";
+import { BsFillPlayFill, BsFillStopFill } from "react-icons/bs";
 
 import { tienePermiso } from "../../util";
 import { PERMISOS_MACRO } from "../roles/permisos";
 import { useAuth0 } from "@auth0/auth0-react";
 import { desactivarSprint } from "../../api/sprints";
-import { ordenarRegistrosPorFecha } from "../../util";
 import BurnDown from "../../components/graficoBurnDown";
 
 /**
@@ -53,19 +45,7 @@ export default function Index({ props, dispatchError }) {
   const [sprint, setSprint] = useState(null);
   const [isAllowed, toggleIsAllowed] = useState(true);
   const [isOpenEditSp, setIsOpenEditSp] = useState(false);
-
-  const [burndownData, setBurndownData] = useState([
-    {
-      dia: 1,
-      esperado: 1000,
-      restante: 950,
-    },
-    {
-      dia: 2,
-      esperado: 900,
-      restante: 800,
-    },
-  ]);
+  const [listaCambios, setListaCambios] = useState([]);
 
   const history = useHistory();
 
@@ -74,34 +54,44 @@ export default function Index({ props, dispatchError }) {
 
   //Al cargarse la pagina se busca el proyecto con el id del URL y se lo asigna a projectId
   useEffect(() => {
-    api
-      .getProjectById(projectId)
-      .then(({ data }) => setProject(data))
-      .catch((err) => console.log(err));
+    if (projectId && sprintId) {
+      api.getProjectById(projectId).then(({ data }) => {
+        setProject(data);
+      });
 
-    api.userStories
-      .getUserStories(projectId, sprintId)
-      .then(({ data }) => setUserStories(data));
+      api.userStories
+        .getUserStories(projectId, sprintId)
+        .then(({ data }) => setUserStories(data));
 
-    api.sprints
-      .getSprint(projectId, sprintId)
-      .then(({ data }) => {
-        setSprint(data);
-      })
-      .catch((err) => console.log(err));
+      api.sprints
+        .getSprint(projectId, sprintId)
+        .then(({ data }) => {
+          setSprint(data);
+        })
+        .catch((err) => console.log(err));
 
-    api
-      .getMember(projectId, user.sub)
-      .then(({ data: member }) => setThisMember(member))
-      .catch((err) =>
-        dispatchError(
-          "No autorizado",
-          "Debes formar parte del proyecto para visualizar el mismo o los sprints",
-          null,
-          false
-        )
-      );
+      api
+        .getMember(projectId, user.sub)
+        .then(({ data: member }) => setThisMember(member))
+        .catch((err) =>
+          dispatchError(
+            "No autorizado",
+            "Debes formar parte del proyecto para visualizar el mismo o los sprints",
+            null,
+            false
+          )
+        );
+
+      api.sprints
+        .getRegistrosHoras({ projectId, spId: sprintId })
+        .then(({ data }) => {
+          setListaCambios(data);
+          console.log(listaCambios);
+        })
+        .catch((err) => console.log(err));
+    }
   }, [projectId, sprintId]);
+
   const activateSprint = async () => {
     if (!sprint.activable) {
       return dispatchError("No se puedo activar el sprint", "");
@@ -131,7 +121,6 @@ export default function Index({ props, dispatchError }) {
 
   useEffect(() => {
     if (sprint && userStories.length && thisMember) {
-      console.log("this member rol", thisMember.rol.nombre);
       if (thisMember.rol.nombre === "Scrum Master") {
         toggleIsAllowed(true);
         return;
@@ -168,22 +157,40 @@ export default function Index({ props, dispatchError }) {
       .then(({ data }) => setUserStories(data));
   };
 
+  const onReporteUSPrioridad = async () => {
+    const { data } = await api.sprints.generarReporteUSPrioridad({
+      projectId,
+      spId: sprintId,
+    });
+    const fileDoc = window.URL.createObjectURL(data);
+
+    var tempLink = document.createElement("a");
+    tempLink.href = fileDoc;
+    tempLink.setAttribute("download", "reporte_US_prioridad.pdf");
+    tempLink.click();
+    window.URL.revokeObjectURL(fileDoc);
+  };
+
+  const quitarUserStory = (USs) => {
+    setUserStories(USs);
+  };
   return isAllowed && userStories && sprint ? (
     <Box
       minHeight="100vh"
       minWidth="full"
-      bg={mapStateColor(project?.estado)}
+      bg={handleSprintBoxColor(sprint)}
       color="#2b2d42"
       d="flex"
       justifyContent="left"
       overflow="auto"
+      marginTop={5}
       top="55px"
     >
       {project ? ( //si ya se cargo el proyecto se muestra el mismo, si no se muestra la pantalla de carga
         <Box mt="3rem">
           <Box
-            pos="fixed"
-            top="55px"
+            // pos="fixed"
+            // top="55px"
             zIndex="100"
             bg={mapStateColor(project.estado) - 40}
             left="0"
@@ -191,16 +198,26 @@ export default function Index({ props, dispatchError }) {
             // boxShadow="md"
             width="full"
             pl="3"
-            mb="3rem"
+            // mb="3rem"
           >
-            <HStack spacing="24px" fontSize="2xl" p="2">
+            <Heading size="lg" p="2">
               <Link to={`/projects/${projectId}`}>
-                {/* <Link to="/projects">Projects</Link> */}
-                <Text fontWeight="medium">{project.nombre}</Text>
+                Proyecto: {project.nombre}
               </Link>
+            </Heading>
 
+            <HStack spacing="12px" fontSize="2xl" p="2">
+              <Text fontWeight="medium">
+                Sprint: {sprint.nombre}{" "}
+                {sprint.terminado ? (
+                  <Text fontWeight="medium">Sprint Terminado</Text>
+                ) : sprint.activo ? (
+                  <Text fontWeight="medium">Sprint Activo</Text>
+                ) : (
+                  <Text fontWeight="medium">Sprint Inactivo</Text>
+                )}
+              </Text>
               <Box fontWeight="thin">|</Box>
-
               {tienePermiso(
                 thisMember,
                 PERMISOS_MACRO.EDITAR_MIEMBROS_A_PROYECTO
@@ -223,6 +240,7 @@ export default function Index({ props, dispatchError }) {
                   variant="solid"
                   // opacity="30%"
                   onClick={() => history.push(`/projects/${projectId}/roles`)}
+                  isDisabled={project.estado === 1}
                 >
                   Configurar Roles
                 </Button>
@@ -234,6 +252,7 @@ export default function Index({ props, dispatchError }) {
                   variant="solid"
                   // opacity="30%"
                   onClick={() => setIsOpenEditSp(true)}
+                  isDisabled={project.estado === 1}
                 >
                   Configurar Sprint
                 </Button>
@@ -245,8 +264,8 @@ export default function Index({ props, dispatchError }) {
                   colorScheme="yellow"
                   variant="solid"
                   // opacity="30%"
-                  disabled={!sprint?.activable}
                   onClick={activateSprint}
+                  isDisabled={project.estado === 1 || !sprint?.activable}
                 >
                   Activar Sprint
                 </Button>
@@ -254,20 +273,39 @@ export default function Index({ props, dispatchError }) {
               {tienePermiso(thisMember, PERMISOS_MACRO.MODIFICAR_SPRINT) &&
               sprint?.activo ? (
                 <Button
-                  leftIcon={<BsFillPlayFill />}
+                  leftIcon={<BsFillStopFill />}
                   colorScheme="yellow"
                   variant="solid"
                   // opacity="30%"
-                  disabled={!sprint?.activable}
                   onClick={deactivateSprint}
+                  isDisabled={project.estado === 1 || !sprint?.activable}
                 >
                   Desactivar Sprint
                 </Button>
               ) : null}
+              {tienePermiso(
+                thisMember,
+                PERMISOS_MACRO.REPORTE_US_PRIORIDAD
+              ) && (
+                <Button onClick={onReporteUSPrioridad} colorScheme="green">
+                  Generar reporte
+                </Button>
+              )}
             </HStack>
           </Box>
-          <Box mt="50px">
-            <HStack p="5" alignItems="top" float="top">
+          <Box marginTop="10px" marginBottom="10px">
+            <HStack p="5" float="top" alignItems="flex-start">
+              {!sprint?.activo ? (
+                <USList
+                  projectId={projectId}
+                  sprint={sprint}
+                  dispatchError={dispatchError}
+                  setUserStories={setUserStories}
+                  nombreLista="Backlog"
+                  userStories={userStories?.filter((us) => us.estado === 4)}
+                  quitarUserStory={quitarUserStory}
+                ></USList>
+              ) : null}
               <USList
                 projectId={projectId}
                 sprint={sprint}
@@ -278,7 +316,17 @@ export default function Index({ props, dispatchError }) {
                   //Es un array?
                   Array.isArray(userStories)
                     ? //Si es un array, qué elementos pertenecen a esta lista?
-                      userStories?.filter((us) => us.estado === 0)
+                      userStories
+                        ?.filter((us) => us.estado === 0)
+                        .sort(function comparePriorities(a, b) {
+                          if (a.prioridad > b.prioridad) {
+                            return -1;
+                          }
+                          if (a.prioridad < b.prioridad) {
+                            return 1;
+                          }
+                          return 0;
+                        })
                     : //Si es un solo elemento, pertenece a esta lista?
                     userStories?.estado === 0
                     ? //Si pertenece retorno
@@ -330,18 +378,87 @@ export default function Index({ props, dispatchError }) {
                 sprint={sprint}
                 dispatchError={dispatchError}
                 setUserStories={setUserStories}
-                nombreLista="Backlog"
-                userStories={userStories?.filter((us) => us.estado === 4)}
+                nombreLista="QA"
+                userStories={
+                  //Es un array?
+                  Array.isArray(userStories)
+                    ? //Si es un array, qué elementos pertenecen a esta lista?
+                      userStories?.filter((us) => us.estado === 3)
+                    : //Si es un solo elemento, pertenece a esta lista?
+                    userStories?.estado === 3
+                    ? //Si pertenece retorno
+                      userStories
+                    : //Si no pertenece, null
+                      null
+                }
               ></USList>
             </HStack>
           </Box>
-          <BurnDown registros={[]} sprint={sprint} />
+          <Flex
+            justify="center"
+            backgroundColor="#ffffff"
+            borderWidth={3}
+            borderColor={"#c9ccd1"}
+            display={"flex"}
+            justifyContent={"center"}
+            alignItems={"center"}
+            width="6xl"
+            p="5"
+            ml="5"
+          >
+            <BurnDown registros={[]} sprint={sprint} />
+          </Flex>
+
           <EditarSprintModal
             projectId={projectId}
             sprint={sprint}
             isOpen={isOpenEditSp}
             onClose={() => setIsOpenEditSp(false)}
           />
+
+          {/* <Flex
+            bg="white"
+            width="fit-content"
+            borderColor="black"
+            borderWidth="4px"
+            borderRadius="5"
+            m="5"
+            fontSize="lg"
+          >
+
+            <Box borderColor="black" borderRightWidth="3px">
+              <Box borderBottomWidth="3px" borderColor="black">
+                <Heading p="2" size="lg">
+                  US
+                </Heading>
+              </Box>
+              <List p="2">
+                {listaCambios.map((cambio) => (
+                  <ListItem key={cambio.id}>{cambio.us}</ListItem>
+                ))}
+              </List>
+            </Box>
+
+            <Box>
+              <Box borderBottomWidth="3px" borderColor="black">
+                <Heading p="2" size="lg">
+                  Cambio
+                </Heading>
+              </Box>
+              <List p="2">
+                {listaCambios.map((cambio) => (
+                  <ListItem key={cambio.id}>
+                    {"El usuario " +
+                      cambio.usuario +
+                      " registró " +
+                      cambio.horas +
+                      " horas: " +
+                      cambio.mensaje}
+                  </ListItem>
+                ))}
+              </List>
+            </Box>
+          </Flex> */}
         </Box>
       ) : (
         <Flex align="center" ml="auto">

@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['main_507',['main',['../namespacemanage.html#afd5b00260cc364aa5bde07e227c6ea78',1,'manage']]],
-  ['mapstatecolor_508',['mapStateColor',['../theme_8js.html#a11d200c71cd91c730425f7a6fa166555',1,'theme.js']]]
+  ['login_568',['Login',['../pages_2login_2index_8js.html#ac6cad7af343a818c11e9a97f0c47258d',1,'index.js']]]
 ];

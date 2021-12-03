@@ -12,7 +12,12 @@ from api.serializers import (
 )
 from django.test import TestCase
 
-from api.models import US, RegistroHoras, RolAsignado
+from api.models import US, RegistroHoras, RolAsignado, Usuario
+from api.utils.reportes import (
+    Product_Backlog_table,
+    Sprint_Backlog_table,
+    US_Prioridad_table,
+)
 
 ## @file tests.py
 #
@@ -99,11 +104,11 @@ def asignar_us_miembro(self, proyect_id, us_id, user_id):
     return res.json()
 
 
-def registro_horas(self, sprint_id, us_id, fecha=None):
+def registro_horas(self, proyect_id, sprint_id, us_id, fecha=None):
 
     res = self.client.post(
-        f"/api/sprints/{sprint_id}/user_stories/{us_id}/registro_horas",
-        json.dumps({"horas": 1, "fecha": fecha}),
+        f"/api/proyectos/{proyect_id}/sprints/{sprint_id}/user_stories/{us_id}/registro_horas",
+        json.dumps({"horas": 1, "fecha": fecha, "mensaje": "aaaa"}),
         content_type="application/json",
     )
     self.assertEqual(res.status_code, 201)
@@ -422,7 +427,6 @@ class Sprints_Tests(TestCase):
         res = self.client.get(
             f"/api/proyectos/{us['proyecto']}/sprints/{us['sprint']}/miembros"
         )
-        print(res.json())
         self.assertJSONEqual(json.dumps(res.json()[0]), usuario)
 
 
@@ -680,7 +684,7 @@ class Sprints_User_Stories_Tests(TestCase):
         self.assertEqual(res.status_code, 204)
 
 
-class US_Registro_horas(TestCase):
+class US_Registro_horas_Tests(TestCase):
     def test_registro_horas_create(self):
         u = crear_user()
         p = crear_proyecto(self, [u["id"]])
@@ -695,8 +699,8 @@ class US_Registro_horas(TestCase):
 
         # Crear Registro de horas
         res = self.client.post(
-            f"/api/sprints/{sp['id']}/user_stories/{us['id']}/registro_horas",
-            json.dumps({"horas": 1}),
+            f"/api/proyectos/{p['id']}/sprints/{sp['id']}/user_stories/{us['id']}/registro_horas",
+            json.dumps({"horas": 1, "mensaje": "aaaa"}),
             content_type="application/json",
         )
 
@@ -715,7 +719,7 @@ class US_Registro_horas(TestCase):
         rg_data = self.test_registro_horas_create()
 
         res = self.client.get(
-            f"/api/sprints/{rg_data['sprint']}/user_stories/{rg_data['us']}/registro_horas",
+            f"/api/proyectos/{rg_data['proyecto']}/sprints/{rg_data['sprint']}/user_stories/{rg_data['us']}/registro_horas",
         )
         self.assertEqual(res.status_code, 200)
 
@@ -726,7 +730,7 @@ class US_Registro_horas(TestCase):
         rg_data = self.test_registro_horas_create()
 
         res = self.client.get(
-            f"/api/sprints/{rg_data['sprint']}/user_stories/{rg_data['us']}/registro_horas",
+            f"/api/proyectos/{rg_data['proyecto']}/sprints/{rg_data['sprint']}/user_stories/{rg_data['us']}/registro_horas",
             {"fecha": rg_data["fecha"]},
         )
         self.assertEqual(res.status_code, 200)
@@ -737,18 +741,24 @@ class US_Registro_horas(TestCase):
 
     def test_sprints_horas_get(self):
         rg_data_1 = self.test_registro_horas_create()
+        asigned_1 = Usuario.objects.get(id=rg_data_1["usuario"])
+
+        rg_data_1["usuario"] = UsuarioSerializer(asigned_1).data
 
         # Crear una segunda hora
         td = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
         rg_data_2 = registro_horas(
             self,
+            rg_data_1["proyecto"],
             rg_data_1["sprint"],
             rg_data_1["us"],
             td,
         )
+        asigned_2 = Usuario.objects.get(id=rg_data_2["usuario"])
+        rg_data_2["usuario"] = UsuarioSerializer(asigned_2).data
 
         res = self.client.get(
-            f"/api/sprints/{rg_data_1['sprint']}/registro_horas",
+            f"/api/proyectos/{rg_data_1['proyecto']}/sprints/{rg_data_1['sprint']}/registro_horas",
         )
         self.assertEqual(res.status_code, 200)
 
@@ -762,8 +772,8 @@ class US_Registro_horas(TestCase):
         rg_data = self.test_registro_horas_create()
 
         res = self.client.put(
-            f"/api/sprints/{rg_data['sprint']}/user_stories/{rg_data['us']}/registro_horas",
-            json.dumps({"new_horas": 2, "fecha": rg_data["fecha"]}),
+            f"/api/proyectos/{rg_data['proyecto']}/sprints/{rg_data['sprint']}/user_stories/{rg_data['us']}/registro_horas",
+            json.dumps({"new_horas": 2, "fecha": rg_data["fecha"], "mensaje": "aaaa"}),
             content_type="application/json",
         )
         self.assertEqual(res.status_code, 200)
@@ -778,17 +788,151 @@ class US_Registro_horas(TestCase):
         rg_data = self.test_registro_horas_create()
 
         res = self.client.delete(
-            f"/api/sprints/{rg_data['sprint']}/user_stories/{rg_data['us']}/registro_horas",
-            json.dumps({"fecha": rg_data["fecha"]}),
-            content_type="application/json",
+            f"/api/proyectos/{rg_data['proyecto']}/sprints/{rg_data['sprint']}/user_stories/{rg_data['us']}/registro_horas?fecha={rg_data['fecha']}",
         )
 
         self.assertEqual(res.status_code, 204)
 
         res = self.client.get(
-            f"/api/sprints/{rg_data['sprint']}/user_stories/{rg_data['us']}/registro_horas",
+            f"/api/proyectos/{rg_data['proyecto']}/sprints/{rg_data['sprint']}/user_stories/{rg_data['us']}/registro_horas",
             {"fecha": rg_data["fecha"]},
         )
 
         self.assertEqual(res.status_code, 404)
 
+
+class Product_Backlog_Table_Tests(TestCase):
+    def test_crear_tabla(self):
+        t = Product_Backlog_table("Product_Backlog_table")
+        self.assertEqual(t.reporte_name, "Product_Backlog_table")
+
+        # Añadir filas
+        t.add_row(1, "us_name1", 4)
+        t.add_row(2, "us_name2", 3)
+        t.add_row(3, "us_name3", 2)
+
+        # Comprobar que las filas se han añadido correctamente
+        self.assertEqual(t.rows[0][0], 1)
+
+        table_html = t._generate_html_table()
+        self.assertIn("us_name1", table_html)
+
+
+class Sprint_Backlog_table_Tests(TestCase):
+    def test_crear_tabla(self):
+        t = Sprint_Backlog_table("Sprint_Backlog_table")
+        self.assertEqual(t.reporte_name, "Sprint_Backlog_table")
+
+        # Añadir filas
+        t.add_row(1, "us_name1", 4, 3, 2)
+        t.add_row(2, "us_name2", 3, 2, 1)
+        t.add_row(3, "us_name3", 2, 1, 0)
+
+        # Comprobar que las filas se han añadido correctamente
+        self.assertEqual(t.rows[0][0], 1)
+
+        table_html = t._generate_html_table()
+        self.assertIn("us_name1", table_html)
+
+
+class US_Prioridad_table_Tests(TestCase):
+    def test_crear_tabla(self):
+        t = US_Prioridad_table("US_Prioridad_table")
+        self.assertEqual(t.reporte_name, "US_Prioridad_table")
+
+        # Añadir filas
+        t.add_row(1, "us_name1", 4, "chris", 3)
+        t.add_row(2, "us_name2", 3, "matias", 2)
+        t.add_row(3, "us_name3", 2, "fabri", 1)
+
+        # Comprobar que las filas se han añadido correctamente
+        self.assertEqual(t.rows[0][0], 1)
+
+        table_html = t._generate_html_table()
+        self.assertIn("us_name1", table_html)
+
+
+class Reporte_Product_Backlog_Tests(TestCase):
+    def test_generar_pdf(self):
+        u = crear_user()
+        p = crear_proyecto(self, [u["id"]])
+        sp = crear_sprint(self, p)
+        us = crear_US(p["id"], u["id"])
+
+        # Generar pdf
+        res = self.client.get(
+            f"/api/proyectos/{p['id']}/reporte_product_backlog",
+        )
+        self.assertEqual(res.status_code, 200)
+
+
+class Reporte_Sprint_Backlog_Tests(TestCase):
+    def test_generar_pdf(self):
+        u = crear_user()
+        p = crear_proyecto(self, [u["id"]])
+        sp = crear_sprint(self, p)
+        us = crear_US(p["id"], u["id"])
+
+        # Asignar usuario a la US
+        asignar_us_miembro(self, p["id"], us["id"], u["id"])
+
+        # estima el usuario
+        res = self.client.post(
+            f"/api/proyectos/{p['id']}/user_stories/{us['id']}/estimar",
+            json.dumps({"user_id": u["id"], "estimacion": 1}),
+            content_type="application/json",
+        )
+        self.assertEqual(res.status_code, 200)
+
+        # Asignar US al Sprint
+        asignar_us_sprint(self, p["id"], sp["id"], us["id"])
+
+        # Crear Registro de horas
+        res = self.client.post(
+            f"/api/proyectos/{p['id']}/sprints/{sp['id']}/user_stories/{us['id']}/registro_horas",
+            json.dumps({"horas": 1, "mensaje": "aaaa"}),
+            content_type="application/json",
+        )
+        self.assertEqual(res.status_code, 201)
+
+        # Generar pdf
+        res = self.client.get(
+            f"/api/proyectos/{p['id']}/sprints/{sp['id']}/reporte_sprint_backlog",
+        )
+        self.assertEqual(res.status_code, 200)
+
+
+class Reporte_US_Prioridad(TestCase):
+    def test_generar_pdf(self):
+        u = crear_user()
+        p = crear_proyecto(self, [u["id"]])
+        sp = crear_sprint(self, p)
+        us = crear_US(p["id"], u["id"])
+
+        # Asignar usuario a la US
+        asignar_us_miembro(self, p["id"], us["id"], u["id"])
+
+        # estima el usuario
+        res = self.client.post(
+            f"/api/proyectos/{p['id']}/user_stories/{us['id']}/estimar",
+            json.dumps({"user_id": u["id"], "estimacion": 1}),
+            content_type="application/json",
+        )
+        self.assertEqual(res.status_code, 200)
+
+        # Asignar US al Sprint
+        asignar_us_sprint(self, p["id"], sp["id"], us["id"])
+
+        # Crear Registro de horas
+        res = self.client.post(
+            f"/api/proyectos/{p['id']}/sprints/{sp['id']}/user_stories/{us['id']}/registro_horas",
+            json.dumps({"horas": 1, "mensaje": "aaaa"}),
+            content_type="application/json",
+        )
+        self.assertEqual(res.status_code, 201)
+
+        # Generar pdf
+        res = self.client.get(
+            f"/api/proyectos/{p['id']}/sprints/{sp['id']}/reporte_sprint_backlog",
+        )
+        self.assertEqual(res.status_code, 200)

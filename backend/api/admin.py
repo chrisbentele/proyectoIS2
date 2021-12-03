@@ -1,5 +1,16 @@
 from django.contrib import admin
-from .models import Usuario, Proyecto, Retrospectiva, Sprint, US, USAsignada, Comentario, Rol, RolAsignado
+from .models import (
+    RegistroHoras,
+    Usuario,
+    Proyecto,
+    Retrospectiva,
+    Sprint,
+    US,
+    USAsignada,
+    Comentario,
+    Rol,
+    RolAsignado,
+)
 
 ##
 # @file admin.py
@@ -40,3 +51,4 @@ admin.site.register(USAsignada)
 admin.site.register(Comentario)
 admin.site.register(Rol)
 admin.site.register(RolAsignado)
+admin.site.register(RegistroHoras)

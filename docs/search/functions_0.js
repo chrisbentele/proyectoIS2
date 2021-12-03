@@ -1,12 +1,4 @@
 var searchData=
 [
-  ['addicon_482',['AddIcon',['../components_2addIcon_2index_8js.html#a3ca1ce2c50a30b78bd3c4f80854fdddd',1,'index.js']]],
-  ['addmembertable_483',['AddMemberTable',['../addMemberTable_8js.html#ab6f4a905ea0b8cf05b527e8b13126134',1,'addMemberTable.js']]],
-  ['afterall_484',['afterAll',['../sprints_8test_8js.html#aa1299c0d68c4e3a25f06069cd1553704',1,'sprints.test.js']]],
-  ['agruparregistrosporfecha_485',['agruparRegistrosPorFecha',['../util_2index_8js.html#a9a4dda09af718c445d271965874a3ae9',1,'index.js']]],
-  ['app_486',['App',['../App_8js.html#a8229d9d99f449d92ef4115be534f1839',1,'App.js']]],
-  ['asignar_5fus_5fmiembro_487',['asignar_us_miembro',['../namespaceapi_1_1tests.html#a443882a05cacc9f098a49fd649f79cf2',1,'api::tests']]],
-  ['asignar_5fus_5fsprint_488',['asignar_us_sprint',['../namespaceapi_1_1tests.html#aa6a75a77ade1bf4949cab296d42b9bab',1,'api::tests']]],
-  ['async_489',['async',['../projects_8test_8js.html#a2bbea1ca302c158b8d9fccabd4fd82bf',1,'async():&#160;projects.test.js'],['../roles_8test_8js.html#a2bbea1ca302c158b8d9fccabd4fd82bf',1,'async():&#160;roles.test.js']]],
-  ['auth_5fmiddlewares_490',['auth_middlewares',['../namespaceapi_1_1middlewares.html#acc0a89d02d74853f23e38efe25e3cbd6',1,'api::middlewares']]]
+  ['_5f_5finit_5f_5f_539',['__init__',['../classapi_1_1utils_1_1reportes_1_1US__table.html#a8e9b9524953ce30c9333a024c1c1aa17',1,'api.utils.reportes.US_table.__init__()'],['../classapi_1_1utils_1_1reportes_1_1Product__Backlog__table.html#a005a62afc31ff877bf021691158df21b',1,'api.utils.reportes.Product_Backlog_table.__init__()'],['../classapi_1_1utils_1_1reportes_1_1Sprint__Backlog__table.html#aa32f400ee2749037b0ba3ffa5b837c74',1,'api.utils.reportes.Sprint_Backlog_table.__init__()'],['../classapi_1_1utils_1_1reportes_1_1US__Prioridad__table.html#ae61a310aace08bf2756079ff4456577a',1,'api.utils.reportes.US_Prioridad_table.__init__()']]]
 ];

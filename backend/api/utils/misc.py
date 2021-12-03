@@ -1,15 +1,15 @@
 ## @file misc.py
 # @brief Funciones misceláneas
 
-from ..models import US, USAsignada
-from ..serializers import USAsignadaSerializer, USSerializer
+from ..models import US, RegistroHoras, USAsignada
+from ..serializers import RegistroHorasSerializer, USAsignadaSerializer, USSerializer
 
 
 def get_asigned_user(us_id):
     """!
     Adquiere el usuario que está asignado a cierta historia de usuario.
     @param us_id ID de la historia de usuario
-    @returns 
+    @returns
     """
     asigned_query = USAsignada.objects.filter(
         us=us_id,
@@ -43,3 +43,16 @@ def get_us_count(proyect_id, sprint_id):
     if len(us_list) == 0:
         activable = False
     return conteo, len(us_list), activable
+
+
+def get_horas_registradas_US(us_id):
+    """
+    Extrae los datos de las historias de usuario
+    """
+    rh = RegistroHoras.objects.filter(us=us_id)
+    rh_list = RegistroHorasSerializer(rh, many=True).data
+    horas = 0
+    for rh in rh_list:
+        horas += rh["horas"]
+
+    return horas

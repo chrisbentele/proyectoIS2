@@ -41,8 +41,22 @@ export const deleteSprint = async ({ projectId, spId }) =>
 export const getSprint = async (idProyecto, spId) =>
   await axiosInstance.get(`/proyectos/${idProyecto}/sprints/${spId}`);
 
-export const getRegistrosHoras = async ({ spId }) =>
-  await axiosInstance.get(`/sprints/${spId}/registro_horas`);
+export const getRegistrosHoras = async ({ projectId, spId }) =>
+  await axiosInstance.get(
+    `proyectos/${projectId}/sprints/${spId}/registro_horas`
+  );
+
+export const generarReporteSprintBacklog = async ({ projectId, spId }) =>
+  await axiosInstance.get(
+    `proyectos/${projectId}/sprints/${spId}/reporte_sprint_backlog`,
+    { responseType: "blob" }
+  );
+
+export const generarReporteUSPrioridad = async ({ projectId, spId }) =>
+  await axiosInstance.get(
+    `proyectos/${projectId}/sprints/${spId}/reporte_US_prioridad`,
+    { responseType: "blob" }
+  );
 
 const sprints = {
   createSprint,
@@ -56,5 +70,7 @@ const sprints = {
   getSprint,
   getHoras,
   getRegistrosHoras,
+  generarReporteUSPrioridad,
+  generarReporteSprintBacklog,
 };
 export default sprints;

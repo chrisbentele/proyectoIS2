@@ -11,7 +11,13 @@ var tests_8py =
     [ "Sprint_Activar_Tests", "classapi_1_1tests_1_1Sprint__Activar__Tests.html", "classapi_1_1tests_1_1Sprint__Activar__Tests" ],
     [ "User_Stories_Asignar_Tests", "classapi_1_1tests_1_1User__Stories__Asignar__Tests.html", "classapi_1_1tests_1_1User__Stories__Asignar__Tests" ],
     [ "Sprints_User_Stories_Tests", "classapi_1_1tests_1_1Sprints__User__Stories__Tests.html", "classapi_1_1tests_1_1Sprints__User__Stories__Tests" ],
-    [ "US_Registro_horas", "classapi_1_1tests_1_1US__Registro__horas.html", "classapi_1_1tests_1_1US__Registro__horas" ],
+    [ "US_Registro_horas_Tests", "classapi_1_1tests_1_1US__Registro__horas__Tests.html", "classapi_1_1tests_1_1US__Registro__horas__Tests" ],
+    [ "Product_Backlog_Table_Tests", "classapi_1_1tests_1_1Product__Backlog__Table__Tests.html", "classapi_1_1tests_1_1Product__Backlog__Table__Tests" ],
+    [ "Sprint_Backlog_table_Tests", "classapi_1_1tests_1_1Sprint__Backlog__table__Tests.html", "classapi_1_1tests_1_1Sprint__Backlog__table__Tests" ],
+    [ "US_Prioridad_table_Tests", "classapi_1_1tests_1_1US__Prioridad__table__Tests.html", "classapi_1_1tests_1_1US__Prioridad__table__Tests" ],
+    [ "Reporte_Product_Backlog_Tests", "classapi_1_1tests_1_1Reporte__Product__Backlog__Tests.html", "classapi_1_1tests_1_1Reporte__Product__Backlog__Tests" ],
+    [ "Reporte_Sprint_Backlog_Tests", "classapi_1_1tests_1_1Reporte__Sprint__Backlog__Tests.html", "classapi_1_1tests_1_1Reporte__Sprint__Backlog__Tests" ],
+    [ "Reporte_US_Prioridad", "classapi_1_1tests_1_1Reporte__US__Prioridad.html", "classapi_1_1tests_1_1Reporte__US__Prioridad" ],
     [ "asignar_us_miembro", "tests_8py.html#a443882a05cacc9f098a49fd649f79cf2", null ],
     [ "asignar_us_sprint", "tests_8py.html#aa6a75a77ade1bf4949cab296d42b9bab", null ],
     [ "crear_proyecto", "tests_8py.html#a047fa9d732982e83c0d3f3c2851cd702", null ],
@@ -19,5 +25,5 @@ var tests_8py =
     [ "crear_sprint", "tests_8py.html#ac74428d0479436118712593b301598cb", null ],
     [ "crear_US", "tests_8py.html#a0fa07d7d2aa6467e1a1ebefe1464df7d", null ],
     [ "crear_user", "tests_8py.html#aac818da70b9820e9387a3ec6bcdd585a", null ],
-    [ "registro_horas", "tests_8py.html#aa4bbdfcecd36815a2165114b1bf9fe33", null ]
+    [ "registro_horas", "tests_8py.html#a6bd1c9d6ba0520f787770ce6d720332a", null ]
 ];

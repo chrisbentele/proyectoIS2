@@ -21,35 +21,49 @@ export default function ProjectMembers({ props, dispatchError }) {
 
   const projectId = props.computedMatch.params.id;
 
+  const [project, setProject] = useState();
+
   const history = useHistory();
 
   useEffect(() => {
     //Al cargar la pagina se buscan los usuarios
     api
-      .getUsers()
-      .then((usersRes) => {
+      .getProjectById(projectId)
+      .then(({ data: res }) => {
+        setProject(res);
+
         api
-          .getMembers(projectId)
-          .then((membersRes) => {
-            let membersIds = membersRes.data.map((member) => member.id);
-            let filteredUsers = usersRes.data.filter(
-              (user) => !membersIds.includes(user.id)
-            );
-            setState((state) => ({ ...state, loading: false }));
-            setUsers([...filteredUsers]);
-            setMembers(membersRes.data);
+          .getUsers()
+          .then((usersRes) => {
+            api
+              .getMembers(projectId)
+              .then((membersRes) => {
+                let membersIds = membersRes.data.map((member) => member.id);
+                let filteredUsers = usersRes.data.filter(
+                  (user) => !membersIds.includes(user.id)
+                );
+                setState((state) => ({ ...state, loading: false }));
+                setUsers([...filteredUsers]);
+                setMembers(membersRes.data);
+              })
+              .catch(() =>
+                dispatchError(null, "error cargando miembros del proyecto")
+              );
           })
+          .catch((err) =>
+            dispatchError(null, "error cargando usuarios del sistema")
+          );
+        api
+          .getRoles(projectId)
+          .then((res) => setROLES(res.data))
           .catch(() =>
-            dispatchError(null, "error cargando miembros del proyecto")
+            dispatchError(null, "No se han podido cargar los roles")
           );
       })
-      .catch((err) =>
-        dispatchError(null, "error cargando usuarios del sistema")
-      );
-    api
-      .getRoles(projectId)
-      .then((res) => setROLES(res.data))
-      .catch(() => dispatchError(null, "No se han podido cargar los roles"));
+      .catch((err) => {
+        dispatchError("Error", "No existe proyecto con el ID proveido", 5000);
+        history.push("/profile");
+      });
   }, [projectId, dispatchError]);
 
   const handleSearchChange = async (e) => {
@@ -68,7 +82,7 @@ export default function ProjectMembers({ props, dispatchError }) {
   const actualizarUsuarios = (usuariosNuevos) => {
     setUsers(usuariosNuevos);
   };
-
+  console.log(project?.estado);
   return (
     <Box mt="55px">
       <GoBack
@@ -88,29 +102,32 @@ export default function ProjectMembers({ props, dispatchError }) {
           setUsers={actualizarUsuarios}
           state={state}
         />
+        {!(project?.estado === 1) ? (
+          <>
+            <Text
+              style={{
+                marginTop: "50px",
+                marginBottom: "10px",
+                fontWeight: "bold",
+              }}
+            >
+              Agregar nuevo miembro
+            </Text>
 
-        <Text
-          style={{
-            marginTop: "50px",
-            marginBottom: "10px",
-            fontWeight: "bold",
-          }}
-        >
-          Agregar nuevo miembro
-        </Text>
-
-        <Grid gap={6}>
-          <Input onChange={handleSearchChange} width="400px" />
-          <AddMemberTable
-            members={[...members]}
-            setMembers={actualizarMiembros}
-            projectId={projectId}
-            ROLES={ROLES}
-            users={[...users]}
-            setUsers={actualizarUsuarios}
-            state={state}
-          />
-        </Grid>
+            <Grid gap={6}>
+              <Input onChange={handleSearchChange} width="400px" />
+              <AddMemberTable
+                members={[...members]}
+                setMembers={actualizarMiembros}
+                projectId={projectId}
+                ROLES={ROLES}
+                users={[...users]}
+                setUsers={actualizarUsuarios}
+                state={state}
+              />
+            </Grid>
+          </>
+        ) : null}
       </Box>
     </Box>
   );

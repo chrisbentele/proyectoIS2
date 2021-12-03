@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['get_5fasigned_5fuser_502',['get_asigned_user',['../namespaceapi_1_1utils_1_1misc.html#a576e7813e79e499a63d84e7c9d5d381e',1,'api::utils::misc']]],
-  ['get_5fus_5fcount_503',['get_us_count',['../namespaceapi_1_1utils_1_1misc.html#a31b92cf0752893dcee477fffa86e11af',1,'api::utils::misc']]]
+  ['deleteicon_558',['DeleteIcon',['../deleteIcon_8js.html#aacc4a12cb66e501ef93cf644b46b79ad',1,'deleteIcon.js']]],
+  ['deleteuser_559',['deleteUser',['../users_8test_8js.html#a2b3965a8b426cec936fe1fbb478e4018',1,'users.test.js']]]
 ];

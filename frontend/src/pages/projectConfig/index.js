@@ -61,7 +61,10 @@ export default function ProjectConfig({ props, dispatchError }) {
     api
       .getProjectById(projectId)
       .then(({ data: res }) => setProject(res))
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        dispatchError("Error", "No existe proyecto con el ID proveido", 5000);
+        history.push("/profile");
+      });
   }, [projectId]);
 
   async function onSubmit(values) {
@@ -76,7 +79,6 @@ export default function ProjectConfig({ props, dispatchError }) {
       );
 
     history.push(`/projects/${projectId}`);
-    console.log(values);
   }
 
   return project ? (
@@ -123,9 +125,8 @@ export default function ProjectConfig({ props, dispatchError }) {
             <option value={project.estado} hidden>
               {projectStateToString(project.estado)}
             </option>
-            <option value="0">Pendiente</option>
-            <option value="1">Activo</option>
-            <option value="2">Terminado</option>
+            <option value="0">Activo</option>
+            <option value="1">Terminado</option>
           </Select>
           <FormControl isInvalid={errors["estimado"]}>
             <FormLabel fontSize="25px">Duración estimada(semanas)</FormLabel>
