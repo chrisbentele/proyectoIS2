@@ -14,6 +14,9 @@ var namespaces_dup =
         [ "urlpatterns", "namespaceapi_1_1urls.html#ae1c754cb38c35b590f6a741ace140a07", null ]
       ] ],
       [ "utils", null, [
+        [ "email", "namespaceapi_1_1utils_1_1email.html", [
+          [ "send_email", "namespaceapi_1_1utils_1_1email.html#a53d8d8337c1853221eab756170428c13", null ]
+        ] ],
         [ "misc", "namespaceapi_1_1utils_1_1misc.html", [
           [ "get_asigned_user", "namespaceapi_1_1utils_1_1misc.html#a576e7813e79e499a63d84e7c9d5d381e", null ],
           [ "get_horas_registradas_US", "namespaceapi_1_1utils_1_1misc.html#a0c5511fb636c2794b3d647d251194322", null ],
@@ -56,6 +59,12 @@ var namespaces_dup =
         [ "DATABASES", "namespacecontroller_1_1settings.html#ade71df013a7f05f520e5bac4968d8139", null ],
         [ "DEBUG", "namespacecontroller_1_1settings.html#a1ca15f0f09b995a3efebcaf3fcbd6ea6", null ],
         [ "DEFAULT_AUTO_FIELD", "namespacecontroller_1_1settings.html#a2fbc862a7771eb17e3d679f05f988126", null ],
+        [ "EMAIL_BACKEND", "namespacecontroller_1_1settings.html#aef0a9e155b3e7c5aa31666c62d038b48", null ],
+        [ "EMAIL_HOST", "namespacecontroller_1_1settings.html#a1a45f12039b43f908e85203b95b69d79", null ],
+        [ "EMAIL_HOST_PASSWORD", "namespacecontroller_1_1settings.html#a947cd44cb12973e2452b396ed4418d1b", null ],
+        [ "EMAIL_HOST_USER", "namespacecontroller_1_1settings.html#ab728c93af47383e63ea04cb522b9774d", null ],
+        [ "EMAIL_PORT", "namespacecontroller_1_1settings.html#a57dae25085558c33df23e794c5cb86b0", null ],
+        [ "EMAIL_USE_TLS", "namespacecontroller_1_1settings.html#a1b0f91910bb914aeedb9b2255e97f991", null ],
         [ "env", "namespacecontroller_1_1settings.html#a44b98e4dc73de15beb4e8b44423fe493", null ],
         [ "INSTALLED_APPS", "namespacecontroller_1_1settings.html#aae3c6eae4bb0e981b93263a7f995da89", null ],
         [ "LANGUAGE_CODE", "namespacecontroller_1_1settings.html#a31a1e6a28f37e2c190d15761f7936c53", null ],

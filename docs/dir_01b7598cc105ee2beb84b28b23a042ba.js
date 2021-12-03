@@ -1,5 +1,6 @@
 var dir_01b7598cc105ee2beb84b28b23a042ba =
 [
+    [ "email.py", "email_8py.html", "email_8py" ],
     [ "misc.py", "misc_8py.html", "misc_8py" ],
     [ "reportes.py", "reportes_8py.html", [
       [ "US_table", "classapi_1_1utils_1_1reportes_1_1US__table.html", "classapi_1_1utils_1_1reportes_1_1US__table" ],
