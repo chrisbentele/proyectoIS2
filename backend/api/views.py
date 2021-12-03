@@ -1,3 +1,11 @@
+##
+# @namespace api.views
+# @brief Definición de los endpoints del proyecto.
+
+##
+# @file views.py
+# @brief Definición de los endpoints del proyecto.
+
 import json
 import os
 from django.utils import timezone
@@ -45,7 +53,7 @@ from django.http.response import (
 )
 from rest_framework.parsers import JSONParser
 
-
+##Endpoint de los Proyectos
 def proyectos(request, proyect_id=None):
     """Funcion para manejo de proyectos"""
     if request.method == "POST":
