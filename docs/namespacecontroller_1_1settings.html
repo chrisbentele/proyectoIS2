@@ -94,14 +94,14 @@ $(document).ready(function(){initNavTree('namespacecontroller_1_1settings.html',
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a44b98e4dc73de15beb4e8b44423fe493"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecontroller_1_1settings.html#a44b98e4dc73de15beb4e8b44423fe493">env</a> = environ.Env()</td></tr>
+<tr class="memitem:a44b98e4dc73de15beb4e8b44423fe493"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecontroller_1_1settings.html#a44b98e4dc73de15beb4e8b44423fe493">env</a></td></tr>
 <tr class="separator:a44b98e4dc73de15beb4e8b44423fe493"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d98e422fb9179b47357ae123e35f82a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecontroller_1_1settings.html#a0d98e422fb9179b47357ae123e35f82a">BASE_DIR</a> = Path(__file__).resolve().parent.parent</td></tr>
 <tr class="separator:a0d98e422fb9179b47357ae123e35f82a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a79d6b92f627e36b19ec478e6a93fda36"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecontroller_1_1settings.html#a79d6b92f627e36b19ec478e6a93fda36">SECRET_KEY</a> = &quot;django-insecure-aed0h2h-5zcesd$$o^5qt1-jr0n2&amp;b9-ixq+5pqp4$##qraxbc&quot;</td></tr>
-<tr class="separator:a79d6b92f627e36b19ec478e6a93fda36"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ca15f0f09b995a3efebcaf3fcbd6ea6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecontroller_1_1settings.html#a1ca15f0f09b995a3efebcaf3fcbd6ea6">DEBUG</a> = True</td></tr>
-<tr class="separator:a1ca15f0f09b995a3efebcaf3fcbd6ea6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58f2126dba8d5afa4ebc9765d9cad3b0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecontroller_1_1settings.html#a58f2126dba8d5afa4ebc9765d9cad3b0">SECRET_KEY</a> = os.environ['SECRET_KEY']</td></tr>
+<tr class="separator:a58f2126dba8d5afa4ebc9765d9cad3b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05b634f8291656ebfa7be2e7e4b805b1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecontroller_1_1settings.html#a05b634f8291656ebfa7be2e7e4b805b1">DEBUG</a> = <a class="el" href="namespacecontroller_1_1settings.html#a44b98e4dc73de15beb4e8b44423fe493">env</a>('DEBUG')</td></tr>
+<tr class="separator:a05b634f8291656ebfa7be2e7e4b805b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3b0b1febe7b5441745a381a415b9de3"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecontroller_1_1settings.html#ae3b0b1febe7b5441745a381a415b9de3">ALLOWED_HOSTS</a> = []</td></tr>
 <tr class="separator:ae3b0b1febe7b5441745a381a415b9de3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae3c6eae4bb0e981b93263a7f995da89"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecontroller_1_1settings.html#aae3c6eae4bb0e981b93263a7f995da89">INSTALLED_APPS</a></td></tr>
@@ -144,8 +144,12 @@ Variables</h2></td></tr>
 <tr class="separator:a06abdd6b4315fc7bdc956dff669264f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65b6b46abd8cb3ed84377cacbb5154f1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecontroller_1_1settings.html#a65b6b46abd8cb3ed84377cacbb5154f1">USE_TZ</a> = True</td></tr>
 <tr class="separator:a65b6b46abd8cb3ed84377cacbb5154f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f63029324d586661904877890523544"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecontroller_1_1settings.html#a8f63029324d586661904877890523544">STATIC_URL</a> = &quot;/static/&quot;</td></tr>
+<tr class="memitem:a97073db6c51423a14e889083b2741f7c"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecontroller_1_1settings.html#a97073db6c51423a14e889083b2741f7c">MEDIA_URL</a> = '/media/'</td></tr>
+<tr class="separator:a97073db6c51423a14e889083b2741f7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f63029324d586661904877890523544"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecontroller_1_1settings.html#a8f63029324d586661904877890523544">STATIC_URL</a> = '/django_static/'</td></tr>
 <tr class="separator:a8f63029324d586661904877890523544"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad16791887d7e47c180b798ba5faf9f31"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecontroller_1_1settings.html#ad16791887d7e47c180b798ba5faf9f31">STATIC_ROOT</a> = <a class="el" href="namespacecontroller_1_1settings.html#a0d98e422fb9179b47357ae123e35f82a">BASE_DIR</a> / 'django_static'</td></tr>
+<tr class="separator:ad16791887d7e47c180b798ba5faf9f31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2fbc862a7771eb17e3d679f05f988126"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecontroller_1_1settings.html#a2fbc862a7771eb17e3d679f05f988126">DEFAULT_AUTO_FIELD</a> = &quot;django.db.models.BigAutoField&quot;</td></tr>
 <tr class="separator:a2fbc862a7771eb17e3d679f05f988126"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -273,14 +277,14 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a1ca15f0f09b995a3efebcaf3fcbd6ea6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1ca15f0f09b995a3efebcaf3fcbd6ea6">&#9670;&nbsp;</a></span>DEBUG</h2>
+<a id="a05b634f8291656ebfa7be2e7e4b805b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a05b634f8291656ebfa7be2e7e4b805b1">&#9670;&nbsp;</a></span>DEBUG</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool controller.settings.DEBUG = True</td>
+          <td class="memname">controller.settings.DEBUG = <a class="el" href="namespacecontroller_1_1settings.html#a44b98e4dc73de15beb4e8b44423fe493">env</a>('DEBUG')</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -392,11 +396,15 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">controller.settings.env = environ.Env()</td>
+          <td class="memname">controller.settings.env</td>
         </tr>
       </table>
 </div><div class="memdoc">
-
+<b>Initial value:</b><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;=  environ.Env(</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;    <span class="comment"># set casting, default value</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;    DEBUG=(bool, <span class="keyword">False</span>)</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;)</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="aae3c6eae4bb0e981b93263a7f995da89"></a>
@@ -433,6 +441,20 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
       <table class="memname">
         <tr>
           <td class="memname">string controller.settings.LANGUAGE_CODE = &quot;en-us&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a97073db6c51423a14e889083b2741f7c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97073db6c51423a14e889083b2741f7c">&#9670;&nbsp;</a></span>MEDIA_URL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">string controller.settings.MEDIA_URL = '/media/'</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -478,14 +500,28 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 </div>
 </div>
-<a id="a79d6b92f627e36b19ec478e6a93fda36"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a79d6b92f627e36b19ec478e6a93fda36">&#9670;&nbsp;</a></span>SECRET_KEY</h2>
+<a id="a58f2126dba8d5afa4ebc9765d9cad3b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a58f2126dba8d5afa4ebc9765d9cad3b0">&#9670;&nbsp;</a></span>SECRET_KEY</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">string controller.settings.SECRET_KEY = &quot;django-insecure-aed0h2h-5zcesd$$o^5qt1-jr0n2&amp;b9-ixq+5pqp4$##qraxbc&quot;</td>
+          <td class="memname">controller.settings.SECRET_KEY = os.environ['SECRET_KEY']</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad16791887d7e47c180b798ba5faf9f31"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad16791887d7e47c180b798ba5faf9f31">&#9670;&nbsp;</a></span>STATIC_ROOT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">string controller.settings.STATIC_ROOT = <a class="el" href="namespacecontroller_1_1settings.html#a0d98e422fb9179b47357ae123e35f82a">BASE_DIR</a> / 'django_static'</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -499,7 +535,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">string controller.settings.STATIC_URL = &quot;/static/&quot;</td>
+          <td class="memname">string controller.settings.STATIC_URL = '/django_static/'</td>
         </tr>
       </table>
 </div><div class="memdoc">

@@ -2,7 +2,7 @@ var searchData=
 [
   ['databases_79',['DATABASES',['../namespacecontroller_1_1settings.html#ade71df013a7f05f520e5bac4968d8139',1,'controller::settings']]],
   ['dbauth_2ejs_80',['DbAuth.js',['../DbAuth_8js.html',1,'']]],
-  ['debug_81',['DEBUG',['../namespacecontroller_1_1settings.html#a1ca15f0f09b995a3efebcaf3fcbd6ea6',1,'controller::settings']]],
+  ['debug_81',['DEBUG',['../namespacecontroller_1_1settings.html#a05b634f8291656ebfa7be2e7e4b805b1',1,'controller::settings']]],
   ['default_5fauto_5ffield_82',['default_auto_field',['../classapi_1_1apps_1_1ApiConfig.html#afd8d9cd52ff63bb83f1882121b9b2214',1,'api::apps::ApiConfig']]],
   ['default_5fauto_5ffield_83',['DEFAULT_AUTO_FIELD',['../namespacecontroller_1_1settings.html#a2fbc862a7771eb17e3d679f05f988126',1,'controller::settings']]],
   ['defaultprops_84',['defaultProps',['../goBack_8js.html#ad5012abfab386c88d6c080706fea2584',1,'defaultProps():&#160;goBack.js'],['../loginButton_8js.html#ab3ae5716ab269351886d76b1e8003261',1,'defaultProps():&#160;loginButton.js']]],

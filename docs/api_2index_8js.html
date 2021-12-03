@@ -157,7 +157,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= <a class="code" href="api_2index_8js.html#a4b0b2c9bd7b562218a1952cdad382fb7">axios</a>.create({</div>
-<div class="line">  baseURL: <span class="stringliteral">&quot;http://localhost:8000/api&quot;</span>,</div>
+<div class="line">  baseURL: process.env.REACT_APP_API_URL || <span class="stringliteral">&quot;http://localhost:8000/api&quot;</span>,</div>
 <div class="line">})</div>
 <div class="ttc" id="aapi_2index_8js_html_a4b0b2c9bd7b562218a1952cdad382fb7"><div class="ttname"><a href="api_2index_8js.html#a4b0b2c9bd7b562218a1952cdad382fb7">axios</a></div><div class="ttdeci">import axios from axios</div><div class="ttdef"><b>Definition:</b> index.js:6</div></div>
 </div><!-- fragment -->
