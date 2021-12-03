@@ -60,7 +60,7 @@ const LogoutButton = () => {
           </Button>
           <Button colorScheme="green" onClick={() => {
               setIsOpen(false);
-              logout({ returnTo: "http://localhost:3000" });
+              logout({ returnTo: "http://localhost" });
               }
             } ml={3}>
             Salir

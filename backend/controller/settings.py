@@ -13,7 +13,10 @@ import environ
 import sys
 import os
 
-env = environ.Env()
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
 environ.Env.read_env()
 from pathlib import Path
 from corsheaders.defaults import default_headers
@@ -26,13 +29,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-aed0h2h-5zcesd$$o^5qt1-jr0n2&b9-ixq+5pqp4$##qraxbc"
+SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-if not os.path.exists("/.dockerenv") or "test" in sys.argv:
-    DEBUG = True
-else:
-    DEBUG = False
+# if not os.path.exists("/.dockerenv") or "test" in sys.argv:
+#     DEBUG = True
+# else:
+#     DEBUG = False
+DEBUG = env('DEBUG')
+
+if DEBUG:
+    print(DEBUG)
 
 ALLOWED_HOSTS = []
 
@@ -160,7 +167,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = "/static/"
+MEDIA_URL = '/media/'
+STATIC_URL = '/django_static/' 
+STATIC_ROOT = BASE_DIR / 'django_static'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
