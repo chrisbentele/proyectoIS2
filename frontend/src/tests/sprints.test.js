@@ -6,6 +6,8 @@ const {
   editSprint,
   getSprints,
   terminarSprint,
+  generarReporteSprintBacklog,
+  generarReporteUSPrioridad,
 } = require("../api/sprints");
 const { getMembers, addMemberToProject } = require("../api/members");
 const { getUser, deleteUser } = require("../api/users");
@@ -65,6 +67,18 @@ test("edit sprint", async () => {
       expect.objectContaining({ id: sprintId, activo: true, terminado: false }),
     ])
   );
+});
+
+test("Generar reporte Sprint Backlog", async () => {
+  const res = await generarReporteSprintBacklog({ projectId, spId: sprintId });
+  expect(res.statusText).toBe("OK");
+  expect(res.headers["content-type"]).toBe("application/pdf");
+});
+
+test("Generar reporte US Prioridad", async () => {
+  const res = await generarReporteUSPrioridad({ projectId, spId: sprintId });
+  expect(res.statusText).toBe("OK");
+  expect(res.headers["content-type"]).toBe("application/pdf");
 });
 
 // test('terminar sprint', async () => {
