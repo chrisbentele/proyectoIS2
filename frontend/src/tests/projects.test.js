@@ -6,6 +6,7 @@ const {
   editProject,
   getProjectById,
   getProjects,
+  generateProjectReport,
 } = require("../api/projects");
 let projectId;
 let createdProject;
@@ -77,6 +78,12 @@ test("editar proyecto con valores erroneos", async () => {
 test("buscar proyecto por id", async () => {
   const res = await getProjectById(projectId);
   expect(res.data.id).toBe(projectId);
+});
+
+test("Generar reporte Product Backlog", async () => {
+  const res = await generateProjectReport(projectId);
+  expect(res.statusText).toBe("OK");
+  expect(res.headers["content-type"]).toBe("application/pdf");
 });
 
 test("eliminar proyecto", async () => {
