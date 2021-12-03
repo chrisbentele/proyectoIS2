@@ -238,9 +238,14 @@ export default function Index({ dispatchError, props }) {
                   Reactivar Proyecto
                 </Button>
               ) : null}
-              <Button colorScheme="green" onClick={onReporteProyecto}>
-                Generar reporte
-              </Button>
+              {tienePermiso(
+                thisMember,
+                PERMISOS_MACRO.REPORTE_SPRINT_BACKLOG
+              ) && (
+                <Button colorScheme="green" onClick={onReporteProyecto}>
+                  Generar reporte
+                </Button>
+              )}
             </HStack>
           </Box>
           <Box as="main" mt="0px" w="100vw">
@@ -387,14 +392,19 @@ export default function Index({ dispatchError, props }) {
                               Eliminar :o
                             </Button>
                           ) : null}
-                          <Button
-                            colorScheme="green"
-                            bg="green.300"
-                            color="black"
-                            onClick={() => onReporteSprint(sprint.id)}
-                          >
-                            Generar reporte
-                          </Button>
+                          {tienePermiso(
+                            thisMember,
+                            PERMISOS_MACRO.REPORTE_SPRINT_BACKLOG
+                          ) && (
+                            <Button
+                              colorScheme="green"
+                              bg="green.300"
+                              color="black"
+                              onClick={() => onReporteSprint(sprint.id)}
+                            >
+                              Generar reporte
+                            </Button>
+                          )}
                         </HStack>
                       </VStack>
                     </>

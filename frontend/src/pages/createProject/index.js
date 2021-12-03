@@ -60,10 +60,12 @@ export default function CreateProject({ dispatchError }) {
   async function onSubmit(values) {
     //funcion que define el comportamiento al confirmar el form
     await api
-      .createProject({ ...values, id: user.sub })
+      .createProject({ ...values })
       .then(({ data }) => {
-        console.log(data);
-        history.push(`/projects/${data.id}`); //luego de crear exitosamente el proyecto, se redirige a la pagina del proyecto
+        if (values.scrumMasterId == user.sub)
+          history.push(`/projects/${data.id}`);
+        //luego de crear exitosamente el proyecto, se redirige a la pagina del proyecto
+        else history.push("/profile"); //si no es el creador del proyecto, se redirige al perfil del usuario
       })
       .catch((err) => dispatchError(null, "No se ha podido crear el proyecto"));
   }
