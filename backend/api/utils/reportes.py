@@ -6,7 +6,7 @@ class US_table:
     def __init__(self, reporte_name, headers):
         self.reporte_name = reporte_name
         self.headers = headers
-        self.us_list = []
+        self.rows = []
 
     def __generate_html_cell(self, text):
         return "<td>{}</td>".format(text)
@@ -19,13 +19,13 @@ class US_table:
         """
 
     def add_row(self, row):
-        self.us_list.append(row)
+        self.rows.append(row)
 
     def __generate_html_header(self):
         return self.__generate_html_row(self.headers)
 
     def __generate_html_body(self):
-        return "".join([self.__generate_html_row(row) for row in self.us_list])
+        return "".join([self.__generate_html_row(row) for row in self.rows])
 
     def _generate_html_table(self):
         """(solo html) Method to generate the html table"""
@@ -169,14 +169,14 @@ class US_Prioridad_table(US_table):
             horas_trabajadas,
         ]
 
-        if len(self.us_list) == 0:
+        if len(self.rows) == 0:
             return super().add_row(new_row)
 
         # Comparar la prioridad de la nueva fila con las filas existentes
         # Si la nueva fila es mayor, agregarla al frente
-        for us_row in self.us_list:
+        for us_row in self.rows:
             if prioridad >= us_row[2]:
-                self.us_list.insert(self.us_list.index(us_row), new_row)
+                self.rows.insert(self.rows.index(us_row), new_row)
                 break
         else:
             # Si no se encontró una fila con mayor prioridad, agregarla al final

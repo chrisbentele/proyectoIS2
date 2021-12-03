@@ -6,7 +6,7 @@ var views_8py =
     [ "registro_horas", "views_8py.html#ae0c5ccbbfe2a040cba83808c2240023e", null ],
     [ "reporte_product_backlog", "views_8py.html#ae8d214872d0e25176b3154c5e7909955", null ],
     [ "reporte_sprint_backlog", "views_8py.html#a89a9e72c53ba4c66388979c92855e95d", null ],
-    [ "reporte_US_Prioridad", "views_8py.html#a2106170c17a470a187d032ed1c461858", null ],
+    [ "reporte_US_prioridad", "views_8py.html#a50f2a5bd6c36ce5c4ec3d59c951a658a", null ],
     [ "roles", "views_8py.html#a8ff787143d0f02c45e8c53ad077347b2", null ],
     [ "sprints", "views_8py.html#a08bee8433c942b0cfcc38a7bc73d26b5", null ],
     [ "sprints_activar", "views_8py.html#a895cb0e63883c1aa0ad89bb17f4396f2", null ],

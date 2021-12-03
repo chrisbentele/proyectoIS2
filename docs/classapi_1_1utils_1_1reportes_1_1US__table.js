@@ -5,5 +5,5 @@ var classapi_1_1utils_1_1reportes_1_1US__table =
     [ "generate_pdf", "classapi_1_1utils_1_1reportes_1_1US__table.html#a76582225e6396a64521035b7a93a0a16", null ],
     [ "headers", "classapi_1_1utils_1_1reportes_1_1US__table.html#a8cd1b857ad3c0e5a87f5075a395ecab9", null ],
     [ "reporte_name", "classapi_1_1utils_1_1reportes_1_1US__table.html#acef32d2e54bd6a97670f65bbaf94c60c", null ],
-    [ "us_list", "classapi_1_1utils_1_1reportes_1_1US__table.html#acf3ae7308ea5febef34e789c146e4e36", null ]
+    [ "rows", "classapi_1_1utils_1_1reportes_1_1US__table.html#a5b95be05e61008eaecd25412849dc7c1", null ]
 ];

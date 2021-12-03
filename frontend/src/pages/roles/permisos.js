@@ -2,31 +2,6 @@
  * @file permisos.js
  * @brief Aquí se encuentran los templates para algunos roles ya predefinidos
  */
-//! Lista de permisos generales
-export const PERMISOS = [
-  { title: "Crear proyecto", value: 0,  },
-  { title: "Ver proyecto", value: 1 },
-  { title: "Editar configuración del proyecto", value: 2 },
-  { title: "Editar miembros a proyecto", value: 3 },
-  { title: "Eliminar proyecto", value: 4 },
-  { title: "Crear US", value: 5 },
-  { title: "Modificar US", value: 6 },
-  { title: "Eliminar US", value: 7 },
-  { title: "Estimar US", value: 8 },
-  { title: "Asignar miembros a US", value: 9 },
-  { title: "Cambiar estado US", value: 10 },
-  { title: "Crear rol", value: 11 },
-  { title: "Editar parámetros del rol", value: 12 },
-  { title: "Eliminar rol", value: 13 },
-  { title: "Asignar rol", value: 14 },
-  { title: "Agregar usuario", value: 15 },
-  { title: "Editar rol del usuario", value: 16 },
-  { title: "Eliminar usuario", value: 17 },
-  { title: "Crear Sprint", value: 18 },
-  { title: "Modificar Sprint", value: 19 },
-  { title: "Eliminar Sprint", value: 20 },
-  { title: "Estimar Sprint", value: 21 },
-];
 
 export const PERMISOS_MACRO = {
   CREAR_PROYECTO: 0,
@@ -51,7 +26,63 @@ export const PERMISOS_MACRO = {
   MODIFICAR_SPRINT: 19,
   ELIMINAR_SPRINT: 20,
   ESTIMAR_SPRINT: 21,
+  REPORTE_PRODUCT_BACKLOG: 22,
+  REPORTE_SPRINT_BACKLOG: 23,
+  REPORTE_US_PRIORIDAD: 24,
 };
+
+//! Lista de permisos generales
+export const PERMISOS = [
+  { title: "Crear proyecto", value: PERMISOS_MACRO.CREAR_PROYECTO },
+  { title: "Ver proyecto", value: PERMISOS_MACRO.VER_PROYECTO },
+  {
+    title: "Editar configuración del proyecto",
+    value: PERMISOS_MACRO.EDITAR_CONFIGURACIÓN_DEL_PROYECTO,
+  },
+  {
+    title: "Editar miembros a proyecto",
+    value: PERMISOS_MACRO.EDITAR_MIEMBROS_A_PROYECTO,
+  },
+  { title: "Eliminar proyecto", value: PERMISOS_MACRO.ELIMINAR_PROYECTO },
+  { title: "Crear US", value: PERMISOS_MACRO.CREAR_US },
+  { title: "Modificar US", value: PERMISOS_MACRO.MODIFICAR_US },
+  { title: "Eliminar US", value: PERMISOS_MACRO.ELIMINAR_US },
+  { title: "Estimar US", value: PERMISOS_MACRO.ESTIMAR_US },
+  {
+    title: "Asignar miembros a US",
+    value: PERMISOS_MACRO.ASIGNAR_MIEMBROS_A_US,
+  },
+  { title: "Cambiar estado US", value: PERMISOS_MACRO.CAMBIAR_ESTADO_US },
+  { title: "Crear rol", value: PERMISOS_MACRO.CREAR_ROL },
+  {
+    title: "Editar parámetros del rol",
+    value: PERMISOS_MACRO.EDITAR_PARÁMETROS_DEL_ROL,
+  },
+  { title: "Eliminar rol", value: PERMISOS_MACRO.ELIMINAR_ROL },
+  { title: "Asignar rol", value: PERMISOS_MACRO.ASIGNAR_ROL },
+  { title: "Agregar usuario", value: PERMISOS_MACRO.AGREGAR_USUARIO },
+  {
+    title: "Editar rol del usuario",
+    value: PERMISOS_MACRO.EDITAR_ROL_DEL_USUARIO,
+  },
+  { title: "Eliminar usuario", value: PERMISOS_MACRO.ELIMINAR_USUARIO },
+  { title: "Crear Sprint", value: PERMISOS_MACRO.CREAR_SPRINT },
+  { title: "Modificar Sprint", value: PERMISOS_MACRO.MODIFICAR_SPRINT },
+  { title: "Eliminar Sprint", value: PERMISOS_MACRO.ELIMINAR_SPRINT },
+  { title: "Estimar Sprint", value: PERMISOS_MACRO.ESTIMAR_SPRINT },
+  {
+    title: "Reporte product backlog",
+    value: PERMISOS_MACRO.REPORTE_PRODUCT_BACKLOG,
+  },
+  {
+    title: "Reporte sprint backlog",
+    value: PERMISOS_MACRO.REPORTE_SPRINT_BACKLOG,
+  },
+  {
+    title: "Reporte us - prioridad",
+    value: PERMISOS_MACRO.REPORTE_US_PRIORIDAD,
+  },
+];
 
 //! Lista de roles predefinidos
 export const ROLES = [

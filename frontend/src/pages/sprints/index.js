@@ -55,45 +55,40 @@ export default function Index({ props, dispatchError }) {
   //Al cargarse la pagina se busca el proyecto con el id del URL y se lo asigna a projectId
   useEffect(() => {
     if (projectId && sprintId) {
-      api
-        .getProjectById(projectId)
+      api.getProjectById(projectId).then(({ data }) => {
+        setProject(data);
+      });
+
+      api.userStories
+        .getUserStories(projectId, sprintId)
+        .then(({ data }) => setUserStories(data));
+
+      api.sprints
+        .getSprint(projectId, sprintId)
         .then(({ data }) => {
-          setProject(data);
-
-          api.userStories
-            .getUserStories(projectId, sprintId)
-            .then(({ data }) => setUserStories(data));
-
-          api.sprints
-            .getSprint(projectId, sprintId)
-            .then(({ data }) => {
-              setSprint(data);
-            })
-            .catch((err) => console.log(err));
-
-          api
-            .getMember(projectId, user.sub)
-            .then(({ data: member }) => setThisMember(member))
-            .catch((err) =>
-              dispatchError(
-                "No autorizado",
-                "Debes formar parte del proyecto para visualizar el mismo o los sprints",
-                null,
-                false
-              )
-            );
-
-          api.sprints
-            .getRegistrosHoras({ projectId, spId: sprintId })
-            .then(({ data }) => {
-              setListaCambios(data);
-            })
-            .catch((err) => console.log(err));
+          setSprint(data);
         })
-        .catch((err) => {
-          dispatchError("Error", "No existe proyecto con el ID proveido", 5000);
-          history.push("/profile");
-        });
+        .catch((err) => console.log(err));
+
+      api
+        .getMember(projectId, user.sub)
+        .then(({ data: member }) => setThisMember(member))
+        .catch((err) =>
+          dispatchError(
+            "No autorizado",
+            "Debes formar parte del proyecto para visualizar el mismo o los sprints",
+            null,
+            false
+          )
+        );
+
+      api.sprints
+        .getRegistrosHoras({ projectId, spId: sprintId })
+        .then(({ data }) => {
+          setListaCambios(data);
+          console.log(listaCambios);
+        })
+        .catch((err) => console.log(err));
     }
   }, [projectId, sprintId]);
 
@@ -161,8 +156,22 @@ export default function Index({ props, dispatchError }) {
       .getUserStories(projectId, sprintId)
       .then(({ data }) => setUserStories(data));
   };
+
+  const onReporteUSPrioridad = async () => {
+    const { data } = await api.sprints.generarReporteUSPrioridad({
+      projectId,
+      spId: sprintId,
+    });
+    const fileDoc = window.URL.createObjectURL(data);
+
+    var tempLink = document.createElement("a");
+    tempLink.href = fileDoc;
+    tempLink.setAttribute("download", "reporte_US_prioridad.pdf");
+    tempLink.click();
+    window.URL.revokeObjectURL(fileDoc);
+  };
+
   const quitarUserStory = (USs) => {
-    debugger;
     setUserStories(USs);
   };
   return isAllowed && userStories && sprint ? (
@@ -274,6 +283,14 @@ export default function Index({ props, dispatchError }) {
                   Desactivar Sprint
                 </Button>
               ) : null}
+              {tienePermiso(
+                thisMember,
+                PERMISOS_MACRO.REPORTE_US_PRIORIDAD
+              ) && (
+                <Button onClick={onReporteUSPrioridad} colorScheme="green">
+                  Generar reporte
+                </Button>
+              )}
             </HStack>
           </Box>
           <Box marginTop="10px" marginBottom="10px">
@@ -399,7 +416,7 @@ export default function Index({ props, dispatchError }) {
             onClose={() => setIsOpenEditSp(false)}
           />
 
-          <Flex
+          {/* <Flex
             bg="white"
             width="fit-content"
             borderColor="black"
@@ -408,7 +425,6 @@ export default function Index({ props, dispatchError }) {
             m="5"
             fontSize="lg"
           >
-            {/*Columna izquierda*/}
 
             <Box borderColor="black" borderRightWidth="3px">
               <Box borderBottomWidth="3px" borderColor="black">
@@ -422,9 +438,7 @@ export default function Index({ props, dispatchError }) {
                 ))}
               </List>
             </Box>
-            {/*-------------------*/}
 
-            {/*Columna derecha*/}
             <Box>
               <Box borderBottomWidth="3px" borderColor="black">
                 <Heading p="2" size="lg">
@@ -444,8 +458,7 @@ export default function Index({ props, dispatchError }) {
                 ))}
               </List>
             </Box>
-            {/*-------------------*/}
-          </Flex>
+          </Flex> */}
         </Box>
       ) : (
         <Flex align="center" ml="auto">

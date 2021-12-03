@@ -9,8 +9,7 @@
 // } else {
 // axiosInstance = require(".");
 // }
-import { axiosInstance } from '.';
-
+import { axiosInstance } from ".";
 
 /**
  * @file projects.js
@@ -26,7 +25,6 @@ import { axiosInstance } from '.';
  * @returns Resultado de la operación
  */
 export const createProject = async (projectData) => {
-  console.log('create pro')
   const { projectName, scrumMasterId, estimation } = projectData;
   if (!estimation || !scrumMasterId || !projectName) {
     console.log("error");
@@ -34,7 +32,6 @@ export const createProject = async (projectData) => {
       "Para crear proyecto debes proveer la duracion estimada, miembros y nombre del proyecto"
     );
   }
-  console.log(scrumMasterId)
   return await axiosInstance.post("proyectos", {
     duracionEstimada: estimation,
     miembros: [scrumMasterId],
@@ -88,6 +85,16 @@ export const deleteProject = async (projectId) =>
   await axiosInstance.delete(`proyectos/${projectId}`);
 
 /**
+ *  Genera un archivo PDF de los us de un proyecto
+ * @param {*} projectId
+ * @returns archivo PDf
+ */
+export const generateProjectReport = async (projectId) =>
+  await axiosInstance.get(`proyectos/${projectId}/reporte_product_backlog`, {
+    responseType: "blob",
+  });
+
+/**
  * Listar miembros de un proyecto \n
  * Si no se provee el id de usuario la funcion solicita al servidor todos los proyectos. \n
  * Si se provee el id de usuario la funcion solicita todos los proyectos de un usuario en especifico. \n
@@ -108,6 +115,7 @@ const projects = {
   getProjectById,
   deleteProject,
   getProjectMembers,
+  generateProjectReport,
 };
 
 export default projects;
