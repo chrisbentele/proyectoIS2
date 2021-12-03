@@ -60,7 +60,13 @@ var annotated_dup =
         [ "Sprint_Activar_Tests", "classapi_1_1tests_1_1Sprint__Activar__Tests.html", "classapi_1_1tests_1_1Sprint__Activar__Tests" ],
         [ "User_Stories_Asignar_Tests", "classapi_1_1tests_1_1User__Stories__Asignar__Tests.html", "classapi_1_1tests_1_1User__Stories__Asignar__Tests" ],
         [ "Sprints_User_Stories_Tests", "classapi_1_1tests_1_1Sprints__User__Stories__Tests.html", "classapi_1_1tests_1_1Sprints__User__Stories__Tests" ],
-        [ "US_Registro_horas", "classapi_1_1tests_1_1US__Registro__horas.html", "classapi_1_1tests_1_1US__Registro__horas" ]
+        [ "US_Registro_horas_Tests", "classapi_1_1tests_1_1US__Registro__horas__Tests.html", "classapi_1_1tests_1_1US__Registro__horas__Tests" ],
+        [ "Product_Backlog_Table_Tests", "classapi_1_1tests_1_1Product__Backlog__Table__Tests.html", "classapi_1_1tests_1_1Product__Backlog__Table__Tests" ],
+        [ "Sprint_Backlog_table_Tests", "classapi_1_1tests_1_1Sprint__Backlog__table__Tests.html", "classapi_1_1tests_1_1Sprint__Backlog__table__Tests" ],
+        [ "US_Prioridad_table_Tests", "classapi_1_1tests_1_1US__Prioridad__table__Tests.html", "classapi_1_1tests_1_1US__Prioridad__table__Tests" ],
+        [ "Reporte_Product_Backlog_Tests", "classapi_1_1tests_1_1Reporte__Product__Backlog__Tests.html", "classapi_1_1tests_1_1Reporte__Product__Backlog__Tests" ],
+        [ "Reporte_Sprint_Backlog_Tests", "classapi_1_1tests_1_1Reporte__Sprint__Backlog__Tests.html", "classapi_1_1tests_1_1Reporte__Sprint__Backlog__Tests" ],
+        [ "Reporte_US_Prioridad", "classapi_1_1tests_1_1Reporte__US__Prioridad.html", "classapi_1_1tests_1_1Reporte__US__Prioridad" ]
       ] ],
       [ "utils", null, [
         [ "reportes", "namespaceapi_1_1utils_1_1reportes.html", [
