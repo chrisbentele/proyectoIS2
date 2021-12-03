@@ -1,13 +1,13 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="node1" title=" " alt="" coords="5,233,63,260"/>
-<area shape="rect" id="node2" href="$classapi_1_1models_1_1Comentario.html" title=" " alt="" coords="119,5,273,32"/>
-<area shape="rect" id="node3" href="$classapi_1_1models_1_1Proyecto.html" title=" " alt="" coords="127,56,265,83"/>
-<area shape="rect" id="node4" href="$classapi_1_1models_1_1RegistroHoras.html" title=" " alt="" coords="111,107,281,133"/>
-<area shape="rect" id="node5" href="$classapi_1_1models_1_1Retrospectiva.html" title=" " alt="" coords="113,157,279,184"/>
-<area shape="rect" id="node6" href="$classapi_1_1models_1_1Rol.html" title=" " alt="" coords="143,208,249,235"/>
-<area shape="rect" id="node7" href="$classapi_1_1models_1_1RolAsignado.html" title=" " alt="" coords="116,259,276,285"/>
-<area shape="rect" id="node8" href="$classapi_1_1models_1_1Sprint.html" title=" " alt="" coords="135,309,257,336"/>
-<area shape="rect" id="node9" href="$classapi_1_1models_1_1US.html" title=" " alt="" coords="143,360,249,387"/>
-<area shape="rect" id="node10" href="$classapi_1_1models_1_1USAsignada.html" title=" " alt="" coords="116,411,276,437"/>
-<area shape="rect" id="node11" href="$classapi_1_1models_1_1Usuario.html" title=" " alt="" coords="130,461,262,488"/>
+<area shape="rect" id="node2" href="$classapi_1_1models_1_1Comentario.html" title="Modelo de un Comentario." alt="" coords="119,5,273,32"/>
+<area shape="rect" id="node3" href="$classapi_1_1models_1_1Proyecto.html" title="Modelo de un Proyecto." alt="" coords="127,56,265,83"/>
+<area shape="rect" id="node4" href="$classapi_1_1models_1_1RegistroHoras.html" title="Modelo de un RegistroHoras." alt="" coords="111,107,281,133"/>
+<area shape="rect" id="node5" href="$classapi_1_1models_1_1Retrospectiva.html" title="Modelo de una Retrospectiva." alt="" coords="113,157,279,184"/>
+<area shape="rect" id="node6" href="$classapi_1_1models_1_1Rol.html" title="Modelo de un Rol." alt="" coords="143,208,249,235"/>
+<area shape="rect" id="node7" href="$classapi_1_1models_1_1RolAsignado.html" title="Modelo de un RolAsignado." alt="" coords="116,259,276,285"/>
+<area shape="rect" id="node8" href="$classapi_1_1models_1_1Sprint.html" title="Modelo de un Sprint." alt="" coords="135,309,257,336"/>
+<area shape="rect" id="node9" href="$classapi_1_1models_1_1US.html" title="Modelo de una US." alt="" coords="143,360,249,387"/>
+<area shape="rect" id="node10" href="$classapi_1_1models_1_1USAsignada.html" title="Modelo de una USAsignada." alt="" coords="116,411,276,437"/>
+<area shape="rect" id="node11" href="$classapi_1_1models_1_1Usuario.html" title="Modelo de un Usuario." alt="" coords="130,461,262,488"/>
 </map>
